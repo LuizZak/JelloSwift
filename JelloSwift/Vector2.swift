@@ -134,6 +134,7 @@ struct Vector2: Equatable, Printable
 let Vector2Zero = Vector2(0, 0);
 let Vector2One = Vector2(1, 1);
 
+// Rotates a given vector by an angle in radians
 func rotateVector(vec: Vector2, angleInRadians: CGFloat) -> Vector2
 {
     if(angleInRadians % (PI * 2) == 0)
@@ -158,6 +159,23 @@ func vectorsAreCCW(A: Vector2, B: Vector2) -> Bool
     var perp = A.perpendicular();
     
     return (B =* perp) >= 0.0;
+}
+
+// Averages a list of vectors into one Vector2 point
+func averageVectors(vectors: [Vector2]) -> Vector2
+{
+    var vec:Vector2 = Vector2();
+    
+    for v in vectors
+    {
+        vec += v;
+    }
+    
+    vec /= vectors.count;
+    
+    vec.normalizeThis();
+    
+    return vec;
 }
 
 ////////
