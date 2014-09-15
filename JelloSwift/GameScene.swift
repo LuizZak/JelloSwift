@@ -10,7 +10,6 @@ import SpriteKit
 
 class GameScene: SKScene {
     var world: World = World();
-    var shape: SKShapeNode = SKShapeNode();
     var polyDrawer: PolyDrawer? = nil;
     
     required override init() {
@@ -59,8 +58,6 @@ class GameScene: SKScene {
         box.finish();
         
         var spring2 = Body(world: world, shape: box, pointMasses: [CGFloat.infinity], position: toWorldCoords(Vector2(550 / 2, 150)));
-        
-        self.addChild(shape);
     }
     
     override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
@@ -103,13 +100,13 @@ class GameScene: SKScene {
         
         for body in world.bodies
         {
-            drawBody(body, shape: shape);
+            drawBody(body);
         }
         
         self.polyDrawer?.flushPolys();
     }
     
-    func drawBody(body: Body, shape: SKShapeNode)
+    func drawBody(body: Body)
     {
         var shapePoints = body.pointMasses;
         var points = [CGPoint]();
