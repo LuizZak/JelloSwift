@@ -101,10 +101,10 @@ class PolyDrawer: NSObject
 
 func skColorFromUInt(color: UInt) -> SKColor
 {
-    var a: CGFloat = CGFloat((UInt(color >> 24) & UInt(0xFF)) / 255.0);
-    var r: CGFloat = CGFloat((UInt(color >> 16) & UInt(0xFF)) / 255.0);
-    var g: CGFloat = CGFloat((UInt(color >> 8) & UInt(0xFF)) / 255.0);
-    var b: CGFloat = CGFloat((color & UInt(0xFF)) / 255.0);
+    var a: CGFloat = CGFloat((UInt(color >> 24) & UInt(0xFF))) / 255.0;
+    var r: CGFloat = CGFloat((UInt(color >> 16) & UInt(0xFF))) / 255.0;
+    var g: CGFloat = CGFloat((UInt(color >> 8) & UInt(0xFF))) / 255.0;
+    var b: CGFloat = CGFloat((color & UInt(0xFF))) / 255.0;
     
     return SKColor(red: r, green: g, blue: b, alpha: a);
 }

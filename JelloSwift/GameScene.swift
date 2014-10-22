@@ -20,7 +20,7 @@ class GameScene: SKScene {
         super.init(size: size);
     }
     
-    required init(coder aDecoder: NSCoder)
+    required init?(coder aDecoder: NSCoder)
     {
         super.init(coder: aDecoder);
         self.polyDrawer = PolyDrawer(scene: self);
