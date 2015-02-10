@@ -21,10 +21,10 @@ struct Vector2: Equatable, Printable
         self.Y = y;
     }
     
-    init(_ num:CGFloat)
+    init(value: CGFloat)
     {
-        self.X = num;
-        self.Y = num;
+        self.X = value;
+        self.Y = value;
     }
     
     // Returns the magnitude of this Vector2
@@ -127,7 +127,7 @@ struct Vector2: Equatable, Printable
         
         str.appendString(" }");
         
-        return str;
+        return String(str);
     }
 }
 
@@ -265,7 +265,7 @@ func /(lhs: Vector2, rhs: CGFloat) -> Vector2
     return Vector2(lhs.X / rhs, lhs.Y / rhs);
 }
 
-// CGFloat interaction
+// Int interaction
 func +(lhs: Vector2, rhs: Int) -> Vector2
 {
     return lhs + CGFloat(rhs);
