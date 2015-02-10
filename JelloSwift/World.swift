@@ -41,8 +41,8 @@ class World: NSObject
         // Clear all the bodies
         for b in bodies
         {
-            b.pointMassCollisions = [];
-            b.pointMasses = [];
+            b.pointMassCollisions.removeAll(keepCapacity: true);
+            b.pointMasses.removeAll(keepCapacity: true);
         }
         
         // Reset bodies
@@ -554,7 +554,7 @@ class World: NSObject
             }
         }
         
-        collisionList = [];
+        collisionList.removeAll(keepCapacity: true);
     }
     
     // Update bodies' bitmask for early collision filtering

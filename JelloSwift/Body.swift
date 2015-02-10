@@ -369,10 +369,15 @@ class Body: NSObject
             return;
         }
         
-        for point in pointMasses
+        for c in 0..<pointMasses.count
+        {
+            pointMasses[c].integrate(elapsed);
+        }
+        
+        /*for point in pointMasses
         {
             point.integrate(elapsed);
-        }
+        }*/
     }
     
     // Applies the velocity damping to the point masses
@@ -407,6 +412,7 @@ class Body: NSObject
         // line we are testing against goes from pt -> endPt.
         var inside = false;
         
+        // TODO: Use a foreach instead of a simple for loop to quicken up the iteration of the point masses
         var edgeSt = pointMasses[0].position;
         
         var edgeEnd = Vector2();
@@ -738,6 +744,6 @@ class Body: NSObject
     // Resets the collision information of the body
     func resetCollisionInfo()
     {
-        pointMassCollisions = [];
+        pointMassCollisions.removeAll(keepCapacity: true);
     }
 }

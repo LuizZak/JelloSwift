@@ -21,13 +21,19 @@ var renderingOffset = Vector2(300, -50);
 // Transforms the given point on stage coordinates into World coordinates by using the rendering settings
 func toWorldCoords(point: Vector2) -> Vector2
 {
-    return Vector2((point.X - renderingOffset.X) / renderingScale.X, (point.Y - renderingOffset.Y) / renderingScale.Y);
+    return (point - renderingOffset) / renderingScale;
 }
 
 // Transforms the given point on World coordinates into Screen coordinates by using the rendering settings
 func toScreenCoords(point: Vector2) -> Vector2
 {
-    return Vector2(point.X * renderingScale.X + renderingOffset.X, point.Y * renderingScale.Y + renderingOffset.Y);
+    return point * renderingScale + renderingOffset;
+}
+
+func setCamera(position: Vector2, scale: Vector2)
+{
+    renderingOffset = position;
+    renderingScale = scale;
 }
 
 // Sets the camera position and scale from scalar values

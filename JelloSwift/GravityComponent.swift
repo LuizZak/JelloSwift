@@ -17,9 +17,16 @@ class GravityComponent: BodyComponent
     {
         super.accumulateInternalForces();
         
+        /*
         for p in body.pointMasses
         {
             p.applyForce(vector * p.mass);
+        }
+        */
+        
+        for var i = 0; i < body.pointMasses.count; i++
+        {
+            body.pointMasses[i].applyForce(vector * body.pointMasses[i].mass);
         }
     }
 }

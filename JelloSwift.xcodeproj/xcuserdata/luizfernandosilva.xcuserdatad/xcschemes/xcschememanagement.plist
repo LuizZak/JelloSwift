@@ -7,21 +7,26 @@
 		<key>JelloSwift.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>1</integer>
+			<integer>0</integer>
 		</dict>
-		<key>JelloSwiftLib.xcscheme</key>
+		<key>JelloSwiftStressTest.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>6</integer>
-		</dict>
-		<key>JelloSwiftLibTests.xcscheme</key>
-		<dict>
-			<key>orderHint</key>
-			<integer>7</integer>
+			<integer>4</integer>
 		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>A09CC4721A2519ED0073BB62</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>A09CC4941A251A880073BB62</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>A0C954E4199329130066F88F</key>
 		<dict>
 			<key>primary</key>

@@ -17,6 +17,31 @@
 		A06EC151199FDB2300402D4C /* PressureComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06EC150199FDB2300402D4C /* PressureComponent.swift */; };
 		A07D54711997E4EE003C9669 /* PointMassTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A07D54701997E4EE003C9669 /* PointMassTests.swift */; };
 		A081CFE21996B04D00C7CA49 /* PolyDrawer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A081CFE11996B04D00C7CA49 /* PolyDrawer.swift */; };
+		A09CC4961A251A880073BB62 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C954EE199329130066F88F /* GameScene.swift */; };
+		A09CC4971A251A880073BB62 /* AABB.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C95510199336460066F88F /* AABB.swift */; };
+		A09CC4981A251A880073BB62 /* PointMass.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C9550E199333D30066F88F /* PointMass.swift */; };
+		A09CC4991A251A880073BB62 /* GeomUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C9553519946BA00066F88F /* GeomUtils.swift */; };
+		A09CC49A1A251A880073BB62 /* BodyCollisionInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C955321993C37C0066F88F /* BodyCollisionInformation.swift */; };
+		A09CC49B1A251A880073BB62 /* RenderingSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C9553C1995C2590066F88F /* RenderingSettings.swift */; };
+		A09CC49C1A251A880073BB62 /* Vector2.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C9550C199329280066F88F /* Vector2.swift */; };
+		A09CC49D1A251A880073BB62 /* SpringComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06EC14C199FD49200402D4C /* SpringComponent.swift */; };
+		A09CC49E1A251A880073BB62 /* InternalSpring.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C9551F199342D10066F88F /* InternalSpring.swift */; };
+		A09CC49F1A251A880073BB62 /* GravityComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05ECD5219B1A38C00F84326 /* GravityComponent.swift */; };
+		A09CC4A01A251A880073BB62 /* PressureComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06EC150199FDB2300402D4C /* PressureComponent.swift */; };
+		A09CC4A11A251A880073BB62 /* PolyDrawer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A081CFE11996B04D00C7CA49 /* PolyDrawer.swift */; };
+		A09CC4A21A251A880073BB62 /* Bitmask.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C9551919933D9B0066F88F /* Bitmask.swift */; };
+		A09CC4A31A251A880073BB62 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C954F0199329130066F88F /* GameViewController.swift */; };
+		A09CC4A41A251A880073BB62 /* BodyComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06EC14E199FD4EE00402D4C /* BodyComponent.swift */; };
+		A09CC4A51A251A880073BB62 /* Body.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C9552B1993BC150066F88F /* Body.swift */; };
+		A09CC4A61A251A880073BB62 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C95525199344390066F88F /* Utils.swift */; };
+		A09CC4A71A251A880073BB62 /* MaterialPair.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C955281993BB360066F88F /* MaterialPair.swift */; };
+		A09CC4A81A251A880073BB62 /* Vector3.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C9551C199340BD0066F88F /* Vector3.swift */; };
+		A09CC4A91A251A880073BB62 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C954EA199329130066F88F /* AppDelegate.swift */; };
+		A09CC4AA1A251A880073BB62 /* World.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C9552E1993BFA50066F88F /* World.swift */; };
+		A09CC4AB1A251A880073BB62 /* ClosedShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C95522199343DF0066F88F /* ClosedShape.swift */; };
+		A09CC4AE1A251A880073BB62 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A0C954F5199329130066F88F /* Images.xcassets */; };
+		A09CC4AF1A251A880073BB62 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = A0C954EC199329130066F88F /* GameScene.sks */; };
+		A09CC4B01A251A880073BB62 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A0C954F2199329130066F88F /* Main.storyboard */; };
 		A0C954EB199329130066F88F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C954EA199329130066F88F /* AppDelegate.swift */; };
 		A0C954ED199329130066F88F /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = A0C954EC199329130066F88F /* GameScene.sks */; };
 		A0C954EF199329130066F88F /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C954EE199329130066F88F /* GameScene.swift */; };
@@ -86,6 +111,8 @@
 		A06EC150199FDB2300402D4C /* PressureComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PressureComponent.swift; sourceTree = "<group>"; };
 		A07D54701997E4EE003C9669 /* PointMassTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PointMassTests.swift; sourceTree = "<group>"; };
 		A081CFE11996B04D00C7CA49 /* PolyDrawer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PolyDrawer.swift; sourceTree = "<group>"; };
+		A09CC4B41A251A880073BB62 /* JelloSwift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JelloSwift.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A09CC4B51A251A880073BB62 /* JelloSwiftStressTest-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "JelloSwiftStressTest-Info.plist"; path = "/Users/luizfernandosilva/Documents/Projetos/Jogos/Engines/JelloSwift/JelloSwiftStressTest-Info.plist"; sourceTree = "<absolute>"; };
 		A0C954E5199329130066F88F /* JelloSwift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JelloSwift.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A0C954E9199329130066F88F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A0C954EA199329130066F88F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -115,6 +142,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		A09CC4AC1A251A880073BB62 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A0C954E2199329130066F88F /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -165,6 +199,7 @@
 			children = (
 				A0C954E5199329130066F88F /* JelloSwift.app */,
 				A0C954FB199329130066F88F /* JelloSwiftTests.xctest */,
+				A09CC4B41A251A880073BB62 /* JelloSwift.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -188,6 +223,7 @@
 		A0C954E8199329130066F88F /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				A09CC4B51A251A880073BB62 /* JelloSwiftStressTest-Info.plist */,
 				A0C954E9199329130066F88F /* Info.plist */,
 			);
 			name = "Supporting Files";
@@ -245,6 +281,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		A09CC4941A251A880073BB62 /* JelloSwiftStressTest */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A09CC4B11A251A880073BB62 /* Build configuration list for PBXNativeTarget "JelloSwiftStressTest" */;
+			buildPhases = (
+				A09CC4951A251A880073BB62 /* Sources */,
+				A09CC4AC1A251A880073BB62 /* Frameworks */,
+				A09CC4AD1A251A880073BB62 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = JelloSwiftStressTest;
+			productName = JelloSwift;
+			productReference = A09CC4B41A251A880073BB62 /* JelloSwift.app */;
+			productType = "com.apple.product-type.application";
+		};
 		A0C954E4199329130066F88F /* JelloSwift */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = A0C95505199329130066F88F /* Build configuration list for PBXNativeTarget "JelloSwift" */;
@@ -315,12 +368,23 @@
 			projectRoot = "";
 			targets = (
 				A0C954E4199329130066F88F /* JelloSwift */,
+				A09CC4941A251A880073BB62 /* JelloSwiftStressTest */,
 				A0C954FA199329130066F88F /* JelloSwiftTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		A09CC4AD1A251A880073BB62 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A09CC4AE1A251A880073BB62 /* Images.xcassets in Resources */,
+				A09CC4AF1A251A880073BB62 /* GameScene.sks in Resources */,
+				A09CC4B01A251A880073BB62 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A0C954E3199329130066F88F /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -341,6 +405,35 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		A09CC4951A251A880073BB62 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A09CC4961A251A880073BB62 /* GameScene.swift in Sources */,
+				A09CC4971A251A880073BB62 /* AABB.swift in Sources */,
+				A09CC4981A251A880073BB62 /* PointMass.swift in Sources */,
+				A09CC4991A251A880073BB62 /* GeomUtils.swift in Sources */,
+				A09CC49A1A251A880073BB62 /* BodyCollisionInformation.swift in Sources */,
+				A09CC49B1A251A880073BB62 /* RenderingSettings.swift in Sources */,
+				A09CC49C1A251A880073BB62 /* Vector2.swift in Sources */,
+				A09CC49D1A251A880073BB62 /* SpringComponent.swift in Sources */,
+				A09CC49E1A251A880073BB62 /* InternalSpring.swift in Sources */,
+				A09CC49F1A251A880073BB62 /* GravityComponent.swift in Sources */,
+				A09CC4A01A251A880073BB62 /* PressureComponent.swift in Sources */,
+				A09CC4A11A251A880073BB62 /* PolyDrawer.swift in Sources */,
+				A09CC4A21A251A880073BB62 /* Bitmask.swift in Sources */,
+				A09CC4A31A251A880073BB62 /* GameViewController.swift in Sources */,
+				A09CC4A41A251A880073BB62 /* BodyComponent.swift in Sources */,
+				A09CC4A51A251A880073BB62 /* Body.swift in Sources */,
+				A09CC4A61A251A880073BB62 /* Utils.swift in Sources */,
+				A09CC4A71A251A880073BB62 /* MaterialPair.swift in Sources */,
+				A09CC4A81A251A880073BB62 /* Vector3.swift in Sources */,
+				A09CC4A91A251A880073BB62 /* AppDelegate.swift in Sources */,
+				A09CC4AA1A251A880073BB62 /* World.swift in Sources */,
+				A09CC4AB1A251A880073BB62 /* ClosedShape.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A0C954E1199329130066F88F /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -430,6 +523,38 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		A09CC4B21A251A880073BB62 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				GCC_OPTIMIZATION_LEVEL = fast;
+				INFOPLIST_FILE = "JelloSwiftStressTest-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = JelloSwift;
+				SWIFT_OPTIMIZATION_LEVEL = "-Ounchecked";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		A09CC4B31A251A880073BB62 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				GCC_OPTIMIZATION_LEVEL = fast;
+				INFOPLIST_FILE = "JelloSwiftStressTest-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = JelloSwift;
+				SWIFT_OPTIMIZATION_LEVEL = "-Ounchecked";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		A0C95503199329130066F88F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -522,6 +647,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -578,6 +704,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		A09CC4B11A251A880073BB62 /* Build configuration list for PBXNativeTarget "JelloSwiftStressTest" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A09CC4B21A251A880073BB62 /* Debug */,
+				A09CC4B31A251A880073BB62 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		A0C954E0199329130066F88F /* Build configuration list for PBXProject "JelloSwift" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

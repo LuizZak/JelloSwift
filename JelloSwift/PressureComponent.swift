@@ -37,7 +37,8 @@ class PressureComponent: BodyComponent
         var normX: CGFloat, normY: CGFloat;
         
         var c = body.pointMasses.count;
-        for i in 0..<c
+        //for i in 0..<c
+        for var i = 0; i < c; i++
         {
             var curPoint:PointMass = body.pointMasses[i];
             
