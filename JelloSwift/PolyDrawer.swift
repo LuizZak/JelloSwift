@@ -15,7 +15,6 @@ private struct Poly
     var lineColor: SKColor;
     var fillColor: SKColor;
     
-    
     init(points: [CGPoint], lineColor: SKColor, fillColor: SKColor)
     {
         self.points = points;
@@ -59,37 +58,25 @@ class PolyDrawer: NSObject
     // Flushes all the polygons currently queued and draw them on the screen
     func flushPolys()
     {
-        let size = CGSize(width: scene.size.width, height: scene.size.height);
-        
-        UIGraphicsBeginImageContext(size);
-        let ctx = UIGraphicsGetCurrentContext();
+        canvas.removeAllChildren();
         
         for poly in polys
         {
-            // Set stroke and fill
-            poly.lineColor.setStroke();
-            poly.fillColor.setFill();
+            var p = UnsafeMutablePointer<CGPoint>.alloc(poly.points.count + 1);
             
-            CGContextBeginPath(ctx);
-            
-            // Draw the polygon
-            CGContextMoveToPoint(ctx, poly.points[0].x, size.height - poly.points[0].y);
-            for i in 1..<poly.points.count+1
+            for i in 0..<poly.points.count + 1
             {
-                let v = poly.points[i % poly.points.count];
-                CGContextAddLineToPoint(ctx, v.x, size.height - v.y);
+                p[i] = poly.points[i % poly.points.count];
             }
-            CGContextDrawPath(ctx, kCGPathFillStroke);
+            
+            var node = SKShapeNode(points: p, count: UInt(poly.points.count + 1));
+            
+            node.fillColor = poly.fillColor;
+            node.strokeColor = poly.lineColor;
+            node.lineWidth = 1;
+            
+            canvas.addChild(node);
         }
-        
-        var textureImage = UIGraphicsGetImageFromCurrentImageContext();
-        
-        var texture = SKTexture(image: textureImage);
-        
-        self.canvas.texture = texture;
-        self.canvas.size = texture.size();
-        
-        UIGraphicsEndImageContext();
     }
     
     // Resets this PolyDrawer
