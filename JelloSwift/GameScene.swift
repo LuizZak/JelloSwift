@@ -103,7 +103,7 @@ class GameScene: SKScene {
             drawBody(body);
         }
         
-        self.polyDrawer?.flushPolys();
+        self.polyDrawer?.renderPolys();
     }
     
     func drawBody(body: Body)
@@ -118,7 +118,7 @@ class GameScene: SKScene {
             points += CGPoint(x: vec.X, y: vec.Y);
         }
         
-        polyDrawer?.drawPoly(points, fillColor: 0xFFFFFFFF, strokeColor: 0xFF000000);
+        polyDrawer?.queuePoly(points, fillColor: 0xFFFFFFFF, strokeColor: 0xFF000000);
     }
     
     override func update(currentTime: NSTimeInterval)
@@ -136,5 +136,10 @@ class GameScene: SKScene {
         }
         
         self.updateWithTimeSinceLastUpdate(timeSinceLast);
+        
+        if let v = self.view as? CustomView
+        {
+            
+        }
     }
 }

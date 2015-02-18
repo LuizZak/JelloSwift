@@ -70,7 +70,7 @@ class PressureComponent: BodyComponent
         }
         
         //var pm_count:int = mPointMasses.length;
-        for i in 0..<body.pointMasses.count
+        for i in 0..<c
         {
             var j: Int = (i + 1) % body.pointMasses.count;
             var pressureV: CGFloat = (invVolume * edgeLengthList[i] * (gasAmmount));

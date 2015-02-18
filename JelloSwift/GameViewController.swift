@@ -36,6 +36,9 @@ class GameViewController: UIViewController {
 
         if let scene = GameScene.unarchiveFromFile("GameScene") as? GameScene {
             // Configure the view.
+            self.view = CustomView();
+            (self.view as! CustomView).polyDrawer = scene.polyDrawer;
+            
             let skView = self.view as! SKView
             skView.showsFPS = true
             skView.showsNodeCount = true

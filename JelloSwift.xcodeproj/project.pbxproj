@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A0414E781A9503ED0031866D /* CustomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0414E771A9503ED0031866D /* CustomView.swift */; };
+		A0414E791A9508850031866D /* CustomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0414E771A9503ED0031866D /* CustomView.swift */; };
 		A05ECD5319B1A38C00F84326 /* GravityComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05ECD5219B1A38C00F84326 /* GravityComponent.swift */; };
 		A05ECD5419B1A6D700F84326 /* BodyComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06EC14E199FD4EE00402D4C /* BodyComponent.swift */; };
 		A05ECD5519B1A6D700F84326 /* SpringComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06EC14C199FD49200402D4C /* SpringComponent.swift */; };
@@ -105,6 +107,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A0414E771A9503ED0031866D /* CustomView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomView.swift; sourceTree = "<group>"; };
 		A05ECD5219B1A38C00F84326 /* GravityComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GravityComponent.swift; sourceTree = "<group>"; };
 		A06EC14C199FD49200402D4C /* SpringComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpringComponent.swift; sourceTree = "<group>"; };
 		A06EC14E199FD4EE00402D4C /* BodyComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BodyComponent.swift; sourceTree = "<group>"; };
@@ -212,6 +215,7 @@
 				A0C954EA199329130066F88F /* AppDelegate.swift */,
 				A0C954EC199329130066F88F /* GameScene.sks */,
 				A0C954EE199329130066F88F /* GameScene.swift */,
+				A0414E771A9503ED0031866D /* CustomView.swift */,
 				A0C954F0199329130066F88F /* GameViewController.swift */,
 				A0C954F2199329130066F88F /* Main.storyboard */,
 				A0C954F5199329130066F88F /* Images.xcassets */,
@@ -417,6 +421,7 @@
 				A09CC49B1A251A880073BB62 /* RenderingSettings.swift in Sources */,
 				A09CC49C1A251A880073BB62 /* Vector2.swift in Sources */,
 				A09CC49D1A251A880073BB62 /* SpringComponent.swift in Sources */,
+				A0414E791A9508850031866D /* CustomView.swift in Sources */,
 				A09CC49E1A251A880073BB62 /* InternalSpring.swift in Sources */,
 				A09CC49F1A251A880073BB62 /* GravityComponent.swift in Sources */,
 				A09CC4A01A251A880073BB62 /* PressureComponent.swift in Sources */,
@@ -446,6 +451,7 @@
 				A0C9553D1995C2590066F88F /* RenderingSettings.swift in Sources */,
 				A0C9550D199329280066F88F /* Vector2.swift in Sources */,
 				A06EC14D199FD49200402D4C /* SpringComponent.swift in Sources */,
+				A0414E781A9503ED0031866D /* CustomView.swift in Sources */,
 				A0C95520199342D10066F88F /* InternalSpring.swift in Sources */,
 				A05ECD5319B1A38C00F84326 /* GravityComponent.swift in Sources */,
 				A06EC151199FDB2300402D4C /* PressureComponent.swift in Sources */,
