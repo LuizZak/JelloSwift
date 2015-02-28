@@ -28,7 +28,7 @@ private struct Poly
         
         for p in points
         {
-            aabb.expandToInclude(Vector2(point: p));
+            aabb.expandToInclude(Vector2(p));
         }
         
         var x = aabb.minimum.X;
