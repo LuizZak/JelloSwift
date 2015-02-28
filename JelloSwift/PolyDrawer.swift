@@ -63,7 +63,6 @@ class PolyDrawer: NSObject
     /// Flushes all the polygons currently queued and draw them on the screen
     func renderPolys()
     {
-        /*
         canvas.removeAllChildren();
         
         if(polys.count == 0)
@@ -102,7 +101,7 @@ class PolyDrawer: NSObject
         node.lineWidth = 1;
         
         canvas.addChild(node);
-        */
+        
         
         // Repool all shapes
         /*
@@ -115,7 +114,7 @@ class PolyDrawer: NSObject
         }
         */
         
-        
+        /*
         canvas.removeAllChildren();
         
         for pi in 0..<polys.count //poly in polys
@@ -148,7 +147,7 @@ class PolyDrawer: NSObject
             
             canvas.addChild(node);
         }
-        //*/
+        // */
     }
     
     /// Renders the contents of this PolyDrawer on a given CGContextRef
