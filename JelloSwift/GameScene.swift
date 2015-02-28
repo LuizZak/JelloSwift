@@ -8,15 +8,18 @@
 
 import SpriteKit
 
-class GameScene: SKScene {
+class GameScene: SKScene
+{
     var world: World = World();
     var polyDrawer: PolyDrawer? = nil;
     
-    required override init() {
+    required override init()
+    {
         super.init();
     }
     
-    required override init(size: CGSize) {
+    required override init(size: CGSize)
+    {
         super.init(size: size);
     }
     
@@ -29,7 +32,8 @@ class GameScene: SKScene {
     // The last update time interval tick. Used to calculate a delta time (time difference) between frames
     private var _lastUpdateTimeInterval: NSTimeInterval = 0;
     
-    override func didMoveToView(view: SKView) {
+    override func didMoveToView(view: SKView)
+    {
         /* Setup your scene here */
         let myLabel = SKLabelNode(fontNamed:"Chalkduster")
         myLabel.text = "Hello, World!";
@@ -52,6 +56,7 @@ class GameScene: SKScene {
         var box = ClosedShape();
         box.begin();
         box.addVertex(Vector2(-5,  1));
+        box.addVertex(Vector2( 0,  0.6));
         box.addVertex(Vector2( 5,  1));
         box.addVertex(Vector2( 5, -1));
         box.addVertex(Vector2(-5, -1));
@@ -60,10 +65,12 @@ class GameScene: SKScene {
         var spring2 = Body(world: world, shape: box, pointMasses: [CGFloat.infinity], position: toWorldCoords(Vector2(550 / 2, 150)));
     }
     
-    override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
+    override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent)
+    {
         /* Called when a touch begins */
         
-        for touch: AnyObject in touches {
+        for touch: AnyObject in touches
+        {
             let location = touch.locationInNode(self)
             
             let vecLoc = toWorldCoords(Vector2(location.x, location.y));
