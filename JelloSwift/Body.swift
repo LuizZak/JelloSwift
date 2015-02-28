@@ -120,7 +120,7 @@ class Body: NSObject
         }
     }
     
-    // Adds a body component to this body
+    /// Adds a body component to this body
     func addComponentType(componentType: BodyComponent.Type)
     {
         var instance = componentType(body: self);
@@ -130,6 +130,8 @@ class Body: NSObject
         instance.prepare(self);
     }
     
+    /// Gets a component on this body that matches the given component type.
+    /// If no matching components are found, nil is returned instead
     func getComponentType<T: BodyComponent>(componentType: T.Type) -> T?
     {
         for comp in self.components
@@ -143,7 +145,7 @@ class Body: NSObject
         return nil;
     }
     
-    // Removes a component from this body
+    /// Removes a component from this body
     func removeComponentType(componentType: BodyComponent.Type)
     {
         for comp in self.components
@@ -156,8 +158,8 @@ class Body: NSObject
         }
     }
     
-    // Updates the AABB for this body, including padding for velocity given a timestep.
-    // This function is called by the World object on Update(), so the user should not need this in most cases.
+    /// Updates the AABB for this body, including padding for velocity given a timestep.
+    /// This function is called by the World object on Update(), so the user should not need this in most cases.
     func updateAABB(elapsed: CGFloat, forceUpdate: Bool)
     {
         if(isStatic || forceUpdate)
@@ -176,11 +178,11 @@ class Body: NSObject
         }
     }
     
-    // Sets the shape of this body to a new ClosedShape object.  This function
-    // will remove any existing PointMass objects, and replace them with new ones IF
-    // the new shape has a different vertex count than the previous one.  In this case
-    // the mass for each newly added point mass will be set zero.  Otherwise the shape is just
-    // updated, not affecting the existing PointMasses.
+    /// Sets the shape of this body to a new ClosedShape object.  This function
+    /// will remove any existing PointMass objects, and replace them with new ones IF
+    /// the new shape has a different vertex count than the previous one.  In this case
+    /// the mass for each newly added point mass will be set zero.  Otherwise the shape is just
+    /// updated, not affecting the existing PointMasses.
     func setShape(shape: ClosedShape)
     {
         baseShape = shape;
@@ -198,7 +200,7 @@ class Body: NSObject
         }
     }
     
-    // Sets the mass for all the PointMass objects in this body
+    /// Sets the mass for all the PointMass objects in this body
     func setMassAll(mass: CGFloat)
     {
         for point in pointMasses
@@ -207,13 +209,13 @@ class Body: NSObject
         }
     }
     
-    // Sets the mass for a single PointMass individually
+    /// Sets the mass for a single PointMass individually
     func setMassIndividual(index: Int, mass: CGFloat)
     {
         self.pointMasses[index].mass = mass;
     }
     
-    // Sets the mass for all the point masses from a list of masses
+    /// Sets the mass for all the point masses from a list of masses
     func setMassFromList(masses: [CGFloat])
     {
         for i in 0..<min(masses.count, self.pointMasses.count)
@@ -222,7 +224,7 @@ class Body: NSObject
         }
     }
     
-    // Sets the position and angle of the body manually
+    /// Sets the position and angle of the body manually
     func setPositionAngle(pos: Vector2, angle: CGFloat, scale: Vector2)
     {
         globalShape = baseShape.transformVertices(pos, angleInRadians: angle, localScale: scale);
@@ -242,10 +244,10 @@ class Body: NSObject
         }
     }
     
-    // Derives the global position and angle of this body, based on the average of all the points.
-    // This updates the DerivedPosision, DerivedAngle, and DerivedVelocity properties.
-    // This is called by the World object each Update(), so usually a user does not need to call this.  Instead
-    // you can juse access the DerivedPosition, DerivedAngle, DerivedVelocity, and DerivedOmega properties.
+    /// Derives the global position and angle of this body, based on the average of all the points.
+    /// This updates the DerivedPosision, DerivedAngle, and DerivedVelocity properties.
+    /// This is called by the World object each Update(), so usually a user does not need to call this.  Instead
+    /// you can juse access the DerivedPosition, DerivedAngle, DerivedVelocity, and DerivedOmega properties.
     func derivePositionAndAngle(elapsed: CGFloat)
     {
         // no need it this is a static body, or kinematically controlled.
@@ -351,8 +353,9 @@ class Body: NSObject
             comp.accumulateInternalForces();
         }
     }
-    // This function should add all external forces to the Force member variable of each PointMass in the body.
-    // These are external forces acting on the PointMasses, such as gravity, etc.
+    
+    /// This function should add all external forces to the Force member variable of each PointMass in the body.
+    /// These are external forces acting on the PointMasses, such as gravity, etc.
     func accumulateExternalForces()
     {
         for comp in components
@@ -361,7 +364,7 @@ class Body: NSObject
         }
     }
     
-    // Integrates the point masses for this Body
+    /// Integrates the point masses for this Body
     func integrate(elapsed: CGFloat)
     {
         if(isStatic)
@@ -380,7 +383,7 @@ class Body: NSObject
         }*/
     }
     
-    // Applies the velocity damping to the point masses
+    /// Applies the velocity damping to the point masses
     func dampenVelocity()
     {
         if(isStatic)
@@ -394,7 +397,56 @@ class Body: NSObject
         }
     }
     
-    // Returns whether a global point is inside this body
+    /// Applies a rotational clockwise torque of a given force on this body.
+    /// Applying torque modifies the
+    func applyTorque(force: CGFloat)
+    {
+        // Accelerate the body
+        for var i = 0; i < pointMasses.count; i++
+        {
+            var pm:PointMass = pointMasses[i];
+            
+            var diff = (pm.position - derivedPos).normalized();
+            
+            diff.perpendicularThis();
+            
+            pm.applyForce(diff * force);
+        }
+    }
+    
+    /// Sets the angular velocity for this body
+    func setAngularVelocity(vel: CGFloat)
+    {
+        // Accelerate the body
+        for var i = 0; i < pointMasses.count; i++
+        {
+            var pm:PointMass = pointMasses[i];
+            
+            var diff = (pm.position - derivedPos).normalized();
+            
+            diff.perpendicularThis();
+            
+            pm.velocity = diff * vel;
+        }
+    }
+    
+    /// Accumulates the angular velocity for this body
+    func addAngularVelocity(vel: CGFloat)
+    {
+        // Accelerate the body
+        for var i = 0; i < pointMasses.count; i++
+        {
+            var pm:PointMass = pointMasses[i];
+            
+            var diff = (pm.position - derivedPos).normalized();
+            
+            diff.perpendicularThis();
+            
+            pm.velocity += diff * vel;
+        }
+    }
+    
+    /// Returns whether a global point is inside this body
     func contains(pt: Vector2) -> Bool
     {
         // Check if the point is inside the AABB
