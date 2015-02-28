@@ -21,6 +21,24 @@ private struct Poly
         self.lineColor = lineColor;
         self.fillColor = fillColor;
     }
+    
+    func bounds() -> CGRect
+    {
+        var aabb = AABB();
+        
+        for p in points
+        {
+            aabb.expandToInclude(Vector2(point: p));
+        }
+        
+        var x = aabb.minimum.X;
+        var y = aabb.minimum.Y;
+        
+        var w = aabb.maximum.X - aabb.minimum.X;
+        var h = aabb.maximum.Y - aabb.minimum.Y;
+        
+        return CGRect(x: x, y: y, width: w, height: h);
+    }
 }
 
 /// A polygon drawing helper that caches SKSpriteNodes and uses CGPaths to draw custom polygons.
@@ -63,6 +81,8 @@ class PolyDrawer: NSObject
     /// Flushes all the polygons currently queued and draw them on the screen
     func renderPolys()
     {
+        var area = CGRect(origin: CGPoint(), size: self.scene.size);
+        
         canvas.removeAllChildren();
         
         if(polys.count == 0)
@@ -77,6 +97,12 @@ class PolyDrawer: NSObject
         for pi in 0..<polys.count //poly in polys
         {
             let poly = polys[pi];
+            
+            // Verify polygon boundaries
+            if(!poly.bounds().intersects(area))
+            {
+                continue;
+            }
             
             let p = UnsafeMutablePointer<CGPoint>.alloc(poly.points.count + 1);
             
