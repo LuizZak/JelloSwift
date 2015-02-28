@@ -15,12 +15,12 @@ infix operator -& { associativity left precedence 140 }
 
 func +&(inout lhs: Bitmask, rhs: Int) -> Bitmask
 {
-    lhs |= 1 << (UInt(rhs) > 0 ? (UInt(rhs) - 1) : 0);
+    lhs |= 1 << UInt(rhs > 0 ? rhs - 1 : 0);
     return lhs;
 }
 
 func -&(inout lhs: Bitmask, rhs: Int) -> Bitmask
 {
-    lhs &= ~(1 << (UInt(rhs) > 0 ? (UInt(rhs) - 1) : 0));
+    lhs &= ~(1 << UInt(rhs > 0 ? rhs - 1 : 0));
     return lhs;
 }
