@@ -8,10 +8,11 @@
 
 import UIKit
 
-// Represents a Gravity component that can be added to a body to make it constantly affected by gravity
+/// Represents a Gravity component that can be added to a body to make it constantly affected by gravity
 class GravityComponent: BodyComponent
 {
-    var vector: Vector2 = Vector2(0, -9.8);
+    /// The gravity vector to apply to the body
+    var gravity: Vector2 = Vector2(0, -9.8);
     
     override func accumulateInternalForces()
     {
@@ -26,11 +27,24 @@ class GravityComponent: BodyComponent
         
         for var i = 0; i < body.pointMasses.count; i++
         {
-            body.pointMasses[i].applyForce(vector * body.pointMasses[i].mass);
+            body.pointMasses[i].applyForce(gravity * body.pointMasses[i].mass);
+        }
+    }
+    
+    /// Changes the gravity of the bodies on a given world object
+    static func setGravityOnWorld(world: World, newGravity: Vector2)
+    {
+        for b in world.bodies
+        {
+            if let g = b.getComponentType(GravityComponent)
+            {
+                g.gravity = newGravity;
+            }
         }
     }
 }
 
+/// Component that can be added to bodies to add a gravity-like constant force
 class GravityComponentCreator: BodyComponentCreator
 {
     var vector: Vector2;
@@ -48,7 +62,7 @@ class GravityComponentCreator: BodyComponentCreator
     {
         if let comp = body.getComponentType(GravityComponent)
         {
-            comp.vector = self.vector;
+            comp.gravity = self.vector;
         }
     }
 }
