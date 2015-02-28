@@ -15,10 +15,28 @@ struct Vector2: Equatable, Printable
     var Y: CGFloat;
     var description: String { return toString(); };
     
-    init(_ x:CGFloat = 0, _ y:CGFloat = 0)
+    init()
+    {
+        self.X = 0;
+        self.Y = 0;
+    }
+    
+    init(_ x:Int, _ y:Int)
+    {
+        self.X = CGFloat(x);
+        self.Y = CGFloat(y);
+    }
+    
+    init(_ x:CGFloat, _ y:CGFloat)
     {
         self.X = x;
         self.Y = y;
+    }
+    
+    init(_ x:Double, _ y:Double)
+    {
+        self.X = CGFloat(x);
+        self.Y = CGFloat(y);
     }
     
     init(value: CGFloat)
@@ -27,38 +45,44 @@ struct Vector2: Equatable, Printable
         self.Y = value;
     }
     
-    // Returns the magnitude of this Vector2
+    init(_ point: CGPoint)
+    {
+        self.X = point.x;
+        self.Y = point.y;
+    }
+    
+    /// Returns the magnitude (or square root of the squared length) of this Vector2
     func magnitude() -> CGFloat
     {
         return sqrt(length());
     }
     
-    // Retunrs the angle of this Vector2
+    /// Returns the angle in radians of this Vector2
     func angle() -> CGFloat
     {
         return atan2(Y, X);
     }
     
-    // Returns the length of this Vector2
+    /// Returns the squared length of this Vector2
     func length() -> CGFloat
     {
         return X * X + Y * Y;
     }
     
-    // Returns the distance between this Vector2 and another Vector2
+    /// Returns the distance between this Vector2 and another Vector2
     func distance(vec: Vector2) -> CGFloat
     {
         return (self - vec).magnitude();
     }
     
-    // Returns the distance squared between this Vector2 and another Vector2
+    /// Returns the distance squared between this Vector2 and another Vector2
     func distanceSquared(vec: Vector2) -> CGFloat
     {
         return (self - vec).length();
     }
     
-    // Makes this Vector2 perpendicular to its current position.
-    // This alters the vector instance
+    /// Makes this Vector2 perpendicular to its current position.
+    /// This alters the vector instance
     mutating func perpendicularThis() -> Vector2
     {
         self = perpendicular();
@@ -66,7 +90,7 @@ struct Vector2: Equatable, Printable
         return self;
     }
     
-    // Returns a Vector2 perpendicular to this Vector2
+    /// Returns a Vector2 perpendicular to this Vector2
     func perpendicular() -> Vector2
     {
         return Vector2(-Y, X);
@@ -81,7 +105,7 @@ struct Vector2: Equatable, Printable
         return self;
     }
     
-    // Returns a normalized version of this Vector2
+    /// Returns a normalized version of this Vector2
     func normalized() -> Vector2
     {
         var x = X;
@@ -97,11 +121,10 @@ struct Vector2: Equatable, Printable
         return Vector2(x, y);
     }
     
-    // Returns a string representation of this Vector2 value
+    /// Returns a string representation of this Vector2 value
     func toString() -> String
     {
         var str:NSMutableString = "";
-        
         
         str.appendString("{ ");
         
