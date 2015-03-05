@@ -108,17 +108,14 @@ struct Vector2: Equatable, Printable
     /// Returns a normalized version of this Vector2
     func normalized() -> Vector2
     {
-        var x = X;
-        var y = Y;
-        var mag = magnitude();
+        var mag = sqrt(X * X + Y * Y);
         
-        if(mag > 0.0000001)
+        if(mag > CGFloat.min)
         {
-            x /= mag;
-            y /= mag;
+            return Vector2(X / mag, Y / mag);
         }
         
-        return Vector2(x, y);
+        return Vector2(X, Y);
     }
     
     /// Returns a string representation of this Vector2 value
