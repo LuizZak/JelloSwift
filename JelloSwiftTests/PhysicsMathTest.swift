@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 Luiz Fernando Silva. All rights reserved.
 //
 
-import XCTest
 import UIKit
+import XCTest
 
 class PhysicsMathTest: XCTestCase
 {
@@ -42,8 +42,8 @@ class PhysicsMathTest: XCTestCase
         var dx: CGFloat = 4 - 14;
         var dy: CGFloat = 8 - 13;
         
-        var dis = vec1.distance(vec2)
-        var dissq = vec1.distanceSquared(vec2);
+        var dis = vec1.distanceTo(vec2)
+        var dissq = vec1.distanceToSquared(vec2);
         var sss = sqrt((dx * dx) + (dy * dy));
         XCTAssert(dis == sss, "Pass");
         XCTAssert(dissq == (dx * dx) + (dy * dy), "Pass");
