@@ -157,7 +157,19 @@ struct Vector2: Equatable, Printable
 let Vector2Zero = Vector2(0, 0);
 let Vector2One = Vector2(1, 1);
 
-// Rotates a given vector by an angle in radians
+/// Returns a Vector2 that represents the minimum coordinates between two Vector2 objects
+func min(a: Vector2, b: Vector2) -> Vector2
+{
+    return Vector2(min(a.X, b.X), min(a.Y, b.Y));
+}
+
+/// Returns a Vector2 that represents the maximum coordinates between two Vector2 objects
+func max(a: Vector2, b: Vector2) -> Vector2
+{
+    return Vector2(max(a.X, b.X), max(a.Y, b.Y));
+}
+
+/// Rotates a given vector by an angle in radians
 func rotateVector(vec: Vector2, angleInRadians: CGFloat) -> Vector2
 {
     if(angleInRadians % (PI * 2) == 0)
@@ -176,7 +188,7 @@ func rotateVector(vec: Vector2, angleInRadians: CGFloat) -> Vector2
     return ret;
 }
 
-// Returns whether rotating from A to B is counter-clockwise
+/// Returns whether rotating from A to B is counter-clockwise
 func vectorsAreCCW(A: Vector2, B: Vector2) -> Bool
 {
     var perp = A.perpendicular();
@@ -184,7 +196,7 @@ func vectorsAreCCW(A: Vector2, B: Vector2) -> Bool
     return (B =* perp) >= 0.0;
 }
 
-// Averages a list of vectors into one Vector2 point
+/// Averages a list of vectors into one Vector2 point
 func averageVectors(vectors: [Vector2]) -> Vector2
 {
     var vec:Vector2 = Vector2();
