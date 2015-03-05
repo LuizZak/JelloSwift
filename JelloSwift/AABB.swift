@@ -86,11 +86,8 @@ class AABB: NSObject
         }
         else
         {
-            self.minimum.X = min(self.minimum.X, point.X);
-            self.minimum.Y = min(self.minimum.Y, point.Y);
-            
-            self.maximum.X = max(self.maximum.X, point.X);
-            self.maximum.Y = max(self.maximum.Y, point.Y);
+            self.minimum = min(self.minimum, point);
+            self.maximum = max(self.maximum, point);
         }
     }
     
