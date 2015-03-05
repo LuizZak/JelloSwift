@@ -8,20 +8,25 @@
 
 import UIKit
 
-// Represents an axis-aligned bounding box, utilized to figure out the AABB of soft-bodies
+/// Represents an axis-aligned bounding box, utilized to figure out the AABB of soft-bodies
 class AABB: NSObject
 {
-    // The validity of this AABB
+    /// The validity of this AABB
     var validity = PointValidity.Invalid;
     
-    // Minimum and maximum points for this bounding box
+    /// Minimum and maximum points for this bounding box
     var minimum = Vector2();
     var maximum = Vector2();
     
-    // Gets the width of this AABB
-    var width: CGFloat { get { return maximum.X - minimum.X; } }
-    // Gets the height of this AABB
-    var height: CGFloat { get { return maximum.Y - minimum.Y; } }
+    /// Gets the X position of this AABB
+    var x: CGFloat { return minimum.X; }
+    /// Gets the Y position of this AABB
+    var y: CGFloat { return minimum.Y; }
+    
+    /// Gets the width of this AABB
+    var width: CGFloat { return maximum.X - minimum.X; }
+    /// Gets the height of this AABB
+    var height: CGFloat { return maximum.Y - minimum.Y; }
     
     override init()
     {
@@ -53,6 +58,15 @@ class AABB: NSObject
         super.init();
     }
     
+    init(points: [Vector2])
+    {
+        self.validity = PointValidity.Invalid;
+        
+        super.init();
+        
+        self.expandToInclude(points);
+    }
+    
     func clear()
     {
         self.minimum = Vector2();
@@ -77,6 +91,31 @@ class AABB: NSObject
             
             self.maximum.X = max(self.maximum.X, point.X);
             self.maximum.Y = max(self.maximum.Y, point.Y);
+        }
+    }
+    
+    func expandToInclude(points: [Vector2])
+    {
+        if(points.count == 0)
+        {
+            return;
+        }
+        
+        if(validity == PointValidity.Invalid)
+        {
+            self.minimum = points[0];
+            self.maximum = points[0];
+            
+            validity = PointValidity.Valid;
+        }
+        
+        for p in points
+        {
+            self.minimum.X = min(self.minimum.X, p.X);
+            self.minimum.Y = min(self.minimum.Y, p.Y);
+            
+            self.maximum.X = max(self.maximum.X, p.X);
+            self.maximum.Y = max(self.maximum.Y, p.Y);
         }
     }
     

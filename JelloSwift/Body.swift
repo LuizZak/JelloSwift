@@ -34,17 +34,7 @@ class Body: NSObject
     // Gets a list of vertices that represents the current position of each PointMass in this body
     var vertices: [Vector2]
     {
-        get
-        {
-            var v: [Vector2] = [];
-            
-            for p in pointMasses
-            {
-                v += p.position;
-            }
-            
-            return v;
-        }
+        return pointMasses.map({ $0.position });
     }
     
     // The bounding box for this body

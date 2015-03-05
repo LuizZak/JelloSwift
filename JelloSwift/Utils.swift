@@ -51,6 +51,14 @@ extension Array
             }
         }
     }
+    
+    func forEach(doThis: (element: T) -> Void)
+    {
+        for e in self
+        {
+            doThis(element: e)
+        }
+    }
 }
 
 func fillArray<T: Equatable>(object: T, count: Int) -> [T]

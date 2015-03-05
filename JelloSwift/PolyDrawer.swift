@@ -11,33 +11,21 @@ import SpriteKit
 
 private struct Poly
 {
-    var points: [CGPoint];
-    var lineColor: SKColor;
-    var fillColor: SKColor;
+    let points: [CGPoint];
+    let lineColor: SKColor;
+    let fillColor: SKColor;
+    
+    var bounds: CGRect
+    {
+        var aabb = AABB(points: points.map{ Vector2($0) });
+        return CGRect(x: aabb.x, y: aabb.y, width: aabb.width, height: aabb.height);
+    }
     
     init(points: [CGPoint], lineColor: SKColor, fillColor: SKColor)
     {
         self.points = points;
         self.lineColor = lineColor;
         self.fillColor = fillColor;
-    }
-    
-    func bounds() -> CGRect
-    {
-        var aabb = AABB();
-        
-        for p in points
-        {
-            aabb.expandToInclude(Vector2(p));
-        }
-        
-        var x = aabb.minimum.X;
-        var y = aabb.minimum.Y;
-        
-        var w = aabb.maximum.X - aabb.minimum.X;
-        var h = aabb.maximum.Y - aabb.minimum.Y;
-        
-        return CGRect(x: x, y: y, width: w, height: h);
     }
 }
 
@@ -99,7 +87,7 @@ class PolyDrawer: NSObject
             let poly = polys[pi];
             
             // Verify polygon boundaries
-            if(!poly.bounds().intersects(area))
+            if(!poly.bounds.intersects(area))
             {
                 continue;
             }

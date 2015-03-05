@@ -12,7 +12,7 @@ import UIKit
 class BodyComponent: NSObject
 {
     // The body this body component is added into
-    var body: Body;
+    let body: Body;
     
     // Initializes a new instance of the BodyComponent class
     required init(body: Body)
@@ -23,7 +23,7 @@ class BodyComponent: NSObject
     // Makes the body component prepare itself after it has been added to a body
     func prepare(body: Body)
     {
-        self.body = body;
+        
     }
     
     // This function should add all internal forces to the Force member variable of each PointMass in the body.
