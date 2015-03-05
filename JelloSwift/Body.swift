@@ -613,7 +613,7 @@ class Body: NSObject
         if (x <= 0.0)
         {
             // x is outside the line segment, distance is from pt to ptA.
-            dist = pt.distanceSquared(ptA);
+            dist = pt.distanceToSquared(ptA);
             
             hitPt = ptA;
             
@@ -622,7 +622,7 @@ class Body: NSObject
         else if (x >= edgeLength)
         {
             // x is outside of the line segment, distance is from pt to ptB.
-            dist = pt.distanceSquared(ptB);
+            dist = pt.distanceToSquared(ptB);
             
             hitPt = ptB;
             
@@ -762,7 +762,7 @@ class Body: NSObject
         
         for point in pointMasses
         {
-            var thisD = pos.distanceSquared(point.position);
+            var thisD = pos.distanceToSquared(point.position);
             
             if(thisD < closestSQD)
             {

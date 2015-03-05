@@ -70,13 +70,13 @@ struct Vector2: Equatable, Printable
     }
     
     /// Returns the distance between this Vector2 and another Vector2
-    func distance(vec: Vector2) -> CGFloat
+    func distanceTo(vec: Vector2) -> CGFloat
     {
         return (self - vec).magnitude();
     }
     
     /// Returns the distance squared between this Vector2 and another Vector2
-    func distanceSquared(vec: Vector2) -> CGFloat
+    func distanceToSquared(vec: Vector2) -> CGFloat
     {
         return (self - vec).length();
     }

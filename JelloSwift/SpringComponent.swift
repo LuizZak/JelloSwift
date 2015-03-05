@@ -32,7 +32,7 @@ class SpringComponent: BodyComponent
         
         if(d < 0)
         {
-            d = body.pointMasses[pointA].position.distance(body.pointMasses[pointB].position);
+            d = body.pointMasses[pointA].position.distanceTo(body.pointMasses[pointB].position);
         }
         
         var s = InternalSpring(pointA, pointB, d, springK, damping);

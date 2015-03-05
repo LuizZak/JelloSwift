@@ -76,7 +76,7 @@ func calculateSpringForce(posA: Vector2, velA: Vector2, posB: Vector2, velB: Vec
 {
     var BtoA = posA - posB;
     
-    var dist = posA.distance(posB);
+    var dist = posA.distanceTo(posB);
     
     if (dist > 0.005)
     {

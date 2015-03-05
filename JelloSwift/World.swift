@@ -229,7 +229,7 @@ class World: NSObject
     // Casts a ray between the given points and returns the first body it comes in contact with
     func rayCast(start: Vector2, end: Vector2, inout _ retPt:Vector2, bit: Bitmask, _ ignoreList:[Body] = []) -> Body?
     {
-        var closestD = start.distance(end);
+        var closestD = start.distanceTo(end);
         var closestB:Body? = nil;
         var aabb:AABB? = nil;
         var lastBody:Body? = nil;
