@@ -84,9 +84,16 @@ class GameScene: SKScene
         
         // Create some free boxes around the level
         createBox(toWorldCoords(Vector2(size.width / 2, size.height / 3)), size: Vector2(1, 1));
+        createBox(toWorldCoords(Vector2(size.width * 0.4, size.height / 3)), size: Vector2(1, 1));
+        var box3 = createBox(toWorldCoords(Vector2(size.width * 0.6, size.height / 3)), size: Vector2(1, 1));
+        
+        // Lock the rotation of the third box
+        box3.freeRotate = false;
         
         // Create a pinned box in the middle of the level
-        createBox(toWorldCoords(Vector2(size.width / 2, size.height / 2)), size: Vector2(1, 1), pinned: true);
+        var pinnedBox = createBox(toWorldCoords(Vector2(size.width / 2, size.height / 2)), size: Vector2(1, 1), pinned: true);
+        // Increase the velocity damping of the pinned box so it doesn't jiggles around nonstop
+        pinnedBox.velDamping = 0.99;
         
         // Create two kinematic boxes
         createBox(toWorldCoords(Vector2(size.width * 0.3, size.height / 2)), size: Vector2(2, 2), kinematic: true);
@@ -242,20 +249,20 @@ class GameScene: SKScene
     func drawBody(body: Body)
     {
         var shapePoints = body.pointMasses;
-        var points = [CGPoint]();
+        var points = [CGPoint](count: shapePoints.count, repeatedValue: CGPoint());
         
         for i in 0..<shapePoints.count
         {
             let vec = toScreenCoords(shapePoints[i].position);
             
-            points += CGPoint(x: vec.X, y: vec.Y);
+            points[i] = CGPoint(x: vec.X, y: vec.Y);
         }
         
         polyDrawer?.queuePoly(points, fillColor: 0xFFFFFFFF, strokeColor: 0xFF000000);
     }
     
     /// Creates a box at the specified world coordinates with the specified size
-    func createBox(pos: Vector2, size: Vector2, pinned: Bool = false, kinematic: Bool = false)
+    func createBox(pos: Vector2, size: Vector2, pinned: Bool = false, kinematic: Bool = false) -> Body
     {
         // Create the closed shape for the box's physics body
         var shape = ClosedShape();
@@ -289,10 +296,12 @@ class GameScene: SKScene
         // Specifying the distance as -1 sets it as the current distance between the specified point masses
         springComp?.addInternalSpring(0, pointB: 2, springK: 100, damping: 10, dist: -1);
         springComp?.addInternalSpring(1, pointB: 3, springK: 100, damping: 10, dist: -1);
+        
+        return body;
     }
     
     /// Creates a bouncy ball at the specified world coordinates
-    func createBouncyBall(pos: Vector2, pinned: Bool = false, kinematic: Bool = false, radius: CGFloat = 1)
+    func createBouncyBall(pos: Vector2, pinned: Bool = false, kinematic: Bool = false, radius: CGFloat = 1) -> Body
     {
         // Create the closed shape for the ball's physics body
         var def: CGFloat = 12;
@@ -321,5 +330,7 @@ class GameScene: SKScene
         var body = Body(world: world, shape: shape, pointMasses: [0.5], kinematic: kinematic, position: pos, components: comps)
         
         body.isPined = pinned;
+        
+        return body;
     }
 }
