@@ -249,8 +249,8 @@ class Body: NSObject
         if(!isPined)
         {
             // find the geometric center.
-            var center = Vector2One;
-            var vel = Vector2One;
+            var center = Vector2.Zero;
+            var vel = Vector2.Zero;
         
             for p in pointMasses
             {
