@@ -19,6 +19,7 @@
 		A06EC151199FDB2300402D4C /* PressureComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06EC150199FDB2300402D4C /* PressureComponent.swift */; };
 		A07D54711997E4EE003C9669 /* PointMassTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A07D54701997E4EE003C9669 /* PointMassTests.swift */; };
 		A081CFE21996B04D00C7CA49 /* PolyDrawer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A081CFE11996B04D00C7CA49 /* PolyDrawer.swift */; };
+		A08E5FA31AA8B56700F4CA0F /* ClosedShapeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08E5FA21AA8B56700F4CA0F /* ClosedShapeTests.swift */; };
 		A09CC4961A251A880073BB62 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C954EE199329130066F88F /* GameScene.swift */; };
 		A09CC4971A251A880073BB62 /* AABB.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C95510199336460066F88F /* AABB.swift */; };
 		A09CC4981A251A880073BB62 /* PointMass.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C9550E199333D30066F88F /* PointMass.swift */; };
@@ -114,6 +115,7 @@
 		A06EC150199FDB2300402D4C /* PressureComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PressureComponent.swift; sourceTree = "<group>"; };
 		A07D54701997E4EE003C9669 /* PointMassTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PointMassTests.swift; sourceTree = "<group>"; };
 		A081CFE11996B04D00C7CA49 /* PolyDrawer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PolyDrawer.swift; sourceTree = "<group>"; };
+		A08E5FA21AA8B56700F4CA0F /* ClosedShapeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClosedShapeTests.swift; sourceTree = "<group>"; };
 		A09CC4B41A251A880073BB62 /* JelloSwift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JelloSwift.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A09CC4B51A251A880073BB62 /* JelloSwiftStressTest-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "JelloSwiftStressTest-Info.plist"; path = "/Users/luizfernandosilva/Documents/Projetos/Jogos/Engines/JelloSwift/JelloSwiftStressTest-Info.plist"; sourceTree = "<absolute>"; };
 		A0C954E5199329130066F88F /* JelloSwift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JelloSwift.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -239,6 +241,7 @@
 				A0C95501199329130066F88F /* JelloSwiftTests.swift */,
 				A0C9553F19968CCA0066F88F /* PhysicsMathTest.swift */,
 				A07D54701997E4EE003C9669 /* PointMassTests.swift */,
+				A08E5FA21AA8B56700F4CA0F /* ClosedShapeTests.swift */,
 				A0C954FF199329130066F88F /* Supporting Files */,
 			);
 			path = JelloSwiftTests;
@@ -484,6 +487,7 @@
 				A07D54711997E4EE003C9669 /* PointMassTests.swift in Sources */,
 				A0C9552A1993BB360066F88F /* MaterialPair.swift in Sources */,
 				A0C95527199344390066F88F /* Utils.swift in Sources */,
+				A08E5FA31AA8B56700F4CA0F /* ClosedShapeTests.swift in Sources */,
 				A0C9551719933ADA0066F88F /* Vector2.swift in Sources */,
 				A0C955301993BFA50066F88F /* World.swift in Sources */,
 				A0C9554019968CCA0066F88F /* PhysicsMathTest.swift in Sources */,

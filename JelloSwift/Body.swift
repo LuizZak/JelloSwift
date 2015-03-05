@@ -180,8 +180,9 @@ class Body: NSObject
         if(baseShape.localVertices.count != pointMasses.count)
         {
             pointMasses = [];
+            globalShape = [Vector2](count: shape.localVertices.count, repeatedValue: Vector2());
             
-            globalShape = baseShape.transformVertices(derivedPos, angleInRadians: derivedAngle, localScale: scale);
+            baseShape.transformVertices(&globalShape, worldPos: derivedPos, angleInRadians: derivedAngle, localScale: scale);
             
             for i in 0..<baseShape.localVertices.count
             {
@@ -217,7 +218,7 @@ class Body: NSObject
     /// Sets the position and angle of the body manually
     func setPositionAngle(pos: Vector2, angle: CGFloat, scale: Vector2)
     {
-        globalShape = baseShape.transformVertices(pos, angleInRadians: angle, localScale: scale);
+        baseShape.transformVertices(&globalShape, worldPos: pos, angleInRadians: angle, localScale: scale);
         
         for i in 0..<pointMasses.count
         {

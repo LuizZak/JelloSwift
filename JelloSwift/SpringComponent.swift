@@ -8,24 +8,34 @@
 
 import UIKit
 
-// Represents a Spring component that can be added to a body to include spring-based physics in the body's point masses
+/// Represents a Spring component that can be added to a body to include spring-based physics in the body's point masses
 class SpringComponent: BodyComponent
 {
-    var springs:[InternalSpring] = [];
-    var shapeMatchingOn = true;
+    /// Gets the count of springs on this spring component
+    var springCount: Int { return springs.count; }
     
-    var edgeSpringK: CGFloat = 50;
-    var edgeSpringDamp: CGFloat = 2;
+    /// The list of internal springs for the body
+    private var springs:[InternalSpring] = [];
+    /// Whether the shape matching is on - turning on shape matching will make the soft body try to mantain its original
+    /// shape as specified by its baseShape
+    private var shapeMatchingOn = true;
     
-    var shapeSpringK: CGFloat = 200;
-    var shapeSpringDamp: CGFloat = 10;
+    /// The spring constant for the edges of the spring body
+    private var edgeSpringK: CGFloat = 50;
+    /// The spring dampness for the edges of the spring body
+    private var edgeSpringDamp: CGFloat = 2;
+    
+    /// The spring constant for the shape matching of the body - ignored if shape matching is off
+    private var shapeSpringK: CGFloat = 200;
+    /// The spring dampness for the shape matching of the body - ignored if the shape matching is off
+    private var shapeSpringDamp: CGFloat = 10;
     
     override func prepare(body: Body)
     {
         self._buildDefaultSprings();
     }
     
-    // Adds an internal spring to this body
+    /// Adds an internal spring to this body
     func addInternalSpring(pointA: Int, pointB: Int, springK: CGFloat, damping: CGFloat, dist: CGFloat = -1) -> InternalSpring
     {
         var d = dist;
@@ -42,7 +52,8 @@ class SpringComponent: BodyComponent
         return s;
     }
     
-    // Clears all the internal springs from the body
+    /// Clears all the internal springs from the body.
+    /// The original edge springs are mantained
     func clearAllSprings()
     {
         springs = [];
@@ -50,7 +61,7 @@ class SpringComponent: BodyComponent
         _buildDefaultSprings();
     }
     
-    // Builds the default edge internal springs for this spring body
+    /// Builds the default edge internal springs for this spring body
     func _buildDefaultSprings()
     {
         for i in 0..<body.pointMasses.count
@@ -59,14 +70,14 @@ class SpringComponent: BodyComponent
         }
     }
     
-    // Sets the shape-matching spring constants
+    /// Sets the shape-matching spring constants
     func setShapeMatchingConstants(springK: CGFloat, _ damping: CGFloat)
     {
         shapeSpringK = springK;
         shapeSpringDamp = damping;
     }
     
-    // Changes the spring constants for the springs around the shape itself (edge springs)
+    /// Changes the spring constants for the springs around the shape itself (edge springs)
     func setEdgeSpringConstants(edgeSpringK: CGFloat, _ edgeSpringDamp: CGFloat)
     {
         // we know that the first n springs in the list are the edge springs.
@@ -77,9 +88,9 @@ class SpringComponent: BodyComponent
         }
     }
     
-    // Sets the spring constant for the given spring index.
-    // The spring index starts from pointMasses.count and onwards, so the first spring
-    // will not be the first edge spring.
+    /// Sets the spring constant for the given spring index.
+    /// The spring index starts from pointMasses.count and onwards, so the first spring
+    /// will not be the first edge spring.
     func setSpringConstants(springID: Int, _ springK: CGFloat, _ springDamp: CGFloat)
     {
         // index is for all internal springs, AFTER the default internal springs.
@@ -89,11 +100,15 @@ class SpringComponent: BodyComponent
         springs[index].damping = springDamp;
     }
     
+    /// Gets the spring constant of a spring at the specified index.
+    /// This ignores the default edge springs, so the index is always + body.pointMasses.count
     func getSpringK(springID: Int) -> CGFloat
     {
         return springs[body.pointMasses.count + springID].springK;
     }
     
+    /// Gets the spring dampness of a spring at the specified index
+    /// This ignores the default edge springs, so the index is always + body.pointMasses.count
     func getSpringD(springID: Int) -> CGFloat
     {
         return springs[body.pointMasses.count + springID].springD;
@@ -118,7 +133,7 @@ class SpringComponent: BodyComponent
         
         if(shapeMatchingOn)
         {
-            body.globalShape = body.baseShape.transformVertices(body.derivedPos, angleInRadians: body.derivedAngle, localScale: body.scale);
+            body.baseShape.transformVertices(&body.globalShape, worldPos: body.derivedPos, angleInRadians: body.derivedAngle, localScale: body.scale);
             
             for i in 0..<body.pointMasses.count
             {
@@ -144,15 +159,21 @@ class SpringComponent: BodyComponent
     }
 }
 
-// Creator for the Spring component
+/// Creator for the Spring component
 class SpringComponentCreator : BodyComponentCreator
 {
+    /// Whether the shape matching is on - turning on shape matching will make the soft body try to mantain its original
+    /// shape as specified by its baseShape
     var shapeMatchingOn = true;
     
+    /// The spring constant for the edges of the spring body
     var edgeSpringK: CGFloat = 50;
+    /// The spring dampness for the edges of the spring body
     var edgeSpringDamp: CGFloat = 2;
     
+    /// The spring constant for the shape matching of the body - ignored if shape matching is off
     var shapeSpringK: CGFloat = 200;
+    /// The spring dampness for the shape matching of the body - ignored if the shape matching is off
     var shapeSpringDamp: CGFloat = 10;
     
     required init(shapeMatchingOn: Bool = true, edgeSpringK: CGFloat = 50, edgeSpringDamp: CGFloat = 2, shapeSpringK: CGFloat = 200, shapeSpringDamp: CGFloat = 10)

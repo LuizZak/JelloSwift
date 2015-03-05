@@ -63,18 +63,32 @@ class ClosedShape: NSObject
         }
     }
     
-    // Gets a new list of vertices, transformed by the given position, angle, and scale.
-    // transformation is applied in the following order:  scale -> rotation -> position.
+    /// Gets a new list of vertices, transformed by the given position, angle, and scale.
+    /// transformation is applied in the following order:  scale -> rotation -> position.
     func transformVertices(worldPos: Vector2, angleInRadians: CGFloat, localScale: Vector2 = Vector2(1, 1)) -> [Vector2]
     {
-        var ret: [Vector2] = [];
+        var ret: [Vector2] = [Vector2](count: localVertices.count, repeatedValue: Vector2());
+        var i = 0;
         
         for vertex in localVertices
         {
             var v = rotateVector(vertex * localScale, angleInRadians) + worldPos;
-            ret += v;
+            ret[i++] = v;
         }
         
         return ret;
+    }
+    
+    /// Transforms the points on this closed shape into the given array of points.
+    /// The array of points must have the same count of vertices as this closed shape
+    /// transformation is applied in the following order:  scale -> rotation -> position.
+    func transformVertices(inout target:[Vector2], worldPos: Vector2, angleInRadians: CGFloat, localScale: Vector2 = Vector2(1, 1))
+    {
+        var i = 0;
+        for vertex in localVertices
+        {
+            var v = rotateVector(vertex * localScale, angleInRadians) + worldPos;
+            target[i++] = v;
+        }
     }
 }

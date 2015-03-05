@@ -8,9 +8,14 @@
 
 import UIKit
 
-// Represents a 2D vector
+/// Represents a 2D vector
 struct Vector2: Equatable, Printable
 {
+    /// A zeroed-value Vector2
+    static let Zero = Vector2(0, 0);
+    /// A one-valued Vector2
+    static let One = Vector2(1, 1);
+    
     var X: CGFloat;
     var Y: CGFloat;
     var description: String { return toString(); };

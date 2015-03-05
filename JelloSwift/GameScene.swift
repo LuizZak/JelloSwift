@@ -78,16 +78,32 @@ class GameScene: SKScene
             createBouncyBall(v);
         }
         
+        // Create a few pinned bodies
+        createBouncyBall(toWorldCoords(Vector2(size.width * 0.2, size.height / 2)), pinned: true, radius: 3);
+        createBouncyBall(toWorldCoords(Vector2(size.width * 0.8, size.height / 2)), pinned: true, radius: 3);
+        
+        // Create some free boxes around the level
+        createBox(toWorldCoords(Vector2(size.width / 2, size.height / 3)), size: Vector2(1, 1));
+        
+        // Create a pinned box in the middle of the level
+        createBox(toWorldCoords(Vector2(size.width / 2, size.height / 2)), size: Vector2(1, 1), pinned: true);
+        
+        // Create two kinematic boxes
+        createBox(toWorldCoords(Vector2(size.width * 0.3, size.height / 2)), size: Vector2(2, 2), kinematic: true);
+        createBox(toWorldCoords(Vector2(size.width * 0.7, size.height / 2)), size: Vector2(2, 2), kinematic: true);
+        
+        // Create the ground box
         var box = ClosedShape();
         box.begin();
-        box.addVertex(Vector2(-5,  1));
-        box.addVertex(Vector2( 0,  0.6));
-        box.addVertex(Vector2( 5,  1));
-        box.addVertex(Vector2( 5, -1));
-        box.addVertex(Vector2(-5, -1));
+        box.addVertex(Vector2(-10,  1));
+        box.addVertex(Vector2( 0,  0.6)); // A little inward slope
+        box.addVertex(Vector2( 10,  1));
+        box.addVertex(Vector2( 10, -1));
+        box.addVertex(Vector2(-10, -1));
         box.finish();
         
         var platform = Body(world: world, shape: box, pointMasses: [CGFloat.infinity], position: toWorldCoords(Vector2(size.width / 2, 150)));
+        platform.isStatic = true;
     }
     
     override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent)
@@ -238,20 +254,72 @@ class GameScene: SKScene
         polyDrawer?.queuePoly(points, fillColor: 0xFFFFFFFF, strokeColor: 0xFF000000);
     }
     
-    /// Creates a bouncy ball at a specified world coordinate
-    func createBouncyBall(pos: Vector2)
+    /// Creates a box at the specified world coordinates with the specified size
+    func createBox(pos: Vector2, size: Vector2, pinned: Bool = false, kinematic: Bool = false)
     {
-        // Create the closed shape for the player's physics body
+        // Create the closed shape for the box's physics body
+        var shape = ClosedShape();
+        shape.begin();
+        shape.addVertex(Vector2(-size.X,  size.Y));
+        shape.addVertex(Vector2( size.X,  size.Y));
+        shape.addVertex(Vector2( size.X, -size.Y));
+        shape.addVertex(Vector2(-size.X, -size.Y));
+        shape.finish();
+        
+        var comps = [BodyComponentCreator]();
+        
+        // Add a spring body component - spring bodies have string physics that attract the inner points, it's one of the
+        // forces that holds a body together
+        comps += SpringComponentCreator(shapeMatchingOn: true, edgeSpringK: 600, edgeSpringDamp: 20, shapeSpringK: 100, shapeSpringDamp: 60);
+        
+        if(!pinned)
+        {
+            // Add a gravity component taht will pull the body down
+            comps += GravityComponentCreator();
+        }
+        
+        let body = Body(world: world, shape: shape, pointMasses: [0.5], kinematic: kinematic, position: pos, components: comps)
+        body.isPined = pinned;
+        
+        // In order to have the box behave correctly, we need to add some internal springs to the body
+        let springComp = body.getComponentType(SpringComponent);
+        
+        // The two first arguments are the indexes of the point masses to link, the next two are the spring constants,
+        // and the last one is the distance the spring will try to mantain the two point masses at.
+        // Specifying the distance as -1 sets it as the current distance between the specified point masses
+        springComp?.addInternalSpring(0, pointB: 2, springK: 100, damping: 10, dist: -1);
+        springComp?.addInternalSpring(1, pointB: 3, springK: 100, damping: 10, dist: -1);
+    }
+    
+    /// Creates a bouncy ball at the specified world coordinates
+    func createBouncyBall(pos: Vector2, pinned: Bool = false, kinematic: Bool = false, radius: CGFloat = 1)
+    {
+        // Create the closed shape for the ball's physics body
         var def: CGFloat = 12;
-        var ball = ClosedShape();
-        ball.begin();
+        var shape = ClosedShape();
+        shape.begin();
         for var n: CGFloat = 0; n < CGFloat(M_PI * 2); n += CGFloat(M_PI * 2) / def
         {
-            ball.addVertex(Vector2(cos(-n), sin(-n)));
+            shape.addVertex(Vector2(cos(-n) * radius, sin(-n) * radius));
         }
-        ball.transformOwn(0, localScale: Vector2(0.3, 0.3));
-        ball.finish();
+        shape.transformOwn(0, localScale: Vector2(0.3, 0.3));
+        shape.finish();
         
-        var spring = Body(world: world, shape: ball, pointMasses: [0.5], position: pos, components: [SpringComponentCreator(shapeMatchingOn: false, edgeSpringK: 600, edgeSpringDamp: 20, shapeSpringK: 10, shapeSpringDamp: 20), PressureComponentCreator(gasAmmount: 90), GravityComponentCreator()])
+        var comps = [BodyComponentCreator]();
+        
+        // Add a spring body component - spring bodies have string physics that attract the inner points, it's one of the
+        // forces that holds a body together
+        comps += SpringComponentCreator(shapeMatchingOn: true, edgeSpringK: 600, edgeSpringDamp: 20, shapeSpringK: 10, shapeSpringDamp: 20);
+        
+        // Add a pressure component - pressure applies an outwards-going force that basically
+        // tries to expand the body as if filled with air, like a balloon
+        comps += PressureComponentCreator(gasAmmount: 90);
+        
+        // Add a gravity component taht will pull the body down
+        comps += GravityComponentCreator();
+        
+        var body = Body(world: world, shape: shape, pointMasses: [0.5], kinematic: kinematic, position: pos, components: comps)
+        
+        body.isPined = pinned;
     }
 }
