@@ -458,8 +458,11 @@ class World: NSObject
     // Solves the collisions between bodies
     func handleCollisions()
     {
-        for info in collisionList
+        let c = collisionList.count;
+        for var i = 0; i < c; i++
         {
+            let info = collisionList[i];
+            
             if(info.bodyA == nil || info.bodyB == nil)
             {
                 continue;
