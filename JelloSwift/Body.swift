@@ -8,54 +8,82 @@
 
 import UIKit
 
+/// CGFloat version of the PI constant
 let PI: CGFloat = CGFloat(M_PI);
 
-// Represents a soft body on the world
+/// Represents a soft body on the world
 class Body: NSObject
 {
+    /// The base shape for the body
     var baseShape: ClosedShape = ClosedShape();
+    
+    /// The global shape for the body - this is the same as the base shape, but rotated and translated around the world
     var globalShape: [Vector2] = [];
+    
+    /// The array of point masses for the body
     var pointMasses: [PointMass] = [];
+    /// An array of all the collision that involve this body
     var pointMassCollisions: [BodyCollisionInformation] = [];
+    /// Whether to collect the collisions of this body into the pointMassCollisions array. Defaults to false
+    var collectCollisions: Bool = false;
+    
+    /// The scale for this body's shape
     var scale: Vector2 = Vector2();
+    /// The derived center position of this body - in world coordinates
     var derivedPos: Vector2 = Vector2();
+    /// The derived velocity of this body - in world coordinates. The derivation assumes the mean of the velocity of all the point masses
     var derivedVel: Vector2 = Vector2();
+    /// The velocity damping to apply to the body. Values closer to 0 deaccelerate faster, values closer to 1 deaccelerate slower.
+    /// 1 never deaccelerates. Values outside the range [0, 1] inclusive may introduce instability
     var velDamping: CGFloat = 0.999;
     
+    /// The array of body components for this body object
     var components: [BodyComponent] = [];
     
     // Both these properties are in radians:
+    
+    /// The derived rotation of the body
     var derivedAngle: CGFloat = 0;
-    // Omega (ω) is the relative angular speed of the body
+    /// Omega (ω) is the relative angular speed of the body
     var derivedOmega: CGFloat = 0;
     // Utilize to calculate the omega for the body
-    var lastAngle: CGFloat = 0;
+    private var lastAngle: CGFloat = 0;
     
-    // Gets a list of vertices that represents the current position of each PointMass in this body
+    /// Gets a list of vertices that represents the current position of each PointMass in this body
     var vertices: [Vector2]
     {
         return pointMasses.map({ $0.position });
     }
     
-    // The bounding box for this body
+    /// The bounding box for this body
     var aabb: AABB = AABB();
     
+    /// The index of the material in the world material array to use for this body
     var material: Int = 0;
+    /// Whether this body is static
     var isStatic: Bool = false;
+    /// Whether this body is kinematic - kinematic bodies do not rotate or move their base shape, so they always appear to not move, like a static body, but can be squished and moved, like a dynamic body
     var isKinematic: Bool = false;
+    /// Whether this body is pinned - pinned bodies rotate around their axis, but try to remain in place, like a kinematic body
     var isPined: Bool = false;
+    /// Whether the body is able to rotate while moving
     var freeRotate: Bool = true;
     
-    // A free field that can be used to attach custom objects to a soft body instance
+    /// A free field that can be used to attach custom objects to a soft body instance
     var objectTag: Any? = nil;
     
+    /// Whether to render this body
     var render: Bool = true;
     
+    /// The color to use when rendering this body
     var color: UInt32 = 0xFFFFFFFF;
     
+    /// The colision bitmask for this body
     var bitmask: Bitmask = 0xFFFFFFFF;
     
+    /// The X-axis bitmask for the body - used for collision filtering
     var bitmaskX: Bitmask = 0;
+    /// The Y-axis bitmask for the body - used for collision filtering
     var bitmaskY: Bitmask = 0;
     
     override init()
@@ -335,8 +363,8 @@ class Body: NSObject
         }
     }
     
-    // This function should add all internal forces to the Force member variable of each PointMass in the body.
-    // These should be forces that try to maintain the shape of the body.
+    /// This function should add all internal forces to the Force member variable of each PointMass in the body.
+    /// These should be forces that try to maintain the shape of the body.
     func accumulateInternalForces()
     {
         for comp in components
@@ -484,7 +512,7 @@ class Body: NSObject
         return inside;
     }
     
-    // Returns whether the given line consisting of two points intersects this body
+    /// Returns whether the given line consisting of two points intersects this body
     func intersectsLine(start: Vector2, _ end: Vector2) -> Bool
     {
         // Test whether one or both the points of the line are inside the body
@@ -520,7 +548,7 @@ class Body: NSObject
         return false;
     }
     
-    // Returns whether the given ray collides with this Body, changing the resulting collision vector before returning
+    /// Returns whether the given ray collides with this Body, changing the resulting collision vector before returning
     func raycast(pt1: Vector2, _ pt2: Vector2, inout _ res: Vector2, inout _ rayAABB: AABB?) -> Bool
     {
         // Test whether one or both the points of the line are inside the body
@@ -636,14 +664,14 @@ class Body: NSObject
         return dist;
     }
     
-    // Find the distance from a global point in space, to the closest point on a given edge of the body
+    /// Find the distance from a global point in space, to the closest point on a given edge of the body
     func getClosestPointOnEdge(pt: Vector2, _ edgeNum: Int, inout _ hitPt: Vector2, inout _ normal: Vector2, inout _ edgeD: CGFloat) -> CGFloat
     {
         return sqrt(getClosestPointOnEdgeSquared(pt, edgeNum, &hitPt, &normal, &edgeD));
     }
     
-    // Given a global point, finds the point on this body that is closest to the given global point, and if it's
-    // an edge, information about the edge it resides on
+    /// Given a global point, finds the point on this body that is closest to the given global point, and if it's
+    /// an edge, information about the edge it resides on
     func getClosestPoint(pt: Vector2, inout _ hitPt: Vector2, inout _ normal: Vector2, inout _ pointA: Int, inout _ pointB: Int, inout _ edgeD: CGFloat) -> CGFloat
     {
         pointA = -1;
@@ -683,14 +711,14 @@ class Body: NSObject
         return sqrt(closestD);
     }
     
-    // Returns the closest point to the given position on an edge of the body's shape
-    // The position must be in world coordinates
-    // The tolerance is the distance to the edge that will be ignored if larget than that
-    // Returns null if no edge found (no points on the shape), or an array of the parameters that can be used to track down the shape's edge
-    // ret[0] = Edge's position (in world coordinates)
-    // ret[1] = Edge's ratio where the point was grabbed
-    // ret[2] = First PointMass on the edge
-    // ret[3] = Second PointMass on the edge
+    /// Returns the closest point to the given position on an edge of the body's shape
+    /// The position must be in world coordinates
+    /// The tolerance is the distance to the edge that will be ignored if larget than that
+    /// Returns null if no edge found (no points on the shape), or an array of the parameters that can be used to track down the shape's edge
+    /// ret.Vector2 = Edge's position (in world coordinates)
+    /// ret.CGFLoat = Edge's ratio where the point was grabbed
+    /// ret.PointMass[1] = First PointMass on the edge
+    /// ret,PointMass[2] = Second PointMass on the edge
     func getClosestEdge(pt: Vector2, _ tolerance: CGFloat = CGFloat.infinity) -> (Vector2, CGFloat, PointMass, PointMass)?
     {
         if(pointMasses.count == 0)
@@ -744,7 +772,7 @@ class Body: NSObject
         return nil;
     }
     
-    // Find the closest PointMass in this body, given a global point
+    /// Find the closest PointMass in this body, given a global point
     func getClosestPointMass(pos: Vector2, inout _ dist: CGFloat) -> Int
     {
         var closestSQD = CGFloat.max;
@@ -768,7 +796,7 @@ class Body: NSObject
         return closest;
     }
     
-    // Helper function to add a global force acting on this body as a whole
+    /// Helper function to add a global force acting on this body as a whole
     func addGlobalForce(pt: Vector2, _ force: Vector2)
     {
         let tempV1 = Vector3(vec2: derivedPos - pt, z: 0);
@@ -784,7 +812,7 @@ class Body: NSObject
         }
     }
     
-    // Resets the collision information of the body
+    /// Resets the collision information of the body
     func resetCollisionInfo()
     {
         pointMassCollisions.removeAll(keepCapacity: true);

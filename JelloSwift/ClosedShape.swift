@@ -87,8 +87,7 @@ class ClosedShape: NSObject
         var i = 0;
         for vertex in localVertices
         {
-            var v = rotateVector(vertex * localScale, angleInRadians) + worldPos;
-            target[i++] = v;
+            target[i++] = rotateVector(vertex * localScale, angleInRadians) + worldPos;
         }
     }
 }

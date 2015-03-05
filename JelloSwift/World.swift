@@ -424,16 +424,30 @@ class World: NSObject
             // we've checked all edges on BodyB.  add the collision info to the stack.
             if ((found) && (closestAway > penetrationThreshold) && (closestSame < closestAway))
             {
-                bA.pointMassCollisions += infoSame;
-                bB.pointMassCollisions += infoSame;
+                if(bA.collectCollisions)
+                {
+                    bA.pointMassCollisions += infoSame;
+                }
+                
+                if(bB.collectCollisions)
+                {
+                    bB.pointMassCollisions += infoSame;
+                }
                 
                 infoSame.penetration = sqrt(infoSame.penetration);
                 collisionList += infoSame;
             }
             else
             {
-                bA.pointMassCollisions += infoAway;
-                bB.pointMassCollisions += infoAway;
+                if(bA.collectCollisions)
+                {
+                    bA.pointMassCollisions += infoAway;
+                }
+                
+                if(bB.collectCollisions)
+                {
+                    bB.pointMassCollisions += infoAway;
+                }
                 
                 infoAway.penetration = sqrt(infoAway.penetration);
                 collisionList += infoAway;
