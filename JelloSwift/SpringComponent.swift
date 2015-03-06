@@ -142,8 +142,6 @@ class SpringComponent: BodyComponent
             {
                 let p = body.pointMasses[i];
                 
-                let force:Vector2;
-                
                 if(!body.isKinematic)
                 {
                     force = calculateSpringForce(p.position, p.velocity, body.globalShape[i], p.velocity, 0.0, shapeSpringK, shapeSpringDamp);

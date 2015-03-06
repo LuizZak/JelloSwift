@@ -37,7 +37,8 @@ class ClosedShape: NSObject
         if(recenter)
         {
             // Find the average location of all the vertices
-            var center = Vector2();
+            var center = Vector2.Zero;
+            
             for vertex in localVertices
             {
                 center += vertex;
@@ -58,8 +59,7 @@ class ClosedShape: NSObject
     {
         for i in 0..<localVertices.count
         {
-            localVertices[i] *= localScale;
-            localVertices[i] = rotateVector(localVertices[i], angleInRadians);
+            localVertices[i] = rotateVector(localVertices[i] * localScale, angleInRadians);
         }
     }
     
@@ -67,13 +67,12 @@ class ClosedShape: NSObject
     /// transformation is applied in the following order:  scale -> rotation -> position.
     func transformVertices(worldPos: Vector2, angleInRadians: CGFloat, localScale: Vector2 = Vector2(1, 1)) -> [Vector2]
     {
-        var ret: [Vector2] = [Vector2](count: localVertices.count, repeatedValue: Vector2());
-        var i = 0;
+        let count = localVertices.count;
+        var ret: [Vector2] = [Vector2](count: count, repeatedValue: Vector2());
         
-        for vertex in localVertices
+        for var i = 0; i < count; i++
         {
-            var v = rotateVector(vertex * localScale, angleInRadians) + worldPos;
-            ret[i++] = v;
+            ret[i] = rotateVector(localVertices[i] * localScale, angleInRadians) + worldPos;
         }
         
         return ret;
@@ -84,10 +83,10 @@ class ClosedShape: NSObject
     /// transformation is applied in the following order:  scale -> rotation -> position.
     func transformVertices(inout target:[Vector2], worldPos: Vector2, angleInRadians: CGFloat, localScale: Vector2 = Vector2(1, 1))
     {
-        var i = 0;
-        for vertex in localVertices
+        let count = localVertices.count;
+        for var i = 0; i < count; i++
         {
-            target[i++] = rotateVector(vertex * localScale, angleInRadians) + worldPos;
+            target[i] = rotateVector(localVertices[i] * localScale, angleInRadians) + worldPos;
         }
     }
 }

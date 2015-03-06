@@ -33,19 +33,19 @@ class PressureComponent: BodyComponent
         var edge1NX: CGFloat, edge1NY: CGFloat, edge2NX: CGFloat, edge2NY: CGFloat, t: CGFloat;
         var normX: CGFloat, normY: CGFloat;
         
-        var c = body.pointMasses.count;
+        let c = body.pointMasses.count;
         var prev = c - 1;
         
         for var i = 0; i < c; i++
         {
-            var curPoint:PointMass = body.pointMasses[i];
+            let curPoint:PointMass = body.pointMasses[i];
             
-            var next: Int = (i + 1) % (c);
+            let next: Int = (i + 1) % (c);
             
             // currently we are talking about the edge from i --> j.
             // first calculate the volume of the body, and cache normals as we go.
-            var edge1N = (curPoint.position - body.pointMasses[prev].position).perpendicular();
-            var edge2N = (body.pointMasses[next].position - curPoint.position).perpendicular();
+            let edge1N = (curPoint.position - body.pointMasses[prev].position).perpendicular();
+            let edge2N = (body.pointMasses[next].position - curPoint.position).perpendicular();
             
             // cache normal and edge length
             normalList[i] = (edge1N + edge2N).normalized();
@@ -54,24 +54,15 @@ class PressureComponent: BodyComponent
             prev = i;
         }
         
-        volume = polygonArea(body.pointMasses);
+        volume = max(0.5, polygonArea(body.pointMasses));
         
         // now loop through, adding forces!
-        var invVolume: CGFloat;
-        
-        if(volume < 0.5)
-        {
-            invVolume = 1 / 0.5;
-        }
-        else
-        {
-            invVolume = 1 / volume;
-        }
+        let invVolume: CGFloat = 1 / volume;
         
         for var i = 0; i < c; i++
         {
-            var j: Int = (i + 1) % c;
-            var pressureV: CGFloat = (invVolume * edgeLengthList[i] * (gasAmmount));
+            let j: Int = (i + 1) % c;
+            let pressureV: CGFloat = (invVolume * edgeLengthList[i] * (gasAmmount));
             
             body.pointMasses[i].force += normalList[i] * pressureV;
             body.pointMasses[j].force += normalList[j] * pressureV;

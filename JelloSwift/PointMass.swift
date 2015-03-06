@@ -33,7 +33,7 @@ class PointMass: NSObject
     {
         if (mass != CGFloat.infinity)
         {
-            var elapMass = elapsed / mass;
+            let elapMass = elapsed / mass;
             
             velocity += force * elapMass;
             
