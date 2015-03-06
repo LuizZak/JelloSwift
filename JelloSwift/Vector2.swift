@@ -217,17 +217,17 @@ func >=(lhs: Vector2, rhs: Vector2) -> Bool
 {
     return lhs.X >= rhs.X && lhs.Y >= rhs.Y;
 }
-func <=(lhs: Vector2, rhs: Vector2) -> Bool
-{
-    return lhs.X <= rhs.X && lhs.Y <= rhs.Y;
-}
 func >(lhs: Vector2, rhs: Vector2) -> Bool
 {
     return lhs.X > rhs.X && lhs.Y > rhs.Y;
 }
+func <=(lhs: Vector2, rhs: Vector2) -> Bool
+{
+    return !(lhs > rhs);
+}
 func <(lhs: Vector2, rhs: Vector2) -> Bool
 {
-    return lhs.X < rhs.X && lhs.Y < rhs.Y;
+    return !(lhs >= rhs);
 }
 
 // Unary operators
