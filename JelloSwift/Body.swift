@@ -116,10 +116,7 @@ class Body: Equatable
             }
         }
         
-        for i in 0..<min(self.pointMasses.count, points.count)
-        {
-            self.pointMasses[i].mass = points[i];
-        }
+        setMassFromList(points);
         
         self.updateAABB(0, forceUpdate: true);
         
@@ -228,6 +225,8 @@ class Body: Equatable
         {
             point.mass = mass;
         }
+        
+        isStatic = isinf(mass);
     }
     
     /// Sets the mass for a single PointMass individually
@@ -239,10 +238,16 @@ class Body: Equatable
     /// Sets the mass for all the point masses from a list of masses
     func setMassFromList(masses: [CGFloat])
     {
+        var allStatic = true;
+        
         for i in 0..<min(masses.count, self.pointMasses.count)
         {
+            allStatic = allStatic && isinf(masses[i]);
+            
             self.pointMasses[i].mass = masses[i];
         }
+        
+        isStatic = allStatic;
     }
     
     /// Sets the position and angle of the body manually.
