@@ -84,7 +84,7 @@ class SpringComponent: BodyComponent
         for i in 0..<body.pointMasses.count
         {
             springs[i].springK = edgeSpringK;
-            springs[i].damping = edgeSpringDamp;
+            springs[i].springD = edgeSpringDamp;
         }
     }
     
@@ -97,7 +97,7 @@ class SpringComponent: BodyComponent
         var index = body.pointMasses.count + springID;
         
         springs[index].springK = springK;
-        springs[index].damping = springDamp;
+        springs[index].springD = springDamp;
     }
     
     /// Gets the spring constant of a spring at the specified index.
@@ -127,7 +127,7 @@ class SpringComponent: BodyComponent
             let p1 = s.pointMassA;
             let p2 = s.pointMassB;
             
-            let force = calculateSpringForce(p1.position, p1.velocity, p2.position, p2.velocity, s.springD, s.springK, s.damping);
+            let force = calculateSpringForce(p1.position, p1.velocity, p2.position, p2.velocity, s.distance, s.springK, s.springD);
             
             p1.force += force;
             p2.force -= force;

@@ -76,7 +76,7 @@ func lineIntersect(ptA: Vector2, ptB: Vector2, ptC: Vector2, ptD: Vector2, inout
 }
 
 // Calculates a spring force, given position, velocity, spring constant, and damping factor
-func calculateSpringForce(posA: Vector2, velA: Vector2, posB: Vector2, velB: Vector2, springD: CGFloat, springK: CGFloat, damping:CGFloat) -> Vector2
+func calculateSpringForce(posA: Vector2, velA: Vector2, posB: Vector2, velB: Vector2, distance: CGFloat, springK: CGFloat, springD:CGFloat) -> Vector2
 {
     var dist = posA.distanceTo(posB);
     
@@ -87,10 +87,16 @@ func calculateSpringForce(posA: Vector2, velA: Vector2, posB: Vector2, velB: Vec
     
     var BtoA = (posA - posB) / dist;
     
-    dist = springD - dist;
+    dist = distance - dist;
     
     var relVel = velA - velB;
     var totalRelVel = relVel =* BtoA;
     
-    return BtoA * ((dist * springK) - (totalRelVel * damping));
+    return BtoA * ((dist * springK) - (totalRelVel * springD));
+}
+
+/// Returns a Vector2 that represents a point between vec1 and vec2, with a given ratio specified
+func calculateVectorRatio(vec1: Vector2, vec2: Vector2, ratio: CGFloat) -> Vector2
+{
+    return vec1 + (vec2 - vec1) * ratio;
 }

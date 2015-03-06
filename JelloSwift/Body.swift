@@ -174,6 +174,9 @@ class Body: Equatable
     
     /// Updates the AABB for this body, including padding for velocity given a timestep.
     /// This function is called by the World object on Update(), so the user should not need this in most cases.
+    /// 
+    /// :param: elapsed elapsed The elapsed time to update by, usually in seconds
+    /// :param: forceUpdate Whether to force the update of the body, even if it's a static body
     func updateAABB(elapsed: CGFloat, forceUpdate: Bool)
     {
         if(isStatic || forceUpdate)
