@@ -120,40 +120,40 @@ class SpringComponent: BodyComponent
         
         var force = Vector2();
         
-        for s in springs
+        for var i = 0; i < springs.count; i++
         {
+            let s = springs[i];
+            
             let p1 = body.pointMasses[s.pointMassA];
             let p2 = body.pointMasses[s.pointMassB];
             
-            var force = calculateSpringForce(p1.position, p1.velocity, p2.position, p2.velocity, s.springD, s.springK, s.damping);
+            let force = calculateSpringForce(p1.position, p1.velocity, p2.position, p2.velocity, s.springD, s.springK, s.damping);
             
             p1.force += force;
             p2.force -= force;
         }
         
-        if(shapeMatchingOn)
+        if(shapeMatchingOn && shapeSpringK > 0)
         {
             body.baseShape.transformVertices(&body.globalShape, worldPos: body.derivedPos, angleInRadians: body.derivedAngle, localScale: body.scale);
             
-            for i in 0..<body.pointMasses.count
+            let c = body.pointMasses.count;
+            for var i = 0; i < c; i++
             {
-                var p = body.pointMasses[i];
+                let p = body.pointMasses[i];
                 
-                if(shapeSpringK > 0)
+                let force:Vector2;
+                
+                if(!body.isKinematic)
                 {
-                    var force = Vector2();
-                    
-                    if(!body.isKinematic)
-                    {
-                        force = calculateSpringForce(p.position, p.velocity, body.globalShape[i], p.velocity, 0.0, shapeSpringK, shapeSpringDamp);
-                    }
-                    else
-                    {
-                        force = calculateSpringForce(p.position, p.velocity, body.globalShape[i], Vector2(), 0.0, shapeSpringK, shapeSpringDamp);
-                    }
-                    
-                    p.force += force;
+                    force = calculateSpringForce(p.position, p.velocity, body.globalShape[i], p.velocity, 0.0, shapeSpringK, shapeSpringDamp);
                 }
+                else
+                {
+                    force = calculateSpringForce(p.position, p.velocity, body.globalShape[i], Vector2.Zero, 0.0, shapeSpringK, shapeSpringDamp);
+                }
+                
+                p.force += force;
             }
         }
     }

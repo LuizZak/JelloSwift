@@ -25,17 +25,16 @@ func polygonArea(points: [Vector2]) -> CGFloat
 func polygonArea(points: [PointMass]) -> CGFloat
 {
     var area: CGFloat = 0;
-    var j:Int = points.count - 1;
     let c:Int = points.count;
+    var v2 = points[c - 1].position;
     
-    for i in 0..<c
+    for var i = 0; i < c; i++
     {
         let v1 = points[i].position;
-        let v2 = points[j].position;
         
         area += (v2.X + v1.X) * (v2.Y - v1.Y);
         
-        j = i;
+        v2 = v1;
     }
     
     return area / 2;
@@ -74,18 +73,14 @@ func lineIntersect(ptA: Vector2, ptB: Vector2, ptC: Vector2, ptD: Vector2, inout
 // Calculates a spring force, given position, velocity, spring constant, and damping factor
 func calculateSpringForce(posA: Vector2, velA: Vector2, posB: Vector2, velB: Vector2, springD: CGFloat, springK: CGFloat, damping:CGFloat) -> Vector2
 {
-    var BtoA = posA - posB;
-    
     var dist = posA.distanceTo(posB);
     
-    if (dist > 0.0000005)
-    {
-        BtoA /= dist;
-    }
-    else
+    if (dist <= 0.0000005)
     {
         return Vector2(0, 0);
     }
+    
+    var BtoA = (posA - posB) / dist;
     
     dist = springD - dist;
     

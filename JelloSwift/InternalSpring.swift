@@ -27,7 +27,6 @@ class InternalSpring: NSObject
     {
         self.pointMassA = pmA;
         self.pointMassB = pmB;
-        
         self.springD = springD;
         self.springK = springK;
         self.damping = damping;

@@ -19,11 +19,8 @@ class PressureComponent: BodyComponent
     
     override func prepare(body: Body)
     {
-        for p in body.pointMasses
-        {
-            normalList += Vector2();
-            edgeLengthList += 0;
-        }
+        normalList = [Vector2](count: body.pointMasses.count, repeatedValue: Vector2());
+        edgeLengthList = [CGFloat](count: body.pointMasses.count, repeatedValue: 0);
     }
     
     override func accumulateInternalForces()
@@ -37,12 +34,12 @@ class PressureComponent: BodyComponent
         var normX: CGFloat, normY: CGFloat;
         
         var c = body.pointMasses.count;
-        //for i in 0..<c
+        var prev = c - 1;
+        
         for var i = 0; i < c; i++
         {
             var curPoint:PointMass = body.pointMasses[i];
             
-            var prev: Int = (i > 0) ? i - 1 : c - 1;
             var next: Int = (i + 1) % (c);
             
             // currently we are talking about the edge from i --> j.
@@ -53,6 +50,8 @@ class PressureComponent: BodyComponent
             // cache normal and edge length
             normalList[i] = (edge1N + edge2N).normalized();
             edgeLengthList[i] = edge2N.magnitude();
+            
+            prev = i;
         }
         
         volume = polygonArea(body.pointMasses);
@@ -69,10 +68,9 @@ class PressureComponent: BodyComponent
             invVolume = 1 / volume;
         }
         
-        //var pm_count:int = mPointMasses.length;
-        for i in 0..<c
+        for var i = 0; i < c; i++
         {
-            var j: Int = (i + 1) % body.pointMasses.count;
+            var j: Int = (i + 1) % c;
             var pressureV: CGFloat = (invVolume * edgeLengthList[i] * (gasAmmount));
             
             body.pointMasses[i].force += normalList[i] * pressureV;
