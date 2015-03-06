@@ -139,13 +139,15 @@ class Body: NSObject
     }
     
     /// Adds a body component to this body
-    func addComponentType(componentType: BodyComponent.Type)
+    func addComponentType<T: BodyComponent>(componentType: T.Type) -> T
     {
         var instance = componentType(body: self);
         
         self.components += instance;
         
         instance.prepare(self);
+        
+        return instance;
     }
     
     /// Gets a component on this body that matches the given component type.
