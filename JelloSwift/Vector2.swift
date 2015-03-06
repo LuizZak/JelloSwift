@@ -156,9 +156,6 @@ struct Vector2: Equatable, Printable
     }
 }
 
-let Vector2Zero = Vector2(0, 0);
-let Vector2One = Vector2(1, 1);
-
 /// Returns a Vector2 that represents the minimum coordinates between two Vector2 objects
 func min(a: Vector2, b: Vector2) -> Vector2
 {
