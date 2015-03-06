@@ -37,7 +37,23 @@ class SpringBodyJoint : BodyJoint
         
         let force = calculateSpringForce(pos1, _bodyLink1.getVelocity(), pos2, _bodyLink2.getVelocity(), restDistance, springK, springD);
         
-        _bodyLink1.applyForce(force);
-        _bodyLink2.applyForce(-force);
+        let mass1 = _bodyLink1.getMass();
+        let mass2 = _bodyLink2.getMass();
+        let massSum = mass1 + mass2;
+        
+        if(!_bodyLink1.isStatic() && !_bodyLink2.isStatic())
+        {
+            _bodyLink1.applyForce( force * (massSum / mass1));
+            _bodyLink2.applyForce(-force * (massSum / mass2));
+        }
+        // Static bodies:
+        else if(!_bodyLink1.isStatic() && _bodyLink2.isStatic())
+        {
+            _bodyLink1.applyForce(force);
+        }
+        else if(!_bodyLink2.isStatic() && _bodyLink1.isStatic())
+        {
+            _bodyLink2.applyForce(-force);
+        }
     }
 }

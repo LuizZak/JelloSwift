@@ -81,6 +81,9 @@ protocol JointLinkType
     /// Gets the total mass of the subject of this joint link
     func getMass() -> CGFloat;
     
+    /// Gets a value specifying whether the object referenced by this JointLinkType is static
+    func isStatic() -> Bool;
+    
     /// Appies a given force to the subject of this joint link
     ///
     /// :param: force A force to apply to the subjects of this joint link

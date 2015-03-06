@@ -47,6 +47,12 @@ class BodyJointLink: JointLinkType
         return _body.derivedVel;
     }
     
+    /// Gets a value specifying whether the object referenced by this JointLinkType is static
+    func isStatic() -> Bool
+    {
+        return _body.isStatic || _body.isPined;
+    }
+    
     /// Appies a given force to the subject of this joint link
     ///
     /// :param: force A force to apply to the subjects of this joint link

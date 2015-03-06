@@ -51,6 +51,12 @@ class PointJointLink: JointLinkType
         return _pointMass.mass;
     }
     
+    /// Gets a value specifying whether the object referenced by this JointLinkType is static
+    func isStatic() -> Bool
+    {
+        return isinf(_pointMass.mass);
+    }
+    
     /// Appies a given force to the subject of this joint link
     ///
     /// :param: force A force to apply to the subjects of this joint link

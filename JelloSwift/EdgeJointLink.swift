@@ -59,6 +59,12 @@ class EdgeJointLink: JointLinkType
         return _pointMass1.mass + (_pointMass2.mass - _pointMass1.mass) * edgeRatio;
     }
     
+    /// Gets a value specifying whether the object referenced by this JointLinkType is static
+    func isStatic() -> Bool
+    {
+        return isinf(_pointMass1.mass) && isinf(_pointMass2.mass);
+    }
+    
     /// Appies a given force to the subject of this joint link
     ///
     /// :param: force A force to apply to the subjects of this joint link

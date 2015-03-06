@@ -99,7 +99,9 @@ class GameScene: SKScene
         createBox(toWorldCoords(Vector2(size.width * 0.3, size.height / 2)), size: Vector2(2, 2), kinematic: true);
         createBox(toWorldCoords(Vector2(size.width * 0.7, size.height / 2)), size: Vector2(2, 2), kinematic: true);
         
-        createLinkedBouncyBalls(toWorldCoords(Vector2(size.width / 2, size.height * 0.8)));
+        // Create two linked ball shapes
+        createLinkedBouncyBalls(toWorldCoords(Vector2(size.width / 2, size.height * 0.7)));
+        createBallBoxLinkedStructure(toWorldCoords(Vector2(size.width / 2, size.height * 0.8)));
         
         // Create the ground box
         var box = ClosedShape();
@@ -125,7 +127,21 @@ class GameScene: SKScene
         let l1 = BodyJointLink(body: b1);
         let l2 = BodyJointLink(body: b2);
         
-        SpringBodyJoint(world: world, link1: l1, link2: l2, springK: 10, springD: 1);
+        SpringBodyJoint(world: world, link1: l1, link2: l2, springK: 100, springD: 20);
+    }
+    
+    /// Creates a pinned box with a ball attached to one if its edges
+    func createBallBoxLinkedStructure(pos: Vector2)
+    {
+        let b1 = createBouncyBall(pos - Vector2(0, 2), pinned: false, kinematic: false, radius: 1);
+        let b2 = createBox(pos, size: Vector2(1, 1), pinned: true, kinematic: false);
+        b2.velDamping = 0.98;
+        
+        // Create the joint links
+        let l1 = BodyJointLink(body: b1);
+        let l2 = EdgeJointLink(body: b2, edgeIndex: 2, edgeRatio: 0.5);
+        
+        SpringBodyJoint(world: world, link1: l1, link2: l2, springK: 100, springD: 20);
     }
     
     override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent)

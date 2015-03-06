@@ -72,6 +72,20 @@ class ShapeJointLink: JointLinkType
         return _pointMasses.reduce(0, combine: { $0 + $1.mass });
     }
     
+    /// Gets a value specifying whether the object referenced by this JointLinkType is static
+    func isStatic() -> Bool
+    {
+        for p in _pointMasses
+        {
+            if(!isinf(p.mass))
+            {
+                return false;
+            }
+        }
+        
+        return true;
+    }
+    
     /// Appies a given force to the subject of this joint link
     ///
     /// :param: force A force to apply to the subjects of this joint link
