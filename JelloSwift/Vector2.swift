@@ -126,33 +126,7 @@ struct Vector2: Equatable, Printable
     /// Returns a string representation of this Vector2 value
     func toString() -> String
     {
-        var str:NSMutableString = "";
-        
-        str.appendString("{ ");
-        
-        if(isnan(X))
-        {
-            str.appendString("nan");
-        }
-        else
-        {
-            str.appendFormat("%@", X.description);
-        }
-        
-        str.appendString(" : ");
-        
-        if(isnan(Y))
-        {
-            str.appendString("nan");
-        }
-        else
-        {
-            str.appendFormat("%@", Y.description);
-        }
-        
-        str.appendString(" }");
-        
-        return String(str);
+        return "{ \(self.X) : \(self.Y) }";
     }
 }
 
