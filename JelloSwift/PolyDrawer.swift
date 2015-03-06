@@ -110,7 +110,8 @@ class PolyDrawer
         node.path = path;
         node.fillColor = SKColor.whiteColor();
         node.strokeColor = SKColor.blackColor();
-        node.lineWidth = 1;
+        node.lineJoin = kCGLineJoinRound;
+        node.lineWidth = 2;
         
         canvas.addChild(node);
         
