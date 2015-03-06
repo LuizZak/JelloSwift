@@ -45,7 +45,7 @@ class SpringComponent: BodyComponent
             d = body.pointMasses[pointA].position.distanceTo(body.pointMasses[pointB].position);
         }
         
-        var s = InternalSpring(pointA, pointB, d, springK, damping);
+        var s = InternalSpring(body.pointMasses[pointA], body.pointMasses[pointB], d, springK, damping);
         
         springs += s;
         
@@ -124,8 +124,8 @@ class SpringComponent: BodyComponent
         {
             let s = springs[i];
             
-            let p1 = body.pointMasses[s.pointMassA];
-            let p2 = body.pointMasses[s.pointMassB];
+            let p1 = s.pointMassA;
+            let p2 = s.pointMassB;
             
             let force = calculateSpringForce(p1.position, p1.velocity, p2.position, p2.velocity, s.springD, s.springK, s.damping);
             

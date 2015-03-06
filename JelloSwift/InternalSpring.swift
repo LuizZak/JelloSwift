@@ -11,19 +11,14 @@ import UIKit
 // Represents an internal spring inside a soft body object, and keeps points close together
 class InternalSpring: NSObject
 {
-    var pointMassA: Int = 0;
-    var pointMassB: Int = 0;
+    var pointMassA: PointMass;
+    var pointMassB: PointMass;
     
     var springD: CGFloat = 0;
     var springK: CGFloat = 0;
     var damping: CGFloat = 0;
     
-    override init()
-    {
-        super.init();
-    }
-    
-    init(_ pmA: Int = 0, _ pmB: Int = 0, _ springD: CGFloat = 0, _ springK: CGFloat, _ damping: CGFloat)
+    init(_ pmA: PointMass, _ pmB: PointMass, _ springD: CGFloat = 0, _ springK: CGFloat, _ damping: CGFloat)
     {
         self.pointMassA = pmA;
         self.pointMassB = pmB;
