@@ -166,11 +166,11 @@ class Body: NSObject
     }
     
     /// Removes a component from this body
-    func removeComponentType(componentType: BodyComponent.Type)
+    func removeComponentType<T: BodyComponent>(componentType: T.Type)
     {
         for comp in self.components
         {
-            if(comp.isKindOfClass(componentType))
+            if(comp is T)
             {
                 self.components -= comp;
                 break;

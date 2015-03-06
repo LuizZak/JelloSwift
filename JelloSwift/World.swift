@@ -9,7 +9,7 @@
 import UIKit
 
 // Represents a simulation world, containing soft bodies and the code utilized to make them interact with each other
-class World: NSObject
+class World
 {
     // The bodies contained within this world
     var bodies: [Body] = [];
@@ -29,9 +29,8 @@ class World: NSObject
     
     var collisionList: [BodyCollisionInformation] = [];
     
-    override init()
+    init()
     {
-        super.init();
         self.clear();
     }
     

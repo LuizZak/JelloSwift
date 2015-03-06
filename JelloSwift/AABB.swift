@@ -9,7 +9,7 @@
 import UIKit
 
 /// Represents an axis-aligned bounding box, utilized to figure out the AABB of soft-bodies
-class AABB: NSObject
+class AABB
 {
     /// The validity of this AABB
     var validity = PointValidity.Invalid;
@@ -28,9 +28,9 @@ class AABB: NSObject
     /// Gets the height of this AABB
     var height: CGFloat { return maximum.Y - minimum.Y; }
     
-    override init()
+    init()
     {
-        super.init();
+        
     }
     
     init(min: Vector2?, max: Vector2?)
@@ -54,16 +54,11 @@ class AABB: NSObject
         {
             self.validity = PointValidity.Invalid;
         }
-        
-        super.init();
     }
     
     init(points: [Vector2])
     {
         self.validity = PointValidity.Invalid;
-        
-        super.init();
-        
         self.expandToInclude(points);
     }
     

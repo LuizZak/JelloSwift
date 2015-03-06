@@ -9,7 +9,7 @@
 import UIKit
 
 // Represents a component that can be added to a body to change it's physical characteristics
-class BodyComponent: NSObject
+class BodyComponent: Equatable
 {
     // The body this body component is added into
     let body: Body;
@@ -39,6 +39,11 @@ class BodyComponent: NSObject
     {
         
     }
+}
+
+func ==(lhs: BodyComponent, rhs: BodyComponent) -> Bool
+{
+    return lhs === rhs;
 }
 
 // Used to create body components into the body

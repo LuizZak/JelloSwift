@@ -9,14 +9,9 @@
 import UIKit
 
 // Contains a set of points that is equivalent as the internal shape of a sofy body
-class ClosedShape: NSObject
+class ClosedShape
 {
     var localVertices: [Vector2] = [];
-    
-    override init()
-    {
-        super.init();
-    }
     
     // Start adding vertices to this closed shape.
     // Calling this method will erase any existing verts

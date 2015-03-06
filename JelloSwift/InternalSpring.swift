@@ -9,7 +9,7 @@
 import UIKit
 
 // Represents an internal spring inside a soft body object, and keeps points close together
-class InternalSpring: NSObject
+class InternalSpring
 {
     var pointMassA: PointMass;
     var pointMassB: PointMass;

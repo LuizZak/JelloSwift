@@ -32,7 +32,7 @@ private struct Poly
 /// A polygon drawing helper that caches SKSpriteNodes and uses CGPaths to draw custom polygons.
 /// Not the most elegant or fastest way, but SpriteKit lacks any viable options for constant drawing
 /// of arbitrary polygons easily.
-class PolyDrawer: NSObject
+class PolyDrawer
 {
     /// The scene that holds this PolyDrawer
     private var scene: SKScene;
@@ -54,8 +54,6 @@ class PolyDrawer: NSObject
         self.scene.addChild(canvas);
         
         self.pool = ShapePool(startSize: 5);
-        
-        super.init();
     }
     
     func queuePoly(vertices: [CGPoint], fillColor: UInt, strokeColor: UInt)

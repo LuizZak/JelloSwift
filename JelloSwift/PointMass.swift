@@ -9,7 +9,7 @@
 import UIKit
 
 // Specifies a point mass that composes a body
-class PointMass: NSObject
+class PointMass
 {
     // The mass of this point mass.
     // Leave this value always >0 to maintain consistency on the simulation, unless
@@ -25,7 +25,6 @@ class PointMass: NSObject
     {
         self.mass = mass;
         self.position = position;
-        super.init();
     }
     
     // Integrates a single physics simulation step for this point mass
