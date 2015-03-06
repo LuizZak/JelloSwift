@@ -13,6 +13,7 @@ class World
 {
     /// The bodies contained within this world
     var bodies: [Body] = [];
+    var joints: [BodyJoint] = [];
     
     // PRIVATE VARIABLES
     var worldLimits:AABB = AABB();
@@ -146,10 +147,32 @@ class World
         }
     }
     
-    /// Remove a body from the world. Call this outside of an update to remove the body.
+    /// Removes a body from the world. Call this outside of an update to remove the body.
     func removeBody(body: Body)
     {
         bodies -= body;
+    }
+    
+    /// Adds a joint to the world. Joints call this automatically during their initialization
+    func addJoint(joint: BodyJoint)
+    {
+        if(!joints.contains(joint))
+        {
+            joints += joint;
+            
+            // Setup the joint parenthood
+            joint.bodyLink1.body.joints += joint;
+            joint.bodyLink2.body.joints += joint;
+        }
+    }
+    
+    /// Removes a joint from the world
+    func removeJoint(joint: BodyJoint)
+    {
+        joint.bodyLink1.body.joints -= joint;
+        joint.bodyLink2.body.joints -= joint;
+        
+        joints -= joint;
     }
     
     /// Finds the closest PointMass in the world to a given point
@@ -271,6 +294,7 @@ class World
     {
         penetrationCount = 0;
         
+        // Update the bodies
         for body in bodies
         {
             body.derivePositionAndAngle(elapsed);
@@ -282,6 +306,12 @@ class World
             body.updateAABB(elapsed, forceUpdate: true);
             body.resetCollisionInfo();
             updateBodyBitmask(body);
+        }
+        
+        // Update the joints
+        for joint in joints
+        {
+            joint.resolve(elapsed);
         }
         
         let c = bodies.count;
@@ -316,6 +346,27 @@ class World
                 // broad-phase collision via AABB.
                 // early out
                 if(!body1.aabb.intersects(body2.aabb))
+                {
+                    continue;
+                }
+                
+                // Joints relationship: if on body is joined to another by a joint, check the joint's rule for collision
+                
+                var skip = false;
+                for j in body1.joints
+                {
+                    if(j.bodyLink1.body == body1 && j.bodyLink2.body == body2 ||
+                       j.bodyLink2.body == body1 && j.bodyLink1.body == body2)
+                    {
+                        if(!j.allowCollisions)
+                        {
+                            skip = true;
+                            continue;
+                        }
+                    }
+                }
+                
+                if(skip)
                 {
                     continue;
                 }

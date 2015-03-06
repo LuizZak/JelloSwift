@@ -16,6 +16,9 @@ func ==(lhs: Body, rhs: Body) -> Bool
 /// Represents a soft body on the world
 class Body: Equatable
 {
+    /// List of body joints this body participates in
+    var joints: [BodyJoint] = [];
+    
     /// The base shape for the body
     var baseShape: ClosedShape = ClosedShape();
     
