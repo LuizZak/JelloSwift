@@ -325,17 +325,9 @@ class World
         var bApCount = bA.pointMasses.count;
         var bBpCount = bB.pointMasses.count;
         
-        var boxB = bB.aabb;
-        
         for i in 0..<bApCount
         {
             var pt = bA.pointMasses[i].position;
-            
-            // early out - if this point is outside the bounding box for bodyB, skip it!
-            if (!boxB.contains(pt))
-            {
-                continue;
-            }
             
             // early out - if this point is not inside bodyB, skip it!
             if (!bB.contains(pt))
