@@ -333,3 +333,12 @@ func /=(inout lhs: Vector2, rhs: Int)
 {
     lhs = lhs / rhs;
 }
+
+/// Extension to the CGPoint class that helps with Vector2 interactions
+extension CGPoint
+{
+    init(v: Vector2)
+    {
+        self.init(x: v.X, y: v.Y);
+    }
+}
