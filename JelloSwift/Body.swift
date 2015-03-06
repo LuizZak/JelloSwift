@@ -11,8 +11,13 @@ import UIKit
 /// CGFloat version of the PI constant
 let PI: CGFloat = CGFloat(M_PI);
 
+func ==(lhs: Body, rhs: Body) -> Bool
+{
+    return lhs === rhs;
+}
+
 /// Represents a soft body on the world
-class Body: NSObject
+class Body: Equatable
 {
     /// The base shape for the body
     var baseShape: ClosedShape = ClosedShape();
@@ -86,11 +91,6 @@ class Body: NSObject
     /// The Y-axis bitmask for the body - used for collision filtering
     var bitmaskY: Bitmask = 0;
     
-    override init()
-    {
-        super.init();
-    }
-    
     init(world: World?, shape: ClosedShape, pointMasses: [CGFloat] = [1], position: Vector2 = Vector2.Zero, angle: CGFloat = 0, scale: Vector2 = Vector2.One, kinematic: Bool = false, components: [BodyComponentCreator] = [])
     {
         self.aabb = AABB();
@@ -104,9 +104,6 @@ class Body: NSObject
         self.isStatic = false;
         self.isKinematic = kinematic;
         self.render = true;
-        
-        super.init();
-        
         self.setShape(shape);
         
         var points = pointMasses;
