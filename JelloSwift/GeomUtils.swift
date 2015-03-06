@@ -8,6 +8,10 @@
 
 import UIKit
 
+/// CGFloat version of the PI constant
+let PI: CGFloat = CGFloat(M_PI);
+
+/// Returns an approximation of the area of the polygon defined by a given set of vertices
 func polygonArea(points: [Vector2]) -> CGFloat
 {
     var area: CGFloat = 0;
@@ -22,6 +26,7 @@ func polygonArea(points: [Vector2]) -> CGFloat
     return area / 2;
 }
 
+/// Returns an approximation of the area of the polygon defined by a given set of point masses
 func polygonArea(points: [PointMass]) -> CGFloat
 {
     var area: CGFloat = 0;

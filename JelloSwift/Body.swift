@@ -8,9 +8,6 @@
 
 import UIKit
 
-/// CGFloat version of the PI constant
-let PI: CGFloat = CGFloat(M_PI);
-
 func ==(lhs: Body, rhs: Body) -> Bool
 {
     return lhs === rhs;
