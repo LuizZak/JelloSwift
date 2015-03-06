@@ -35,8 +35,8 @@ class EdgeJointLink: JointLinkType
     init(body: Body, edgeIndex: Int, edgeRatio: CGFloat = 0.5)
     {
         _body = body;
-        _pointMass1 = _body.pointMasses[(edgeIndex / 2) % _body.pointMasses.count];
-        _pointMass2 = _body.pointMasses[(edgeIndex / 2 + 1) % _body.pointMasses.count];
+        _pointMass1 = _body.pointMasses[edgeIndex % _body.pointMasses.count];
+        _pointMass2 = _body.pointMasses[(edgeIndex + 1) % _body.pointMasses.count];
         
         self.edgeRatio = edgeRatio;
     }
@@ -65,6 +65,6 @@ class EdgeJointLink: JointLinkType
     func applyForce(force: Vector2)
     {
         _pointMass1.applyForce(force * (1 - edgeRatio));
-        _pointMass1.applyForce(force * (1 - edgeRatio));
+        _pointMass2.applyForce(force * (edgeRatio));
     }
 }
