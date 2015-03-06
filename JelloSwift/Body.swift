@@ -471,10 +471,10 @@ class Body: Equatable
         // TODO: Use a foreach instead of a simple for loop to quicken up the iteration of the point masses
         var edgeSt = pointMasses[0].position;
         
-        var edgeEnd = Vector2();
+        var edgeEnd = Vector2.Zero;
         
         let c = pointMasses.count;
-        for i in 0..<c
+        for var i = 0; i < c; i++
         {
             // the current edge is defined as the line from edgeSt -> edgeEnd.
             edgeEnd = pointMasses[((i + 1) % c)].position;
@@ -591,12 +591,8 @@ class Body: Equatable
         var ptA = pointMasses[edgeNum].position;
         var ptB = pointMasses[(edgeNum + 1) % pointMasses.count].position;
         
-        var toP = Vector2();
-        var E = Vector2();
-        
-        toP = pt - ptA;
-        
-        E = ptB - ptA;
+        let toP = pt - ptA;
+        var E = ptB - ptA;
         
         // get the length of the edge, and use that to normalize the vector.
         let edgeLength = E.magnitude();
@@ -634,9 +630,7 @@ class Body: Equatable
         {
             // point lies somewhere on the line segment.
             let toP3 = Vector3(vec2: toP, z: 0);
-            var E3 = Vector3(vec2: E, z: 0);
-            
-            E3 = toP3 =/ E3;
+            let E3 = toP3 =/ Vector3(vec2: E, z: 0);
             
             dist = E3.Z * E3.Z;
             
