@@ -56,7 +56,7 @@ class EdgeJointLink: JointLinkType
     /// Gets the total mass of the subject of this joint link
     func getMass() -> CGFloat
     {
-        return _pointMass1.mass + (_pointMass2.mass - _pointMass1.mass) * edgeRatio;
+        return _pointMass1.mass + _pointMass2.mass;
     }
     
     /// Gets a value specifying whether the object referenced by this JointLinkType is static
