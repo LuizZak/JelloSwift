@@ -8,10 +8,10 @@
 
 import UIKit
 
-// Represents a simulation world, containing soft bodies and the code utilized to make them interact with each other
+/// Represents a simulation world, containing soft bodies and the code utilized to make them interact with each other
 class World
 {
-    // The bodies contained within this world
+    /// The bodies contained within this world
     var bodies: [Body] = [];
     
     // PRIVATE VARIABLES
@@ -34,7 +34,7 @@ class World
         self.clear();
     }
     
-    // Clears the world's contents and readies it to be loaded again
+    /// Clears the world's contents and readies it to be loaded again
     func clear()
     {
         // Clear all the bodies
@@ -56,15 +56,15 @@ class World
         
         materialPairs += [defaultMatPair];
         
-        var min = Vector2(-20.0, -20.0);
-        var max = Vector2( 20.0,  20.0);
+        let min = Vector2(-20.0, -20.0);
+        let max = Vector2( 20.0,  20.0);
         
         setWorldLimits(min, max);
     
         penetrationThreshold = 0.3;
     }
     
-    // WORLD SIZE
+    /// WORLD SIZE
     func setWorldLimits(min: Vector2, _ max: Vector2)
     {
         worldLimits = AABB(min: min, max: max);
@@ -74,11 +74,11 @@ class World
         worldGridStep = worldSize / 32;
     }
     
-    // MATERIALS
-    // Adds a new material to the world. All previous material data is kept intact.
+    /// MATERIALS
+    /// Adds a new material to the world. All previous material data is kept intact.
     func addMaterial() -> Int
     {
-        var old = materialPairs;
+        let old = materialPairs;
         materialCount++;
         
         materialPairs = [];
@@ -104,7 +104,7 @@ class World
         return materialCount - 1;
     }
     
-    // Enables or disables collision between 2 materials.
+    /// Enables or disables collision between 2 materials.
     func setMaterialPairCollide(a: Int, b: Int, collide: Bool)
     {
         if ((a >= 0) && (a < materialCount) && (b >= 0) && (b < materialCount))
@@ -114,7 +114,7 @@ class World
         }
     }
     
-    // Sets the collision response variables for a pair of materials.
+    /// Sets the collision response variables for a pair of materials.
     func setMaterialPairData(a: Int, b: Int, friction: CGFloat, elasticity: CGFloat)
     {
         if ((a >= 0) && (a < materialCount) && (b >= 0) && (b < materialCount))
@@ -127,7 +127,7 @@ class World
         }
     }
     
-    // Sets a user function to call when 2 bodies of the given materials collide.
+    /// Sets a user function to call when 2 bodies of the given materials collide.
     func setMaterialPairFilterCallback(a: Int, b: Int, filter: (Body, Int, Body, Int, Int, Vector2, CGFloat) -> (Bool))
     {
         if ((a >= 0) && (a < materialCount) && (b >= 0) && (b < materialCount))
@@ -137,7 +137,7 @@ class World
         }
     }
     
-    // Adds a body to the world. Bodies do this automatically on their constructors, you should not need to call this method most of the times.
+    /// Adds a body to the world. Bodies do this automatically on their constructors, you should not need to call this method most of the times.
     func addBody(body: Body)
     {
         if(!bodies.contains(body))
@@ -146,13 +146,13 @@ class World
         }
     }
     
-    // Remove a body from the world. Call this outside of an update to remove the body.
+    /// Remove a body from the world. Call this outside of an update to remove the body.
     func removeBody(body: Body)
     {
         bodies -= body;
     }
     
-    // Finds the closest PointMass in the world to a given point
+    /// Finds the closest PointMass in the world to a given point
     func getClosestPointMass(pt: Vector2) -> (Body?, PointMass?)
     {
         var retBody: Body? = nil;
@@ -163,8 +163,7 @@ class World
         for body in bodies
         {
             var dist:CGFloat = 0;
-            
-            var pm = body.getClosestPointMass(pt, &dist);
+            let pm = body.getClosestPointMass(pt, &dist);
             
             if(dist < closestD)
             {
@@ -177,8 +176,8 @@ class World
         return (retBody, retPoint);
     }
     
-    // Given a global, get a body (if any) that contains this point.
-    // Useful for picking objects with a cursor, etc.
+    /// Given a global, get a body (if any) that contains this point.
+    /// Useful for picking objects with a cursor, etc.
     func getBodyContaining(pt: Vector2, bit: Bitmask) -> Body?
     {
         for body in bodies
@@ -192,8 +191,8 @@ class World
         return nil;
     }
     
-    // Given a global point, get all bodies (if any) that contain this point.
-    // Useful for picking objects with a cursor, etc.
+    /// Given a global point, get all bodies (if any) that contain this point.
+    /// Useful for picking objects with a cursor, etc.
     func getBodiesContaining(pt: Vector2, bit: Bitmask) -> [Body]
     {
         var ret: [Body] = [];
@@ -209,7 +208,7 @@ class World
         return ret;
     }
     
-    // Returns a vector of bodies intersecting with the given line
+    /// Returns a vector of bodies intersecting with the given line
     func getBodiesIntersecting(start: Vector2, end: Vector2, bit: Bitmask) -> [Body]
     {
         var ret: [Body] = [];
@@ -225,7 +224,7 @@ class World
         return ret;
     }
     
-    // Casts a ray between the given points and returns the first body it comes in contact with
+    /// Casts a ray between the given points and returns the first body it comes in contact with
     func rayCast(start: Vector2, end: Vector2, inout _ retPt:Vector2, bit: Bitmask, _ ignoreList:[Body] = []) -> Body?
     {
         var closestD = start.distanceTo(end);
@@ -250,7 +249,7 @@ class World
         return lastBody;
     }
     
-    // Updates the world by a specific timestep
+    /// Updates the world by a specific timestep
     func update(elapsed: CGFloat)
     {
         penetrationCount = 0;
@@ -268,14 +267,14 @@ class World
             updateBodyBitmask(body);
         }
         
-        let c:Int = bodies.count;
+        let c = bodies.count;
         for i in 0..<c
         {
-            var body1 = bodies[i];
+            let body1 = bodies[i];
             
             for j in (i+1)..<c
             {
-                var body2 = bodies[j];
+                let body2 = bodies[j];
                 
                 // another early-out - both bodies are static.
                 if (((body1.isStatic) && (body2.isStatic)) ||
@@ -320,7 +319,7 @@ class World
         }
     }
     
-    // Checks collision between two bodies, and store the collision information if they do
+    /// Checks collision between two bodies, and store the collision information if they do
     func bodyCollide(bA: Body, _ bB: Body)
     {
         var bApCount = bA.pointMasses.count;
@@ -344,19 +343,17 @@ class World
                 continue;
             }
             
-            var prevPt: Int = (i > 0) ? i - 1 : bApCount - 1;
+            let prevPt: Int = (i > 0) ? i - 1 : bApCount - 1;
             
-            var prev = bA.pointMasses[prevPt].position;
-            var next = bA.pointMasses[(i + 1) % bApCount].position;
+            let prev = bA.pointMasses[prevPt].position;
+            let next = bA.pointMasses[(i + 1) % bApCount].position;
             
             // now get the normal for this point. (NOT A UNIT VECTOR)
-            var fromPrev = pt - prev;
+            let fromPrev = pt - prev;
             
-            var toNext = next - pt;
+            let toNext = next - pt;
             
-            var ptNorm = fromPrev + toNext;
-            
-            ptNorm.perpendicularThis();
+            let ptNorm = (fromPrev + toNext).perpendicular();
             
             // this point is inside the other body.  now check if the edges on either side intersect with and edges on bodyB.
             var closestAway = CGFloat.infinity;
@@ -375,19 +372,18 @@ class World
             
             for j in 0..<bBpCount
             {
-                var edgeD: CGFloat = 0;
-                
-                var b1 = j;
-                var b2 = (j + 1) % (bBpCount);
+                let b1 = j;
+                let b2 = (j + 1) % (bBpCount);
                 
                 var normal = Vector2();
                 var hitPt = Vector2();
+                var edgeD: CGFloat = 0;
                 
                 // test against this edge.
-                var dist = bB.getClosestPointOnEdgeSquared(pt, j, &hitPt, &normal, &edgeD)
+                let dist = bB.getClosestPointOnEdgeSquared(pt, j, &hitPt, &normal, &edgeD)
                 
                 // only perform the check if the normal for this edge is facing AWAY from the point normal.
-                var dot = ptNorm =* normal;
+                let dot = ptNorm =* normal;
                 
                 if (dot <= 0.0)
                 {
@@ -454,7 +450,7 @@ class World
         }
     }
     
-    // Solves the collisions between bodies
+    /// Solves the collisions between bodies
     func handleCollisions()
     {
         let c = collisionList.count;
@@ -502,7 +498,7 @@ class World
             
             let massSum = A.mass + b2MassSum;
             
-            var rev_massSum = 1.0 / massSum;
+            let rev_massSum = 1.0 / massSum;
             var Amove: CGFloat = info.penetration * (b2MassSum * rev_massSum);
             var Bmove: CGFloat = info.penetration * (A.mass * rev_massSum);
             
@@ -545,24 +541,24 @@ class World
             
             let tangent = info.normal.perpendicular();
             
-            var friction = material.friction;
-            var f = (relVel =* tangent) * friction * rev_jDenom;
+            let friction = material.friction;
+            let f = (relVel =* tangent) * friction * rev_jDenom;
             
             if(relDot <= 0.0001)
             {
                 if(!isinf(A.mass))
                 {
-                    var rev_AMass = 1.0 / A.mass;
+                    let rev_AMass = 1.0 / A.mass;
                     
                     A.velocity += (info.normal * (j * rev_AMass)) - (tangent * (f * rev_AMass));
                 }
                 
                 if(!isinf(b2MassSum))
                 {
-                    var rev_BMass = 1.0 / b2MassSum;
+                    let rev_BMass = 1.0 / b2MassSum;
                     
-                    var jComp = info.normal * j * rev_BMass;
-                    var fComp = tangent * (f / rev_BMass);
+                    let jComp = info.normal * j * rev_BMass;
+                    let fComp = tangent * (f / rev_BMass);
                     
                     B1.velocity -= (jComp * b1inf) - (fComp * b1inf);
                     B2.velocity -= (jComp * b2inf) - (fComp * b2inf);
@@ -573,12 +569,12 @@ class World
         collisionList.removeAll(keepCapacity: true);
     }
     
-    // Update bodies' bitmask for early collision filtering
+    /// Update bodies' bitmask for early collision filtering
     func updateBodyBitmask(body: Body)
     {
-        var box = body.aabb;
+        let box = body.aabb;
         
-        var rev_Divider = worldGridStep / CGFloat(1.0);
+        let rev_Divider = worldGridStep / CGFloat(1.0);
         
         var min = (box.minimum - worldGridStep) * rev_Divider;
         var max = (box.maximum - worldGridStep) * rev_Divider;

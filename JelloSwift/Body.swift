@@ -304,13 +304,13 @@ class Body: NSObject
             var originalSign: Int = 1;
             var originalAngle: CGFloat = 0;
             
-            let c:Int = pointMasses.count;
+            let c = pointMasses.count;
             for i in 0..<c
             {
-                var p = pointMasses[i];
+                let p = pointMasses[i];
                 
-                var baseNorm = baseShape.localVertices[i].normalized();
-                var curNorm: Vector2 = (p.position - derivedPos).normalized();
+                let baseNorm = baseShape.localVertices[i].normalized();
+                let curNorm: Vector2 = (p.position - derivedPos).normalized();
                 
                 var dot: CGFloat = baseNorm =* curNorm;
                 
@@ -328,8 +328,8 @@ class Body: NSObject
                 }
                 else
                 {
-                    var diff: CGFloat = (thisAngle - originalAngle);
-                    var thisSign: Int = (thisAngle >= 0.0) ? 1 : -1;
+                    let diff: CGFloat = (thisAngle - originalAngle);
+                    let thisSign: Int = (thisAngle >= 0.0) ? 1 : -1;
                     
                     if (abs(diff) > PI && (thisSign != originalSign))
                     {
@@ -397,11 +397,6 @@ class Body: NSObject
         {
             pointMasses[c].integrate(elapsed);
         }
-        
-        /*for point in pointMasses
-        {
-            point.integrate(elapsed);
-        }*/
     }
     
     /// Applies the velocity damping to the point masses
@@ -427,9 +422,7 @@ class Body: NSObject
         {
             var pm:PointMass = pointMasses[i];
             
-            var diff = (pm.position - derivedPos).normalized();
-            
-            diff.perpendicularThis();
+            var diff = (pm.position - derivedPos).normalized().perpendicular();
             
             pm.applyForce(diff * force);
         }
@@ -441,11 +434,9 @@ class Body: NSObject
         // Accelerate the body
         for var i = 0; i < pointMasses.count; i++
         {
-            var pm:PointMass = pointMasses[i];
+            let pm:PointMass = pointMasses[i];
             
-            var diff = (pm.position - derivedPos).normalized();
-            
-            diff.perpendicularThis();
+            var diff = (pm.position - derivedPos).normalized().perpendicular();
             
             pm.velocity = diff * vel;
         }
@@ -457,11 +448,9 @@ class Body: NSObject
         // Accelerate the body
         for var i = 0; i < pointMasses.count; i++
         {
-            var pm:PointMass = pointMasses[i];
+            let pm:PointMass = pointMasses[i];
             
-            var diff = (pm.position - derivedPos).normalized();
-            
-            diff.perpendicularThis();
+            var diff = (pm.position - derivedPos).normalized().perpendicular();
             
             pm.velocity += diff * vel;
         }
@@ -480,7 +469,7 @@ class Body: NSObject
         // lines in the polygon it intersects.  if that number is odd, we are inside.  if it's even, we are outside.
         // in this implementation we will always use a line that moves off in the positive X direction from the point
         // to simplify things.
-        var endPt = Vector2(aabb.maximum.X + 0.1, pt.Y);
+        let endPt = Vector2(aabb.maximum.X + 0.1, pt.Y);
         
         // line we are testing against goes from pt -> endPt.
         var inside = false;
@@ -490,7 +479,7 @@ class Body: NSObject
         
         var edgeEnd = Vector2();
         
-        let c: Int = pointMasses.count;
+        let c = pointMasses.count;
         for i in 0..<c
         {
             // the current edge is defined as the line from edgeSt -> edgeEnd.
@@ -524,7 +513,7 @@ class Body: NSObject
         }
         
         // Create and test against a temporary line AABB
-        var lineAABB: AABB = AABB(); lineAABB.expandToInclude(start); lineAABB.expandToInclude(end);
+        let lineAABB: AABB = AABB(); lineAABB.expandToInclude(start); lineAABB.expandToInclude(end);
         if(!aabb.intersects(lineAABB))
         {
             return false;
@@ -577,7 +566,7 @@ class Body: NSObject
         }
         
         // Test each edge against the line
-        var c = pointMasses.count;
+        let c = pointMasses.count;
         var p = Vector2();
         var p1 = Vector2();
         var p2 = Vector2();
@@ -587,10 +576,10 @@ class Body: NSObject
         
         res = pt2;
         
-        for i in 0..<pointMasses.count
+        for i in 0..<c
         {
             p1 = pointMasses[i].position;
-            p2 = pointMasses[(i + 1) % pointMasses.count].position;
+            p2 = pointMasses[(i + 1) % c].position;
             
             if(lineIntersect(pt1, pt2, p1, p2, &p, &ua, &ub))
             {
@@ -618,7 +607,7 @@ class Body: NSObject
         E = ptB - ptA;
         
         // get the length of the edge, and use that to normalize the vector.
-        var edgeLength = E.magnitude();
+        let edgeLength = E.magnitude();
         
         if (edgeLength > 0.0000001)
         {
@@ -629,7 +618,7 @@ class Body: NSObject
         normal = E.perpendicular();
         
         // calculate the distance!
-        var x = toP =* E;
+        let x = toP =* E;
         
         if (x <= 0.0)
         {
@@ -652,7 +641,7 @@ class Body: NSObject
         else
         {
             // point lies somewhere on the line segment.
-            var toP3 = Vector3(vec2: toP, z: 0);
+            let toP3 = Vector3(vec2: toP, z: 0);
             var E3 = Vector3(vec2: E, z: 0);
             
             E3 = toP3 =/ E3;
@@ -737,9 +726,9 @@ class Body: NSObject
         
         for i in 0..<pointMasses.count
         {
-            var pm = pointMasses[i];
-            var pm2 = pointMasses[(i + 1) % pointMasses.count];
-            var len = (pm.position - pm2.position).magnitude();
+            let pm = pointMasses[i];
+            let pm2 = pointMasses[(i + 1) % pointMasses.count];
+            let len = (pm.position - pm2.position).magnitude();
             
             var d = (pm.position - pm2.position).normalized();
             
@@ -783,7 +772,7 @@ class Body: NSObject
         
         for point in pointMasses
         {
-            var thisD = pos.distanceToSquared(point.position);
+            let thisD = pos.distanceToSquared(point.position);
             
             if(thisD < closestSQD)
             {

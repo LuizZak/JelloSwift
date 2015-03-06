@@ -178,8 +178,8 @@ func rotateVector(vec: Vector2, angleInRadians: CGFloat) -> Vector2
     
     var ret = Vector2();
     
-    var c = cos(angleInRadians);
-    var s = sin(angleInRadians);
+    let c = cos(angleInRadians);
+    let s = sin(angleInRadians);
     
     ret.X = (c * vec.X) - (s * vec.Y);
     ret.Y = (c * vec.Y) + (s * vec.X);
@@ -190,26 +190,13 @@ func rotateVector(vec: Vector2, angleInRadians: CGFloat) -> Vector2
 /// Returns whether rotating from A to B is counter-clockwise
 func vectorsAreCCW(A: Vector2, B: Vector2) -> Bool
 {
-    var perp = A.perpendicular();
-    
-    return (B =* perp) >= 0.0;
+    return (B =* A.perpendicular()) >= 0.0;
 }
 
 /// Averages a list of vectors into one Vector2 point
 func averageVectors(vectors: [Vector2]) -> Vector2
 {
-    var vec:Vector2 = Vector2();
-    
-    for v in vectors
-    {
-        vec += v;
-    }
-    
-    vec /= vectors.count;
-    
-    vec.normalizeThis();
-    
-    return vec;
+    return (vectors.reduce(vectors[0], combine: +) / vectors.count).normalized();
 }
 
 ////////

@@ -11,7 +11,7 @@ import UIKit
 func polygonArea(points: [Vector2]) -> CGFloat
 {
     var area: CGFloat = 0;
-    var j:Int = points.count - 1;
+    var j = points.count - 1;
     
     for i in 0..<points.count
     {
@@ -25,7 +25,7 @@ func polygonArea(points: [Vector2]) -> CGFloat
 func polygonArea(points: [PointMass]) -> CGFloat
 {
     var area: CGFloat = 0;
-    let c:Int = points.count;
+    let c = points.count;
     var v2 = points[c - 1].position;
     
     for var i = 0; i < c; i++

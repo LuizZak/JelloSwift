@@ -28,7 +28,7 @@ class GameScene: SKScene
     var draggingPoint: PointMass? = nil;
     
     // The location of the user's finger, in physics world coordinates
-    var fingerLocation: Vector2 = Vector2Zero;
+    var fingerLocation: Vector2 = Vector2.Zero;
     
     // Shape node used to display the dragging of a body
     var dragShape: SKShapeNode = SKShapeNode();
@@ -215,7 +215,7 @@ class GameScene: SKScene
         // Dragging point
         if let p = draggingPoint where inputMode == InputMode.DragBody
         {
-            var spring = calculateSpringForce(p.position, p.velocity, fingerLocation, Vector2Zero, 0, 300, 20);
+            var spring = calculateSpringForce(p.position, p.velocity, fingerLocation, Vector2.Zero, 0, 300, 20);
             
             p.applyForce(spring);
         }
