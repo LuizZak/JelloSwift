@@ -224,8 +224,21 @@ class World
         return ret;
     }
     
-    /// Casts a ray between the given points and returns the first body it comes in contact with
-    func rayCast(start: Vector2, end: Vector2, inout _ retPt:Vector2, bit: Bitmask, _ ignoreList:[Body] = []) -> Body?
+    /**
+     * Casts a ray between the given points and returns the first body it comes in contact with
+     * 
+     * :param: start The start point to cast the ray from, in world coordinates
+     * :param: end The end point to end the ray cast at, in world coordinates
+     * :param: retPt When the ray hits something, this point represents the farthest point the ray reached.
+     *               If the ray hits nothing, this is set as the end parameter
+     * :param: bit An optional collision bitmask that filters the bodies to collide using a bitwise AND (|) operation.
+     *             If the value specified is 0, collision filtering is ignored and all bodies are considered for collision
+     * :param: ignoreList A custom list of bodies that will be ignored during collision checking. Provide an empty list
+     *                    to consider all bodies in the world
+     *
+     * :return: An optional Body? value specifying the body that was closest to the ray, if it hit any body, or nil if it hit nothing.
+     */
+    func rayCast(start: Vector2, end: Vector2, inout _ retPt:Vector2, bit: Bitmask = 0, _ ignoreList:[Body] = []) -> Body?
     {
         var closestD = start.distanceTo(end);
         var closestB:Body? = nil;
@@ -249,7 +262,11 @@ class World
         return lastBody;
     }
     
-    /// Updates the world by a specific timestep
+    /**
+     * Updates the world by a specific timestep
+     *
+     * :param: elapsed The elapsed time to update by, usually in seconds
+     */
     func update(elapsed: CGFloat)
     {
         penetrationCount = 0;
