@@ -91,7 +91,7 @@ class Body: NSObject
         super.init();
     }
     
-    init(world: World?, shape: ClosedShape, pointMasses: [CGFloat] = [1], position: Vector2 = Vector2Zero, angle: CGFloat = 0, scale: Vector2 = Vector2One, kinematic: Bool = false, components: [BodyComponentCreator] = [])
+    init(world: World?, shape: ClosedShape, pointMasses: [CGFloat] = [1], position: Vector2 = Vector2.Zero, angle: CGFloat = 0, scale: Vector2 = Vector2.One, kinematic: Bool = false, components: [BodyComponentCreator] = [])
     {
         self.aabb = AABB();
         self.derivedPos = position;
