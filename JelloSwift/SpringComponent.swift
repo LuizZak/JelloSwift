@@ -176,7 +176,10 @@ class SpringComponentCreator : BodyComponentCreator
     /// The spring dampness for the shape matching of the body - ignored if the shape matching is off
     var shapeSpringDamp: CGFloat = 10;
     
-    required init(shapeMatchingOn: Bool = true, edgeSpringK: CGFloat = 50, edgeSpringDamp: CGFloat = 2, shapeSpringK: CGFloat = 200, shapeSpringDamp: CGFloat = 10)
+    /// An array of inner springs for a body
+    var innerSprings: [SpringComponentInnerSpring] = [];
+    
+    required init(shapeMatchingOn: Bool = true, edgeSpringK: CGFloat = 50, edgeSpringDamp: CGFloat = 2, shapeSpringK: CGFloat = 200, shapeSpringDamp: CGFloat = 10, innerSprings: [SpringComponentInnerSpring] = [])
     {
         self.shapeMatchingOn = shapeMatchingOn;
         
@@ -185,6 +188,8 @@ class SpringComponentCreator : BodyComponentCreator
         
         self.shapeSpringK = shapeSpringK;
         self.shapeSpringDamp = shapeSpringDamp;
+        
+        self.innerSprings = innerSprings;
         
         super.init();
         
@@ -199,6 +204,33 @@ class SpringComponentCreator : BodyComponentCreator
             
             comp.setEdgeSpringConstants(edgeSpringK, edgeSpringDamp);
             comp.setShapeMatchingConstants(shapeSpringK, shapeSpringDamp)
+            
+            innerSprings.forEach({ (element) -> Void in
+                comp.addInternalSpring(element.indexA, pointB: element.indexB, springK: element.springK, damping: element.springD, dist: element.dist);
+            });
         }
+    }
+}
+
+/// Specifies a template for an inner spring
+struct SpringComponentInnerSpring
+{
+    var indexA: Int = 0;
+    var indexB: Int = 0;
+    
+    var springK: CGFloat = 0;
+    var springD: CGFloat = 0;
+    
+    var dist: CGFloat = 0;
+    
+    init(a: Int, b: Int, springK: CGFloat, springD: CGFloat, dist: CGFloat = -1)
+    {
+        indexA = a;
+        indexB = b;
+        
+        self.springK = springK;
+        self.springD = springD;
+        
+        self.dist = dist;
     }
 }
