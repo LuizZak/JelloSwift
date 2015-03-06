@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		A0414E781A9503ED0031866D /* CustomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0414E771A9503ED0031866D /* CustomView.swift */; };
 		A0414E791A9508850031866D /* CustomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0414E771A9503ED0031866D /* CustomView.swift */; };
+		A0510AED1AAA341C00C03017 /* BodyJoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0510AEC1AAA341C00C03017 /* BodyJoint.swift */; };
 		A05ECD5319B1A38C00F84326 /* GravityComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05ECD5219B1A38C00F84326 /* GravityComponent.swift */; };
 		A05ECD5419B1A6D700F84326 /* BodyComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06EC14E199FD4EE00402D4C /* BodyComponent.swift */; };
 		A05ECD5519B1A6D700F84326 /* SpringComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06EC14C199FD49200402D4C /* SpringComponent.swift */; };
@@ -109,6 +110,7 @@
 
 /* Begin PBXFileReference section */
 		A0414E771A9503ED0031866D /* CustomView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomView.swift; sourceTree = "<group>"; };
+		A0510AEC1AAA341C00C03017 /* BodyJoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BodyJoint.swift; sourceTree = "<group>"; };
 		A05ECD5219B1A38C00F84326 /* GravityComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GravityComponent.swift; sourceTree = "<group>"; };
 		A06EC14C199FD49200402D4C /* SpringComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpringComponent.swift; sourceTree = "<group>"; };
 		A06EC14E199FD4EE00402D4C /* BodyComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BodyComponent.swift; sourceTree = "<group>"; };
@@ -171,6 +173,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A0510AEE1AAA342100C03017 /* Joints */ = {
+			isa = PBXGroup;
+			children = (
+				A0510AEC1AAA341C00C03017 /* BodyJoint.swift */,
+			);
+			name = Joints;
+			sourceTree = "<group>";
+		};
 		A06EC14B199FD47E00402D4C /* BodyComponents */ = {
 			isa = PBXGroup;
 			children = (
@@ -258,6 +268,7 @@
 		A0C9550B199329180066F88F /* Jello */ = {
 			isa = PBXGroup;
 			children = (
+				A0510AEE1AAA342100C03017 /* Joints */,
 				A06EC14B199FD47E00402D4C /* BodyComponents */,
 				A0C955311993C3570066F88F /* Structs */,
 				A0C9552E1993BFA50066F88F /* World.swift */,
@@ -458,6 +469,7 @@
 				A0C95520199342D10066F88F /* InternalSpring.swift in Sources */,
 				A05ECD5319B1A38C00F84326 /* GravityComponent.swift in Sources */,
 				A06EC151199FDB2300402D4C /* PressureComponent.swift in Sources */,
+				A0510AED1AAA341C00C03017 /* BodyJoint.swift in Sources */,
 				A081CFE21996B04D00C7CA49 /* PolyDrawer.swift in Sources */,
 				A0C9551A19933D9B0066F88F /* Bitmask.swift in Sources */,
 				A0C954F1199329130066F88F /* GameViewController.swift in Sources */,
