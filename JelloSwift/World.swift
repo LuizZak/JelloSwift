@@ -491,9 +491,11 @@ class World
             let massSum = A.mass + b2MassSum;
             
             let rev_massSum = 1.0 / massSum;
-            var Amove: CGFloat = info.penetration * (b2MassSum * rev_massSum);
-            var Bmove: CGFloat = info.penetration * (A.mass * rev_massSum);
+            // Amount to move each party of the collision
+            let Amove: CGFloat;
+            let Bmove: CGFloat;
             
+            // Static detection - when one of the parties is static, the other should move the total amount of the penetration
             if(isinf(A.mass))
             {
                 Amove = 0;
@@ -503,6 +505,11 @@ class World
             {
                 Amove = info.penetration + 0.001;
                 Bmove = 0;
+            }
+            else
+            {
+                Amove = info.penetration * (b2MassSum * rev_massSum);
+                Bmove = info.penetration * (A.mass * rev_massSum);
             }
             
             let B1move = Bmove * b1inf;

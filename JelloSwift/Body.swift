@@ -301,12 +301,12 @@ class Body: Equatable
             let c = pointMasses.count;
             for i in 0..<c
             {
-                let p = pointMasses[i];
+                let pm = pointMasses[i];
                 
                 let baseNorm = baseShape.localVertices[i].normalized();
-                let curNorm: Vector2 = (p.position - derivedPos).normalized();
+                let curNorm  = (pm.position - derivedPos).normalized();
                 
-                var dot: CGFloat = baseNorm =* curNorm;
+                var dot = baseNorm =* curNorm;
                 
                 if (dot > 1.0) { dot = 1.0; }
                 if (dot < -1.0) { dot = -1.0; }
