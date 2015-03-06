@@ -510,7 +510,7 @@ class Body: Equatable
         }
         
         // Create and test against a temporary line AABB
-        let lineAABB: AABB = AABB(); lineAABB.expandToInclude(start); lineAABB.expandToInclude(end);
+        let lineAABB: AABB = AABB(points: [start, end]);
         if(!aabb.intersects(lineAABB))
         {
             return false;
@@ -552,9 +552,7 @@ class Body: Equatable
         }
         else
         {
-            rayAABB = AABB();
-            rayAABB?.expandToInclude(pt1);
-            rayAABB?.expandToInclude(pt2);
+            rayAABB = AABB(points: [pt1, pt2]);
         }
         
         if(!aabb.intersects(rayAABB!))

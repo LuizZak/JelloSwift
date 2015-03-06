@@ -103,11 +103,8 @@ class AABB
         
         for p in points
         {
-            self.minimum.X = min(self.minimum.X, p.X);
-            self.minimum.Y = min(self.minimum.Y, p.Y);
-            
-            self.maximum.X = max(self.maximum.X, p.X);
-            self.maximum.Y = max(self.maximum.Y, p.Y);
+            self.minimum = min(self.minimum, p);
+            self.maximum = max(self.maximum, p);
         }
     }
     
