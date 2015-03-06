@@ -99,6 +99,8 @@ class GameScene: SKScene
         createBox(toWorldCoords(Vector2(size.width * 0.3, size.height / 2)), size: Vector2(2, 2), kinematic: true);
         createBox(toWorldCoords(Vector2(size.width * 0.7, size.height / 2)), size: Vector2(2, 2), kinematic: true);
         
+        createLinkedBouncyBalls(toWorldCoords(Vector2(size.width / 2, size.height * 0.8)));
+        
         // Create the ground box
         var box = ClosedShape();
         box.begin();
@@ -111,6 +113,19 @@ class GameScene: SKScene
         
         var platform = Body(world: world, shape: box, pointMasses: [CGFloat.infinity], position: toWorldCoords(Vector2(size.width / 2, 150)));
         platform.isStatic = true;
+    }
+    
+    /// Creates two linked bouncy balls in a given position in the world
+    func createLinkedBouncyBalls(pos: Vector2)
+    {
+        let b1 = createBouncyBall(pos - Vector2(1, 0), pinned: false, kinematic: false, radius: 1);
+        let b2 = createBouncyBall(pos + Vector2(1, 0), pinned: false, kinematic: false, radius: 1);
+        
+        // Create the joint links
+        let l1 = BodyJointLink(body: b1);
+        let l2 = BodyJointLink(body: b2);
+        
+        SpringBodyJoint(world: world, link1: l1, link2: l2, springK: 10, springD: 1);
     }
     
     override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent)
@@ -198,6 +213,10 @@ class GameScene: SKScene
         
         self.polyDrawer?.reset();
         
+        for joint in world.joints
+        {
+            drawJoint(joint);
+        }
         for body in world.bodies
         {
             drawBody(body);
@@ -244,6 +263,17 @@ class GameScene: SKScene
         {
             dragShape.hidden = true;
         }
+    }
+    
+    func drawJoint(joint: BodyJoint)
+    {
+        let start = toScreenCoords(joint.bodyLink1.getPosition());
+        let end = toScreenCoords(joint.bodyLink2.getPosition());
+        
+        let points = [CGPoint(v: start),
+                      CGPoint(v: end)];
+        
+        polyDrawer?.queuePoly(points, fillColor: 0xFFFFFFFF, strokeColor: 0xFFEEEEEE);
     }
     
     func drawBody(body: Body)
