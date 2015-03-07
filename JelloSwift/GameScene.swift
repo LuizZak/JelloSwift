@@ -367,7 +367,7 @@ class GameScene: SKScene
         SpringBodyJoint(world: world, link1: l1, link2: l2, springK: 100, springD: 20);
     }
     
-    /// Creates a pinned box with a ball attached to one if its edges
+    /// Creates a pinned box with a ball attached to one of its edges
     func createBallBoxLinkedStructure(pos: Vector2)
     {
         let b1 = createBouncyBall(pos - Vector2(0, 2), pinned: false, kinematic: false, radius: 1);
@@ -380,7 +380,7 @@ class GameScene: SKScene
         SpringBodyJoint(world: world, link1: l1, link2: l2, springK: 100, springD: 20);
     }
     
-    /// Creates a pinned box with two balls attached to one if its edges
+    /// Creates a pinned box with two balls attached to one of its edges
     func createScaleStructure(pos: Vector2)
     {
         let b1 = createBox(pos, size: Vector2(2, 1), pinned: true, kinematic: false);

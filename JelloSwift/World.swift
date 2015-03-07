@@ -361,7 +361,7 @@ class World
                         if(!j.allowCollisions)
                         {
                             skip = true;
-                            continue;
+                            break;
                         }
                     }
                 }
