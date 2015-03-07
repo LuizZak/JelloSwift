@@ -31,6 +31,30 @@ class EdgeJointLink: JointLinkType
     /// Gets the type of joint this joint link represents
     var linkType: LinkType { return LinkType.Edge }
     
+    /// Gets the position, in world coordinates, at which this joint links with the underlying body
+    var position: Vector2
+    {
+        return calculateVectorRatio(_pointMass1.position, _pointMass2.position, edgeRatio);
+    }
+    
+    /// Gets the velocity of the object this joint links to
+    var velocity: Vector2
+    {
+        return calculateVectorRatio(_pointMass1.velocity, _pointMass2.velocity, edgeRatio);
+    }
+    
+    /// Gets the total mass of the subject of this joint link
+    var mass: CGFloat
+    {
+        return _pointMass1.mass + _pointMass2.mass;
+    }
+    
+    /// Gets a value specifying whether the object referenced by this JointLinkType is static
+    var isStatic: Bool
+    {
+        return isinf(_pointMass1.mass) && isinf(_pointMass2.mass);
+    }
+    
     /// Inits a new edge joint link with the specified parameters
     init(body: Body, edgeIndex: Int, edgeRatio: CGFloat = 0.5)
     {
@@ -39,30 +63,6 @@ class EdgeJointLink: JointLinkType
         _pointMass2 = _body.pointMasses[(edgeIndex + 1) % _body.pointMasses.count];
         
         self.edgeRatio = edgeRatio;
-    }
-    
-    /// Gets the position, in world coordinates, at which this joint links with the underlying body
-    func getPosition() -> Vector2
-    {
-        return calculateVectorRatio(_pointMass1.position, _pointMass2.position, edgeRatio);
-    }
-    
-    /// Gets the velocity of the object this joint links to
-    func getVelocity() -> Vector2
-    {
-        return calculateVectorRatio(_pointMass1.velocity, _pointMass2.velocity, edgeRatio);
-    }
-    
-    /// Gets the total mass of the subject of this joint link
-    func getMass() -> CGFloat
-    {
-        return _pointMass1.mass + _pointMass2.mass;
-    }
-    
-    /// Gets a value specifying whether the object referenced by this JointLinkType is static
-    func isStatic() -> Bool
-    {
-        return isinf(_pointMass1.mass) && isinf(_pointMass2.mass);
     }
     
     /// Appies a given force to the subject of this joint link

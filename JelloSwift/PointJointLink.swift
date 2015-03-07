@@ -26,35 +26,35 @@ class PointJointLink: JointLinkType
     /// Gets the type of joint this joint link represents
     var linkType: LinkType { return LinkType.Point }
     
-    /// Inits a new point joint link with the specified parameters
-    init(body: Body, pointMassIndex: Int)
-    {
-        _body = body;
-        _pointMass = _body.pointMasses[pointMassIndex];
-    }
-    
     /// Gets the position, in world coordinates, at which this joint links with the underlying body
-    func getPosition() -> Vector2
+    var position: Vector2
     {
         return _pointMass.position;
     }
     
     /// Gets the velocity of the object this joint links to
-    func getVelocity() -> Vector2
+    var velocity: Vector2
     {
         return _pointMass.velocity;
     }
     
     /// Gets the total mass of the subject of this joint link
-    func getMass() -> CGFloat
+    var mass: CGFloat
     {
         return _pointMass.mass;
     }
     
     /// Gets a value specifying whether the object referenced by this JointLinkType is static
-    func isStatic() -> Bool
+    var isStatic: Bool
     {
         return isinf(_pointMass.mass);
+    }
+    
+    /// Inits a new point joint link with the specified parameters
+    init(body: Body, pointMassIndex: Int)
+    {
+        _body = body;
+        _pointMass = _body.pointMasses[pointMassIndex];
     }
     
     /// Appies a given force to the subject of this joint link

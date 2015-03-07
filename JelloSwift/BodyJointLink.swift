@@ -23,34 +23,34 @@ class BodyJointLink: JointLinkType
     /// Gets the type of joint this joint link represents
     var linkType: LinkType { return LinkType.Body }
     
-    /// Inits a new body joint link with the specified parameters
-    init(body: Body)
-    {
-        _body = body;
-    }
-    
     /// Gets the position, in world coordinates, at which this joint links with the underlying body
-    func getPosition() -> Vector2
+    var position: Vector2
     {
         return _body.derivedPos;
     }
     
-    /// Gets the total mass of the subject of this joint link
-    func getMass() -> CGFloat
-    {
-        return _body.pointMasses.reduce(0, combine: { $0 + $1.mass });
-    }
-    
     /// Gets the velocity of the object this joint links to
-    func getVelocity() -> Vector2
+    var velocity: Vector2
     {
         return _body.derivedVel;
     }
     
+    /// Gets the total mass of the subject of this joint link
+    var mass: CGFloat
+    {
+        return _body.pointMasses.reduce(0, combine: { $0 + $1.mass });
+    }
+    
     /// Gets a value specifying whether the object referenced by this JointLinkType is static
-    func isStatic() -> Bool
+    var isStatic: Bool
     {
         return _body.isStatic || _body.isPined;
+    }
+    
+    /// Inits a new body joint link with the specified parameters
+    init(body: Body)
+    {
+        _body = body;
     }
     
     /// Appies a given force to the subject of this joint link
@@ -58,6 +58,6 @@ class BodyJointLink: JointLinkType
     /// :param: force A force to apply to the subjects of this joint link
     func applyForce(force: Vector2)
     {
-        _body.addGlobalForce(getPosition(), force);
+        _body.addGlobalForce(position, force);
     }
 }

@@ -42,7 +42,7 @@ class BodyJoint: Equatable
         // Automatic distance calculation
         if(distance == -1)
         {
-            restDistance = link1.getPosition().distanceTo(link2.getPosition());
+            restDistance = link1.position.distanceTo(link2.position);
         }
         else
         {
@@ -73,16 +73,16 @@ protocol JointLinkType
     var linkType: LinkType { get }
     
     /// Gets the position, in world coordinates, at which this joint links with the underlying body
-    func getPosition() -> Vector2;
+    var position: Vector2 { get }
     
     /// Gets the velocity of the object this joint links to
-    func getVelocity() -> Vector2;
+    var velocity: Vector2 { get }
     
     /// Gets the total mass of the subject of this joint link
-    func getMass() -> CGFloat;
+    var mass: CGFloat { get }
     
     /// Gets a value specifying whether the object referenced by this JointLinkType is static
-    func isStatic() -> Bool;
+    var isStatic: Bool { get }
     
     /// Appies a given force to the subject of this joint link
     ///

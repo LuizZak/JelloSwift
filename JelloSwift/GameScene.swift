@@ -257,8 +257,8 @@ class GameScene: SKScene
     
     func drawJoint(joint: BodyJoint)
     {
-        let start = toScreenCoords(joint.bodyLink1.getPosition());
-        let end = toScreenCoords(joint.bodyLink2.getPosition());
+        let start = toScreenCoords(joint.bodyLink1.position);
+        let end = toScreenCoords(joint.bodyLink2.position);
         
         let points = [CGPoint(v: start),
                       CGPoint(v: end)];
