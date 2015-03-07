@@ -14,9 +14,9 @@ class GravityComponent: BodyComponent
     /// The gravity vector to apply to the body
     var gravity: Vector2 = Vector2(0, -9.8);
     
-    override func accumulateInternalForces()
+    override func accumulateExternalForces()
     {
-        super.accumulateInternalForces();
+        super.accumulateExternalForces();
         
         /*
         for p in body.pointMasses
