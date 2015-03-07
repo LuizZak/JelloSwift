@@ -384,8 +384,8 @@ class GameScene: SKScene
     func createScaleStructure(pos: Vector2)
     {
         let b1 = createBox(pos, size: Vector2(2, 1), pinned: true, kinematic: false);
-        let b2 = createBouncyBall(pos + Vector2(-1.6, -2), pinned: false, kinematic: false, radius: 1);
-        let b3 = createBouncyBall(pos + Vector2( 1.6, -2), pinned: false, kinematic: false, radius: 1);
+        let b2 = createBouncyBall(pos + Vector2(-1.2, -2), pinned: false, kinematic: false, radius: 1);
+        let b3 = createBouncyBall(pos + Vector2( 1.2, -2), pinned: false, kinematic: false, radius: 1);
         
         // Create the joints that link the box with the left sphere
         let l1 = BodyJointLink(body: b2);
@@ -396,8 +396,8 @@ class GameScene: SKScene
         let l4 = EdgeJointLink(body: b1, edgeIndex: 2, edgeRatio: 0.2);
         
         // Create the joints
-        let joint1 = SpringBodyJoint(world: world, link1: l1, link2: l2, springK: 100, springD: 20);
-        let joint2 = SpringBodyJoint(world: world, link1: l3, link2: l4, springK: 100, springD: 20);
+        let joint1 = SpringBodyJoint(world: world, link1: l1, link2: l2, springK: 10, springD: 2);
+        let joint2 = SpringBodyJoint(world: world, link1: l3, link2: l4, springK: 40, springD: 5);
         
         // Enable collision between the bodies
         joint1.allowCollisions = true;
