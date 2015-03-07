@@ -80,7 +80,7 @@ class ShapeJointLink: JointLinkType
         _body = body;
         _pointMasses = [];
         
-        for i in 0..<pointMassIndexes.count
+        for i in pointMassIndexes
         {
             _pointMasses += _body.pointMasses[i];
         }
