@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Luiz Fernando Silva. All rights reserved.
 //
 
-import UIKit
+import CoreGraphics
 
 // Represents information about the collision response behavior between two bodies
 struct MaterialPair

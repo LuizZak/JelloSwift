@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Luiz Fernando Silva. All rights reserved.
 //
 
-import UIKit
+import CoreGraphics
 
 /// Represents a 2D vector
 struct Vector2: Equatable, Printable
