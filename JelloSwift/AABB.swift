@@ -28,6 +28,10 @@ class AABB
     /// Gets the height of this AABB
     var height: CGFloat { return maximum.Y - minimum.Y; }
     
+    // This guy has to be lower case otherwise sourcekit crashes
+    /// Gets a CGRect that represents the boundaries of this AABB object
+    var cgRect: CGRect { return CGRect(x: x, y: y, width: width, height: height) }
+    
     init()
     {
         
