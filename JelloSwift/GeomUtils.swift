@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Luiz Fernando Silva. All rights reserved.
 //
 
-import UIKit
+import CoreGraphics
 
 /// CGFloat version of the PI constant
 let PI: CGFloat = CGFloat(M_PI);

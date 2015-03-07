@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Luiz Fernando Silva. All rights reserved.
 //
 
-import UIKit
+import CoreGraphics
 
 // Contains a set of points that is equivalent as the internal shape of a sofy body
 class ClosedShape

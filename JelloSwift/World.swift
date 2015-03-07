@@ -6,7 +6,8 @@
 //  Copyright (c) 2014 Luiz Fernando Silva. All rights reserved.
 //
 
-import UIKit
+import Foundation
+import CoreGraphics
 
 /// Represents a simulation world, containing soft bodies and the code utilized to make them interact with each other
 class World
@@ -395,7 +396,7 @@ class World
         
         for i in 0..<bApCount
         {
-            var pt = bA.pointMasses[i].position;
+            let pt = bA.pointMasses[i].position;
             
             // early out - if this point is not inside bodyB, skip it!
             if (!bB.contains(pt))

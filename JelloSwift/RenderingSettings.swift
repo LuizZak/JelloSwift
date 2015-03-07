@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Luiz Fernando Silva. All rights reserved.
 //
 
-import UIKit
+import CoreGraphics
 
 /// The point size of points drawn on screen (this value is independent of the Scale vector)
 var pointSize: CGFloat = 3;

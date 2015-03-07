@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Luiz Fernando Silva. All rights reserved.
 //
 
-import UIKit
+import CoreGraphics
 
 /// Represents an axis-aligned bounding box, utilized to figure out the AABB of soft-bodies
 class AABB
