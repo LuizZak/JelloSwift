@@ -167,10 +167,10 @@ func vectorsAreCCW(A: Vector2, B: Vector2) -> Bool
     return (B =* A.perpendicular()) >= 0.0;
 }
 
-/// Averages a list of vectors into one Vector2 point
+/// Averages a list of vectors into one normalized Vector2 point
 func averageVectors(vectors: [Vector2]) -> Vector2
 {
-    return (vectors.reduce(vectors[0], combine: +) / vectors.count).normalized();
+    return (vectors.reduce(Vector2(), combine: +) / vectors.count).normalized();
 }
 
 ////////

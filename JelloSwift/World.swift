@@ -262,7 +262,7 @@ class World
      *
      * :return: An optional Body? value specifying the body that was closest to the ray, if it hit any body, or nil if it hit nothing.
      */
-    func rayCast(start: Vector2, end: Vector2, inout _ retPt:Vector2, bit: Bitmask = 0, _ ignoreList:[Body] = []) -> Body?
+    func rayCast(start: Vector2, end: Vector2, inout _ retPt:Vector2?, bit: Bitmask = 0, _ ignoreList:[Body] = []) -> Body?
     {
         var closestD = start.distanceTo(end);
         var closestB:Body? = nil;

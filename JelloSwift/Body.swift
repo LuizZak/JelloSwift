@@ -560,14 +560,8 @@ class Body: Equatable
     }
     
     /// Returns whether the given ray collides with this Body, changing the resulting collision vector before returning
-    func raycast(pt1: Vector2, _ pt2: Vector2, inout _ res: Vector2, inout _ rayAABB: AABB?) -> Bool
+    func raycast(pt1: Vector2, _ pt2: Vector2, inout _ res: Vector2?, inout _ rayAABB: AABB?) -> Bool
     {
-        // Test whether one or both the points of the line are inside the body
-        if(contains(pt1) || contains(pt2))
-        {
-            return true;
-        }
-        
         // Create and test against a temporary line AABB
         if let raabb = rayAABB
         {
