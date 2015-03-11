@@ -422,6 +422,11 @@ class Body: Equatable
     /// Applies a rotational clockwise torque of a given force on this body
     func applyTorque(force: CGFloat)
     {
+        if(isStatic)
+        {
+            return;
+        }
+        
         // Accelerate the body
         for var i = 0; i < pointMasses.count; i++
         {
@@ -436,6 +441,11 @@ class Body: Equatable
     /// Sets the angular velocity for this body
     func setAngularVelocity(vel: CGFloat)
     {
+        if(isStatic)
+        {
+            return;
+        }
+        
         // Accelerate the body
         for var i = 0; i < pointMasses.count; i++
         {
@@ -450,6 +460,11 @@ class Body: Equatable
     /// Accumulates the angular velocity for this body
     func addAngularVelocity(vel: CGFloat)
     {
+        if(isStatic)
+        {
+            return;
+        }
+        
         // Accelerate the body
         for var i = 0; i < pointMasses.count; i++
         {
@@ -830,6 +845,11 @@ class Body: Equatable
     */
     func addGlobalForce(pt: Vector2, _ force: Vector2)
     {
+        if(isStatic)
+        {
+            return;
+        }
+        
         let tempV1 = Vector3(vec2: derivedPos - pt, z: 0);
         let tempV2 = Vector3(vec2: force, z: 0);
         let torqueF = tempV1.cross2Z(tempV2);
@@ -841,6 +861,21 @@ class Body: Equatable
             point.force += tempR * torqueF;
             point.force += force;
         }
+    }
+    
+    /**
+     * Adds a velocity vector to all the point masses in this body
+     *
+     * :param: velocity The velocity to add to all the point masses in this body
+     */
+    func addVelocity(velocity: Vector2)
+    {
+        if(isStatic)
+        {
+            return;
+        }
+        
+        pointMasses.forEach({ $0.velocity += velocity });
     }
     
     /// Resets the collision information of the body

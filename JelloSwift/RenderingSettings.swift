@@ -8,9 +8,6 @@
 
 import CoreGraphics
 
-/// The point size of points drawn on screen (this value is independent of the Scale vector)
-var pointSize: CGFloat = 3;
-
 var renderingScale = Vector2(25.8, 25.8);
 
 // The offset is independent of the scale, unlike Flash DisplayObject's x-y coordinates and scaleX-scaleY
