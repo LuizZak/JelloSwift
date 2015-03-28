@@ -654,6 +654,7 @@ class World
         if(min.Y < 0) { min.Y = 0; } else if(min.Y > 32) { min.Y = 32; }
         
         body.bitmaskX = 0;
+        body.bitmaskY = 0;
         
         for i in Int(min.X)...Int(max.X)
         {
