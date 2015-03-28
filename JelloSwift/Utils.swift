@@ -63,12 +63,5 @@ extension Array
 
 func fillArray<T: Equatable>(object: T, count: Int) -> [T]
 {
-    var ret: [T] = [];
-    
-    for i in 0..<count
-    {
-        ret += object;
-    }
-    
-    return ret;
+    return [T](count: count, repeatedValue: object);
 }

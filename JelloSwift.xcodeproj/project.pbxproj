@@ -58,6 +58,12 @@
 		A09CC4AE1A251A880073BB62 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A0C954F5199329130066F88F /* Images.xcassets */; };
 		A09CC4AF1A251A880073BB62 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = A0C954EC199329130066F88F /* GameScene.sks */; };
 		A09CC4B01A251A880073BB62 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A0C954F2199329130066F88F /* Main.storyboard */; };
+		A0A4B4D31AC6405B0097AFDC /* SpringBodyJoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0510AFB1AAA543E00C03017 /* SpringBodyJoint.swift */; };
+		A0A4B4D41AC6405E0097AFDC /* BodyJoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0510AEC1AAA341C00C03017 /* BodyJoint.swift */; };
+		A0A4B4D71AC640640097AFDC /* BodyJointLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0510AF81AAA4FED00C03017 /* BodyJointLink.swift */; };
+		A0A4B4D81AC640640097AFDC /* ShapeJointLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0510B001AAA573B00C03017 /* ShapeJointLink.swift */; };
+		A0A4B4DA1AC6406C0097AFDC /* PointJointLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0510AF01AAA41D700C03017 /* PointJointLink.swift */; };
+		A0A4B4DB1AC6406C0097AFDC /* EdgeJointLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0510AF21AAA466D00C03017 /* EdgeJointLink.swift */; };
 		A0C954EB199329130066F88F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C954EA199329130066F88F /* AppDelegate.swift */; };
 		A0C954ED199329130066F88F /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = A0C954EC199329130066F88F /* GameScene.sks */; };
 		A0C954EF199329130066F88F /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C954EE199329130066F88F /* GameScene.swift */; };
@@ -539,6 +545,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A0A4B4D81AC640640097AFDC /* ShapeJointLink.swift in Sources */,
 				A05ECD5419B1A6D700F84326 /* BodyComponent.swift in Sources */,
 				A05ECD5519B1A6D700F84326 /* SpringComponent.swift in Sources */,
 				A05ECD5619B1A6D700F84326 /* PressureComponent.swift in Sources */,
@@ -549,16 +556,21 @@
 				A0C9551619933ADA0066F88F /* AABB.swift in Sources */,
 				A07D54711997E4EE003C9669 /* PointMassTests.swift in Sources */,
 				A0C9552A1993BB360066F88F /* MaterialPair.swift in Sources */,
+				A0A4B4DB1AC6406C0097AFDC /* EdgeJointLink.swift in Sources */,
 				A0C95527199344390066F88F /* Utils.swift in Sources */,
 				A08E5FA31AA8B56700F4CA0F /* ClosedShapeTests.swift in Sources */,
 				A0C9551719933ADA0066F88F /* Vector2.swift in Sources */,
+				A0A4B4D71AC640640097AFDC /* BodyJointLink.swift in Sources */,
+				A0A4B4D31AC6405B0097AFDC /* SpringBodyJoint.swift in Sources */,
 				A0C955301993BFA50066F88F /* World.swift in Sources */,
 				A0C9554019968CCA0066F88F /* PhysicsMathTest.swift in Sources */,
 				A0C9551819933ADA0066F88F /* PointMass.swift in Sources */,
+				A0A4B4DA1AC6406C0097AFDC /* PointJointLink.swift in Sources */,
 				A0C95521199342D10066F88F /* InternalSpring.swift in Sources */,
 				A0C9551E199340BD0066F88F /* Vector3.swift in Sources */,
 				A0C95502199329130066F88F /* JelloSwiftTests.swift in Sources */,
 				A0C955341993C37C0066F88F /* BodyCollisionInformation.swift in Sources */,
+				A0A4B4D41AC6405E0097AFDC /* BodyJoint.swift in Sources */,
 				A0510AF51AAA4B4500C03017 /* GeomUtilsTests.swift in Sources */,
 				A0C95524199343DF0066F88F /* ClosedShape.swift in Sources */,
 				A0C9553719946BA00066F88F /* GeomUtils.swift in Sources */,
