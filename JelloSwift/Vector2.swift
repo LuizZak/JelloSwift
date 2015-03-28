@@ -183,7 +183,7 @@ func ==(lhs: Vector2, rhs: Vector2) -> Bool
 }
 func <(lhs: Vector2, rhs: Vector2) -> Bool
 {
-    return !(lhs >= rhs);
+    return lhs.X < rhs.X && lhs.Y < rhs.Y;
 }
 
 // Unary operators
