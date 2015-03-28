@@ -30,31 +30,29 @@ class PressureComponent: BodyComponent
         // body, and 1 to apply forces. we will need the normals for the edges in both loops, so we will cache them and remember them.
         volume = 0;
         
-        var edge1NX: CGFloat, edge1NY: CGFloat, edge2NX: CGFloat, edge2NY: CGFloat, t: CGFloat;
-        var normX: CGFloat, normY: CGFloat;
-        
         let c = body.pointMasses.count;
         var prev = c - 1;
+        var points = [Vector2](count: c, repeatedValue: Vector2());
         
-        for var i = 0; i < c; i++
+        for (i, curPoint) in enumerate(body.pointMasses)
         {
-            let curPoint:PointMass = body.pointMasses[i];
-            
             let next: Int = (i + 1) % (c);
             
             // currently we are talking about the edge from i --> j.
             // first calculate the volume of the body, and cache normals as we go.
-            let edge1N = (curPoint.position - body.pointMasses[prev].position).perpendicular();
-            let edge2N = (body.pointMasses[next].position - curPoint.position).perpendicular();
+            let edge1N = (curPoint.position - body.pointMasses[prev].position);
+            let edge2N = (body.pointMasses[next].position - curPoint.position);
             
             // cache normal and edge length
-            normalList[i] = (edge1N + edge2N).normalized();
+            normalList[i] = (edge1N + edge2N).perpendicular().normalized();
             edgeLengthList[i] = edge2N.magnitude();
+            
+            points[i] = curPoint.position;
             
             prev = i;
         }
         
-        volume = max(0.5, polygonArea(body.pointMasses));
+        volume = max(0.5, polygonArea(points));
         
         // now loop through, adding forces!
         let invVolume: CGFloat = 1 / volume;

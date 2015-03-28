@@ -15,12 +15,12 @@ let PI: CGFloat = CGFloat(M_PI);
 func polygonArea(points: [Vector2]) -> CGFloat
 {
     var area: CGFloat = 0;
-    var j = points.count - 1;
+    var v2 = points[points.count - 1];
     
-    for i in 0..<points.count
+    for p in points
     {
-        area += (points[j].X + points[i].X) * (points[j].Y - points[i].Y);
-        j = i;
+        area += (v2.X + p.X) * (v2.Y - p.Y);
+        v2 = p;
     }
     
     return area / 2;
@@ -29,26 +29,13 @@ func polygonArea(points: [Vector2]) -> CGFloat
 /// Returns an approximation of the area of the polygon defined by a given set of point masses
 func polygonArea(points: [PointMass]) -> CGFloat
 {
-    var area: CGFloat = 0;
-    let c = points.count;
-    var v2 = points[c - 1].position;
-    
-    for p in points
-    {
-        let v1 = p.position;
-        
-        area += (v2.X + v1.X) * (v2.Y - v1.Y);
-        
-        v2 = v1;
-    }
-    
-    return area / 2;
+    return polygonArea(points.map { $0.position });
 }
 
 /// Checks if 2 line segments intersect. (line AB collides with line CD) (reference type version)
 func lineIntersect(ptA: Vector2, ptB: Vector2, ptC: Vector2, ptD: Vector2, inout hitPt: Vector2, inout Ua: CGFloat, inout Ub: CGFloat) -> Bool
 {
-    var denom = ((ptD.Y - ptC.Y) * (ptB.X - ptA.X)) - ((ptD.X - ptC.X) * (ptB.Y - ptA.Y));
+    let denom = ((ptD.Y - ptC.Y) * (ptB.X - ptA.X)) - ((ptD.X - ptC.X) * (ptB.Y - ptA.Y));
     
     // if denom == 0, lines are parallel - being a bit generous on this one..
     if (abs(denom) < 0.000000001)
@@ -56,13 +43,11 @@ func lineIntersect(ptA: Vector2, ptB: Vector2, ptC: Vector2, ptD: Vector2, inout
         return false;
     }
     
-    var UaTop = ((ptD.X - ptC.X) * (ptA.Y - ptC.Y)) - ((ptD.Y - ptC.Y) * (ptA.X - ptC.X));
-    var UbTop = ((ptB.X - ptA.X) * (ptA.Y - ptC.Y)) - ((ptB.Y - ptA.Y) * (ptA.X - ptC.X));
+    let UaTop = ((ptD.X - ptC.X) * (ptA.Y - ptC.Y)) - ((ptD.Y - ptC.Y) * (ptA.X - ptC.X));
+    let UbTop = ((ptB.X - ptA.X) * (ptA.Y - ptC.Y)) - ((ptB.Y - ptA.Y) * (ptA.X - ptC.X));
     
-    var revDenom = 1 / denom;
-    
-    Ua = UaTop * revDenom;
-    Ub = UbTop * revDenom;
+    Ua = UaTop / denom;
+    Ub = UbTop / denom;
     
     if ((Ua >= 0) && (Ua <= 1) && (Ub >= 0) && (Ub <= 1))
     {
@@ -85,12 +70,12 @@ func calculateSpringForce(posA: Vector2, velA: Vector2, posB: Vector2, velB: Vec
         return Vector2(0, 0);
     }
     
-    var BtoA = (posA - posB) / dist;
+    let BtoA = (posA - posB) / dist;
     
     dist = distance - dist;
     
-    var relVel = velA - velB;
-    var totalRelVel = relVel =* BtoA;
+    let relVel = velA - velB;
+    let totalRelVel = relVel =* BtoA;
     
     return BtoA * ((dist * springK) - (totalRelVel * springD));
 }

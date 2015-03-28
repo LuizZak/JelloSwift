@@ -321,7 +321,7 @@ class GameScene: SKScene
     }
     
     /// Creates a bouncy ball at the specified world coordinates
-    func createBouncyBall(pos: Vector2, pinned: Bool = false, kinematic: Bool = false, radius: CGFloat = 1) -> Body
+    func createBouncyBall(pos: Vector2, pinned: Bool = false, kinematic: Bool = false, radius: CGFloat = 1, mass: CGFloat = 0.5) -> Body
     {
         // Create the closed shape for the ball's physics body
         var def: CGFloat = 12;
@@ -347,7 +347,7 @@ class GameScene: SKScene
         // Add a gravity component taht will pull the body down
         comps += GravityComponentCreator();
         
-        var body = Body(world: world, shape: shape, pointMasses: [0.5], kinematic: kinematic, position: pos, components: comps)
+        var body = Body(world: world, shape: shape, pointMasses: [mass], kinematic: kinematic, position: pos, components: comps)
         
         body.isPined = pinned;
         

@@ -500,14 +500,25 @@ final class Body: Equatable
         
         var edgeEnd = Vector2.Zero;
         
-        for p in pointMasses
+        //for p in pointMasses
+        for var i = 0; i < c; i++
         {
+            //let p = pointMasses[i];
+            edgeEnd = pointMasses[i].position;
+            
             // the current edge is defined as the line from edgeSt -> edgeEnd.
-            edgeEnd = p.position;
+            //edgeEnd = p.position;
             
             // perform check now...
             if (((edgeSt.Y <= pt.Y) && (edgeEnd.Y > pt.Y)) || ((edgeSt.Y > pt.Y) && (edgeEnd.Y <= pt.Y)))
             {
+                // The edge lies completely to the left of our imaginary line
+                if(edgeSt.X < pt.X && edgeEnd.X < pt.X)
+                {
+                    edgeSt = edgeEnd;
+                    continue;
+                }
+                
                 // this line crosses the test line at some point... does it do so within our test range?
                 var slope = (edgeEnd.X - edgeSt.X) / (edgeEnd.Y - edgeSt.Y);
                 var hitX = edgeSt.X + ((pt.Y - edgeSt.Y) * slope);

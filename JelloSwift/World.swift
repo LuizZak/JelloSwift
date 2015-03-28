@@ -219,33 +219,13 @@ class World
     /// Useful for picking objects with a cursor, etc.
     func getBodiesContaining(pt: Vector2, bit: Bitmask) -> [Body]
     {
-        var ret: [Body] = [];
-        
-        for body in bodies
-        {
-            if((bit == 0 || (body.bitmask & bit) != 0) && body.contains(pt))
-            {
-                ret += body;
-            }
-        }
-        
-        return ret;
+        return bodies.filter { (($0.bitmask & bit) != 0 || bit == 0) && $0.contains(pt) };
     }
     
     /// Returns a vector of bodies intersecting with the given line
     func getBodiesIntersecting(start: Vector2, end: Vector2, bit: Bitmask) -> [Body]
     {
-        var ret: [Body] = [];
-        
-        for body in bodies
-        {
-            if((bit == 0 || (body.bitmask & bit) != 0) && body.intersectsLine(start, end))
-            {
-                ret += body;
-            }
-        }
-        
-        return ret;
+        return bodies.filter { (($0.bitmask & bit) != 0 || bit == 0) && $0.intersectsLine(start, end) };
     }
     
     /**
@@ -268,7 +248,6 @@ class World
         var closestB:Body? = nil;
         var aabb:AABB? = nil;
         var lastBody:Body? = nil;
-        var ret: [Body] = [];
         
         retPt = end;
         
