@@ -13,12 +13,12 @@ import CoreGraphics
 class EdgeJointLink: JointLinkType
 {
     /// The body that this joint link is linked to
-    private var _body: Body;
+    private let _body: Body;
     
     /// The first point mass this joint is linked to
-    private var _pointMass1: PointMass;
+    private let _pointMass1: PointMass;
     /// The second point mass this joint is linked to
-    private var _pointMass2: PointMass;
+    private let _pointMass2: PointMass;
     
     /// The ratio of the edge this edge joint is linked to.
     /// Values must range between [0 - 1] inclusive, and dictate the middle point of the edge.

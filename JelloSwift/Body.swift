@@ -14,7 +14,7 @@ func ==(lhs: Body, rhs: Body) -> Bool
 }
 
 /// Represents a soft body on the world
-class Body: Equatable
+final class Body: Equatable
 {
     /// List of body joints this body participates in
     var joints: [BodyJoint] = [];
@@ -495,15 +495,15 @@ class Body: Equatable
         var inside = false;
         
         // TODO: Use a foreach instead of a simple for loop to quicken up the iteration of the point masses
-        var edgeSt = pointMasses[0].position;
+        let c = pointMasses.count;
+        var edgeSt = pointMasses[c - 1].position;
         
         var edgeEnd = Vector2.Zero;
         
-        let c = pointMasses.count;
-        for var i = 0; i < c; i++
+        for p in pointMasses
         {
             // the current edge is defined as the line from edgeSt -> edgeEnd.
-            edgeEnd = pointMasses[((i + 1) % c)].position;
+            edgeEnd = p.position;
             
             // perform check now...
             if (((edgeSt.Y <= pt.Y) && (edgeEnd.Y > pt.Y)) || ((edgeSt.Y > pt.Y) && (edgeEnd.Y <= pt.Y)))
@@ -517,6 +517,7 @@ class Body: Equatable
                     inside = !inside;
                 }
             }
+            
             edgeSt = edgeEnd;
         }
         

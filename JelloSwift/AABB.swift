@@ -9,7 +9,7 @@
 import CoreGraphics
 
 /// Represents an axis-aligned bounding box, utilized to figure out the AABB of soft-bodies
-class AABB
+final class AABB
 {
     /// The validity of this AABB
     var validity = PointValidity.Invalid;

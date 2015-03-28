@@ -150,15 +150,10 @@ func rotateVector(vec: Vector2, angleInRadians: CGFloat) -> Vector2
         return vec;
     }
     
-    var ret = Vector2();
-    
     let c = cos(angleInRadians);
     let s = sin(angleInRadians);
     
-    ret.X = (c * vec.X) - (s * vec.Y);
-    ret.Y = (c * vec.Y) + (s * vec.X);
-    
-    return ret;
+    return Vector2((c * vec.X) - (s * vec.Y), (c * vec.Y) + (s * vec.X));
 }
 
 /// Returns whether rotating from A to B is counter-clockwise

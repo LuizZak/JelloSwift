@@ -15,7 +15,7 @@ class BodyJointLink: JointLinkType
     // Like the PointJointLink, this is a very straightforward implementation, delegating most of the methods to the underlying body object
     
     /// The body that this joint link is linked to
-    private var _body: Body;
+    private let _body: Body;
     
     /// Gets the body that this joint link is linked to
     var body: Body { return _body; }

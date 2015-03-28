@@ -633,7 +633,7 @@ class World
                 }
             }
         }
-        
+        max(1, 2, 3, 4);
         collisionList.removeAll(keepCapacity: true);
     }
     

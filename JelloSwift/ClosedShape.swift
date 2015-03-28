@@ -11,7 +11,7 @@ import CoreGraphics
 // Contains a set of points that is equivalent as the internal shape of a sofy body
 class ClosedShape
 {
-    var localVertices: [Vector2] = [];
+    final var localVertices: [Vector2] = [];
     
     // Start adding vertices to this closed shape.
     // Calling this method will erase any existing verts
@@ -78,10 +78,9 @@ class ClosedShape
     /// transformation is applied in the following order:  scale -> rotation -> position.
     func transformVertices(inout target:[Vector2], worldPos: Vector2, angleInRadians: CGFloat, localScale: Vector2 = Vector2(1, 1))
     {
-        let count = localVertices.count;
-        for var i = 0; i < count; i++
+        for (i, l) in enumerate(localVertices)
         {
-            target[i] = rotateVector(localVertices[i] * localScale, angleInRadians) + worldPos;
+            target[i] = rotateVector(l * localScale, angleInRadians) + worldPos;
         }
     }
 }

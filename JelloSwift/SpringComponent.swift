@@ -12,23 +12,23 @@ import CoreGraphics
 class SpringComponent: BodyComponent
 {
     /// Gets the count of springs on this spring component
-    var springCount: Int { return springs.count; }
+    final var springCount: Int { return springs.count; }
     
     /// The list of internal springs for the body
-    private var springs:[InternalSpring] = [];
+    private final var springs:[InternalSpring] = [];
     /// Whether the shape matching is on - turning on shape matching will make the soft body try to mantain its original
     /// shape as specified by its baseShape
-    private var shapeMatchingOn = true;
+    private final var shapeMatchingOn = true;
     
     /// The spring constant for the edges of the spring body
-    private var edgeSpringK: CGFloat = 50;
+    private final var edgeSpringK: CGFloat = 50;
     /// The spring dampness for the edges of the spring body
-    private var edgeSpringDamp: CGFloat = 2;
+    private final var edgeSpringDamp: CGFloat = 2;
     
     /// The spring constant for the shape matching of the body - ignored if shape matching is off
-    private var shapeSpringK: CGFloat = 200;
+    private final var shapeSpringK: CGFloat = 200;
     /// The spring dampness for the shape matching of the body - ignored if the shape matching is off
-    private var shapeSpringDamp: CGFloat = 10;
+    private final var shapeSpringDamp: CGFloat = 10;
     
     override func prepare(body: Body)
     {
@@ -120,10 +120,8 @@ class SpringComponent: BodyComponent
         
         var force = Vector2();
         
-        for var i = 0; i < springs.count; i++
+        for s in springs
         {
-            let s = springs[i];
-            
             let p1 = s.pointMassA;
             let p2 = s.pointMassB;
             
@@ -137,11 +135,8 @@ class SpringComponent: BodyComponent
         {
             body.baseShape.transformVertices(&body.globalShape, worldPos: body.derivedPos, angleInRadians: body.derivedAngle, localScale: body.scale);
             
-            let c = body.pointMasses.count;
-            for var i = 0; i < c; i++
+            for (i, p) in enumerate(body.pointMasses)
             {
-                let p = body.pointMasses[i];
-                
                 if(!body.isKinematic)
                 {
                     force = calculateSpringForce(p.position, p.velocity, body.globalShape[i], p.velocity, 0.0, shapeSpringK, shapeSpringDamp);

@@ -15,10 +15,10 @@ class PointJointLink: JointLinkType
     // This is a very straightforward implementation, it basically delegates the calls to the underlying point mass
     
     /// The body that this joint link is linked to
-    private var _body: Body;
+    private let _body: Body;
     
     /// The point mass this joint is linked to
-    private var _pointMass: PointMass;
+    private let _pointMass: PointMass;
     
     /// Gets the body that this joint link is linked to
     var body: Body { return _body; }

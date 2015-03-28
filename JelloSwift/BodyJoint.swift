@@ -18,9 +18,9 @@ func ==(lhs: BodyJoint, rhs: BodyJoint) -> Bool
 class BodyJoint: Equatable
 {
     /// Gets the first link that contins informationa bout the first body linked by this joint
-    internal var _bodyLink1: JointLinkType;
+    internal let _bodyLink1: JointLinkType;
     /// Gets the second link that contins informationa bout the first body linked by this joint
-    internal var _bodyLink2: JointLinkType;
+    internal let _bodyLink2: JointLinkType;
     
     /// Whether to allow collisions between the two objects joined by this BodyJoint.
     /// Defaults to false

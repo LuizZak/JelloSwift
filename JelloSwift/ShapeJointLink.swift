@@ -13,16 +13,16 @@ import CoreGraphics
 class ShapeJointLink: JointLinkType
 {
     /// The body that this joint link is linked to
-    private var _body: Body;
+    private let _body: Body;
     
     /// The point masses this joint is linked to
-    private var _pointMasses: [PointMass];
+    private let _pointMasses: [PointMass];
     
     /// Gets the body that this joint link is linked to
     var body: Body { return _body; }
     
     /// Gets the type of joint this joint link represents
-    var linkType: LinkType { return LinkType.Point }
+    var linkType: LinkType { return LinkType.Shape }
     
     /// Gets the position, in world coordinates, at which this joint links with the underlying body
     var position: Vector2
@@ -78,12 +78,7 @@ class ShapeJointLink: JointLinkType
     init(body: Body, pointMassIndexes: [Int])
     {
         _body = body;
-        _pointMasses = [];
-        
-        for i in pointMassIndexes
-        {
-            _pointMasses += _body.pointMasses[i];
-        }
+        _pointMasses = pointMassIndexes.map { body.pointMasses[$0] };
     }
     
     /// Appies a given force to the subject of this joint link
