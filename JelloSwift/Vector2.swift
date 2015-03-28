@@ -9,7 +9,7 @@
 import CoreGraphics
 
 /// Represents a 2D vector
-struct Vector2: Equatable, Printable
+struct Vector2: Equatable, Printable, Comparable
 {
     /// A zeroed-value Vector2
     static let Zero = Vector2(0, 0);
@@ -175,24 +175,11 @@ infix operator =* { associativity left precedence 150 }
 infix operator =/ { associativity left precedence 151 }
 
 ////
-// Equality operators
+// Comparision operators
 ////
 func ==(lhs: Vector2, rhs: Vector2) -> Bool
 {
     return lhs.X == rhs.X && lhs.Y == rhs.Y;
-}
-
-func >=(lhs: Vector2, rhs: Vector2) -> Bool
-{
-    return lhs.X >= rhs.X && lhs.Y >= rhs.Y;
-}
-func >(lhs: Vector2, rhs: Vector2) -> Bool
-{
-    return lhs.X > rhs.X && lhs.Y > rhs.Y;
-}
-func <=(lhs: Vector2, rhs: Vector2) -> Bool
-{
-    return !(lhs > rhs);
 }
 func <(lhs: Vector2, rhs: Vector2) -> Bool
 {
