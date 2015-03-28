@@ -89,16 +89,18 @@ class PolyDrawer
                 continue;
             }
             
-            let p = UnsafeMutablePointer<CGPoint>.alloc(poly.points.count + 1);
+            let c = poly.points.count == 2 ? poly.points.count : poly.points.count + 1;
             
-            for i in 0..<poly.points.count + 1
+            let p = UnsafeMutablePointer<CGPoint>.alloc(c);
+            
+            for i in 0..<c
             {
                 p[i] = poly.points[i % poly.points.count];
             }
             
-            CGPathAddLines(path, transform, p, UInt(poly.points.count + 1))
+            CGPathAddLines(path, transform, p, UInt(c))
             
-            p.dealloc(poly.points.count + 1);
+            p.dealloc(c);
             
             //let node = pool.poolShape(); //SKShapeNode(points: p, count: UInt(poly.points.count + 1));
             //node.path = path;
