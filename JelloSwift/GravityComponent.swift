@@ -12,7 +12,7 @@ import CoreGraphics
 class GravityComponent: BodyComponent
 {
     /// The gravity vector to apply to the body
-    var gravity: Vector2 = Vector2(0, -9.8);
+    final var gravity: Vector2 = Vector2(0, -9.8);
     
     override func accumulateExternalForces()
     {

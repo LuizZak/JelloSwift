@@ -12,10 +12,10 @@ import CoreGraphics
 class PressureComponent: BodyComponent
 {
     // PRIVATE VARIABLES
-    var volume: CGFloat = 0;
-    var gasAmmount: CGFloat = 0;
-    var normalList: [Vector2] = [];
-    var edgeLengthList: [CGFloat] = [];
+    final var volume: CGFloat = 0;
+    final var gasAmmount: CGFloat = 0;
+    final var normalList: [Vector2] = [];
+    final var edgeLengthList: [CGFloat] = [];
     
     override func prepare(body: Body)
     {
