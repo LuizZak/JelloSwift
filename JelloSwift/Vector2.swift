@@ -9,7 +9,7 @@
 import CoreGraphics
 
 /// Represents a 2D vector
-struct Vector2: Equatable, Printable, Comparable
+struct Vector2: Comparable, Printable
 {
     /// A zeroed-value Vector2
     static let Zero = Vector2(0, 0);
