@@ -285,21 +285,9 @@ final class Body: Equatable
         
         if(!isPined)
         {
-            // find the geometric center.
-            var center = Vector2.Zero;
-            var vel = Vector2.Zero;
-        
-            for p in pointMasses
-            {
-                center += p.position;
-                vel += p.velocity;
-            }
-        
-            center /= pointMasses.count;
-            vel /= pointMasses.count;
-        
-            derivedPos = center;
-            derivedVel = vel;
+            // Find the geometric center and average velocity
+            derivedPos = averageVectors(vertices);
+            derivedVel = averageVectors(pointMasses.map { $0.velocity });
         }
             
         if(freeRotate)
@@ -318,14 +306,7 @@ final class Body: Equatable
                 let baseNorm = baseShape.localVertices[i].normalized();
                 let curNorm  = (pm.position - derivedPos).normalized();
                 
-                var dot = baseNorm =* curNorm;
-                
-                if (dot > 1.0) { dot = 1.0; }
-                else if (dot < -1.0) { dot = -1.0; }
-                
-                var thisAngle = acos(dot);
-                
-                if (!vectorsAreCCW(baseNorm, curNorm)) { thisAngle = -thisAngle; }
+                var thisAngle = atan2(baseNorm.X * curNorm.Y - baseNorm.Y * curNorm.X, baseNorm =* curNorm);
                 
                 if (i == 0)
                 {
@@ -349,7 +330,7 @@ final class Body: Equatable
             angle /= CGFloat(c);
         
             derivedAngle = angle;
-        
+            
             // now calculate the derived Omega, based on change in angle over time.
             var angleChange = (derivedAngle - lastAngle);
         

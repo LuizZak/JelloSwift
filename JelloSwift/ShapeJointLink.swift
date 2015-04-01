@@ -111,8 +111,45 @@ class ShapeJointLink: JointLinkType
     /// Returns the average angle of the vertices of this ShapeJointLink, based on the body's original shape's vertices
     private func angle() -> CGFloat
     {
-        // find the average angle of all of the masses.
         var angle: CGFloat = 0;
+        
+        var originalSign: Int = 1;
+        var originalAngle: CGFloat = 0;
+        
+        for i in _indices
+        {
+            let pm = _body.pointMasses[i];
+            
+            let baseNorm = _body.baseShape.localVertices[i].normalized();
+            let curNorm  = (pm.position - _body.derivedPos).normalized();
+            
+            var thisAngle = atan2(baseNorm.X * curNorm.Y - baseNorm.Y * curNorm.X, baseNorm =* curNorm);
+            
+            if (i == 0)
+            {
+                originalSign = signbit(thisAngle);
+                originalAngle = thisAngle;
+            }
+            else
+            {
+                let diff = (thisAngle - originalAngle);
+                let thisSign = signbit(thisAngle);
+                
+                if (abs(diff) > PI && (thisSign != originalSign))
+                {
+                    thisAngle = (thisSign == -1) ? (PI + (PI + thisAngle)) : ((PI - thisAngle) - PI);
+                }
+            }
+            
+            angle += thisAngle;
+        }
+        
+        angle /= CGFloat(_pointMasses.count);
+        
+        return angle;
+        
+        // find the average angle of all of the masses.
+        /*var angle: CGFloat = 0;
         
         var originalSign: Int = 1;
         var originalAngle: CGFloat = 0;
@@ -154,6 +191,6 @@ class ShapeJointLink: JointLinkType
         
         angle /= CGFloat(_pointMasses.count);
         
-        return angle;
+        return angle;*/
     }
 }

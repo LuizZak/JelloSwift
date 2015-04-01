@@ -263,23 +263,16 @@ class GameScene: SKScene
         let start = toScreenCoords(joint.bodyLink1.position);
         let end = toScreenCoords(joint.bodyLink2.position);
         
-        let points = [CGPoint(v: start),
-                      CGPoint(v: end)];
+        let points = [CGPoint(v: start), CGPoint(v: end)];
         
         polyDrawer?.queuePoly(points, fillColor: 0xFFFFFFFF, strokeColor: 0xFFEEEEEE);
     }
     
     func drawBody(body: Body)
     {
-        var shapePoints = body.pointMasses;
-        var points = [CGPoint](count: shapePoints.count, repeatedValue: CGPoint());
+        var shapePoints = body.vertices;
         
-        for i in 0..<shapePoints.count
-        {
-            let vec = toScreenCoords(shapePoints[i].position);
-            
-            points[i] = CGPoint(x: vec.X, y: vec.Y);
-        }
+        let points = shapePoints.map { CGPoint(v: toScreenCoords($0)) };
         
         polyDrawer?.queuePoly(points, fillColor: 0xFFFFFFFF, strokeColor: 0xFF000000);
     }

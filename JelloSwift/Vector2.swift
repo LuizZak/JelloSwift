@@ -165,7 +165,7 @@ func vectorsAreCCW(A: Vector2, B: Vector2) -> Bool
 /// Averages a list of vectors into one normalized Vector2 point
 func averageVectors(vectors: [Vector2]) -> Vector2
 {
-    return (vectors.reduce(Vector2(), combine: +) / vectors.count).normalized();
+    return (vectors.reduce(Vector2(), combine: +) / vectors.count);
 }
 
 ////////
