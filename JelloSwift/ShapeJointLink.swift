@@ -135,13 +135,13 @@ class ShapeJointLink: JointLinkType
             
             if (i == 0)
             {
-                originalSign = (thisAngle >= 0.0) ? 1 : -1;
+                originalSign = signbit(thisAngle);
                 originalAngle = thisAngle;
             }
             else
             {
-                let diff: CGFloat = (thisAngle - originalAngle);
-                let thisSign: Int = (thisAngle >= 0.0) ? 1 : -1;
+                let diff = (thisAngle - originalAngle);
+                let thisSign = signbit(thisAngle);
                 
                 if (abs(diff) > PI && (thisSign != originalSign))
                 {

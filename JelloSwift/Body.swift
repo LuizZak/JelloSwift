@@ -321,7 +321,7 @@ final class Body: Equatable
                 var dot = baseNorm =* curNorm;
                 
                 if (dot > 1.0) { dot = 1.0; }
-                if (dot < -1.0) { dot = -1.0; }
+                else if (dot < -1.0) { dot = -1.0; }
                 
                 var thisAngle = acos(dot);
                 
@@ -329,13 +329,13 @@ final class Body: Equatable
                 
                 if (i == 0)
                 {
-                    originalSign = (thisAngle >= 0.0) ? 1 : -1;
+                    originalSign = signbit(thisAngle);
                     originalAngle = thisAngle;
                 }
                 else
                 {
-                    let diff: CGFloat = (thisAngle - originalAngle);
-                    let thisSign: Int = (thisAngle >= 0.0) ? 1 : -1;
+                    let diff = (thisAngle - originalAngle);
+                    let thisSign = signbit(thisAngle);
                     
                     if (abs(diff) > PI && (thisSign != originalSign))
                     {
@@ -345,8 +345,8 @@ final class Body: Equatable
                 
                 angle += thisAngle;
             }
-        
-            angle /= CGFloat(pointMasses.count);
+            
+            angle /= CGFloat(c);
         
             derivedAngle = angle;
         

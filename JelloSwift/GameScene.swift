@@ -422,23 +422,23 @@ class GameScene: SKScene
         
         // Points created in an external editor tool
         carShape.addVertex(x: -0.7937825232354604, y: -0.30250560258972364)
-        carShape.addVertex(x: -1.336418182150189, y: 0.09174228082403624)
-        carShape.addVertex(x: -2.007152743584187, y: 0.09174228082403624)
-        carShape.addVertex(x: -2.549788402498916, y: -0.30250560258972364)
+        carShape.addVertex(x: -1.336418182150189,  y: 0.09174228082403624)
+        carShape.addVertex(x: -2.007152743584187,  y: 0.09174228082403624)
+        carShape.addVertex(x: -2.549788402498916,  y: -0.30250560258972364)
         carShape.addVertex(x: -2.7570567806966455, y: -0.9404120779458979)
-        carShape.addVertex(x: -4.144927650095719, y: -0.9404120779458979)
-        carShape.addVertex(x: -4.144927650095719, y: 0.4418818905641408)
-        carShape.addVertex(x: -2.982614013609058, y: 1.4496338285486368)
+        carShape.addVertex(x: -4.144927650095719,  y: -0.9404120779458979)
+        carShape.addVertex(x: -4.144927650095719,  y: 0.4418818905641408)
+        carShape.addVertex(x: -2.982614013609058,  y: 1.4496338285486368)
         carShape.addVertex(x: -1.2336781172394489, y: 1.8443237218438626)
-        carShape.addVertex(x: 1.2758186165123433, y: 1.8443237218438626)
-        carShape.addVertex(x: 3.1062068496621604, y: 0.6077200296906478)
-        carShape.addVertex(x: 4.693548953434301, y: 0.29764251031080285)
-        carShape.addVertex(x: 4.422231123976936, y: -0.9404120779458979)
-        carShape.addVertex(x: 2.59178042860568, y: -0.9404120779458979)
-        carShape.addVertex(x: 2.3845120315923336, y: -0.3025056116022918)
-        carShape.addVertex(x: 1.8418764096417257, y: 0.09174231580466982)
-        carShape.addVertex(x: 1.1711418119107195, y: 0.09174231580466982) 
-        carShape.addVertex(x: 0.6285061899601116, y: -0.3025056116022918) 
+        carShape.addVertex(x: 1.2758186165123433,  y: 1.8443237218438626)
+        carShape.addVertex(x: 3.1062068496621604,  y: 0.6077200296906478)
+        carShape.addVertex(x: 4.693548953434301,   y: 0.29764251031080285)
+        carShape.addVertex(x: 4.422231123976936,   y: -0.9404120779458979)
+        carShape.addVertex(x: 2.59178042860568,    y: -0.9404120779458979)
+        carShape.addVertex(x: 2.3845120315923336,  y: -0.3025056116022918)
+        carShape.addVertex(x: 1.8418764096417257,  y: 0.09174231580466982)
+        carShape.addVertex(x: 1.1711418119107195,  y: 0.09174231580466982)
+        carShape.addVertex(x: 0.6285061899601116,  y: -0.3025056116022918)
         carShape.addVertex(x: 0.42123779294676533, y: -0.9404120779458979) 
         carShape.addVertex(x: -0.5865141450377307, y: -0.9404120779458979)
         
@@ -446,7 +446,7 @@ class GameScene: SKScene
         carShape.transformOwn(0, localScale: Vector2(0.65, 0.65));
         carShape.finish(recenter: true);
         
-        let carBody = Body(world: world, shape: carShape, pointMasses: [0.5], position: pos - Vector2(0, -0.4), angle: 0, scale: Vector2.One, kinematic: false, components: [SpringComponentCreator(shapeMatchingOn: true, edgeSpringK: 30, edgeSpringDamp: 10, shapeSpringK: 400, shapeSpringDamp: 10), GravityComponentCreator()]);
+        let carBody = Body(world: world, shape: carShape, pointMasses: [0.5], position: pos - Vector2(0, -0.4), angle: 0, scale: Vector2.One, kinematic: false, components: [SpringComponentCreator(shapeMatchingOn: true, edgeSpringK: 300, edgeSpringDamp: 10, shapeSpringK: 600, shapeSpringDamp: 40), GravityComponentCreator()]);
         
         // Create the left wheel constraint
         let ljWheel = BodyJointLink(body: leftWheel);

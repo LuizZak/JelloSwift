@@ -193,6 +193,7 @@ prefix func -(lhs: Vector2) -> Vector2
 }
 
 // DOT operator
+/// Calculates the dot product between two provided coordinates
 func =*(lhs: Vector2, rhs: Vector2) -> CGFloat
 {
     return lhs.X * rhs.X + lhs.Y * rhs.Y;
