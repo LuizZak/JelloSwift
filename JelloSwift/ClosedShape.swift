@@ -8,25 +8,31 @@
 
 import CoreGraphics
 
-// Contains a set of points that is equivalent as the internal shape of a sofy body
+/// Contains a set of points that is equivalent as the internal shape of a sofy body
 class ClosedShape
 {
     final var localVertices: [Vector2] = [];
     
-    // Start adding vertices to this closed shape.
-    // Calling this method will erase any existing verts
+    /// Start adding vertices to this closed shape.
+    /// Calling this method will erase any existing verts
     func begin()
     {
         localVertices = [];
     }
     
-    // Adds a vertex to this closed shape
+    /// Adds a vertex to this closed shape
     func addVertex(vertex: Vector2)
     {
         localVertices += vertex;
     }
     
-    // Finishes constructing this closed shape, and convert them to local space (by default)
+    /// Adds a vertex to this closed shape
+    func addVertex(#x: CGFloat, y: CGFloat)
+    {
+        addVertex(Vector2(x, y));
+    }
+    
+    /// Finishes constructing this closed shape, and convert them to local space (by default)
     func finish(recenter: Bool = true)
     {
         if(recenter)
@@ -49,7 +55,7 @@ class ClosedShape
         }
     }
     
-    // Transforms all vertices by the given angle and scale
+    /// Transforms all vertices by the given angle and scale
     func transformOwn(angleInRadians: CGFloat, localScale: Vector2)
     {
         for i in 0..<localVertices.count
