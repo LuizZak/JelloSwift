@@ -46,6 +46,7 @@ class GameScene: SKScene
     required init?(coder aDecoder: NSCoder)
     {
         super.init(coder: aDecoder);
+        
         self.polyDrawer = PolyDrawer(scene: self);
     }
     
@@ -91,7 +92,7 @@ class GameScene: SKScene
         box3.freeRotate = false;
         
         // Create a pinned box in the middle of the level
-        var pinnedBox = createBox(toWorldCoords(Vector2(size.width / 2, size.height / 2)), size: Vector2(1, 1), pinned: true);
+        let pinnedBox = createBox(toWorldCoords(Vector2(size.width / 2, size.height / 2)), size: Vector2(1, 1), pinned: true);
         // Increase the velocity damping of the pinned box so it doesn't jiggles around nonstop
         pinnedBox.velDamping = 0.99;
         
@@ -103,15 +104,17 @@ class GameScene: SKScene
         createLinkedBouncyBalls(toWorldCoords(Vector2(size.width / 2, size.height * 0.65)));
         createBallBoxLinkedStructure(toWorldCoords(Vector2(size.width * 0.8, size.height * 0.8)));
         createScaleStructure(toWorldCoords(Vector2(size.width * 0.4, size.height * 0.8)));
+        createCarStructure(toWorldCoords(Vector2(size.width * 0.55, size.height * 0.8)));
+        createBox(toWorldCoords(Vector2(size.width * 0.6, size.height * 0.7)), size: Vector2(4, 0.5), isStatic: true, angle: -0.1);
         
         // Create the ground box
         var box = ClosedShape();
         box.begin();
-        box.addVertex(Vector2(-10,  1));
+        box.addVertex(Vector2(-10,   1));
         box.addVertex(Vector2( 0,  0.6)); // A little inward slope
-        box.addVertex(Vector2( 10,  1));
-        box.addVertex(Vector2( 10, -1));
-        box.addVertex(Vector2(-10, -1));
+        box.addVertex(Vector2( 10,   1));
+        box.addVertex(Vector2( 10,  -1));
+        box.addVertex(Vector2(-10,  -1));
         box.finish();
         
         var platform = Body(world: world, shape: box, pointMasses: [CGFloat.infinity], position: toWorldCoords(Vector2(size.width / 2, 150)));
@@ -282,7 +285,7 @@ class GameScene: SKScene
     }
     
     /// Creates a box at the specified world coordinates with the specified size
-    func createBox(pos: Vector2, size: Vector2, pinned: Bool = false, kinematic: Bool = false) -> Body
+    func createBox(pos: Vector2, size: Vector2, pinned: Bool = false, kinematic: Bool = false, isStatic: Bool = false, angle: CGFloat = 0) -> Body
     {
         // Create the closed shape for the box's physics body
         var shape = ClosedShape();
@@ -292,6 +295,8 @@ class GameScene: SKScene
         shape.addVertex(Vector2( size.X, -size.Y));
         shape.addVertex(Vector2(-size.X, -size.Y));
         shape.finish();
+        
+        shape.transformOwn(angle, localScale: Vector2.One);
         
         var comps = [BodyComponentCreator]();
         
@@ -305,7 +310,7 @@ class GameScene: SKScene
             comps += GravityComponentCreator();
         }
         
-        let body = Body(world: world, shape: shape, pointMasses: [0.5], kinematic: kinematic, position: pos, components: comps)
+        let body = Body(world: world, shape: shape, pointMasses: [isStatic ? CGFloat.infinity : 0.5], kinematic: kinematic, position: pos, components: comps)
         body.isPined = pinned;
         
         // In order to have the box behave correctly, we need to add some internal springs to the body
@@ -402,5 +407,60 @@ class GameScene: SKScene
         // Enable collision between the bodies
         joint1.allowCollisions = true;
         joint2.allowCollisions = true;
+    }
+    
+    /// Creates a car structure
+    func createCarStructure(pos: Vector2)
+    {
+        let leftWheel  = createBouncyBall(pos + Vector2(-1.1, -0.5), pinned: false, kinematic: false, radius: 0.5, mass: 0.5);
+        let rightWheel = createBouncyBall(pos + Vector2( 1.1, -0.5), pinned: false, kinematic: false, radius: 0.5, mass: 0.5);
+    
+        let carShape = ClosedShape();
+        
+        // Add the car shape vertices
+        carShape.begin();
+        
+        // Points created in an external editor tool
+        carShape.addVertex(x: -0.7937825232354604, y: -0.30250560258972364)
+        carShape.addVertex(x: -1.336418182150189, y: 0.09174228082403624)
+        carShape.addVertex(x: -2.007152743584187, y: 0.09174228082403624)
+        carShape.addVertex(x: -2.549788402498916, y: -0.30250560258972364)
+        carShape.addVertex(x: -2.7570567806966455, y: -0.9404120779458979)
+        carShape.addVertex(x: -4.144927650095719, y: -0.9404120779458979)
+        carShape.addVertex(x: -4.144927650095719, y: 0.4418818905641408)
+        carShape.addVertex(x: -2.982614013609058, y: 1.4496338285486368)
+        carShape.addVertex(x: -1.2336781172394489, y: 1.8443237218438626)
+        carShape.addVertex(x: 1.2758186165123433, y: 1.8443237218438626)
+        carShape.addVertex(x: 3.1062068496621604, y: 0.6077200296906478)
+        carShape.addVertex(x: 4.693548953434301, y: 0.29764251031080285)
+        carShape.addVertex(x: 4.422231123976936, y: -0.9404120779458979)
+        carShape.addVertex(x: 2.59178042860568, y: -0.9404120779458979)
+        carShape.addVertex(x: 2.3845120315923336, y: -0.3025056116022918)
+        carShape.addVertex(x: 1.8418764096417257, y: 0.09174231580466982)
+        carShape.addVertex(x: 1.1711418119107195, y: 0.09174231580466982) 
+        carShape.addVertex(x: 0.6285061899601116, y: -0.3025056116022918) 
+        carShape.addVertex(x: 0.42123779294676533, y: -0.9404120779458979) 
+        carShape.addVertex(x: -0.5865141450377307, y: -0.9404120779458979)
+        
+        // Scale down
+        carShape.transformOwn(0, localScale: Vector2(0.65, 0.65));
+        carShape.finish(recenter: true);
+        
+        let carBody = Body(world: world, shape: carShape, pointMasses: [0.5], position: pos - Vector2(0, -0.4), angle: 0, scale: Vector2.One, kinematic: false, components: [SpringComponentCreator(shapeMatchingOn: true, edgeSpringK: 30, edgeSpringDamp: 10, shapeSpringK: 400, shapeSpringDamp: 10), GravityComponentCreator()]);
+        
+        // Create the left wheel constraint
+        let ljWheel = BodyJointLink(body: leftWheel);
+        let ljCar = ShapeJointLink(body: carBody, pointMassIndexes: [19, 0, 1, 2, 3, 4]);
+        ljCar.offset = Vector2(0, -0.6);
+        
+        let leftJoint = SpringBodyJoint(world: world, link1: ljWheel, link2: ljCar, springK: 100, springD: 1, distance: 0);
+        leftJoint.allowCollisions = true;
+        
+        let rjWheel = BodyJointLink(body: rightWheel);
+        let rjCar = ShapeJointLink(body: carBody, pointMassIndexes: [13, 14, 15, 16, 17, 18]);
+        rjCar.offset = Vector2(0, -0.6);
+        
+        let rightJoint = SpringBodyJoint(world: world, link1: rjWheel, link2: rjCar, springK: 100, springD: 1, distance: 0);
+        rightJoint.allowCollisions = true;
     }
 }
