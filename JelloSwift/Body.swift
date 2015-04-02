@@ -179,18 +179,20 @@ final class Body: Equatable
     /// :param: forceUpdate Whether to force the update of the body, even if it's a static body
     func updateAABB(elapsed: CGFloat, forceUpdate: Bool)
     {
-        if(isStatic || forceUpdate)
+        if(!isStatic && !forceUpdate)
         {
-            aabb.clear();
+            return;
+        }
+        
+        aabb.clear();
+        
+        for point in pointMasses
+        {
+            aabb.expandToInclude(point.position);
             
-            for point in pointMasses
+            if(!isStatic)
             {
-                aabb.expandToInclude(point.position);
-                
-                if(!isStatic)
-                {
-                    aabb.expandToInclude(point.position + point.velocity * elapsed);
-                }
+                aabb.expandToInclude(point.position + point.velocity * elapsed);
             }
         }
     }
@@ -256,9 +258,9 @@ final class Body: Equatable
     {
         baseShape.transformVertices(&globalShape, worldPos: pos, angleInRadians: angle, localScale: scale);
         
-        for i in 0..<pointMasses.count
+        for (i, pm) in enumerate(pointMasses)
         {
-            pointMasses[i].position = globalShape[i];
+            pm.position = globalShape[i];
         }
         
         derivedPos = pos;
@@ -299,10 +301,8 @@ final class Body: Equatable
             var originalAngle: CGFloat = 0;
             
             let c = pointMasses.count;
-            for i in 0..<c
+            for (i, pm) in enumerate(pointMasses)
             {
-                let pm = pointMasses[i];
-                
                 let baseNorm = baseShape.localVertices[i].normalized();
                 let curNorm  = (pm.position - derivedPos).normalized();
                 
@@ -380,9 +380,9 @@ final class Body: Equatable
             return;
         }
         
-        for c in 0..<pointMasses.count
+        for point in pointMasses
         {
-            pointMasses[c].integrate(elapsed);
+            point.integrate(elapsed);
         }
     }
     
@@ -409,11 +409,9 @@ final class Body: Equatable
         }
         
         // Accelerate the body
-        for var i = 0; i < pointMasses.count; i++
+        for pm in pointMasses
         {
-            var pm:PointMass = pointMasses[i];
-            
-            var diff = (pm.position - derivedPos).normalized().perpendicular();
+            let diff = (pm.position - derivedPos).normalized().perpendicular();
             
             pm.applyForce(diff * force);
         }
@@ -428,11 +426,9 @@ final class Body: Equatable
         }
         
         // Accelerate the body
-        for var i = 0; i < pointMasses.count; i++
+        for pm in pointMasses
         {
-            let pm:PointMass = pointMasses[i];
-            
-            var diff = (pm.position - derivedPos).normalized().perpendicular();
+            let diff = (pm.position - derivedPos).normalized().perpendicular();
             
             pm.velocity = diff * vel;
         }
@@ -447,11 +443,9 @@ final class Body: Equatable
         }
         
         // Accelerate the body
-        for var i = 0; i < pointMasses.count; i++
+        for pm in pointMasses
         {
-            let pm:PointMass = pointMasses[i];
-            
-            var diff = (pm.position - derivedPos).normalized().perpendicular();
+            let diff = (pm.position - derivedPos).normalized().perpendicular();
             
             pm.velocity += diff * vel;
         }
@@ -475,20 +469,13 @@ final class Body: Equatable
         // line we are testing against goes from pt -> endPt.
         var inside = false;
         
-        // TODO: Use a foreach instead of a simple for loop to quicken up the iteration of the point masses
-        let c = pointMasses.count;
-        var edgeSt = pointMasses[c - 1].position;
-        
+        var edgeSt = pointMasses.last!.position;
         var edgeEnd = Vector2.Zero;
         
-        //for p in pointMasses
-        for var i = 0; i < c; i++
+        for p in pointMasses
         {
-            //let p = pointMasses[i];
-            edgeEnd = pointMasses[i].position;
-            
             // the current edge is defined as the line from edgeSt -> edgeEnd.
-            //edgeEnd = p.position;
+            edgeEnd = p.position;
             
             // perform check now...
             if (((edgeSt.Y <= pt.Y) && (edgeEnd.Y > pt.Y)) || ((edgeSt.Y > pt.Y) && (edgeEnd.Y <= pt.Y)))
@@ -538,9 +525,9 @@ final class Body: Equatable
         var p2 = Vector2();
         var ua: CGFloat = 0;
         var ub: CGFloat = 0;
-        for i in 0..<pointMasses.count
+        for (i, pm) in enumerate(pointMasses)
         {
-            p1 = pointMasses[i].position;
+            p1 = pm.position;
             p2 = pointMasses[(i + 1) % pointMasses.count].position;
             
             if(lineIntersect(start, end, p1, p2, &p, &ua, &ub))
@@ -556,11 +543,7 @@ final class Body: Equatable
     func raycast(pt1: Vector2, _ pt2: Vector2, inout _ res: Vector2?, inout _ rayAABB: AABB?) -> Bool
     {
         // Create and test against a temporary line AABB
-        if let raabb = rayAABB
-        {
-            
-        }
-        else
+        if (rayAABB == nil)
         {
             rayAABB = AABB(points: [pt1, pt2]);
         }
@@ -581,9 +564,9 @@ final class Body: Equatable
         
         res = pt2;
         
-        for i in 0..<c
+        for (i, pm) in enumerate(pointMasses)
         {
-            p1 = pointMasses[i].position;
+            p1 = pm.position;
             p2 = pointMasses[(i + 1) % c].position;
             
             if(lineIntersect(pt1, pt2, p1, p2, &p, &ua, &ub))
@@ -698,7 +681,8 @@ final class Body: Equatable
         
         var closestD = CGFloat.max;
         
-        for i in 0..<pointMasses.count
+        let c = pointMasses.count;
+        for i in 0..<c
         {
             var tempHit = Vector2();
             var tempNorm = Vector2();
@@ -710,15 +694,7 @@ final class Body: Equatable
             {
                 closestD = dist;
                 pointA = i;
-                
-                if(i < (pointMasses.count - 1))
-                {
-                    pointB = i + 1;
-                }
-                else
-                {
-                    pointB = 0;
-                }
+                pointB = (i + 1) % c;
                 
                 edgeD = tempEdgeD;
                 normal = tempNorm;
@@ -759,9 +735,8 @@ final class Body: Equatable
         var closestAdotB: CGFloat = 0;
         var closestD: CGFloat = CGFloat.infinity;
         
-        for i in 0..<pointMasses.count
+        for (i, pm) in enumerate(pointMasses)
         {
-            let pm = pointMasses[i];
             let pm2 = pointMasses[(i + 1) % pointMasses.count];
             let len = (pm.position - pm2.position).magnitude();
             

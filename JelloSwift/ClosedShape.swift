@@ -38,51 +38,29 @@ class ClosedShape
         if(recenter)
         {
             // Find the average location of all the vertices
-            var center = Vector2.Zero;
+            var center = averageVectors(localVertices);
             
-            for vertex in localVertices
-            {
-                center += vertex;
-            }
-            
-            center /= localVertices.count;
-            
-            // Subtract the center from all the elements
-            for i in 0..<localVertices.count
-            {
-                localVertices[i] -= center;
-            }
+            localVertices = localVertices.map { $0 - center };
         }
     }
     
     /// Transforms all vertices by the given angle and scale
     func transformOwn(angleInRadians: CGFloat, localScale: Vector2)
     {
-        for i in 0..<localVertices.count
-        {
-            localVertices[i] = rotateVector(localVertices[i] * localScale, angleInRadians);
-        }
+        localVertices = localVertices.map { rotateVector($0 * localScale, angleInRadians) };
     }
     
     /// Gets a new list of vertices, transformed by the given position, angle, and scale.
     /// transformation is applied in the following order:  scale -> rotation -> position.
-    func transformVertices(worldPos: Vector2, angleInRadians: CGFloat, localScale: Vector2 = Vector2(1, 1)) -> [Vector2]
+    func transformVertices(worldPos: Vector2, angleInRadians: CGFloat, localScale: Vector2 = Vector2.One) -> [Vector2]
     {
-        let count = localVertices.count;
-        var ret: [Vector2] = [Vector2](count: count, repeatedValue: Vector2());
-        
-        for var i = 0; i < count; i++
-        {
-            ret[i] = rotateVector(localVertices[i] * localScale, angleInRadians) + worldPos;
-        }
-        
-        return ret;
+        return localVertices.map { rotateVector($0 * localScale, angleInRadians) + worldPos };
     }
     
     /// Transforms the points on this closed shape into the given array of points.
     /// The array of points must have the same count of vertices as this closed shape
     /// transformation is applied in the following order:  scale -> rotation -> position.
-    func transformVertices(inout target:[Vector2], worldPos: Vector2, angleInRadians: CGFloat, localScale: Vector2 = Vector2(1, 1))
+    func transformVertices(inout target:[Vector2], worldPos: Vector2, angleInRadians: CGFloat, localScale: Vector2 = Vector2.One)
     {
         for (i, l) in enumerate(localVertices)
         {

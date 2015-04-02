@@ -295,11 +295,9 @@ class World
         }
         
         let c = bodies.count;
-        for i in 0..<c
+        for (i, body1) in enumerate(bodies)
         {
-            let body1 = bodies[i];
-            
-            for j in (i+1)..<c
+            for j in (i + 1)..<c
             {
                 let body2 = bodies[j];
                 
@@ -370,12 +368,12 @@ class World
     /// Checks collision between two bodies, and store the collision information if they do
     func bodyCollide(bA: Body, _ bB: Body)
     {
-        var bApCount = bA.pointMasses.count;
-        var bBpCount = bB.pointMasses.count;
+        let bApCount = bA.pointMasses.count;
+        let bBpCount = bB.pointMasses.count;
         
-        for i in 0..<bApCount
+        for (i, pmA) in enumerate(bA.pointMasses)
         {
-            let pt = bA.pointMasses[i].position;
+            let pt = pmA.position;
             
             // early out - if this point is not inside bodyB, skip it!
             if (!bB.contains(pt))
@@ -383,7 +381,7 @@ class World
                 continue;
             }
             
-            let prevPt: Int = (i > 0) ? i - 1 : bApCount - 1;
+            let prevPt = (i > 0) ? i - 1 : bApCount - 1;
             
             let prev = bA.pointMasses[prevPt].position;
             let next = bA.pointMasses[(i + 1) % bApCount].position;
@@ -493,11 +491,8 @@ class World
     /// Solves the collisions between bodies
     func handleCollisions()
     {
-        let c = collisionList.count;
-        for var i = 0; i < c; i++
+        for info in collisionList
         {
-            let info = collisionList[i];
-            
             if(info.bodyA == nil || info.bodyB == nil)
             {
                 continue;

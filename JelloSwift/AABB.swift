@@ -68,8 +68,8 @@ final class AABB
     
     func clear()
     {
-        self.minimum = Vector2();
-        self.maximum = Vector2();
+        self.minimum = Vector2.Zero;
+        self.maximum = Vector2.Zero;
         
         validity = PointValidity.Invalid;
     }
@@ -124,6 +124,11 @@ final class AABB
     
     func intersects(box: AABB) -> Bool
     {
+        if(self.validity == .Invalid || box.validity == .Invalid)
+        {
+            return false;
+        }
+        
         return self.minimum <= box.maximum && self.maximum >= box.minimum;
     }
 }
