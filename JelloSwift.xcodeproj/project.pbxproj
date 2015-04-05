@@ -31,7 +31,6 @@
 		A07D54711997E4EE003C9669 /* PointMassTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A07D54701997E4EE003C9669 /* PointMassTests.swift */; };
 		A081CFE21996B04D00C7CA49 /* PolyDrawer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A081CFE11996B04D00C7CA49 /* PolyDrawer.swift */; };
 		A08E5FA31AA8B56700F4CA0F /* ClosedShapeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08E5FA21AA8B56700F4CA0F /* ClosedShapeTests.swift */; };
-		A09CC4961A251A880073BB62 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C954EE199329130066F88F /* GameScene.swift */; };
 		A09CC4971A251A880073BB62 /* AABB.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C95510199336460066F88F /* AABB.swift */; };
 		A09CC4981A251A880073BB62 /* PointMass.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C9550E199333D30066F88F /* PointMass.swift */; };
 		A09CC4991A251A880073BB62 /* GeomUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C9553519946BA00066F88F /* GeomUtils.swift */; };
@@ -44,7 +43,6 @@
 		A09CC4A01A251A880073BB62 /* PressureComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06EC150199FDB2300402D4C /* PressureComponent.swift */; };
 		A09CC4A11A251A880073BB62 /* PolyDrawer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A081CFE11996B04D00C7CA49 /* PolyDrawer.swift */; };
 		A09CC4A21A251A880073BB62 /* Bitmask.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C9551919933D9B0066F88F /* Bitmask.swift */; };
-		A09CC4A31A251A880073BB62 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C954F0199329130066F88F /* GameViewController.swift */; };
 		A09CC4A41A251A880073BB62 /* BodyComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06EC14E199FD4EE00402D4C /* BodyComponent.swift */; };
 		A09CC4A51A251A880073BB62 /* Body.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C9552B1993BC150066F88F /* Body.swift */; };
 		A09CC4A61A251A880073BB62 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C95525199344390066F88F /* Utils.swift */; };
@@ -54,7 +52,6 @@
 		A09CC4AA1A251A880073BB62 /* World.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C9552E1993BFA50066F88F /* World.swift */; };
 		A09CC4AB1A251A880073BB62 /* ClosedShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C95522199343DF0066F88F /* ClosedShape.swift */; };
 		A09CC4AE1A251A880073BB62 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A0C954F5199329130066F88F /* Images.xcassets */; };
-		A09CC4AF1A251A880073BB62 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = A0C954EC199329130066F88F /* GameScene.sks */; };
 		A09CC4B01A251A880073BB62 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A0C954F2199329130066F88F /* Main.storyboard */; };
 		A0A4B4D31AC6405B0097AFDC /* SpringBodyJoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0510AFB1AAA543E00C03017 /* SpringBodyJoint.swift */; };
 		A0A4B4D41AC6405E0097AFDC /* BodyJoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0510AEC1AAA341C00C03017 /* BodyJoint.swift */; };
@@ -62,10 +59,9 @@
 		A0A4B4D81AC640640097AFDC /* ShapeJointLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0510B001AAA573B00C03017 /* ShapeJointLink.swift */; };
 		A0A4B4DA1AC6406C0097AFDC /* PointJointLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0510AF01AAA41D700C03017 /* PointJointLink.swift */; };
 		A0A4B4DB1AC6406C0097AFDC /* EdgeJointLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0510AF21AAA466D00C03017 /* EdgeJointLink.swift */; };
+		A0B015711AD1D57E00340465 /* DemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B015701AD1D57E00340465 /* DemoViewController.swift */; };
+		A0B015721AD1D57E00340465 /* DemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B015701AD1D57E00340465 /* DemoViewController.swift */; };
 		A0C954EB199329130066F88F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C954EA199329130066F88F /* AppDelegate.swift */; };
-		A0C954ED199329130066F88F /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = A0C954EC199329130066F88F /* GameScene.sks */; };
-		A0C954EF199329130066F88F /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C954EE199329130066F88F /* GameScene.swift */; };
-		A0C954F1199329130066F88F /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C954F0199329130066F88F /* GameViewController.swift */; };
 		A0C954F4199329130066F88F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A0C954F2199329130066F88F /* Main.storyboard */; };
 		A0C954F6199329130066F88F /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A0C954F5199329130066F88F /* Images.xcassets */; };
 		A0C95502199329130066F88F /* JelloSwiftTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C95501199329130066F88F /* JelloSwiftTests.swift */; };
@@ -141,12 +137,10 @@
 		A08E5FA21AA8B56700F4CA0F /* ClosedShapeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClosedShapeTests.swift; sourceTree = "<group>"; };
 		A09CC4B41A251A880073BB62 /* JelloSwift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JelloSwift.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A09CC4B51A251A880073BB62 /* JelloSwiftStressTest-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "JelloSwiftStressTest-Info.plist"; path = "/Users/luizfernandosilva/Documents/Projetos/Jogos/Engines/JelloSwift/JelloSwiftStressTest-Info.plist"; sourceTree = "<absolute>"; };
+		A0B015701AD1D57E00340465 /* DemoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DemoViewController.swift; sourceTree = "<group>"; };
 		A0C954E5199329130066F88F /* JelloSwift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JelloSwift.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A0C954E9199329130066F88F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A0C954EA199329130066F88F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		A0C954EC199329130066F88F /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
-		A0C954EE199329130066F88F /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
-		A0C954F0199329130066F88F /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
 		A0C954F3199329130066F88F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		A0C954F5199329130066F88F /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		A0C954FB199329130066F88F /* JelloSwiftTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JelloSwiftTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -267,9 +261,7 @@
 				A081CFE01996B00200C7CA49 /* DrawingUtils */,
 				A0C9550B199329180066F88F /* Jello */,
 				A0C954EA199329130066F88F /* AppDelegate.swift */,
-				A0C954EC199329130066F88F /* GameScene.sks */,
-				A0C954EE199329130066F88F /* GameScene.swift */,
-				A0C954F0199329130066F88F /* GameViewController.swift */,
+				A0B015701AD1D57E00340465 /* DemoViewController.swift */,
 				A0C954F2199329130066F88F /* Main.storyboard */,
 				A0C954F5199329130066F88F /* Images.xcassets */,
 				A0C954E8199329130066F88F /* Supporting Files */,
@@ -440,7 +432,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				A09CC4AE1A251A880073BB62 /* Images.xcassets in Resources */,
-				A09CC4AF1A251A880073BB62 /* GameScene.sks in Resources */,
 				A09CC4B01A251A880073BB62 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -450,7 +441,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				A0C954F6199329130066F88F /* Images.xcassets in Resources */,
-				A0C954ED199329130066F88F /* GameScene.sks in Resources */,
 				A0C954F4199329130066F88F /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -469,7 +459,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A09CC4961A251A880073BB62 /* GameScene.swift in Sources */,
 				A09CC4971A251A880073BB62 /* AABB.swift in Sources */,
 				A09CC4981A251A880073BB62 /* PointMass.swift in Sources */,
 				A0510AF61AAA4BCC00C03017 /* EdgeJointLink.swift in Sources */,
@@ -486,7 +475,6 @@
 				A0510AEF1AAA404300C03017 /* BodyJoint.swift in Sources */,
 				A09CC4A11A251A880073BB62 /* PolyDrawer.swift in Sources */,
 				A09CC4A21A251A880073BB62 /* Bitmask.swift in Sources */,
-				A09CC4A31A251A880073BB62 /* GameViewController.swift in Sources */,
 				A0510AFA1AAA4FED00C03017 /* BodyJointLink.swift in Sources */,
 				A09CC4A41A251A880073BB62 /* BodyComponent.swift in Sources */,
 				A09CC4A51A251A880073BB62 /* Body.swift in Sources */,
@@ -496,6 +484,7 @@
 				A09CC4A91A251A880073BB62 /* AppDelegate.swift in Sources */,
 				A09CC4AA1A251A880073BB62 /* World.swift in Sources */,
 				A09CC4AB1A251A880073BB62 /* ClosedShape.swift in Sources */,
+				A0B015721AD1D57E00340465 /* DemoViewController.swift in Sources */,
 				A0510AF71AAA4C9000C03017 /* PointJointLink.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -504,7 +493,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A0C954EF199329130066F88F /* GameScene.swift in Sources */,
 				A0C95511199336460066F88F /* AABB.swift in Sources */,
 				A0C9550F199333D30066F88F /* PointMass.swift in Sources */,
 				A0C9553619946BA00066F88F /* GeomUtils.swift in Sources */,
@@ -523,7 +511,6 @@
 				A081CFE21996B04D00C7CA49 /* PolyDrawer.swift in Sources */,
 				A0C9551A19933D9B0066F88F /* Bitmask.swift in Sources */,
 				A0510AF91AAA4FED00C03017 /* BodyJointLink.swift in Sources */,
-				A0C954F1199329130066F88F /* GameViewController.swift in Sources */,
 				A06EC14F199FD4EE00402D4C /* BodyComponent.swift in Sources */,
 				A0C9552C1993BC150066F88F /* Body.swift in Sources */,
 				A0C95526199344390066F88F /* Utils.swift in Sources */,
@@ -531,6 +518,7 @@
 				A0C9551D199340BD0066F88F /* Vector3.swift in Sources */,
 				A0C954EB199329130066F88F /* AppDelegate.swift in Sources */,
 				A0C9552F1993BFA50066F88F /* World.swift in Sources */,
+				A0B015711AD1D57E00340465 /* DemoViewController.swift in Sources */,
 				A0C95523199343DF0066F88F /* ClosedShape.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

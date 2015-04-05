@@ -1,25 +1,34 @@
 //
-//  GameScene.swift
+//  DemoViewController.swift
 //  JelloSwift
 //
-//  Created by Luiz Fernando Silva on 07/08/14.
-//  Copyright (c) 2014 Luiz Fernando Silva. All rights reserved.
+//  Created by Luiz Fernando Silva on 05/04/15.
+//  Copyright (c) 2015 Luiz Fernando Silva. All rights reserved.
 //
 
-import SpriteKit
+import UIKit
 
-/// Enum used to modify the input mode of the test simulation
-enum InputMode: Int
+class DemoViewController: UIViewController
 {
-    /// Creates a jiggly ball under the finger on tap
-    case CreateBall
-    /// Allows dragging bodies around
-    case DragBody
+    override func viewDidLoad()
+    {
+        super.viewDidLoad()
+        
+        var demo = DemoView(frame: self.view.frame);
+        view.addSubview(demo);
+    }
+
+    override func didReceiveMemoryWarning()
+    {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
 }
 
-class GameScene: SKScene
+class DemoView: UIView
 {
     var world: World = World();
+    var timer: CADisplayLink! = nil;
     var polyDrawer: PolyDrawer? = nil;
     
     var inputMode: InputMode = InputMode.DragBody;
@@ -30,42 +39,32 @@ class GameScene: SKScene
     // The location of the user's finger, in physics world coordinates
     var fingerLocation: Vector2 = Vector2.Zero;
     
-    // Shape node used to display the dragging of a body
-    var dragShape: SKShapeNode = SKShapeNode();
-    
-    required override init()
+    override init(frame: CGRect)
     {
-        super.init();
+        super.init(frame: frame);
+        
+        // Do any additional setup after loading the view.
+        timer = CADisplayLink(target: self, selector: Selector("gameLoop"))
+        timer.addToRunLoop(NSRunLoop.mainRunLoop(), forMode: NSDefaultRunLoopMode)
+        
+        polyDrawer = PolyDrawer(view: self);
+        
+        initializeLevel();
+        
+        renderingOffset = Vector2(300, frame.size.height);
+        renderingScale = Vector2(renderingScale.X, -renderingScale.Y);
+        
+        opaque = false;
     }
-    
-    required override init(size: CGSize)
-    {
-        super.init(size: size);
-    }
-    
-    required init?(coder aDecoder: NSCoder)
+
+    required init(coder aDecoder: NSCoder)
     {
         super.init(coder: aDecoder);
-        
-        self.polyDrawer = PolyDrawer(scene: self);
-    }
-    
-    // The last update time interval tick. Used to calculate a delta time (time difference) between frames
-    private var _lastUpdateTimeInterval: NSTimeInterval = 0;
-    
-    override func didMoveToView(view: SKView)
-    {
-        initializeLevel();
     }
     
     func initializeLevel()
     {
-        // Create the drag shape
-        dragShape.lineWidth = 2;
-        dragShape.strokeColor = SKColor.blackColor();
-        dragShape.lineCap = kCGLineCapRound;
-        
-        addChild(dragShape);
+        var size = self.frame.size;
         
         // Create basic shapes
         var vec = toWorldCoords(Vector2(size.width, 400) / 2);
@@ -128,7 +127,7 @@ class GameScene: SKScene
         {
             for touch: AnyObject in touches
             {
-                let location = touch.locationInNode(self)
+                let location = touch.locationInView(self)
                 
                 let vecLoc = toWorldCoords(Vector2(location.x, location.y));
                 
@@ -139,7 +138,7 @@ class GameScene: SKScene
         {
             // Select the closest point-mass to drag
             let touch: AnyObject = touches.first!;
-            let location = touch.locationInNode(self);
+            let location = touch.locationInView(self);
             fingerLocation = toWorldCoords(Vector2(location.x, location.y));
             
             var closest: PointMass? = nil;
@@ -165,7 +164,7 @@ class GameScene: SKScene
     override func touchesMoved(touches: Set<NSObject>, withEvent event: UIEvent)
     {
         let touch: AnyObject = touches.first!;
-        let location = touch.locationInNode(self);
+        let location = touch.locationInView(self);
         fingerLocation = toWorldCoords(Vector2(location.x, location.y));
     }
     
@@ -175,21 +174,17 @@ class GameScene: SKScene
         draggingPoint = nil;
     }
     
-    override func update(currentTime: NSTimeInterval)
+    // Only override drawRect: if you perform custom drawing.
+    // An empty implementation adversely affects performance during animation.
+    override func drawRect(rect: CGRect)
     {
-        // Handle time delta.
-        // If we drop below 60fps, we still want everything to move the same distance.
-        var timeSinceLast = currentTime - self._lastUpdateTimeInterval;
-        self._lastUpdateTimeInterval = currentTime;
-        
-        if (timeSinceLast > 1)
-        {
-            // more than a second since last update
-            timeSinceLast = 1.0 / 60.0;
-            self._lastUpdateTimeInterval = currentTime;
-        }
-        
-        self.updateWithTimeSinceLastUpdate(timeSinceLast);
+        // Drawing code
+        render();
+    }
+    
+    func update()
+    {
+        updateWithTimeSinceLastUpdate(1.0 / 60);
     }
     
     func updateWithTimeSinceLastUpdate(timeSinceLast: CFTimeInterval)
@@ -203,22 +198,6 @@ class GameScene: SKScene
         {
             world.update(1.0 / 200);
         }
-        
-        self.polyDrawer?.reset();
-        
-        for joint in world.joints
-        {
-            drawJoint(joint);
-        }
-        for body in world.bodies
-        {
-            drawBody(body);
-        }
-        
-        self.polyDrawer?.renderPolys();
-        
-        // Draw the drag line
-        drawDrag();
     }
     
     // Updates the dragging functionality
@@ -233,8 +212,38 @@ class GameScene: SKScene
         }
     }
     
+    func render()
+    {
+        var context = UIGraphicsGetCurrentContext();
+        
+        self.polyDrawer?.reset();
+        
+        for joint in world.joints
+        {
+            drawJoint(joint);
+        }
+        for body in world.bodies
+        {
+            drawBody(body);
+        }
+        
+        polyDrawer?.renderOnContext(context);
+        polyDrawer?.reset();
+        
+        drawDrag(context);
+    }
+    
+    func gameLoop()
+    {
+        autoreleasepool {
+            self.update();
+            self.setNeedsDisplay();
+            //self.render();
+        }
+    }
+    
     /// Renders the dragging shape line
-    func drawDrag()
+    func drawDrag(context: CGContextRef)
     {
         // Dragging point
         if let p = draggingPoint where inputMode == InputMode.DragBody
@@ -248,13 +257,8 @@ class GameScene: SKScene
             CGPathMoveToPoint(path, nil, lineStart.X, lineStart.Y);
             CGPathAddLineToPoint(path, nil, lineEnd.X, lineEnd.Y);
             
-            dragShape.path = path;
-            
-            dragShape.hidden = false;
-        }
-        else
-        {
-            dragShape.hidden = true;
+            CGContextAddPath(context, path);
+            CGContextDrawPath(context, kCGPathStroke);
         }
     }
     
@@ -419,7 +423,7 @@ class GameScene: SKScene
     {
         let leftWheel  = createBouncyBall(pos + Vector2(-1.1, -0.5), pinned: false, kinematic: false, radius: 0.5, mass: 0.5);
         let rightWheel = createBouncyBall(pos + Vector2( 1.1, -0.5), pinned: false, kinematic: false, radius: 0.5, mass: 0.5);
-    
+        
         let carShape = ClosedShape();
         
         // Add the car shape vertices
@@ -444,7 +448,7 @@ class GameScene: SKScene
         carShape.addVertex(x: 1.8418764096417257,  y: 0.09174231580466982)
         carShape.addVertex(x: 1.1711418119107195,  y: 0.09174231580466982)
         carShape.addVertex(x: 0.6285061899601116,  y: -0.3025056116022918)
-        carShape.addVertex(x: 0.42123779294676533, y: -0.9404120779458979) 
+        carShape.addVertex(x: 0.42123779294676533, y: -0.9404120779458979)
         carShape.addVertex(x: -0.5865141450377307, y: -0.9404120779458979)
         
         // Scale down
@@ -468,4 +472,13 @@ class GameScene: SKScene
         let rightJoint = SpringBodyJoint(world: world, link1: rjWheel, link2: rjCar, springK: 100, springD: 1, distance: 0);
         rightJoint.allowCollisions = true;
     }
+}
+
+/// Enum used to modify the input mode of the test simulation
+enum InputMode: Int
+{
+    /// Creates a jiggly ball under the finger on tap
+    case CreateBall
+    /// Allows dragging bodies around
+    case DragBody
 }

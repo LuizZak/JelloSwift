@@ -34,7 +34,7 @@ private struct Poly
 class PolyDrawer
 {
     /// The scene that holds this PolyDrawer
-    private var scene: SKScene;
+    private var scene: SKScene?;
     
     /// An array of polygons to draw on the next flush call
     private var polys: [Poly] = [];
@@ -50,8 +50,14 @@ class PolyDrawer
         
         self.canvas = SKSpriteNode();
         self.canvas.anchorPoint = CGPointZero;
-        self.scene.addChild(canvas);
+        self.scene?.addChild(canvas);
         
+        self.pool = ShapePool(startSize: 5);
+    }
+    
+    init(view: UIView)
+    {
+        self.canvas = SKSpriteNode();
         self.pool = ShapePool(startSize: 5);
     }
     
@@ -66,7 +72,7 @@ class PolyDrawer
     /// Flushes all the polygons currently queued and draw them on the screen
     func renderPolys()
     {
-        var area = CGRect(origin: CGPoint(), size: self.scene.size);
+        var area = CGRect(origin: CGPoint(), size: self.scene!.size);
         
         canvas.removeAllChildren();
         

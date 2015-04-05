@@ -8,9 +8,10 @@
 
 import CoreGraphics
 
+/// The rendering scale for the scene
 var renderingScale = Vector2(25.8, 25.8);
 
-// The offset is independent of the scale, unlike Flash DisplayObject's x-y coordinates and scaleX-scaleY
+/// The offset is independent of the scale, unlike Flash DisplayObject's x-y coordinates and scaleX-scaleY
 var renderingOffset = Vector2(300, -50);
 
 /// Transforms the given point on stage coordinates into World coordinates by using the rendering settings
