@@ -29,7 +29,7 @@ class DemoView: UIView
 {
     var world: World = World();
     var timer: CADisplayLink! = nil;
-    var polyDrawer: PolyDrawer? = nil;
+    var polyDrawer: PolyDrawer;
     
     var inputMode: InputMode = InputMode.DragBody;
     
@@ -41,13 +41,13 @@ class DemoView: UIView
     
     override init(frame: CGRect)
     {
+        polyDrawer = PolyDrawer();
+        
         super.init(frame: frame);
         
         // Do any additional setup after loading the view.
         timer = CADisplayLink(target: self, selector: Selector("gameLoop"))
         timer.addToRunLoop(NSRunLoop.mainRunLoop(), forMode: NSDefaultRunLoopMode)
-        
-        polyDrawer = PolyDrawer(view: self);
         
         initializeLevel();
         
@@ -55,10 +55,13 @@ class DemoView: UIView
         renderingScale = Vector2(renderingScale.X, -renderingScale.Y);
         
         opaque = false;
+        backgroundColor = UIColor(white: 0.7, alpha: 1);
     }
 
     required init(coder aDecoder: NSCoder)
     {
+        polyDrawer = PolyDrawer();
+        
         super.init(coder: aDecoder);
     }
     
@@ -216,7 +219,7 @@ class DemoView: UIView
     {
         var context = UIGraphicsGetCurrentContext();
         
-        self.polyDrawer?.reset();
+        self.polyDrawer.reset();
         
         for joint in world.joints
         {
@@ -227,8 +230,8 @@ class DemoView: UIView
             drawBody(body);
         }
         
-        polyDrawer?.renderOnContext(context);
-        polyDrawer?.reset();
+        polyDrawer.renderOnContext(context);
+        polyDrawer.reset();
         
         drawDrag(context);
     }
@@ -269,7 +272,7 @@ class DemoView: UIView
         
         let points = [CGPoint(v: start), CGPoint(v: end)];
         
-        polyDrawer?.queuePoly(points, fillColor: 0xFFFFFFFF, strokeColor: 0xFFEEEEEE);
+        polyDrawer.queuePoly(points, fillColor: 0xFFFFFFFF, strokeColor: 0xFFEEEEEE);
     }
     
     func drawBody(body: Body)
@@ -278,8 +281,6 @@ class DemoView: UIView
         
         let points = shapePoints.map { CGPoint(v: toScreenCoords($0)) };
         
-        polyDrawer?.queuePoly(points, fillColor: 0xFFFFFFFF, strokeColor: 0xFF000000);
-        
         // Draw normals, for pressure bodies
         if let pComp = body.getComponentType(PressureComponent)
         {
@@ -287,9 +288,18 @@ class DemoView: UIView
             {
                 let s = CGPoint(v: toScreenCoords(p));
                 let e = CGPoint(v: toScreenCoords(p + pComp.normalList[i] / 3));
-                polyDrawer?.queuePoly([s, e], fillColor: 0xFFFFFFFF, strokeColor: 0xFF000000);
+                polyDrawer.queuePoly([s, e], fillColor: 0xFF333333, strokeColor: 0xFFEC33EC);
             }
         }
+        
+        polyDrawer.queuePoly(points, fillColor: 0xFFFFFFFF, strokeColor: 0xFF000000);
+        
+        // Draw the body axis
+        let axisUp = [body.derivedPos, body.derivedPos + rotateVector(Vector2(0, 0.6), body.derivedAngle)];
+        let axisRight = [body.derivedPos, body.derivedPos + rotateVector(Vector2(0.6, 0), body.derivedAngle)];
+        
+        polyDrawer.queuePoly(axisUp.map { CGPoint(v: toScreenCoords($0)) }, fillColor: 0xFFFFFFFF, strokeColor: 0xFFED0000, lineWidth: 1);
+        polyDrawer.queuePoly(axisRight.map { CGPoint(v: toScreenCoords($0)) }, fillColor: 0xFFFFFFFF, strokeColor: 0xFF00ED00, lineWidth: 1);
     }
     
     /// Creates a box at the specified world coordinates with the specified size
