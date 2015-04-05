@@ -214,7 +214,6 @@ class DemoView: UIView
     func updateWithTimeSinceLastUpdate(timeSinceLast: CFTimeInterval)
     {
         /* Called before each frame is rendered */
-        
         updateDrag();
         
         // Update the physics world

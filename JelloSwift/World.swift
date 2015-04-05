@@ -375,7 +375,7 @@ public class World
     }
     
     /// Checks collision between two bodies, and store the collision information if they do
-    public func bodyCollide(bA: Body, _ bB: Body)
+    private func bodyCollide(bA: Body, _ bB: Body)
     {
         let bApCount = bA.pointMasses.count;
         let bBpCount = bB.pointMasses.count;
@@ -490,7 +490,7 @@ public class World
     }
     
     /// Solves the collisions between bodies
-    public func handleCollisions()
+    private func handleCollisions()
     {
         for info in collisionList
         {
