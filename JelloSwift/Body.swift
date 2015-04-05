@@ -371,6 +371,8 @@ public final class Body: Equatable
             
         if(freeRotate)
         {
+            let meanPos:Vector2 = isPined ? averageVectors(vertices) : derivedPos;
+            
             // find the average angle of all of the masses.
             var angle: CGFloat = 0;
         
@@ -381,7 +383,7 @@ public final class Body: Equatable
             for (i, pm) in enumerate(pointMasses)
             {
                 let baseNorm = baseShape.localVertices[i].normalized();
-                let curNorm  = (pm.position - derivedPos).normalized();
+                let curNorm  = (pm.position - meanPos).normalized();
                 
                 var thisAngle = atan2(baseNorm.X * curNorm.Y - baseNorm.Y * curNorm.X, baseNorm =* curNorm);
                 
