@@ -136,7 +136,7 @@
 		A081CFE11996B04D00C7CA49 /* PolyDrawer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PolyDrawer.swift; sourceTree = "<group>"; };
 		A08E5FA21AA8B56700F4CA0F /* ClosedShapeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClosedShapeTests.swift; sourceTree = "<group>"; };
 		A09CC4B41A251A880073BB62 /* JelloSwift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JelloSwift.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		A09CC4B51A251A880073BB62 /* JelloSwiftStressTest-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "JelloSwiftStressTest-Info.plist"; path = "/Users/luizfernandosilva/Documents/Projetos/Jogos/Engines/JelloSwift/JelloSwiftStressTest-Info.plist"; sourceTree = "<absolute>"; };
+		A09CC4B51A251A880073BB62 /* JelloSwiftStressTest-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "JelloSwiftStressTest-Info.plist"; path = "IJelloSwiftStressTest-Info.plist"; sourceTree = "<absolute>"; };
 		A0B015701AD1D57E00340465 /* DemoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DemoViewController.swift; sourceTree = "<group>"; };
 		A0C954E5199329130066F88F /* JelloSwift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JelloSwift.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A0C954E9199329130066F88F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
