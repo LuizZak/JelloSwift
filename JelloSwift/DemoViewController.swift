@@ -230,10 +230,10 @@ class DemoView: UIView
             drawBody(body);
         }
         
+        drawDrag(context);
+        
         polyDrawer.renderOnContext(context);
         polyDrawer.reset();
-        
-        drawDrag(context);
     }
     
     func gameLoop()
@@ -241,7 +241,6 @@ class DemoView: UIView
         autoreleasepool {
             self.update();
             self.setNeedsDisplay();
-            //self.render();
         }
     }
     
@@ -255,13 +254,9 @@ class DemoView: UIView
             var lineStart = toScreenCoords(p.position);
             var lineEnd = toScreenCoords(fingerLocation);
             
-            var path = CGPathCreateMutable();
+            let points = [CGPoint(v: lineStart), CGPoint(v: lineEnd)];
             
-            CGPathMoveToPoint(path, nil, lineStart.X, lineStart.Y);
-            CGPathAddLineToPoint(path, nil, lineEnd.X, lineEnd.Y);
-            
-            CGContextAddPath(context, path);
-            CGContextDrawPath(context, kCGPathStroke);
+            polyDrawer.queuePoly(points, fillColor: 0xFFFFFFFF, strokeColor: 0xFF00DD00);
         }
     }
     
@@ -292,14 +287,18 @@ class DemoView: UIView
             }
         }
         
+        // Draw the body now
         polyDrawer.queuePoly(points, fillColor: 0xFFFFFFFF, strokeColor: 0xFF000000);
         
         // Draw the body axis
-        let axisUp = [body.derivedPos, body.derivedPos + rotateVector(Vector2(0, 0.6), body.derivedAngle)];
+        let axisUp    = [body.derivedPos, body.derivedPos + rotateVector(Vector2(0, 0.6), body.derivedAngle)];
         let axisRight = [body.derivedPos, body.derivedPos + rotateVector(Vector2(0.6, 0), body.derivedAngle)];
         
-        polyDrawer.queuePoly(axisUp.map { CGPoint(v: toScreenCoords($0)) }, fillColor: 0xFFFFFFFF, strokeColor: 0xFFED0000, lineWidth: 1);
-        polyDrawer.queuePoly(axisRight.map { CGPoint(v: toScreenCoords($0)) }, fillColor: 0xFFFFFFFF, strokeColor: 0xFF00ED00, lineWidth: 1);
+        let axisUpCg = axisUp.map { CGPoint(v: toScreenCoords($0)) };
+        let axisRightCg = axisRight.map { CGPoint(v: toScreenCoords($0)) };
+        
+        polyDrawer.queuePoly(axisUpCg, fillColor: 0xFFFFFFFF, strokeColor: 0xFFED0000, lineWidth: 1);
+        polyDrawer.queuePoly(axisRightCg, fillColor: 0xFFFFFFFF, strokeColor: 0xFF00ED00, lineWidth: 1);
     }
     
     /// Creates a box at the specified world coordinates with the specified size
