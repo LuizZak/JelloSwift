@@ -9,7 +9,7 @@
 import CoreGraphics
 
 /// CGFloat version of the PI constant
-public let PI: CGFloat = CGFloat(M_PI);
+public let PI = CGFloat(M_PI);
 
 /// Returns an approximation of the area of the polygon defined by a given set of vertices
 public func polygonArea(points: [Vector2]) -> CGFloat
@@ -67,7 +67,7 @@ public func calculateSpringForce(posA: Vector2, velA: Vector2, posB: Vector2, ve
     
     if (dist <= 0.0000005)
     {
-        return Vector2(0, 0);
+        return Vector2.Zero;
     }
     
     let BtoA = (posA - posB) / dist;

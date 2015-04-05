@@ -278,14 +278,22 @@ public class World
         for body in bodies
         {
             body.derivePositionAndAngle(elapsed);
+            
+            // Only update edge and normals pre-accumulation if the body has components
+            if(body.components.count > 0)
+            {
+                body.updateEdgesAndNormals();
+            }
+            
             body.accumulateExternalForces();
             body.accumulateInternalForces();
             
             body.integrate(elapsed);
+            body.updateEdgesAndNormals();
             
             body.updateAABB(elapsed, forceUpdate: true);
             body.resetCollisionInfo();
-            body.updateEdges();
+            
             updateBodyBitmask(body);
         }
         
@@ -372,8 +380,10 @@ public class World
         let bApCount = bA.pointMasses.count;
         let bBpCount = bB.pointMasses.count;
         
-        for (i, pmA) in enumerate(bA.pointMasses)
+        //for (i, pmA) in enumerate(bA.pointMasses)
+        for var i = 0; i < bApCount; i++
         {
+            let pmA = bA.pointMasses[i];
             let pt = pmA.position;
             
             // early out - if this point is not inside bodyB, skip it!
@@ -382,17 +392,7 @@ public class World
                 continue;
             }
             
-            let prevPt = (i > 0) ? i - 1 : bApCount - 1;
-            
-            let prev = bA.pointMasses[prevPt].position;
-            let next = bA.pointMasses[(i + 1) % bApCount].position;
-            
-            // now get the normal for this point. (NOT A UNIT VECTOR)
-            let fromPrev = pt - prev;
-            
-            let toNext = next - pt;
-            
-            let ptNorm = (fromPrev + toNext).perpendicular();
+            let ptNorm = bA.pointNormals[i];
             
             // this point is inside the other body.  now check if the edges on either side intersect with and edges on bodyB.
             var closestAway = CGFloat.infinity;
@@ -609,7 +609,7 @@ public class World
             }
         }
         
-        collisionList.removeAll(keepCapacity: true);
+        collisionList = [];
     }
     
     /// Update bodies' bitmask for early collision filtering

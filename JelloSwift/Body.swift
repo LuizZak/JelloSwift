@@ -13,53 +13,14 @@ public func ==(lhs: Body, rhs: Body) -> Bool
     return lhs === rhs;
 }
 
-/// Contains information about the edge of a body
-internal struct BodyEdge
-{
-    /// The index of the edge on the body
-    var edgeIndex = 0;
-    
-    /// The start position of the edge
-    var start: Vector2 = Vector2.Zero;
-    /// The end position of the edge
-    var end: Vector2 = Vector2.Zero;
-    
-    /// The normal for the edge
-    var normal: Vector2 = Vector2.Zero;
-    
-    /// The difference between the start and end points, normalized
-    var difference: Vector2 = Vector2.Zero;
-    
-    /// The edge's length
-    var length: CGFloat = 0;
-    /// The edge's length, squared
-    var lengthSquared: CGFloat = 0;
-    
-    init()
-    {
-        
-    }
-    
-    init(edgeIndex: Int, start: Vector2, end: Vector2)
-    {
-        self.edgeIndex = edgeIndex;
-        self.start = start;
-        self.end = end;
-        
-        difference = (end - start).normalized();
-        
-        normal = difference.perpendicular();
-        
-        length = start.distanceTo(end);
-        lengthSquared = length * length;
-    }
-}
-
 /// Represents a soft body on the world
 public final class Body: Equatable
 {
     /// List of edges on the body
-    internal var edges:ContiguousArray<BodyEdge> = ContiguousArray<BodyEdge>();
+    internal var edges:[BodyEdge] = [];
+    
+    /// List of point normals
+    internal var pointNormals:[Vector2] = [];
     
     /// List of body joints this body participates in
     public var joints: [BodyJoint] = [];
@@ -217,19 +178,51 @@ public final class Body: Equatable
         }
     }
     
+    /// Updates the edges and normals of this body
+    public func updateEdgesAndNormals()
+    {
+        updateEdges();
+        updateNormals();
+    }
+    
+    /// Updates the point normals of the body
+    public func updateNormals()
+    {
+        let c = pointMasses.count;
+        
+        if(pointNormals.count != c)
+        {
+            pointNormals = [Vector2](count: c, repeatedValue: Vector2.Zero);
+        }
+        
+        for var i = 0; i < c; i++
+        {
+            let curEdge = edges[i];
+            let prev = (i - 1) < 0 ? c - 1 : i - 1;
+            
+            let edge1N = edges[prev].difference;
+            let edge2N = curEdge.difference;
+            
+            pointNormals[i] = (edge1N + edge2N).perpendicular().normalized();
+        }
+    }
+    
     /// Updates the cached edge information of the body
     public func updateEdges()
     {
+        let c = pointMasses.count;
+        
         // Maintain the edge count the same as the point mass count
-        if(edges.count != pointMasses.count)
+        if(edges.count != c)
         {
-            edges = ContiguousArray<BodyEdge>(count: pointMasses.count, repeatedValue: BodyEdge());
+            edges = [BodyEdge](count: c, repeatedValue: BodyEdge());
         }
         
         // Update edges
-        for (i, curP) in enumerate(pointMasses)
+        for var i = 0; i < c; i++
         {
-            let nextP = pointMasses[(i + 1) % pointMasses.count];
+            let curP = pointMasses[i];
+            let nextP = pointMasses[(i + 1) % c];
             
             edges[i] = BodyEdge(edgeIndex: i, start: curP.position, end: nextP.position);
         }
@@ -242,6 +235,11 @@ public final class Body: Equatable
         let nextP = pointMasses[(edgeIndex + 1) % pointMasses.count];
         
         edges[edgeIndex] = BodyEdge(edgeIndex: edgeIndex, start: curP.position, end: nextP.position);
+    }
+    
+    public func getEdge(edgeIndex: Int) -> BodyEdge
+    {
+        return edges[edgeIndex];
     }
     
     /// Updates the AABB for this body, including padding for velocity given a timestep.
@@ -548,8 +546,10 @@ public final class Body: Equatable
         // line we are testing against goes from pt -> endPt.
         var inside = false;
         
-        for e in edges
+        let c = edges.count;
+        for var i = 0; i < c; i++
         {
+            let e = edges[i];
             let edgeSt = e.start;
             let edgeEnd = e.end;
             

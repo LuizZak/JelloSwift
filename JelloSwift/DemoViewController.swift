@@ -39,11 +39,17 @@ class DemoView: UIView
     // The location of the user's finger, in physics world coordinates
     var fingerLocation: Vector2 = Vector2.Zero;
     
+    var timeLabel: UILabel;
+    
     override init(frame: CGRect)
     {
         polyDrawer = PolyDrawer();
         
+        timeLabel = UILabel();
+        
         super.init(frame: frame);
+        
+        initLabel();
         
         // Do any additional setup after loading the view.
         timer = CADisplayLink(target: self, selector: Selector("gameLoop"))
@@ -62,7 +68,18 @@ class DemoView: UIView
     {
         polyDrawer = PolyDrawer();
         
+        timeLabel = UILabel();
+        
         super.init(coder: aDecoder);
+        
+        initLabel();
+    }
+    
+    func initLabel()
+    {
+        timeLabel.frame = CGRect(x: 20, y: 20, width: 300, height: 20);
+        
+        addSubview(timeLabel);
     }
     
     func initializeLevel()
@@ -187,7 +204,11 @@ class DemoView: UIView
     
     func update()
     {
+        let sw = Stopwatch();
+        
         updateWithTimeSinceLastUpdate(1.0 / 60);
+        
+        timeLabel.text = String(format: "Physics update time: %0.2lfms", round(sw.stop() * 1000 * 20) / 20);
     }
     
     func updateWithTimeSinceLastUpdate(timeSinceLast: CFTimeInterval)
@@ -490,4 +511,39 @@ enum InputMode: Int
     case CreateBall
     /// Allows dragging bodies around
     case DragBody
+}
+
+class Stopwatch
+{
+    var startTime:CFAbsoluteTime;
+    var endTime:CFAbsoluteTime?;
+    
+    init()
+    {
+        startTime = CFAbsoluteTimeGetCurrent();
+    }
+    
+    func start()
+    {
+        startTime = CFAbsoluteTimeGetCurrent()
+    }
+    
+    func stop() -> CFAbsoluteTime
+    {
+        endTime = CFAbsoluteTimeGetCurrent()
+        
+        return duration!
+    }
+    
+    var duration:CFAbsoluteTime?
+    {
+        if let endTime = endTime
+        {
+            return endTime - startTime
+        }
+        else
+        {
+            return nil
+        }
+    }
 }

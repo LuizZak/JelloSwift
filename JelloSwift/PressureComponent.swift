@@ -29,24 +29,30 @@ public class PressureComponent: BodyComponent
         volume = 0;
         
         let c = body.pointMasses.count;
-        var prev = c - 1;
         
-        for (i, curEdge) in enumerate(body.edges)
+        if(c < 1)
         {
-            let prev = (i - 1) < 0 ? c - 1 : i - 1;
-            
-            let edge1N = body.edges[prev].difference;
-            let edge2N = curEdge.difference;
+            return;
+        }
+        
+        var prev = c - 1;
+        var edge1N = body.edges.last!.difference;
+        
+        for var i = 0; i < c; i++
+        {
+            let edge2N = body.edges[i].difference;
             
             normalList[i] = (edge1N + edge2N).perpendicular().normalized();
+            
+            edge1N = edge2N;
         }
         
         volume = max(0.5, polygonArea(body.pointMasses));
         
         // now loop through, adding forces!
-        let invVolume: CGFloat = 1 / volume;
+        let invVolume = 1 / volume;
         
-        for var i = 0; i < c; i++
+        for i in 0..<c
         {
             let j = (i + 1) % c;
             let pressureV = (invVolume * body.edges[i].length * (gasAmmount));
