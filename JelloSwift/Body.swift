@@ -13,9 +13,54 @@ func ==(lhs: Body, rhs: Body) -> Bool
     return lhs === rhs;
 }
 
+/// Contains information about the edge of a body
+internal struct BodyEdge
+{
+    /// The index of the edge on the body
+    var edgeIndex = 0;
+    
+    /// The start position of the edge
+    var start: Vector2 = Vector2.Zero;
+    /// The end position of the edge
+    var end: Vector2 = Vector2.Zero;
+    
+    /// The normal for the edge
+    var normal: Vector2 = Vector2.Zero;
+    
+    /// The difference between the start and end points, normalized
+    var difference: Vector2 = Vector2.Zero;
+    
+    /// The edge's length
+    var length: CGFloat = 0;
+    /// The edge's length, squared
+    var lengthSquared: CGFloat = 0;
+    
+    init()
+    {
+        
+    }
+    
+    init(edgeIndex: Int, start: Vector2, end: Vector2)
+    {
+        self.edgeIndex = edgeIndex;
+        self.start = start;
+        self.end = end;
+        
+        difference = (end - start).normalized();
+        
+        normal = difference.perpendicular();
+        
+        length = start.distanceTo(end);
+        lengthSquared = length * length;
+    }
+}
+
 /// Represents a soft body on the world
 final class Body: Equatable
 {
+    /// List of edges on the body
+    internal var edges:ContiguousArray<BodyEdge> = ContiguousArray<BodyEdge>();
+    
     /// List of body joints this body participates in
     var joints: [BodyJoint] = [];
     
@@ -172,6 +217,33 @@ final class Body: Equatable
         }
     }
     
+    /// Updates the cached edge information of the body
+    func updateEdges()
+    {
+        // Maintain the edge count the same as the point mass count
+        if(edges.count != pointMasses.count)
+        {
+            edges = ContiguousArray<BodyEdge>(count: pointMasses.count, repeatedValue: BodyEdge());
+        }
+        
+        // Update edges
+        for (i, curP) in enumerate(pointMasses)
+        {
+            let nextP = pointMasses[(i + 1) % pointMasses.count];
+            
+            edges[i] = BodyEdge(edgeIndex: i, start: curP.position, end: nextP.position);
+        }
+    }
+    
+    /// Updates a single edge in this body
+    func updateEdge(edgeIndex: Int)
+    {
+        let curP = pointMasses[edgeIndex];
+        let nextP = pointMasses[(edgeIndex + 1) % pointMasses.count];
+        
+        edges[edgeIndex] = BodyEdge(edgeIndex: edgeIndex, start: curP.position, end: nextP.position);
+    }
+    
     /// Updates the AABB for this body, including padding for velocity given a timestep.
     /// This function is called by the World object on Update(), so the user should not need this in most cases.
     /// 
@@ -209,6 +281,7 @@ final class Body: Equatable
         if(baseShape.localVertices.count != pointMasses.count)
         {
             pointMasses = [];
+            edges = [];
             globalShape = [Vector2](count: shape.localVertices.count, repeatedValue: Vector2());
             
             baseShape.transformVertices(&globalShape, worldPos: derivedPos, angleInRadians: derivedAngle, localScale: scale);
@@ -217,6 +290,8 @@ final class Body: Equatable
             {
                 pointMasses += PointMass(mass: 0.0, position: globalShape[i]);
             }
+            
+            updateEdges();
         }
     }
     
@@ -262,6 +337,8 @@ final class Body: Equatable
         {
             pm.position = globalShape[i];
         }
+        
+        updateEdges();
         
         derivedPos = pos;
         derivedAngle = angle;
@@ -469,13 +546,10 @@ final class Body: Equatable
         // line we are testing against goes from pt -> endPt.
         var inside = false;
         
-        var edgeSt = pointMasses.last!.position;
-        var edgeEnd = Vector2.Zero;
-        
-        for p in pointMasses
+        for e in edges
         {
-            // the current edge is defined as the line from edgeSt -> edgeEnd.
-            edgeEnd = p.position;
+            let edgeSt = e.start;
+            let edgeEnd = e.end;
             
             // perform check now...
             if (((edgeSt.Y <= pt.Y) && (edgeEnd.Y > pt.Y)) || ((edgeSt.Y > pt.Y) && (edgeEnd.Y <= pt.Y)))
@@ -483,7 +557,6 @@ final class Body: Equatable
                 // The edge lies completely to the left of our imaginary line
                 if(edgeSt.X < pt.X && edgeEnd.X < pt.X)
                 {
-                    edgeSt = edgeEnd;
                     continue;
                 }
                 
@@ -496,8 +569,6 @@ final class Body: Equatable
                     inside = !inside;
                 }
             }
-            
-            edgeSt = edgeEnd;
         }
         
         return inside;
@@ -525,10 +596,10 @@ final class Body: Equatable
         var p2 = Vector2();
         var ua: CGFloat = 0;
         var ub: CGFloat = 0;
-        for (i, pm) in enumerate(pointMasses)
+        for e in edges
         {
-            p1 = pm.position;
-            p2 = pointMasses[(i + 1) % pointMasses.count].position;
+            p1 = e.start;
+            p2 = e.end;
             
             if(lineIntersect(start, end, p1, p2, &p, &ua, &ub))
             {
@@ -564,10 +635,10 @@ final class Body: Equatable
         
         res = pt2;
         
-        for (i, pm) in enumerate(pointMasses)
+        for e in edges
         {
-            p1 = pm.position;
-            p2 = pointMasses[(i + 1) % c].position;
+            p1 = e.start;
+            p2 = e.end;
             
             if(lineIntersect(pt1, pt2, p1, p2, &p, &ua, &ub))
             {
@@ -594,25 +665,21 @@ final class Body: Equatable
         edgeD = 0;
         var dist: CGFloat = 0;
         
-        var ptA = pointMasses[edgeNum].position;
-        var ptB = pointMasses[(edgeNum + 1) % pointMasses.count].position;
+        let edge = edges[edgeNum];
+        
+        var ptA = edge.start;
+        var ptB = edge.end;
         
         let toP = pt - ptA;
-        var E = ptB - ptA;
         
         // get the length of the edge, and use that to normalize the vector.
-        let edgeLength = E.magnitude();
-        
-        if (edgeLength > 0.0000001)
-        {
-            E /= edgeLength;
-        }
+        let edgeLength = edge.length;
         
         // normal
-        normal = E.perpendicular();
+        normal = edge.normal;
         
         // calculate the distance!
-        let x = toP =* E;
+        let x = toP =* edge.difference;
         
         if (x <= 0.0)
         {
@@ -623,7 +690,7 @@ final class Body: Equatable
             
             edgeD = 0;
         }
-        else if (x >= edgeLength)
+        else if (x >= edge.length)
         {
             // x is outside of the line segment, distance is from pt to ptB.
             dist = pt.distanceToSquared(ptB);
@@ -636,12 +703,12 @@ final class Body: Equatable
         {
             // point lies somewhere on the line segment.
             let toP3 = Vector3(vec2: toP, z: 0);
-            let E3 = toP3 =/ Vector3(vec2: E, z: 0);
+            let E3 = toP3 =/ Vector3(vec2: edge.difference, z: 0);
             
             dist = E3.Z * E3.Z;
             
-            hitPt = ptA + (E * x);
-            edgeD = x / edgeLength;
+            hitPt = ptA + (edge.difference * x);
+            edgeD = x / edge.length;
         }
         
         return dist;

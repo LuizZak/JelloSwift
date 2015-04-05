@@ -275,6 +275,17 @@ class GameScene: SKScene
         let points = shapePoints.map { CGPoint(v: toScreenCoords($0)) };
         
         polyDrawer?.queuePoly(points, fillColor: 0xFFFFFFFF, strokeColor: 0xFF000000);
+        
+        // Draw normals, for pressure bodies
+        if let pComp = body.getComponentType(PressureComponent)
+        {
+            for (i, p) in enumerate(shapePoints)
+            {
+                let s = CGPoint(v: toScreenCoords(p));
+                let e = CGPoint(v: toScreenCoords(p + pComp.normalList[i] / 3));
+                polyDrawer?.queuePoly([s, e], fillColor: 0xFFFFFFFF, strokeColor: 0xFF000000);
+            }
+        }
     }
     
     /// Creates a box at the specified world coordinates with the specified size
@@ -322,11 +333,12 @@ class GameScene: SKScene
     func createBouncyBall(pos: Vector2, pinned: Bool = false, kinematic: Bool = false, radius: CGFloat = 1, mass: CGFloat = 0.5) -> Body
     {
         // Create the closed shape for the ball's physics body
-        var def: CGFloat = 12;
+        var def = 12;
         var shape = ClosedShape();
         shape.begin();
-        for var n: CGFloat = 0; n < CGFloat(M_PI * 2); n += CGFloat(M_PI * 2) / def
+        for i in 0..<def
         {
+            var n = CGFloat(PI * 2) * (CGFloat(i) / CGFloat(def));
             shape.addVertex(Vector2(cos(-n) * radius, sin(-n) * radius));
         }
         shape.transformOwn(0, localScale: Vector2(0.3, 0.3));

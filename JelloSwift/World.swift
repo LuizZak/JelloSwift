@@ -285,6 +285,7 @@ class World
             
             body.updateAABB(elapsed, forceUpdate: true);
             body.resetCollisionInfo();
+            body.updateEdges();
             updateBodyBitmask(body);
         }
         

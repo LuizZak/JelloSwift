@@ -34,22 +34,17 @@ class PressureComponent: BodyComponent
         var prev = c - 1;
         var points = [Vector2](count: c, repeatedValue: Vector2());
         
-        for (i, curPoint) in enumerate(body.pointMasses)
+        for (i, curEdge) in enumerate(body.edges)
         {
-            let next: Int = (i + 1) % (c);
+            let prev = (i - 1) < 0 ? c - 1 : i - 1;
             
-            // currently we are talking about the edge from i --> j.
-            // first calculate the volume of the body, and cache normals as we go.
-            let edge1N = (curPoint.position - body.pointMasses[prev].position);
-            let edge2N = (body.pointMasses[next].position - curPoint.position);
+            let edge1N = body.edges[prev].difference;
+            let edge2N = curEdge.difference;
             
-            // cache normal and edge length
             normalList[i] = (edge1N + edge2N).perpendicular().normalized();
-            edgeLengthList[i] = edge2N.magnitude();
+            edgeLengthList[i] = curEdge.length;
             
-            points[i] = curPoint.position;
-            
-            prev = i;
+            points[i] = curEdge.start;
         }
         
         volume = max(0.5, polygonArea(points));
@@ -59,8 +54,8 @@ class PressureComponent: BodyComponent
         
         for var i = 0; i < c; i++
         {
-            let j: Int = (i + 1) % c;
-            let pressureV: CGFloat = (invVolume * edgeLengthList[i] * (gasAmmount));
+            let j = (i + 1) % c;
+            let pressureV = (invVolume * edgeLengthList[i] * (gasAmmount));
             
             body.pointMasses[i].force += normalList[i] * pressureV;
             body.pointMasses[j].force += normalList[j] * pressureV;
