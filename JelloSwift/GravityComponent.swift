@@ -9,30 +9,23 @@
 import CoreGraphics
 
 /// Represents a Gravity component that can be added to a body to make it constantly affected by gravity
-class GravityComponent: BodyComponent
+public class GravityComponent: BodyComponent
 {
     /// The gravity vector to apply to the body
-    final var gravity: Vector2 = Vector2(0, -9.8);
+    public final var gravity: Vector2 = Vector2(0, -9.8);
     
-    override func accumulateExternalForces()
+    override public func accumulateExternalForces()
     {
         super.accumulateExternalForces();
         
-        /*
         for p in body.pointMasses
         {
-            p.applyForce(vector * p.mass);
-        }
-        */
-        
-        for var i = 0; i < body.pointMasses.count; i++
-        {
-            body.pointMasses[i].applyForce(gravity * body.pointMasses[i].mass);
+            p.applyForce(gravity * p.mass);
         }
     }
     
     /// Changes the gravity of the bodies on a given world object
-    static func setGravityOnWorld(world: World, newGravity: Vector2)
+    public static func setGravityOnWorld(world: World, newGravity: Vector2)
     {
         for b in world.bodies
         {
@@ -45,11 +38,11 @@ class GravityComponent: BodyComponent
 }
 
 /// Component that can be added to bodies to add a gravity-like constant force
-class GravityComponentCreator: BodyComponentCreator
+public class GravityComponentCreator: BodyComponentCreator
 {
-    var vector: Vector2;
+    public var vector: Vector2;
     
-    required init(gravity: Vector2 = Vector2(0, -9.8))
+    public required init(gravity: Vector2 = Vector2(0, -9.8))
     {
         self.vector = gravity;
         
@@ -58,7 +51,7 @@ class GravityComponentCreator: BodyComponentCreator
         self.bodyComponentClass = GravityComponent.self;
     }
     
-    override func prepareBodyAfterComponent(body: Body)
+    public override func prepareBodyAfterComponent(body: Body)
     {
         if let comp = body.getComponentType(GravityComponent)
         {

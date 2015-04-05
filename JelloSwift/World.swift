@@ -10,34 +10,34 @@ import Foundation
 import CoreGraphics
 
 /// Represents a simulation world, containing soft bodies and the code utilized to make them interact with each other
-class World
+public class World
 {
     /// The bodies contained within this world
-    var bodies: [Body] = [];
-    var joints: [BodyJoint] = [];
+    public var bodies: [Body] = [];
+    public var joints: [BodyJoint] = [];
     
     // PRIVATE VARIABLES
-    var worldLimits:AABB = AABB();
-    var worldSize:Vector2 = Vector2();
-    var worldGridStep:Vector2 = Vector2();
+    public var worldLimits:AABB = AABB();
+    public var worldSize:Vector2 = Vector2();
+    public var worldGridStep:Vector2 = Vector2();
     
-    var penetrationThreshold: CGFloat = 0;
-    var penetrationCount: Int = 0;
+    public var penetrationThreshold: CGFloat = 0;
+    public var penetrationCount: Int = 0;
     
     // material chart.
-    var materialPairs: [[MaterialPair]] = [];
-    var defaultMatPair: MaterialPair = MaterialPair();
-    var materialCount: Int = 0;
+    public var materialPairs: [[MaterialPair]] = [];
+    public var defaultMatPair: MaterialPair = MaterialPair();
+    public var materialCount: Int = 0;
     
-    var collisionList: [BodyCollisionInformation] = [];
+    public var collisionList: [BodyCollisionInformation] = [];
     
-    init()
+    public init()
     {
         self.clear();
     }
     
     /// Clears the world's contents and readies it to be loaded again
-    func clear()
+    public func clear()
     {
         // Clear all the bodies
         for b in bodies
@@ -67,7 +67,7 @@ class World
     }
     
     /// WORLD SIZE
-    func setWorldLimits(min: Vector2, _ max: Vector2)
+    public func setWorldLimits(min: Vector2, _ max: Vector2)
     {
         worldLimits = AABB(min: min, max: max);
         
@@ -78,7 +78,7 @@ class World
     
     /// MATERIALS
     /// Adds a new material to the world. All previous material data is kept intact.
-    func addMaterial() -> Int
+    public func addMaterial() -> Int
     {
         let old = materialPairs;
         materialCount++;
@@ -107,7 +107,7 @@ class World
     }
     
     /// Enables or disables collision between 2 materials.
-    func setMaterialPairCollide(a: Int, b: Int, collide: Bool)
+    public func setMaterialPairCollide(a: Int, b: Int, collide: Bool)
     {
         if ((a >= 0) && (a < materialCount) && (b >= 0) && (b < materialCount))
         {
@@ -117,7 +117,7 @@ class World
     }
     
     /// Sets the collision response variables for a pair of materials.
-    func setMaterialPairData(a: Int, b: Int, friction: CGFloat, elasticity: CGFloat)
+    public func setMaterialPairData(a: Int, b: Int, friction: CGFloat, elasticity: CGFloat)
     {
         if ((a >= 0) && (a < materialCount) && (b >= 0) && (b < materialCount))
         {
@@ -130,7 +130,7 @@ class World
     }
     
     /// Sets a user function to call when 2 bodies of the given materials collide.
-    func setMaterialPairFilterCallback(a: Int, b: Int, filter: (Body, Int, Body, Int, Int, Vector2, CGFloat) -> (Bool))
+    public func setMaterialPairFilterCallback(a: Int, b: Int, filter: (Body, Int, Body, Int, Int, Vector2, CGFloat) -> (Bool))
     {
         if ((a >= 0) && (a < materialCount) && (b >= 0) && (b < materialCount))
         {
@@ -140,7 +140,7 @@ class World
     }
     
     /// Adds a body to the world. Bodies do this automatically on their constructors, you should not need to call this method most of the times.
-    func addBody(body: Body)
+    public func addBody(body: Body)
     {
         if(!bodies.contains(body))
         {
@@ -149,13 +149,13 @@ class World
     }
     
     /// Removes a body from the world. Call this outside of an update to remove the body.
-    func removeBody(body: Body)
+    public func removeBody(body: Body)
     {
         bodies -= body;
     }
     
     /// Adds a joint to the world. Joints call this automatically during their initialization
-    func addJoint(joint: BodyJoint)
+    public func addJoint(joint: BodyJoint)
     {
         if(!joints.contains(joint))
         {
@@ -168,7 +168,7 @@ class World
     }
     
     /// Removes a joint from the world
-    func removeJoint(joint: BodyJoint)
+    public func removeJoint(joint: BodyJoint)
     {
         joint.bodyLink1.body.joints -= joint;
         joint.bodyLink2.body.joints -= joint;
@@ -177,7 +177,7 @@ class World
     }
     
     /// Finds the closest PointMass in the world to a given point
-    func getClosestPointMass(pt: Vector2) -> (Body?, PointMass?)
+    public func getClosestPointMass(pt: Vector2) -> (Body?, PointMass?)
     {
         var retBody: Body? = nil;
         var retPoint: PointMass? = nil;
@@ -202,7 +202,7 @@ class World
     
     /// Given a global, get a body (if any) that contains this point.
     /// Useful for picking objects with a cursor, etc.
-    func getBodyContaining(pt: Vector2, bit: Bitmask) -> Body?
+    public func getBodyContaining(pt: Vector2, bit: Bitmask) -> Body?
     {
         for body in bodies
         {
@@ -217,13 +217,13 @@ class World
     
     /// Given a global point, get all bodies (if any) that contain this point.
     /// Useful for picking objects with a cursor, etc.
-    func getBodiesContaining(pt: Vector2, bit: Bitmask) -> [Body]
+    public func getBodiesContaining(pt: Vector2, bit: Bitmask) -> [Body]
     {
         return bodies.filter { (($0.bitmask & bit) != 0 || bit == 0) && $0.contains(pt) };
     }
     
     /// Returns a vector of bodies intersecting with the given line
-    func getBodiesIntersecting(start: Vector2, end: Vector2, bit: Bitmask) -> [Body]
+    public func getBodiesIntersecting(start: Vector2, end: Vector2, bit: Bitmask) -> [Body]
     {
         return bodies.filter { (($0.bitmask & bit) != 0 || bit == 0) && $0.intersectsLine(start, end) };
     }
@@ -242,7 +242,7 @@ class World
      *
      * :return: An optional Body? value specifying the body that was closest to the ray, if it hit any body, or nil if it hit nothing.
      */
-    func rayCast(start: Vector2, end: Vector2, inout _ retPt:Vector2?, bit: Bitmask = 0, _ ignoreList:[Body] = []) -> Body?
+    public func rayCast(start: Vector2, end: Vector2, inout _ retPt:Vector2?, bit: Bitmask = 0, _ ignoreList:[Body] = []) -> Body?
     {
         var closestD = start.distanceTo(end);
         var closestB:Body? = nil;
@@ -270,7 +270,7 @@ class World
      *
      * :param: elapsed The elapsed time to update by, usually in seconds
      */
-    func update(elapsed: CGFloat)
+    public func update(elapsed: CGFloat)
     {
         penetrationCount = 0;
         
@@ -367,7 +367,7 @@ class World
     }
     
     /// Checks collision between two bodies, and store the collision information if they do
-    func bodyCollide(bA: Body, _ bB: Body)
+    public func bodyCollide(bA: Body, _ bB: Body)
     {
         let bApCount = bA.pointMasses.count;
         let bBpCount = bB.pointMasses.count;
@@ -490,7 +490,7 @@ class World
     }
     
     /// Solves the collisions between bodies
-    func handleCollisions()
+    public func handleCollisions()
     {
         for info in collisionList
         {
@@ -613,7 +613,7 @@ class World
     }
     
     /// Update bodies' bitmask for early collision filtering
-    func updateBodyBitmask(body: Body)
+    public func updateBodyBitmask(body: Body)
     {
         let box = body.aabb;
         

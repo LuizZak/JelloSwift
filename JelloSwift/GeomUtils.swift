@@ -9,10 +9,10 @@
 import CoreGraphics
 
 /// CGFloat version of the PI constant
-let PI: CGFloat = CGFloat(M_PI);
+public let PI: CGFloat = CGFloat(M_PI);
 
 /// Returns an approximation of the area of the polygon defined by a given set of vertices
-func polygonArea(points: [Vector2]) -> CGFloat
+public func polygonArea(points: [Vector2]) -> CGFloat
 {
     var area: CGFloat = 0;
     var v2 = points[points.count - 1];
@@ -27,13 +27,13 @@ func polygonArea(points: [Vector2]) -> CGFloat
 }
 
 /// Returns an approximation of the area of the polygon defined by a given set of point masses
-func polygonArea(points: [PointMass]) -> CGFloat
+public func polygonArea(points: [PointMass]) -> CGFloat
 {
     return polygonArea(points.map { $0.position });
 }
 
 /// Checks if 2 line segments intersect. (line AB collides with line CD) (reference type version)
-func lineIntersect(ptA: Vector2, ptB: Vector2, ptC: Vector2, ptD: Vector2, inout hitPt: Vector2, inout Ua: CGFloat, inout Ub: CGFloat) -> Bool
+public func lineIntersect(ptA: Vector2, ptB: Vector2, ptC: Vector2, ptD: Vector2, inout hitPt: Vector2, inout Ua: CGFloat, inout Ub: CGFloat) -> Bool
 {
     let denom = ((ptD.Y - ptC.Y) * (ptB.X - ptA.X)) - ((ptD.X - ptC.X) * (ptB.Y - ptA.Y));
     
@@ -61,7 +61,7 @@ func lineIntersect(ptA: Vector2, ptB: Vector2, ptC: Vector2, ptD: Vector2, inout
 }
 
 // Calculates a spring force, given position, velocity, spring constant, and damping factor
-func calculateSpringForce(posA: Vector2, velA: Vector2, posB: Vector2, velB: Vector2, distance: CGFloat, springK: CGFloat, springD:CGFloat) -> Vector2
+public func calculateSpringForce(posA: Vector2, velA: Vector2, posB: Vector2, velB: Vector2, distance: CGFloat, springK: CGFloat, springD:CGFloat) -> Vector2
 {
     var dist = posA.distanceTo(posB);
     
@@ -81,7 +81,7 @@ func calculateSpringForce(posA: Vector2, velA: Vector2, posB: Vector2, velB: Vec
 }
 
 /// Returns a Vector2 that represents a point between vec1 and vec2, with a given ratio specified
-func calculateVectorRatio(vec1: Vector2, vec2: Vector2, ratio: CGFloat) -> Vector2
+public func calculateVectorRatio(vec1: Vector2, vec2: Vector2, ratio: CGFloat) -> Vector2
 {
     return vec1 + (vec2 - vec1) * ratio;
 }

@@ -9,19 +9,19 @@
 import CoreGraphics
 
 // Represents a Pressure component that can be added to a body to include gas pressure as an internal force
-class PressureComponent: BodyComponent
+public class PressureComponent: BodyComponent
 {
     // PRIVATE VARIABLES
-    final var volume: CGFloat = 0;
-    final var gasAmmount: CGFloat = 0;
-    final var normalList: [Vector2] = [];
+    public final var volume: CGFloat = 0;
+    public final var gasAmmount: CGFloat = 0;
+    public final var normalList: [Vector2] = [];
     
-    override func prepare(body: Body)
+    override public func prepare(body: Body)
     {
         normalList = [Vector2](count: body.pointMasses.count, repeatedValue: Vector2());
     }
     
-    override func accumulateInternalForces()
+    override public func accumulateInternalForces()
     {
         super.accumulateInternalForces();
         // internal forces based on pressure equations.  we need 2 loops to do this.  one to find the overall volume of the
@@ -58,11 +58,11 @@ class PressureComponent: BodyComponent
 }
 
 // Creator for the Spring component
-class PressureComponentCreator : BodyComponentCreator
+public class PressureComponentCreator : BodyComponentCreator
 {
-    var gasAmmount: CGFloat;
+    public var gasAmmount: CGFloat;
     
-    required init(gasAmmount: CGFloat = 0)
+    public required init(gasAmmount: CGFloat = 0)
     {
         self.gasAmmount = gasAmmount;
         
@@ -71,7 +71,7 @@ class PressureComponentCreator : BodyComponentCreator
         self.bodyComponentClass = PressureComponent.self;
     }
     
-    override func prepareBodyAfterComponent(body: Body)
+    public override func prepareBodyAfterComponent(body: Body)
     {
         if let comp = body.getComponentType(PressureComponent)
         {

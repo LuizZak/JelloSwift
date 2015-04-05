@@ -10,7 +10,7 @@ import Foundation
 import CoreGraphics
 
 /// Represents a joint link that links to an edge of a body
-class EdgeJointLink: JointLinkType
+public class EdgeJointLink: JointLinkType
 {
     /// The body that this joint link is linked to
     private let _body: Body;
@@ -23,40 +23,40 @@ class EdgeJointLink: JointLinkType
     /// The ratio of the edge this edge joint is linked to.
     /// Values must range between [0 - 1] inclusive, and dictate the middle point of the edge.
     /// Specifying either 0 or 1 makes this edge joint link behave essentially like a PointJointLink
-    var edgeRatio: CGFloat;
+    public var edgeRatio: CGFloat;
     
     /// Gets the body that this joint link is linked to
-    var body: Body { return _body; }
+    public var body: Body { return _body; }
     
     /// Gets the type of joint this joint link represents
-    var linkType: LinkType { return LinkType.Edge }
+    public var linkType: LinkType { return LinkType.Edge }
     
     /// Gets the position, in world coordinates, at which this joint links with the underlying body
-    var position: Vector2
+    public var position: Vector2
     {
         return calculateVectorRatio(_pointMass1.position, _pointMass2.position, edgeRatio);
     }
     
     /// Gets the velocity of the object this joint links to
-    var velocity: Vector2
+    public var velocity: Vector2
     {
         return calculateVectorRatio(_pointMass1.velocity, _pointMass2.velocity, edgeRatio);
     }
     
     /// Gets the total mass of the subject of this joint link
-    var mass: CGFloat
+    public var mass: CGFloat
     {
         return _pointMass1.mass + _pointMass2.mass;
     }
     
     /// Gets a value specifying whether the object referenced by this JointLinkType is static
-    var isStatic: Bool
+    public var isStatic: Bool
     {
         return isinf(_pointMass1.mass) && isinf(_pointMass2.mass);
     }
     
     /// Inits a new edge joint link with the specified parameters
-    init(body: Body, edgeIndex: Int, edgeRatio: CGFloat = 0.5)
+    public init(body: Body, edgeIndex: Int, edgeRatio: CGFloat = 0.5)
     {
         _body = body;
         _pointMass1 = _body.pointMasses[edgeIndex % _body.pointMasses.count];
@@ -68,7 +68,7 @@ class EdgeJointLink: JointLinkType
     /// Appies a given force to the subject of this joint link
     ///
     /// :param: force A force to apply to the subjects of this joint link
-    func applyForce(force: Vector2)
+    public func applyForce(force: Vector2)
     {
         _pointMass1.applyForce(force * (1 - edgeRatio));
         _pointMass2.applyForce(force * (edgeRatio));

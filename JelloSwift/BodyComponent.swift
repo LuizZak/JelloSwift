@@ -9,56 +9,56 @@
 import CoreGraphics
 
 // Represents a component that can be added to a body to change it's physical characteristics
-class BodyComponent: Equatable
+public class BodyComponent: Equatable
 {
     // The body this body component is added into
-    let body: Body;
+    public let body: Body;
     
     // Initializes a new instance of the BodyComponent class
-    required init(body: Body)
+    public required init(body: Body)
     {
         self.body = body;
     }
     
     // Makes the body component prepare itself after it has been added to a body
-    func prepare(body: Body)
+    public func prepare(body: Body)
     {
         
     }
     
     // This function should add all internal forces to the Force member variable of each PointMass in the body.
     // These should be forces that try to maintain the shape of the body.
-    func accumulateInternalForces()
+    public func accumulateInternalForces()
     {
         
     }
     
     // This function should add all external forces to the Force member variable of each PointMass in the body.
     // These are external forces acting on the PointMasses, such as gravity, etc.
-    func accumulateExternalForces()
+    public func accumulateExternalForces()
     {
         
     }
 }
 
-func ==(lhs: BodyComponent, rhs: BodyComponent) -> Bool
+public func ==(lhs: BodyComponent, rhs: BodyComponent) -> Bool
 {
     return lhs === rhs;
 }
 
 // Used to create body components into the body
-class BodyComponentCreator
+public class BodyComponentCreator
 {
-    var bodyComponentClass: BodyComponent.Type = BodyComponent.self;
+    public var bodyComponentClass: BodyComponent.Type = BodyComponent.self;
     
-    func attachToBody(body: Body)
+    public func attachToBody(body: Body)
     {
         body.addComponentType(bodyComponentClass);
         
         prepareBodyAfterComponent(body);
     }
     
-    func prepareBodyAfterComponent(body: Body)
+    public func prepareBodyAfterComponent(body: Body)
     {
         
     }

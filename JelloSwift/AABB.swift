@@ -9,35 +9,35 @@
 import CoreGraphics
 
 /// Represents an axis-aligned bounding box, utilized to figure out the AABB of soft-bodies
-final class AABB
+public final class AABB
 {
     /// The validity of this AABB
-    var validity = PointValidity.Invalid;
+    public var validity = PointValidity.Invalid;
     
     /// Minimum and maximum points for this bounding box
-    var minimum = Vector2();
-    var maximum = Vector2();
+    public var minimum = Vector2();
+    public var maximum = Vector2();
     
     /// Gets the X position of this AABB
-    var x: CGFloat { return minimum.X; }
+    public var x: CGFloat { return minimum.X; }
     /// Gets the Y position of this AABB
-    var y: CGFloat { return minimum.Y; }
+    public var y: CGFloat { return minimum.Y; }
     
     /// Gets the width of this AABB
-    var width: CGFloat { return maximum.X - minimum.X; }
+    public var width: CGFloat { return maximum.X - minimum.X; }
     /// Gets the height of this AABB
-    var height: CGFloat { return maximum.Y - minimum.Y; }
+    public var height: CGFloat { return maximum.Y - minimum.Y; }
     
     // This guy has to be lower case otherwise sourcekit crashes
     /// Gets a CGRect that represents the boundaries of this AABB object
-    var cgRect: CGRect { return CGRect(x: x, y: y, width: width, height: height) }
+    public var cgRect: CGRect { return CGRect(x: x, y: y, width: width, height: height) }
     
-    init()
+    public init()
     {
         
     }
     
-    init(min: Vector2?, max: Vector2?)
+    public init(min: Vector2?, max: Vector2?)
     {
         self.validity = PointValidity.Valid;
         
@@ -60,13 +60,13 @@ final class AABB
         }
     }
     
-    init(points: [Vector2])
+    public init(points: [Vector2])
     {
         self.validity = PointValidity.Invalid;
         self.expandToInclude(points);
     }
     
-    func clear()
+    public func clear()
     {
         self.minimum = Vector2.Zero;
         self.maximum = Vector2.Zero;
@@ -74,7 +74,7 @@ final class AABB
         validity = PointValidity.Invalid;
     }
     
-    func expandToInclude(point: Vector2)
+    public func expandToInclude(point: Vector2)
     {
         if(validity == PointValidity.Invalid)
         {
@@ -90,7 +90,7 @@ final class AABB
         }
     }
     
-    func expandToInclude(points: [Vector2])
+    public func expandToInclude(points: [Vector2])
     {
         if(points.count == 0)
         {
@@ -112,7 +112,7 @@ final class AABB
         }
     }
     
-    func contains(point: Vector2) -> Bool
+    public func contains(point: Vector2) -> Bool
     {
         if(self.validity == PointValidity.Invalid)
         {
@@ -122,7 +122,7 @@ final class AABB
         return point >= minimum && point <= maximum;
     }
     
-    func intersects(box: AABB) -> Bool
+    public func intersects(box: AABB) -> Bool
     {
         if(self.validity == .Invalid || box.validity == .Invalid)
         {
@@ -134,7 +134,7 @@ final class AABB
 }
 
 // Specifies the point validity for a whole AABB
-enum PointValidity
+public enum PointValidity
 {
     case Valid
     case Invalid

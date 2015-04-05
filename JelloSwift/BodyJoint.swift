@@ -9,13 +9,13 @@
 import Foundation
 import CoreGraphics
 
-func ==(lhs: BodyJoint, rhs: BodyJoint) -> Bool
+public func ==(lhs: BodyJoint, rhs: BodyJoint) -> Bool
 {
     return lhs === rhs;
 }
 
 /// Base class for joints which unites two separate bodies
-class BodyJoint: Equatable
+public class BodyJoint: Equatable
 {
     /// Gets the first link that contins informationa bout the first body linked by this joint
     internal let _bodyLink1: JointLinkType;
@@ -24,17 +24,17 @@ class BodyJoint: Equatable
     
     /// Whether to allow collisions between the two objects joined by this BodyJoint.
     /// Defaults to false
-    var allowCollisions: Bool = false;
+    public var allowCollisions: Bool = false;
     
     /// Gets the first link that contins informationa bout the first body linked by this joint
-    var bodyLink1: JointLinkType { return _bodyLink1 }
+    public var bodyLink1: JointLinkType { return _bodyLink1 }
     /// Gets the second link that contins informationa bout the first body linked by this joint
-    var bodyLink2: JointLinkType { return _bodyLink2 }
+    public var bodyLink2: JointLinkType { return _bodyLink2 }
     
     /// Gets or sets the rest distance for this joint
-    var restDistance: CGFloat
+    public var restDistance: CGFloat
     
-    init(world: World, link1: JointLinkType, link2: JointLinkType, distance: CGFloat = -1)
+    public init(world: World, link1: JointLinkType, link2: JointLinkType, distance: CGFloat = -1)
     {
         _bodyLink1 = link1;
         _bodyLink2 = link2;
@@ -57,14 +57,14 @@ class BodyJoint: Equatable
      *
      * :param: dt The delta time to update the resolve on
      */
-    func resolve(dt: CGFloat)
+    public func resolve(dt: CGFloat)
     {
         
     }
 }
 
 /// Protocol to be implemented by objects that specify the way a joint links with a body
-protocol JointLinkType
+public protocol JointLinkType
 {
     /// Gets the body that this joint link is linked to
     var body: Body { get }
@@ -91,7 +91,7 @@ protocol JointLinkType
 }
 
 /// The type of joint link of a BodyJointLink class
-enum LinkType
+public enum LinkType
 {
     /// Specifies that the joint links at the whole body, relative to the center
     case Body
