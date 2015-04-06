@@ -9,11 +9,16 @@
 import CoreGraphics
 
 // Represents a 3D vector
-public struct Vector3: Equatable
+public struct Vector3: Equatable, Printable
 {
     public var X: CGFloat = 0;
     public var Y: CGFloat = 0;
     public var Z: CGFloat = 0;
+    
+    public var description: String
+    {
+        return "{ X: \(X) Y: \(Y) Z: \(Z) }";
+    }
     
     public init()
     {
@@ -36,7 +41,7 @@ public struct Vector3: Equatable
     
     public func cross2Z(vec: Vector3) -> CGFloat
     {
-        return (self.X * self.Y) - (self.Y * self.X);
+        return (self.X * vec.Y) - (self.Y * vec.X);
     }
 }
 
