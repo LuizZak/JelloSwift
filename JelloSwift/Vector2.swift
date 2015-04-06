@@ -156,6 +156,19 @@ public func rotateVector(vec: Vector2, angleInRadians: CGFloat) -> Vector2
     return Vector2((c * vec.X) - (s * vec.Y), (c * vec.Y) + (s * vec.X));
 }
 
+public func rotateVector(vec: Vector2, angleInRadians: Double) -> Vector2
+{
+    if(angleInRadians % (M_PI * 2) == 0)
+    {
+        return vec;
+    }
+    
+    let c = cos(angleInRadians);
+    let s = sin(angleInRadians);
+    
+    return Vector2((c * Double(vec.X)) - (s * Double(vec.Y)), (c * Double(vec.Y)) + (s * Double(vec.X)));
+}
+
 /// Returns whether rotating from A to B is counter-clockwise
 public func vectorsAreCCW(A: Vector2, B: Vector2) -> Bool
 {

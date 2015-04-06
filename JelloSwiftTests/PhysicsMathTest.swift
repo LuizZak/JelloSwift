@@ -11,21 +11,6 @@ import XCTest
 
 class PhysicsMathTest: XCTestCase
 {
-    func testBitmask()
-    {
-        var p1 = Vector2(10, 20);
-        var p2 = Vector2(300, 20);
-        
-        var v1 = Vector2(1, 2);
-        var v2 = Vector2(2, 80);
-        
-        var force = calculateSpringForce(p1, v1, p2, v2, 20, 10, 1);
-        
-        println(force.toString());
-        
-        XCTAssert(true, "Pass")
-    }
-    
     func testVector2Perp()
     {
         var vec1 = Vector2(0, 1);
@@ -62,7 +47,8 @@ class PhysicsMathTest: XCTestCase
     {
         var vec = Vector2(0, 1);
         
-        XCTAssert(rotateVector(vec, 90)  != Vector2( 1,  0), "Vector rotation test failed!");
-        XCTAssert(rotateVector(vec, 180) != Vector2( 0, -1), "Vector rotation test failed!");
+        XCTAssertEqual(rotateVector(vec, PI * 2), vec, "Vector rotation test failed!");
+        XCTAssertEqual(rotateVector(vec, PI / 2), Vector2(-1,  0), "Vector rotation test failed!");
+        XCTAssertEqual(rotateVector(vec, PI)    , Vector2( 0, -1), "Vector rotation test failed!");
     }
 }
