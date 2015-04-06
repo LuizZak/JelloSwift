@@ -121,6 +121,7 @@ class DemoView: UIView
         
         // Create a few structures to showcase the joints feature
         createLinkedBouncyBalls(toWorldCoords(Vector2(size.width / 2, size.height * 0.65)));
+
         createBallBoxLinkedStructure(toWorldCoords(Vector2(size.width * 0.8, size.height * 0.8)));
         createScaleStructure(toWorldCoords(Vector2(size.width * 0.4, size.height * 0.8)));
         createCarStructure(toWorldCoords(Vector2(size.width * 0.55, size.height * 0.8)));
@@ -322,7 +323,7 @@ class DemoView: UIView
     }
     
     /// Creates a box at the specified world coordinates with the specified size
-    func createBox(pos: Vector2, size: Vector2, pinned: Bool = false, kinematic: Bool = false, isStatic: Bool = false, angle: CGFloat = 0) -> Body
+    func createBox(pos: Vector2, size: Vector2, pinned: Bool = false, kinematic: Bool = false, isStatic: Bool = false, angle: CGFloat = 0, mass: CGFloat = 0.5) -> Body
     {
         // Create the closed shape for the box's physics body
         var shape = ClosedShape();
@@ -347,7 +348,7 @@ class DemoView: UIView
             comps += GravityComponentCreator();
         }
         
-        let body = Body(world: world, shape: shape, pointMasses: [isStatic ? CGFloat.infinity : 0.5], kinematic: kinematic, position: pos, components: comps)
+        let body = Body(world: world, shape: shape, pointMasses: [isStatic ? CGFloat.infinity : mass], kinematic: kinematic, position: pos, components: comps)
         body.isPined = pinned;
         
         // In order to have the box behave correctly, we need to add some internal springs to the body
@@ -413,8 +414,8 @@ class DemoView: UIView
     /// Creates a pinned box with a ball attached to one of its edges
     func createBallBoxLinkedStructure(pos: Vector2)
     {
-        let b1 = createBouncyBall(pos - Vector2(0, 2), pinned: false, kinematic: false, radius: 1);
-        let b2 = createBox(pos, size: Vector2(1, 1), pinned: true, kinematic: false);
+        let b1 = createBouncyBall(pos - Vector2(0, 2), pinned: false, kinematic: false, radius: 1, mass: 1);
+        let b2 = createBox(pos, size: Vector2(1, 1), pinned: true, kinematic: false, mass: 1);
         
         // Create the joint links
         let l1 = BodyJointLink(body: b1);
@@ -450,8 +451,7 @@ class DemoView: UIView
     /// Creates a car structure
     func createCarStructure(pos: Vector2)
     {
-        let leftWheel  = createBouncyBall(pos + Vector2(-1.1, -0.5), pinned: false, kinematic: false, radius: 0.5, mass: 0.5);
-        let rightWheel = createBouncyBall(pos + Vector2( 1.1, -0.5), pinned: false, kinematic: false, radius: 0.5, mass: 0.5);
+        //return;
         
         let carShape = ClosedShape();
         
@@ -484,7 +484,14 @@ class DemoView: UIView
         carShape.transformOwn(0, localScale: Vector2(0.65, 0.65));
         carShape.finish(recenter: true);
         
-        let carBody = Body(world: world, shape: carShape, pointMasses: [0.5], position: pos - Vector2(0, -0.4), angle: 0, scale: Vector2.One, kinematic: false, components: [SpringComponentCreator(shapeMatchingOn: true, edgeSpringK: 300, edgeSpringDamp: 10, shapeSpringK: 600, shapeSpringDamp: 40), GravityComponentCreator()]);
+        let bodyOffset = Vector2(0, 0.4);
+        
+        let carBody = Body(world: world, shape: carShape, pointMasses: [0.5], position: pos + bodyOffset, angle: 0, scale: Vector2.One, kinematic: false, components: [SpringComponentCreator(shapeMatchingOn: true, edgeSpringK: 300, edgeSpringDamp: 10, shapeSpringK: 600, shapeSpringDamp: 40), GravityComponentCreator()]);
+        
+        //carBody.setPositionAngle(carBody.derivedPos, angle: PI, scale: Vector2.One);
+        
+        let leftWheel  = createBouncyBall(carBody.derivedPos + rotateVector(Vector2(-1.1, -0.5) - bodyOffset, carBody.derivedAngle), pinned: false, kinematic: false, radius: 0.5, mass: 0.4);
+        let rightWheel = createBouncyBall(carBody.derivedPos + rotateVector(Vector2( 1.1, -0.5) - bodyOffset, carBody.derivedAngle), pinned: false, kinematic: false, radius: 0.5, mass: 0.4);
         
         // Create the left wheel constraint
         let ljWheel = BodyJointLink(body: leftWheel);

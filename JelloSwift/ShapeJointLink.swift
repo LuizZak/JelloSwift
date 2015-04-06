@@ -41,15 +41,20 @@ public class ShapeJointLink: JointLinkType
         }
         
         center /= _pointMasses.count;
-        
-        // Calculate the offset, if present
-        if(offset != Vector2.Zero)
-        {
-            // Get the angle of the points and calculate their different to the orgiinal shape angle
-            center += rotateVector(offset, _body.derivedAngle);
-        }
+        center += offsetPosition;
         
         return center;
+    }
+    
+    /// Offset position, calculated based on the owning body's angle
+    private var offsetPosition: Vector2
+    {
+        if(offset == Vector2.Zero)
+        {
+            return Vector2.Zero;
+        }
+        
+        return rotateVector(offset, _body.derivedAngle);
     }
     
     /// Gets the velocity of the object this joint links to
@@ -98,11 +103,18 @@ public class ShapeJointLink: JointLinkType
     /// Appies a given force to the subject of this joint link
     ///
     /// :param: force A force to apply to the subjects of this joint link
-    public func applyForce(force: Vector2)
+    public func applyForce(var force: Vector2)
     {
+        let tempV1 = Vector3(vec2: offsetPosition, z: 0);
+        let tempV2 = Vector3(vec2: force, z: 0);
+        let torqueF = tempV1.cross2Z(tempV2);
+        
         for p in _pointMasses
         {
-            p.applyForce(force);
+            let tempR = (p.position - position + offsetPosition).perpendicular();
+            
+            p.force += tempR * torqueF;
+            p.force += force;
         }
     }
     
