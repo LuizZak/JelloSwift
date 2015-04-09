@@ -73,6 +73,7 @@ public class World
         
         worldSize = max - min;
         
+        // Divide the world into 1024 boxes (32 x 32) for broad-phase collision detection
         worldGridStep = worldSize / 32;
     }
     
@@ -280,7 +281,7 @@ public class World
             body.derivePositionAndAngle(elapsed);
             
             // Only update edge and normals pre-accumulation if the body has components
-            if(body.components.count > 0)
+            if(body.componentCount > 0)
             {
                 body.updateEdgesAndNormals();
             }
@@ -621,6 +622,15 @@ public class World
         
         var min = (box.minimum - worldGridStep) * rev_Divider;
         var max = (box.maximum - worldGridStep) * rev_Divider;
+        
+        // In case the body is contained within an invalid bound, disable collision completely
+        if(isnan(min.X) || isnan(min.Y) || isnan(max.X) || isnan(max.Y))
+        {
+            body.bitmaskX = 0;
+            body.bitmaskY = 0;
+            
+            return;
+        }
         
         if(max.X < 0) { max.X = 0; } else if(max.X > 32) { max.X = 32; }
         if(max.Y < 0) { max.Y = 0; } else if(max.Y > 32) { max.Y = 32; }

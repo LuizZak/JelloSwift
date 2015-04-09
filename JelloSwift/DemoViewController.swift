@@ -104,8 +104,10 @@ class DemoView: UIView
         }
         
         // Create a few pinned bodies
-        createBouncyBall(toWorldCoords(Vector2(size.width * 0.2, size.height / 2)), pinned: true, radius: 3);
-        createBouncyBall(toWorldCoords(Vector2(size.width * 0.8, size.height / 2)), pinned: true, radius: 3);
+        let pb1 = createBouncyBall(toWorldCoords(Vector2(size.width * 0.2, size.height / 2)), pinned: true, radius: 3);
+        let pb2 = createBouncyBall(toWorldCoords(Vector2(size.width * 0.8, size.height / 2)), pinned: true, radius: 3);
+        pb1.getComponentType(SpringComponent)?.setShapeMatchingConstants(200, 10);
+        pb2.getComponentType(SpringComponent)?.setShapeMatchingConstants(200, 10);
         
         // Create some free boxes around the level
         createBox(toWorldCoords(Vector2(size.width / 2, size.height / 3)), size: Vector2(1, 1));
@@ -298,7 +300,7 @@ class DemoView: UIView
         
         let points = [CGPoint(vec: start), CGPoint(vec: end)];
         
-        polyDrawer.queuePoly(points, fillColor: 0xFFFFFFFF, strokeColor: 0xFFEEEEEE);
+        polyDrawer.queuePoly(points, fillColor: 0xFFFFFFFF, strokeColor: joint.enabled ? 0xFFEEEEEE : 0xFFCCCCCC);
     }
     
     func drawBody(body: Body)
@@ -314,12 +316,24 @@ class DemoView: UIView
             {
                 let s = CGPoint(vec: toScreenCoords(p));
                 let e = CGPoint(vec: toScreenCoords(p + pComp.normalList[i] / 3));
-                polyDrawer.queuePoly([s, e], fillColor: 0xFF333333, strokeColor: 0xFFEC33EC);
+                polyDrawer.queuePoly([s, e], fillColor: 0, strokeColor: 0xFFEC33EC, lineWidth: 1);
             }
         }
         
+        // Draw the body's global shape
+        polyDrawer.queuePoly(body.globalShape.map { CGPoint(vec: toScreenCoords($0)) }, fillColor: 0x33FFFFFF, strokeColor: 0xFF777777, lineWidth: 1);
+        
+        // Draw lines going from the body's outer points to the global shape indices
+        for (i, p) in enumerate(points)
+        {
+            let start = p;
+            let end = CGPoint(vec: toScreenCoords(body.globalShape[i]));
+            
+            polyDrawer.queuePoly([start, end], fillColor: 0, strokeColor: 0xFF449944, lineWidth: 1);
+        }
+        
         // Draw the body now
-        polyDrawer.queuePoly(points, fillColor: 0xFFFFFFFF, strokeColor: 0xFF000000);
+        polyDrawer.queuePoly(points, fillColor: 0xADFFFFFF, strokeColor: 0xFF000000);
         
         // Draw the body axis
         let axisUp    = [body.derivedPos, body.derivedPos + rotateVector(Vector2(0, 0.6), body.derivedAngle)];
@@ -354,7 +368,7 @@ class DemoView: UIView
         
         if(!pinned)
         {
-            // Add a gravity component taht will pull the body down
+            // Add a gravity component that will pull the body down
             comps += GravityComponentCreator();
         }
         
@@ -374,10 +388,9 @@ class DemoView: UIView
     }
     
     /// Creates a bouncy ball at the specified world coordinates
-    func createBouncyBall(pos: Vector2, pinned: Bool = false, kinematic: Bool = false, radius: CGFloat = 1, mass: CGFloat = 0.5) -> Body
+    func createBouncyBall(pos: Vector2, pinned: Bool = false, kinematic: Bool = false, radius: CGFloat = 1, mass: CGFloat = 0.5, def: Int = 12) -> Body
     {
         // Create the closed shape for the ball's physics body
-        var def = 12;
         var shape = ClosedShape();
         shape.begin();
         for i in 0..<def
@@ -494,25 +507,26 @@ class DemoView: UIView
         
         let bodyOffset = Vector2(0, 0.4);
         
-        let carBody = Body(world: world, shape: carShape, pointMasses: [0.5], position: pos + bodyOffset, angle: 0, scale: Vector2.One, kinematic: false, components: [SpringComponentCreator(shapeMatchingOn: true, edgeSpringK: 300, edgeSpringDamp: 30, shapeSpringK: 600, shapeSpringDamp: 10), GravityComponentCreator()]);
+        let carBody = Body(world: world, shape: carShape, pointMasses: [0.7], position: pos + bodyOffset, angle: 0, scale: Vector2.One, kinematic: false, components: [SpringComponentCreator(shapeMatchingOn: true, edgeSpringK: 300, edgeSpringDamp: 30, shapeSpringK: 600, shapeSpringDamp: 30), GravityComponentCreator()]);
         
-        let leftWheel  = createBouncyBall(carBody.derivedPos + rotateVector(Vector2(-1.1, -0.5) - bodyOffset, carBody.derivedAngle), pinned: false, kinematic: false, radius: 0.5, mass: 0.4);
-        let rightWheel = createBouncyBall(carBody.derivedPos + rotateVector(Vector2( 1.1, -0.5) - bodyOffset, carBody.derivedAngle), pinned: false, kinematic: false, radius: 0.5, mass: 0.4);
+        let leftWheel  = createBouncyBall(carBody.derivedPos + rotateVector(Vector2(-1.1, -0.5) - bodyOffset, carBody.derivedAngle), pinned: false, kinematic: false, radius: 0.5, mass: 0.5);
+        let rightWheel = createBouncyBall(carBody.derivedPos + rotateVector(Vector2( 1.1, -0.5) - bodyOffset, carBody.derivedAngle), pinned: false, kinematic: false, radius: 0.5, mass: 0.5);
         
         // Create the left wheel constraint
         let ljWheel = BodyJointLink(body: leftWheel);
         let ljCar = ShapeJointLink(body: carBody, pointMassIndexes: [19, 0, 1, 2, 3, 4]);
         ljCar.offset = Vector2(0, -0.6);
         
-        let leftJoint = SpringBodyJoint(world: world, link1: ljWheel, link2: ljCar, springK: 75, springD: 1, distance: 0);
+        let leftJoint = SpringBodyJoint(world: world, link1: ljWheel, link2: ljCar, springK: 100, springD: 15, distance: 0);
         leftJoint.allowCollisions = true;
         
         let rjWheel = BodyJointLink(body: rightWheel);
         let rjCar = ShapeJointLink(body: carBody, pointMassIndexes: [13, 14, 15, 16, 17, 18]);
         rjCar.offset = Vector2(0, -0.6);
         
-        let rightJoint = SpringBodyJoint(world: world, link1: rjWheel, link2: rjCar, springK: 75, springD: 15, distance: 0);
+        let rightJoint = SpringBodyJoint(world: world, link1: rjWheel, link2: rjCar, springK: 100, springD: 15, distance: 0);
         rightJoint.allowCollisions = true;
+        
     }
 }
 

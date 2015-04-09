@@ -11,16 +11,19 @@ import UIKit
 private struct Poly
 {
     let points: [CGPoint];
-    let lineColor: UIColor;
     let fillColor: UIColor;
+    let lineColor: UIColor;
     let lineWidth: CGFloat;
+    
+    let fillColorUInt: UInt;
+    let lineColorUInt: UInt;
     
     var bounds: CGRect
     {
         return AABB(points: points.map{ Vector2($0) }).cgRect;
     }
     
-    init(points: [CGPoint], lineColor: UIColor, fillColor: UIColor, lineWidth: CGFloat)
+    init(points: [CGPoint], lineColor: UInt, fillColor: UInt, lineWidth: CGFloat)
     {
         // Wrap the values around so the shape is closed
         var p = points;
@@ -30,8 +33,10 @@ private struct Poly
         }
         
         self.points = p;
-        self.lineColor = lineColor;
-        self.fillColor = fillColor;
+        self.lineColor = uiColorFromUInt(lineColor);
+        self.fillColor = uiColorFromUInt(fillColor);
+        self.lineColorUInt = lineColor;
+        self.fillColorUInt = fillColor;
         self.lineWidth = lineWidth;
     }
 }
@@ -47,7 +52,7 @@ class PolyDrawer
     func queuePoly(vertices: [CGPoint], fillColor: UInt, strokeColor: UInt, lineWidth: CGFloat = 3)
     {
         var converted: [CGPoint] = [];
-        var poly:Poly = Poly(points: vertices, lineColor: skColorFromUInt(strokeColor), fillColor: skColorFromUInt(fillColor), lineWidth: lineWidth);
+        var poly:Poly = Poly(points: vertices, lineColor: strokeColor, fillColor: fillColor, lineWidth: lineWidth);
         
         self.polys += poly;
     }
@@ -57,6 +62,8 @@ class PolyDrawer
     {
         for poly in polys
         {
+            CGContextSaveGState(context);
+            
             let path = CGPathCreateMutable();
             
             var f = CGAffineTransformIdentity;
@@ -68,8 +75,29 @@ class PolyDrawer
             CGContextSetLineJoin(context, kCGLineJoinRound);
             CGContextSetLineCap(context, kCGLineCapRound);
             
-            CGContextAddPath(context, path);
-            CGContextDrawPath(context, kCGPathFillStroke);
+            let hasFill = ((poly.fillColorUInt >> 24) & 0xFF) != 0;
+            let hasLine = ((poly.lineColorUInt >> 24) & 0xFF) != 0;
+            
+            if(hasLine && hasFill && poly.points.count > 3)
+            {
+                CGContextAddPath(context, path);
+                CGContextDrawPath(context, kCGPathFillStroke);
+            }
+            else
+            {
+                if(hasFill && poly.points.count > 3)
+                {
+                    CGContextAddPath(context, path);
+                    CGContextFillPath(context);
+                }
+                if(hasLine)
+                {
+                    CGContextAddPath(context, path);
+                    CGContextStrokePath(context);
+                }
+            }
+            
+            CGContextRestoreGState(context);
         }
     }
     
@@ -80,7 +108,7 @@ class PolyDrawer
     }
 }
 
-func skColorFromUInt(color: UInt) -> UIColor
+func uiColorFromUInt(color: UInt) -> UIColor
 {
     var a: CGFloat = CGFloat((UInt(color >> 24) & UInt(0xFF))) / 255.0;
     var r: CGFloat = CGFloat((UInt(color >> 16) & UInt(0xFF))) / 255.0;

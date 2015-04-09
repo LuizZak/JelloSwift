@@ -123,7 +123,7 @@ public class ShapeJointLink: JointLinkType
     {
         var angle: CGFloat = 0;
         
-        var originalSign: Int = 1;
+        var originalSign = 1;
         var originalAngle: CGFloat = 0;
         
         for i in _indices
@@ -137,13 +137,13 @@ public class ShapeJointLink: JointLinkType
             
             if (i == 0)
             {
-                originalSign = signbit(thisAngle);
+                originalSign = (thisAngle >= 0.0) ? 1 : -1;
                 originalAngle = thisAngle;
             }
             else
             {
                 let diff = (thisAngle - originalAngle);
-                let thisSign = signbit(thisAngle);
+                let thisSign = (thisAngle >= 0.0) ? 1 : -1;
                 
                 if (abs(diff) > PI && (thisSign != originalSign))
                 {

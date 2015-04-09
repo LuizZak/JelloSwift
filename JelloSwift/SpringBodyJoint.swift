@@ -33,6 +33,11 @@ public class SpringBodyJoint : BodyJoint
     */
     public override func resolve(dt: CGFloat)
     {
+        if(!enabled)
+        {
+            return;
+        }
+        
         let pos1 = _bodyLink1.position;
         let pos2 = _bodyLink2.position;
         

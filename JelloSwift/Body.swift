@@ -49,7 +49,10 @@ public final class Body: Equatable
     public var velDamping: CGFloat = 0.999;
     
     /// The array of body components for this body object
-    public var components: [BodyComponent] = [];
+    private var components: [BodyComponent] = [];
+    
+    /// Gets the ammount of components in this body
+    public var componentCount: Int { return components.count; }
     
     // Both these properties are in radians:
     
@@ -374,7 +377,7 @@ public final class Body: Equatable
             // find the average angle of all of the masses.
             var angle: CGFloat = 0;
         
-            var originalSign: Int = 1;
+            var originalSign = 1;
             var originalAngle: CGFloat = 0;
             
             let c = pointMasses.count;
@@ -387,13 +390,13 @@ public final class Body: Equatable
                 
                 if (i == 0)
                 {
-                    originalSign = signbit(thisAngle);
+                    originalSign = (thisAngle >= 0.0) ? 1 : -1;
                     originalAngle = thisAngle;
                 }
                 else
                 {
                     let diff = (thisAngle - originalAngle);
-                    let thisSign = signbit(thisAngle);
+                    let thisSign = (thisAngle >= 0.0) ? 1 : -1;
                     
                     if (abs(diff) > PI && (thisSign != originalSign))
                     {

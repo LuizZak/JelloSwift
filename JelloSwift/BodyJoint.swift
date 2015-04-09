@@ -26,6 +26,11 @@ public class BodyJoint: Equatable
     /// Defaults to false
     public var allowCollisions: Bool = false;
     
+    /// Controls whether this valubody joint is enabled.
+    /// Disabling body joints disables all of the physics of the joint.
+    /// Note that collisions between bodies are still governed by .allowCollisions even if the joint is disabled
+    public var enabled: Bool = true;
+    
     /// Gets the first link that contins informationa bout the first body linked by this joint
     public var bodyLink1: JointLinkType { return _bodyLink1 }
     /// Gets the second link that contins informationa bout the first body linked by this joint
