@@ -67,7 +67,7 @@ class PolyDrawer
             let path = CGPathCreateMutable();
             
             var f = CGAffineTransformIdentity;
-            CGPathAddLines(path, &f, poly.points, UInt(poly.points.count))
+            CGPathAddLines(path, &f, poly.points, poly.points.count);
             
             CGContextSetStrokeColorWithColor(context, poly.lineColor.CGColor);
             CGContextSetFillColorWithColor(context, poly.fillColor.CGColor);
