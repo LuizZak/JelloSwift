@@ -237,7 +237,7 @@ class DemoView: UIView
         // Dragging point
         if let p = draggingPoint where inputMode == InputMode.DragBody
         {
-            var spring = calculateSpringForce(p.position, p.velocity, fingerLocation, Vector2.Zero, 0, 300, 20);
+            var spring = calculateSpringForce(p.position, p.velocity, fingerLocation, Vector2.Zero, 0, 700, 20);
             
             p.applyForce(spring);
         }
@@ -494,7 +494,7 @@ class DemoView: UIView
         
         let bodyOffset = Vector2(0, 0.4);
         
-        let carBody = Body(world: world, shape: carShape, pointMasses: [0.5], position: pos + bodyOffset, angle: 0, scale: Vector2.One, kinematic: false, components: [SpringComponentCreator(shapeMatchingOn: true, edgeSpringK: 300, edgeSpringDamp: 10, shapeSpringK: 600, shapeSpringDamp: 40), GravityComponentCreator()]);
+        let carBody = Body(world: world, shape: carShape, pointMasses: [0.5], position: pos + bodyOffset, angle: 0, scale: Vector2.One, kinematic: false, components: [SpringComponentCreator(shapeMatchingOn: true, edgeSpringK: 300, edgeSpringDamp: 30, shapeSpringK: 600, shapeSpringDamp: 10), GravityComponentCreator()]);
         
         let leftWheel  = createBouncyBall(carBody.derivedPos + rotateVector(Vector2(-1.1, -0.5) - bodyOffset, carBody.derivedAngle), pinned: false, kinematic: false, radius: 0.5, mass: 0.4);
         let rightWheel = createBouncyBall(carBody.derivedPos + rotateVector(Vector2( 1.1, -0.5) - bodyOffset, carBody.derivedAngle), pinned: false, kinematic: false, radius: 0.5, mass: 0.4);
@@ -504,14 +504,14 @@ class DemoView: UIView
         let ljCar = ShapeJointLink(body: carBody, pointMassIndexes: [19, 0, 1, 2, 3, 4]);
         ljCar.offset = Vector2(0, -0.6);
         
-        let leftJoint = SpringBodyJoint(world: world, link1: ljWheel, link2: ljCar, springK: 100, springD: 1, distance: 0);
+        let leftJoint = SpringBodyJoint(world: world, link1: ljWheel, link2: ljCar, springK: 75, springD: 1, distance: 0);
         leftJoint.allowCollisions = true;
         
         let rjWheel = BodyJointLink(body: rightWheel);
         let rjCar = ShapeJointLink(body: carBody, pointMassIndexes: [13, 14, 15, 16, 17, 18]);
         rjCar.offset = Vector2(0, -0.6);
         
-        let rightJoint = SpringBodyJoint(world: world, link1: rjWheel, link2: rjCar, springK: 100, springD: 1, distance: 0);
+        let rightJoint = SpringBodyJoint(world: world, link1: rjWheel, link2: rjCar, springK: 75, springD: 15, distance: 0);
         rightJoint.allowCollisions = true;
     }
 }

@@ -36,7 +36,16 @@ public class SpringBodyJoint : BodyJoint
         let pos1 = _bodyLink1.position;
         let pos2 = _bodyLink2.position;
         
-        let force = calculateSpringForce(pos1, _bodyLink1.velocity, pos2, _bodyLink2.velocity, restDistance, springK, springD);
+        let dist = pos1.distanceTo(pos2);
+        // Affordable distance
+        if(dist < maxRestDistance && dist > restDistance)
+        {
+            return;
+        }
+        
+        let targetDist = max(restDistance, min(maxRestDistance, dist));
+        
+        let force = calculateSpringForce(pos1, _bodyLink1.velocity, pos2, _bodyLink2.velocity, targetDist, springK, springD);
         
         if(!_bodyLink1.isStatic && !_bodyLink2.isStatic)
         {

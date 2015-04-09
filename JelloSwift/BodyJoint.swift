@@ -32,7 +32,12 @@ public class BodyJoint: Equatable
     public var bodyLink2: JointLinkType { return _bodyLink2 }
     
     /// Gets or sets the rest distance for this joint
-    public var restDistance: CGFloat
+    public var restDistance: CGFloat;
+    /// Gets or sets the maximum resting distance for this joint.
+    /// In case the maximum resting distance is different than the resting distance, the spring only applies
+    /// forces if the distance between the links is dist > restDistance && dist < maxRestDistance.
+    /// This value is automatically initialized to be the same as restDistance
+    public var maxRestDistance:CGFloat;
     
     public init(world: World, link1: JointLinkType, link2: JointLinkType, distance: CGFloat = -1)
     {
@@ -43,10 +48,12 @@ public class BodyJoint: Equatable
         if(distance == -1)
         {
             restDistance = link1.position.distanceTo(link2.position);
+            maxRestDistance = restDistance;
         }
         else
         {
             restDistance = distance;
+            maxRestDistance = restDistance;
         }
         
         world.addJoint(self);
