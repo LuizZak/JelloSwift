@@ -285,7 +285,7 @@ class DemoView: UIView
             var lineStart = toScreenCoords(p.position);
             var lineEnd = toScreenCoords(fingerLocation);
             
-            let points = [CGPoint(v: lineStart), CGPoint(v: lineEnd)];
+            let points = [CGPoint(vec: lineStart), CGPoint(vec: lineEnd)];
             
             polyDrawer.queuePoly(points, fillColor: 0xFFFFFFFF, strokeColor: 0xFF00DD00);
         }
@@ -296,7 +296,7 @@ class DemoView: UIView
         let start = toScreenCoords(joint.bodyLink1.position);
         let end = toScreenCoords(joint.bodyLink2.position);
         
-        let points = [CGPoint(v: start), CGPoint(v: end)];
+        let points = [CGPoint(vec: start), CGPoint(vec: end)];
         
         polyDrawer.queuePoly(points, fillColor: 0xFFFFFFFF, strokeColor: 0xFFEEEEEE);
     }
@@ -305,15 +305,15 @@ class DemoView: UIView
     {
         var shapePoints = body.vertices;
         
-        let points = shapePoints.map { CGPoint(v: toScreenCoords($0)) };
+        let points = shapePoints.map { CGPoint(vec: toScreenCoords($0)) };
         
         // Draw normals, for pressure bodies
         if let pComp = body.getComponentType(PressureComponent)
         {
             for (i, p) in enumerate(shapePoints)
             {
-                let s = CGPoint(v: toScreenCoords(p));
-                let e = CGPoint(v: toScreenCoords(p + pComp.normalList[i] / 3));
+                let s = CGPoint(vec: toScreenCoords(p));
+                let e = CGPoint(vec: toScreenCoords(p + pComp.normalList[i] / 3));
                 polyDrawer.queuePoly([s, e], fillColor: 0xFF333333, strokeColor: 0xFFEC33EC);
             }
         }
@@ -325,8 +325,8 @@ class DemoView: UIView
         let axisUp    = [body.derivedPos, body.derivedPos + rotateVector(Vector2(0, 0.6), body.derivedAngle)];
         let axisRight = [body.derivedPos, body.derivedPos + rotateVector(Vector2(0.6, 0), body.derivedAngle)];
         
-        let axisUpCg = axisUp.map { CGPoint(v: toScreenCoords($0)) };
-        let axisRightCg = axisRight.map { CGPoint(v: toScreenCoords($0)) };
+        let axisUpCg = axisUp.map { CGPoint(vec: toScreenCoords($0)) };
+        let axisRightCg = axisRight.map { CGPoint(vec: toScreenCoords($0)) };
         
         polyDrawer.queuePoly(axisUpCg, fillColor: 0xFFFFFFFF, strokeColor: 0xFFED0000, lineWidth: 1);
         polyDrawer.queuePoly(axisRightCg, fillColor: 0xFFFFFFFF, strokeColor: 0xFF00ED00, lineWidth: 1);

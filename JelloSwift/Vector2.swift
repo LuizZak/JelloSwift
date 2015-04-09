@@ -333,8 +333,8 @@ public func /=(inout lhs: Vector2, rhs: Int)
 /// Extension to the CGPoint class that helps with Vector2 interactions
 public extension CGPoint
 {
-    init(v: Vector2)
+    init(vec: Vector2)
     {
-        self.init(x: v.X, y: v.Y);
+        self.init(x: vec.X, y: vec.Y);
     }
 }
