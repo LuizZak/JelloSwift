@@ -22,7 +22,14 @@ private struct Poly
     
     init(points: [CGPoint], lineColor: UIColor, fillColor: UIColor, lineWidth: CGFloat)
     {
-        self.points = points;
+        // Wrap the values around
+        var p = points;
+        if(p.count > 0)
+        {
+            p.append(p.first!);
+        }
+        
+        self.points = p;
         self.lineColor = lineColor;
         self.fillColor = fillColor;
         self.lineWidth = lineWidth;
@@ -48,26 +55,12 @@ class PolyDrawer
     /// Renders the contents of this PolyDrawer on a given CGContextRef
     func renderOnContext(context: CGContextRef)
     {
-        for pi in 0..<polys.count //poly in polys
+        for poly in polys
         {
-            let poly = polys[pi];
-            
-            let p = UnsafeMutablePointer<CGPoint>.alloc(poly.points.count + 1);
-            
-            for i in 0..<poly.points.count + 1
-            {
-                p[i] = poly.points[i % poly.points.count];
-            }
-            
             let path = CGPathCreateMutable();
-            let transform = UnsafeMutablePointer<CGAffineTransform>.alloc(1);
-            transform[0] = CGAffineTransformIdentity;
             
-            CGPathAddLines(path, transform, p, UInt(poly.points.count + 1))
-            
-            transform.dealloc(1);
-            
-            p.dealloc(poly.points.count + 1);
+            var f = CGAffineTransformIdentity;
+            CGPathAddLines(path, &f, poly.points, UInt(poly.points.count))
             
             CGContextSetStrokeColorWithColor(context, poly.lineColor.CGColor);
             CGContextSetFillColorWithColor(context, poly.fillColor.CGColor);
