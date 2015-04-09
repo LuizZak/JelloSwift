@@ -451,8 +451,6 @@ class DemoView: UIView
     /// Creates a car structure
     func createCarStructure(pos: Vector2)
     {
-        //return;
-        
         let carShape = ClosedShape();
         
         // Add the car shape vertices
@@ -487,8 +485,6 @@ class DemoView: UIView
         let bodyOffset = Vector2(0, 0.4);
         
         let carBody = Body(world: world, shape: carShape, pointMasses: [0.5], position: pos + bodyOffset, angle: 0, scale: Vector2.One, kinematic: false, components: [SpringComponentCreator(shapeMatchingOn: true, edgeSpringK: 300, edgeSpringDamp: 10, shapeSpringK: 600, shapeSpringDamp: 40), GravityComponentCreator()]);
-        
-        //carBody.setPositionAngle(carBody.derivedPos, angle: PI, scale: Vector2.One);
         
         let leftWheel  = createBouncyBall(carBody.derivedPos + rotateVector(Vector2(-1.1, -0.5) - bodyOffset, carBody.derivedAngle), pinned: false, kinematic: false, radius: 0.5, mass: 0.4);
         let rightWheel = createBouncyBall(carBody.derivedPos + rotateVector(Vector2( 1.1, -0.5) - bodyOffset, carBody.derivedAngle), pinned: false, kinematic: false, radius: 0.5, mass: 0.4);

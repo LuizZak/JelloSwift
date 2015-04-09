@@ -105,9 +105,7 @@ public class ShapeJointLink: JointLinkType
     /// :param: force A force to apply to the subjects of this joint link
     public func applyForce(var force: Vector2)
     {
-        let tempV1 = Vector3(vec2: offsetPosition, z: 0);
-        let tempV2 = Vector3(vec2: force, z: 0);
-        let torqueF = tempV1.cross2Z(tempV2);
+        let torqueF = offsetPosition =* force.perpendicular();
         
         for p in _pointMasses
         {

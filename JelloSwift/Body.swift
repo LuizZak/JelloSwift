@@ -704,10 +704,8 @@ public final class Body: Equatable
         else
         {
             // point lies somewhere on the line segment.
-            let toP3 = Vector3(vec2: toP, z: 0);
-            let E3 = toP3 =/ Vector3(vec2: edge.difference, z: 0);
-            
-            dist = E3.Z * E3.Z;
+            let pd = (toP =* edge.difference.perpendicular());
+            dist = pd * pd;
             
             hitPt = ptA + (edge.difference * x);
             edgeD = x / edge.length;
@@ -881,9 +879,7 @@ public final class Body: Equatable
             return;
         }
         
-        let tempV1 = Vector3(vec2: derivedPos - pt, z: 0);
-        let tempV2 = Vector3(vec2: force, z: 0);
-        let torqueF = tempV1.cross2Z(tempV2);
+        let torqueF = (derivedPos - pt) =* force.perpendicular();
         
         for point in pointMasses
         {
