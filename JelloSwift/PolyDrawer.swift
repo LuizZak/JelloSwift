@@ -65,6 +65,8 @@ class PolyDrawer
             
             CGPathAddLines(path, transform, p, UInt(poly.points.count + 1))
             
+            transform.dealloc(1);
+            
             p.dealloc(poly.points.count + 1);
             
             CGContextSetStrokeColorWithColor(context, poly.lineColor.CGColor);

@@ -205,7 +205,9 @@ class DemoView: UIView
     override func drawRect(rect: CGRect)
     {
         // Drawing code
-        render();
+        autoreleasepool {
+            self.render();
+        }
     }
     
     func update()
@@ -269,10 +271,8 @@ class DemoView: UIView
     
     func gameLoop()
     {
-        autoreleasepool {
-            self.update();
-            self.setNeedsDisplay();
-        }
+        self.update();
+        self.setNeedsDisplay();
     }
     
     /// Renders the dragging shape line
