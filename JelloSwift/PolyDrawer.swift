@@ -22,11 +22,11 @@ private struct Poly
     
     init(points: [CGPoint], lineColor: UIColor, fillColor: UIColor, lineWidth: CGFloat)
     {
-        // Wrap the values around
+        // Wrap the values around so the shape is closed
         var p = points;
-        if(p.count > 0)
+        if let first = p.first
         {
-            p.append(p.first!);
+            p.append(first);
         }
         
         self.points = p;
