@@ -39,17 +39,19 @@ class DemoView: UIView
     // The location of the user's finger, in physics world coordinates
     var fingerLocation: Vector2 = Vector2.Zero;
     
-    var timeLabel: UILabel;
+    var physicsTimeLabel: UILabel;
+    var renderTimeLabel: UILabel;
     
     override init(frame: CGRect)
     {
         polyDrawer = PolyDrawer();
         
-        timeLabel = UILabel();
+        physicsTimeLabel = UILabel();
+        renderTimeLabel = UILabel();
         
         super.init(frame: frame);
         
-        initLabel();
+        initLabels();
         
         // Do any additional setup after loading the view.
         timer = CADisplayLink(target: self, selector: Selector("gameLoop"))
@@ -68,18 +70,21 @@ class DemoView: UIView
     {
         polyDrawer = PolyDrawer();
         
-        timeLabel = UILabel();
+        physicsTimeLabel = UILabel();
+        renderTimeLabel = UILabel();
         
         super.init(coder: aDecoder);
         
-        initLabel();
+        initLabels();
     }
     
-    func initLabel()
+    func initLabels()
     {
-        timeLabel.frame = CGRect(x: 20, y: 20, width: 300, height: 20);
+        physicsTimeLabel.frame = CGRect(x: 20, y: 20, width: 300, height: 20);
+        renderTimeLabel.frame = CGRect(x: 20, y: 37, width: 300, height: 20);
         
-        addSubview(timeLabel);
+        addSubview(physicsTimeLabel);
+        addSubview(renderTimeLabel);
     }
     
     func initializeLevel()
@@ -209,7 +214,7 @@ class DemoView: UIView
         
         updateWithTimeSinceLastUpdate(1.0 / 60);
         
-        timeLabel.text = String(format: "Physics update time: %0.2lfms", round(sw.stop() * 1000 * 20) / 20);
+        physicsTimeLabel.text = String(format: "Physics update time: %0.2lfms", round(sw.stop() * 1000 * 20) / 20);
     }
     
     func updateWithTimeSinceLastUpdate(timeSinceLast: CFTimeInterval)
@@ -238,6 +243,8 @@ class DemoView: UIView
     
     func render()
     {
+        let sw = Stopwatch();
+        
         var context = UIGraphicsGetCurrentContext();
         
         self.polyDrawer.reset();
@@ -255,6 +262,9 @@ class DemoView: UIView
         
         polyDrawer.renderOnContext(context);
         polyDrawer.reset();
+        
+                                                           //  VVVVVV  AIN'T GOT NO TIME TO DYNAMICALLY ALIGN, BABEY!
+        renderTimeLabel.text = String(format: "Render time:              %0.2lfms", round(sw.stop() * 1000 * 20) / 20);
     }
     
     func gameLoop()
