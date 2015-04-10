@@ -89,10 +89,10 @@ class DemoView: UIView
     
     func initializeLevel()
     {
-        var size = self.frame.size;
+        let size = self.frame.size;
         
         // Create basic shapes
-        var vec = toWorldCoords(Vector2(size.width, 400) / 2);
+        let vec = toWorldCoords(Vector2(size.width, 400) / 2);
         
         createBouncyBall(vec);
         
@@ -112,7 +112,7 @@ class DemoView: UIView
         // Create some free boxes around the level
         createBox(toWorldCoords(Vector2(size.width / 2, size.height / 3)), size: Vector2(1, 1));
         createBox(toWorldCoords(Vector2(size.width * 0.4, size.height / 3)), size: Vector2(1, 1));
-        var box3 = createBox(toWorldCoords(Vector2(size.width * 0.6, size.height / 3)), size: Vector2(1, 1));
+        let box3 = createBox(toWorldCoords(Vector2(size.width * 0.6, size.height / 3)), size: Vector2(1, 1));
         
         // Lock the rotation of the third box
         box3.freeRotate = false;
@@ -135,7 +135,7 @@ class DemoView: UIView
         createBox(toWorldCoords(Vector2(size.width * 0.6, size.height * 0.7)), size: Vector2(4, 0.5), isStatic: true, angle: -0.1);
         
         // Create the ground box
-        var box = ClosedShape();
+        let box = ClosedShape();
         box.begin();
         box.addVertex(Vector2(-10,   1));
         box.addVertex(Vector2( 0,  0.6)); // A little inward slope
@@ -144,7 +144,7 @@ class DemoView: UIView
         box.addVertex(Vector2(-10,  -1));
         box.finish();
         
-        var platform = Body(world: world, shape: box, pointMasses: [CGFloat.infinity], position: toWorldCoords(Vector2(size.width / 2, 150)));
+        let platform = Body(world: world, shape: box, pointMasses: [CGFloat.infinity], position: toWorldCoords(Vector2(size.width / 2, 150)));
         platform.isStatic = true;
     }
     
@@ -176,7 +176,7 @@ class DemoView: UIView
             {
                 for p in body.pointMasses
                 {
-                    var dist = p.position.distanceTo(fingerLocation);
+                    let dist = p.position.distanceTo(fingerLocation);
                     if(closest == nil || dist < closestD)
                     {
                         closest = p;
@@ -239,9 +239,9 @@ class DemoView: UIView
         // Dragging point
         if let p = draggingPoint where inputMode == InputMode.DragBody
         {
-            var spring = calculateSpringForce(p.position, p.velocity, fingerLocation, Vector2.Zero, 0, 700, 20);
+            let dragForce = calculateSpringForce(p.position, p.velocity, fingerLocation, Vector2.Zero, 0, 700, 20);
             
-            p.applyForce(spring);
+            p.applyForce(dragForce);
         }
     }
     
@@ -284,8 +284,8 @@ class DemoView: UIView
         if let p = draggingPoint where inputMode == InputMode.DragBody
         {
             // Create the path to draw
-            var lineStart = toScreenCoords(p.position);
-            var lineEnd = toScreenCoords(fingerLocation);
+            let lineStart = toScreenCoords(p.position);
+            let lineEnd = toScreenCoords(fingerLocation);
             
             let points = [CGPoint(vec: lineStart), CGPoint(vec: lineEnd)];
             
@@ -305,7 +305,7 @@ class DemoView: UIView
     
     func drawBody(body: Body)
     {
-        var shapePoints = body.vertices;
+        let shapePoints = body.vertices;
         
         let points = shapePoints.map { CGPoint(vec: toScreenCoords($0)) };
         
@@ -350,7 +350,7 @@ class DemoView: UIView
     func createBox(pos: Vector2, size: Vector2, pinned: Bool = false, kinematic: Bool = false, isStatic: Bool = false, angle: CGFloat = 0, mass: CGFloat = 0.5) -> Body
     {
         // Create the closed shape for the box's physics body
-        var shape = ClosedShape();
+        let shape = ClosedShape();
         shape.begin();
         shape.addVertex(Vector2(-size.X,  size.Y));
         shape.addVertex(Vector2( size.X,  size.Y));
@@ -391,11 +391,11 @@ class DemoView: UIView
     func createBouncyBall(pos: Vector2, pinned: Bool = false, kinematic: Bool = false, radius: CGFloat = 1, mass: CGFloat = 0.5, def: Int = 12) -> Body
     {
         // Create the closed shape for the ball's physics body
-        var shape = ClosedShape();
+        let shape = ClosedShape();
         shape.begin();
         for i in 0..<def
         {
-            var n = CGFloat(PI * 2) * (CGFloat(i) / CGFloat(def));
+            let n = PI * 2 * (CGFloat(i) / CGFloat(def));
             shape.addVertex(Vector2(cos(-n) * radius, sin(-n) * radius));
         }
         shape.transformOwn(0, localScale: Vector2(0.3, 0.3));
@@ -414,7 +414,7 @@ class DemoView: UIView
         // Add a gravity component taht will pull the body down
         comps += GravityComponentCreator();
         
-        var body = Body(world: world, shape: shape, pointMasses: [mass], kinematic: kinematic, position: pos, components: comps)
+        let body = Body(world: world, shape: shape, pointMasses: [mass], kinematic: kinematic, position: pos, components: comps)
         
         body.isPined = pinned;
         
@@ -526,7 +526,6 @@ class DemoView: UIView
         
         let rightJoint = SpringBodyJoint(world: world, link1: rjWheel, link2: rjCar, springK: 100, springD: 15, distance: 0);
         rightJoint.allowCollisions = true;
-        
     }
 }
 

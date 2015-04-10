@@ -50,16 +50,8 @@ public class BodyJoint: Equatable
         _bodyLink2 = link2;
         
         // Automatic distance calculation
-        if(distance == -1)
-        {
-            restDistance = link1.position.distanceTo(link2.position);
-            maxRestDistance = restDistance;
-        }
-        else
-        {
-            restDistance = distance;
-            maxRestDistance = restDistance;
-        }
+        restDistance = distance >= 0 ? distance : link1.position.distanceTo(link2.position);
+        maxRestDistance = restDistance;
         
         world.addJoint(self);
     }

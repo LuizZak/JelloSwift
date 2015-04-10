@@ -26,24 +26,29 @@ public final class Body: Equatable
     public var joints: [BodyJoint] = [];
     
     /// The base shape for the body
-    public var baseShape: ClosedShape = ClosedShape();
+    public var baseShape = ClosedShape();
     
     /// The global shape for the body - this is the same as the base shape, but rotated and translated around the world
     public var globalShape: [Vector2] = [];
     
     /// The array of point masses for the body
     public var pointMasses: [PointMass] = [];
+    
     /// An array of all the collision that involve this body
     public var pointMassCollisions: [BodyCollisionInformation] = [];
+    
     /// Whether to collect the collisions of this body into the pointMassCollisions array. Defaults to false
-    public var collectCollisions: Bool = false;
+    public var collectCollisions = false;
     
     /// The scale for this body's shape
     public var scale: Vector2 = Vector2();
+    
     /// The derived center position of this body - in world coordinates
     public var derivedPos: Vector2 = Vector2();
+    
     /// The derived velocity of this body - in world coordinates. The derivation assumes the mean of the velocity of all the point masses
     public var derivedVel: Vector2 = Vector2();
+    
     /// The velocity damping to apply to the body. Values closer to 0 deaccelerate faster, values closer to 1 deaccelerate slower.
     /// 1 never deaccelerates. Values outside the range [0, 1] inclusive may introduce instability
     public var velDamping: CGFloat = 0.999;
@@ -54,12 +59,15 @@ public final class Body: Equatable
     /// Gets the ammount of components in this body
     public var componentCount: Int { return components.count; }
     
+    
     // Both these properties are in radians:
     
     /// The derived rotation of the body
     public var derivedAngle: CGFloat = 0;
+    
     /// Omega (ω) is the relative angular speed of the body
     public var derivedOmega: CGFloat = 0;
+    
     // Utilize to calculate the omega for the body
     private var lastAngle: CGFloat = 0;
     
@@ -70,24 +78,28 @@ public final class Body: Equatable
     }
     
     /// The bounding box for this body
-    public var aabb: AABB = AABB();
+    public var aabb = AABB();
     
     /// The index of the material in the world material array to use for this body
-    public var material: Int = 0;
+    public var material = 0;
+    
     /// Whether this body is static
-    public var isStatic: Bool = false;
+    public var isStatic = false;
+    
     /// Whether this body is kinematic - kinematic bodies do not rotate or move their base shape, so they always appear to not move, like a static body, but can be squished and moved, like a dynamic body
-    public var isKinematic: Bool = false;
+    public var isKinematic = false;
+    
     /// Whether this body is pinned - pinned bodies rotate around their axis, but try to remain in place, like a kinematic body
-    public var isPined: Bool = false;
+    public var isPined = false;
+    
     /// Whether the body is able to rotate while moving
-    public var freeRotate: Bool = true;
+    public var freeRotate = true;
     
     /// A free field that can be used to attach custom objects to a soft body instance
     public var objectTag: Any? = nil;
     
     /// Whether to render this body
-    public var render: Bool = true;
+    public var render = true;
     
     /// The color to use when rendering this body
     public var color: UInt32 = 0xFFFFFFFF;

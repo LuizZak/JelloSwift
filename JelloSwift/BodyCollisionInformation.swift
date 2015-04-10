@@ -11,10 +11,10 @@ import CoreGraphics
 // Encapsulates information about a collision between two soft bodies
 public struct BodyCollisionInformation: Equatable
 {
-    public var bodyA: Body?;
-    public var bodyApm: Int;
+    public let bodyA: Body?;
+    public let bodyApm: Int;
     
-    public var bodyB: Body?;
+    public let bodyB: Body?;
     public var bodyBpmA: Int;
     public var bodyBpmB: Int;
     
@@ -25,7 +25,18 @@ public struct BodyCollisionInformation: Equatable
     
     public init()
     {
+        self.bodyA = nil;
+        self.bodyB = nil;
         self.bodyApm = -1;
+        self.bodyBpmA = -1;
+        self.bodyBpmB = -1;
+    }
+    
+    public init(bodyA: Body, bodyApm: Int, bodyB: Body)
+    {
+        self.bodyA = bodyA;
+        self.bodyApm = bodyApm;
+        self.bodyB = bodyB;
         self.bodyBpmA = -1;
         self.bodyBpmB = -1;
     }

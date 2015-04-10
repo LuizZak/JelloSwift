@@ -14,20 +14,21 @@ public class World
 {
     /// The bodies contained within this world
     public var bodies: [Body] = [];
+    /// The joints contained within this world
     public var joints: [BodyJoint] = [];
     
     // PRIVATE VARIABLES
-    public var worldLimits:AABB = AABB();
-    public var worldSize:Vector2 = Vector2();
-    public var worldGridStep:Vector2 = Vector2();
+    private var worldLimits = AABB();
+    private var worldSize = Vector2();
+    private var worldGridStep = Vector2();
     
     public var penetrationThreshold: CGFloat = 0;
-    public var penetrationCount: Int = 0;
+    public var penetrationCount = 0;
     
     // material chart.
     public var materialPairs: [[MaterialPair]] = [];
     public var defaultMatPair: MaterialPair = MaterialPair();
-    public var materialCount: Int = 0;
+    public var materialCount = 0;
     
     public var collisionList: [BodyCollisionInformation] = [];
     
@@ -399,14 +400,8 @@ public class World
             var closestAway = CGFloat.infinity;
             var closestSame = CGFloat.infinity;
             
-            var infoAway = BodyCollisionInformation();
-            var infoSame = BodyCollisionInformation();
-            
-            infoAway.bodyA = bA;
-            infoAway.bodyApm = i;
-            infoAway.bodyB = bB;
-            
-            infoSame = infoAway;
+            var infoAway = BodyCollisionInformation(bodyA: bA, bodyApm: i, bodyB: bB);
+            var infoSame = infoAway;
             
             var found = false;
             

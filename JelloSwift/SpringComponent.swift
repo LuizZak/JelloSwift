@@ -118,8 +118,6 @@ public class SpringComponent: BodyComponent
     {
         super.accumulateInternalForces();
         
-        var force = Vector2();
-        
         for s in springs
         {
             let p1 = s.pointMassA;
@@ -137,6 +135,8 @@ public class SpringComponent: BodyComponent
             
             for (i, p) in enumerate(body.pointMasses)
             {
+                let force: Vector2;
+                
                 if(!body.isKinematic)
                 {
                     force = calculateSpringForce(p.position, p.velocity, body.globalShape[i], p.velocity, 0.0, shapeSpringK, shapeSpringDamp);

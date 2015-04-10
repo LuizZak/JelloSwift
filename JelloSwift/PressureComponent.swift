@@ -35,10 +35,9 @@ public class PressureComponent: BodyComponent
             return;
         }
         
-        var prev = c - 1;
         var edge1N = body.edges.last!.difference;
         
-        for var i = 0; i < c; i++
+        for i in 0..<c
         {
             let edge2N = body.edges[i].difference;
             

@@ -15,7 +15,7 @@ public let PI = CGFloat(M_PI);
 public func polygonArea(points: [Vector2]) -> CGFloat
 {
     var area: CGFloat = 0;
-    var v2 = points[points.count - 1];
+    var v2 = points.last!;
     
     for p in points
     {
