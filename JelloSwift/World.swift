@@ -382,10 +382,8 @@ public class World
         let bApCount = bA.pointMasses.count;
         let bBpCount = bB.pointMasses.count;
         
-        //for (i, pmA) in enumerate(bA.pointMasses)
-        for var i = 0; i < bApCount; i++
+        for (i, pmA) in enumerate(bA.pointMasses)
         {
-            let pmA = bA.pointMasses[i];
             let pt = pmA.position;
             
             // early out - if this point is not inside bodyB, skip it!

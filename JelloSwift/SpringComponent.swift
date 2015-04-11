@@ -208,8 +208,8 @@ public class SpringComponentCreator : BodyComponentCreator
 /// Specifies a template for an inner spring
 public struct SpringComponentInnerSpring
 {
-    public var indexA: Int = 0;
-    public var indexB: Int = 0;
+    public var indexA = 0;
+    public var indexB = 0;
     
     public var springK: CGFloat = 0;
     public var springD: CGFloat = 0;
