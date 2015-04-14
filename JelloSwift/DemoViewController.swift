@@ -282,7 +282,9 @@ class DemoView: UIView
     
     func gameLoop()
     {
-        self.update();
+        dispatch_async(dispatch_get_main_queue()) { () -> Void in
+            self.update();
+        }
         self.setNeedsDisplay();
     }
     
