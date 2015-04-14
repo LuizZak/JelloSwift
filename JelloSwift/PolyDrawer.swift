@@ -62,6 +62,15 @@ class PolyDrawer
     {
         for poly in polys
         {
+            let hasFill = ((poly.fillColorUInt >> 24) & 0xFF) != 0;
+            let hasLine = ((poly.lineColorUInt >> 24) & 0xFF) != 0;
+            
+            // Shape is invisible
+            if(!hasFill && !hasLine)
+            {
+                continue;
+            }
+            
             CGContextSaveGState(context);
             
             let path = CGPathCreateMutable();
@@ -75,24 +84,20 @@ class PolyDrawer
             CGContextSetLineJoin(context, kCGLineJoinRound);
             CGContextSetLineCap(context, kCGLineCapRound);
             
-            let hasFill = ((poly.fillColorUInt >> 24) & 0xFF) != 0;
-            let hasLine = ((poly.lineColorUInt >> 24) & 0xFF) != 0;
+            CGContextAddPath(context, path);
             
             if(hasLine && hasFill && poly.points.count > 3)
             {
-                CGContextAddPath(context, path);
                 CGContextDrawPath(context, kCGPathFillStroke);
             }
             else
             {
                 if(hasFill && poly.points.count > 3)
                 {
-                    CGContextAddPath(context, path);
                     CGContextFillPath(context);
                 }
                 if(hasLine)
                 {
-                    CGContextAddPath(context, path);
                     CGContextStrokePath(context);
                 }
             }
@@ -104,7 +109,7 @@ class PolyDrawer
     /// Resets this PolyDrawer
     func reset()
     {
-        polys = [];
+        polys.removeAll(keepCapacity: false);
     }
 }
 

@@ -561,8 +561,10 @@ public final class Body: Equatable
         // line we are testing against goes from pt -> endPt.
         var inside = false;
         
-        for e in edges
+        var c = edges.count;
+        for var i = 0; i < c; i++
         {
+            let e = edges[i];
             let edgeSt = e.start;
             let edgeEnd = e.end;
             

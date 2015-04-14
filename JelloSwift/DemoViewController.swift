@@ -42,6 +42,10 @@ class DemoView: UIView
     var physicsTimeLabel: UILabel;
     var renderTimeLabel: UILabel;
     
+    /// Whether to perform a detailed render of the scene. Detailed rendering
+    /// renders, along with the body shape, the body's normals, global shape and axis
+    var useDetailedRender = true;
+    
     override init(frame: CGRect)
     {
         polyDrawer = PolyDrawer();
@@ -54,8 +58,8 @@ class DemoView: UIView
         initLabels();
         
         // Do any additional setup after loading the view.
-        timer = CADisplayLink(target: self, selector: Selector("gameLoop"))
-        timer.addToRunLoop(NSRunLoop.mainRunLoop(), forMode: NSDefaultRunLoopMode)
+        timer = CADisplayLink(target: self, selector: Selector("gameLoop"));
+        timer.addToRunLoop(NSRunLoop.mainRunLoop(), forMode: NSDefaultRunLoopMode);
         
         initializeLevel();
         
@@ -80,8 +84,8 @@ class DemoView: UIView
     
     func initLabels()
     {
-        physicsTimeLabel.frame = CGRect(x: 20, y: 20, width: 300, height: 20);
-        renderTimeLabel.frame = CGRect(x: 20, y: 37, width: 300, height: 20);
+        physicsTimeLabel.frame = CGRect(x: 20, y: 20, width: 500, height: 20);
+        renderTimeLabel.frame = CGRect(x: 20, y: 37, width: 500, height: 20);
         
         addSubview(physicsTimeLabel);
         addSubview(renderTimeLabel);
@@ -216,9 +220,12 @@ class DemoView: UIView
     {
         let sw = Stopwatch();
         
-        updateWithTimeSinceLastUpdate(1.0 / 60);
+        updateWithTimeSinceLastUpdate(timer.timestamp);
         
-        physicsTimeLabel.text = String(format: "Physics update time: %0.2lfms", round(sw.stop() * 1000 * 20) / 20);
+        let time = round(sw.stop() * 1000 * 20) / 20;
+        let fps = 1000 / time;
+        
+        physicsTimeLabel.text = String(format: "Physics update time: %0.2lfms (%0.0lffps)", time, fps);
     }
     
     func updateWithTimeSinceLastUpdate(timeSinceLast: CFTimeInterval)
@@ -267,8 +274,10 @@ class DemoView: UIView
         polyDrawer.renderOnContext(context);
         polyDrawer.reset();
         
+        let time = round(sw.stop() * 1000 * 20) / 20;
+        let fps = 1000 / time;
                                                            //  VVVVVV  AIN'T GOT NO TIME TO DYNAMICALLY ALIGN, BABEY!
-        renderTimeLabel.text = String(format: "Render time:              %0.2lfms", round(sw.stop() * 1000 * 20) / 20);
+        renderTimeLabel.text = String(format: "Render time:              %0.2lfms (%0.0lffps)", time, fps);
     }
     
     func gameLoop()
@@ -308,6 +317,13 @@ class DemoView: UIView
         let shapePoints = body.vertices;
         
         let points = shapePoints.map { CGPoint(vec: toScreenCoords($0)) };
+        
+        if(!useDetailedRender)
+        {
+            // Draw the body now
+            polyDrawer.queuePoly(points, fillColor: 0xADFFFFFF, strokeColor: 0xFF000000);
+            return;
+        }
         
         // Draw normals, for pressure bodies
         if let pComp = body.getComponentType(PressureComponent)

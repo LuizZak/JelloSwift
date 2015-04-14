@@ -46,7 +46,7 @@ public class PressureComponent: BodyComponent
             edge1N = edge2N;
         }
         
-        volume = max(0.5, polygonArea(body.pointMasses));
+        volume = max(0.5, polygonArea(body.vertices));
         
         // now loop through, adding forces!
         let invVolume = 1 / volume;
