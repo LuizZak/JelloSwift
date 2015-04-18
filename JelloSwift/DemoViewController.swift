@@ -135,8 +135,9 @@ class DemoView: UIView
 
         createBallBoxLinkedStructure(toWorldCoords(Vector2(size.width * 0.8, size.height * 0.8)));
         createScaleStructure(toWorldCoords(Vector2(size.width * 0.4, size.height * 0.8)));
-        createCarStructure(toWorldCoords(Vector2(size.width * 0.55, size.height * 0.8)));
-        createBox(toWorldCoords(Vector2(size.width * 0.6, size.height * 0.7)), size: Vector2(4, 0.5), isStatic: true, angle: -0.1);
+        
+        createCarStructure(toWorldCoords(Vector2(size.width * 0.12, 90)));
+        createBox(toWorldCoords(Vector2(size.width * 0.5, 16)), size: Vector2(17, 0.5), isStatic: true);
         
         // Create the ground box
         let box = ClosedShape();
