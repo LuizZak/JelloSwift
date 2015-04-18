@@ -392,7 +392,7 @@ public final class Body: Equatable
             let c = pointMasses.count;
             for (i, pm) in enumerate(pointMasses)
             {
-                let baseNorm = baseShape.localVertices[i].normalized();
+                let baseNorm = baseShape[i].normalized();
                 let curNorm  = (pm.position - meanPos).normalized();
                 
                 var thisAngle = atan2(baseNorm.X * curNorm.Y - baseNorm.Y * curNorm.X, baseNorm =* curNorm);

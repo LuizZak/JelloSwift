@@ -13,6 +13,9 @@ public class ClosedShape
 {
     public final var localVertices: [Vector2] = [];
     
+    /// Returns the Vector2 for the vertex with a given integer index on this ClosedShape
+    public subscript(i:Int) -> Vector2 { return localVertices[i]; }
+    
     /// Start adding vertices to this closed shape.
     /// Calling this method will erase any existing verts
     public func begin()
