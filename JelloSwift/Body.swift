@@ -23,7 +23,7 @@ public final class Body: Equatable
     internal var pointNormals:[Vector2] = [];
     
     /// List of body joints this body participates in
-    public var joints: [BodyJoint] = [];
+    public internal(set) var joints: [BodyJoint] = [];
     
     /// The base shape for the body
     public var baseShape = ClosedShape();
@@ -32,7 +32,7 @@ public final class Body: Equatable
     public var globalShape: [Vector2] = [];
     
     /// The array of point masses for the body
-    public var pointMasses: [PointMass] = [];
+    public private(set) var pointMasses: [PointMass] = [];
     
     /// An array of all the collision that involve this body
     public var pointMassCollisions: [BodyCollisionInformation] = [];
@@ -44,10 +44,10 @@ public final class Body: Equatable
     public var scale: Vector2 = Vector2();
     
     /// The derived center position of this body - in world coordinates
-    public var derivedPos: Vector2 = Vector2();
+    public private(set) var derivedPos: Vector2 = Vector2();
     
     /// The derived velocity of this body - in world coordinates. The derivation assumes the mean of the velocity of all the point masses
-    public var derivedVel: Vector2 = Vector2();
+    public private(set) var derivedVel: Vector2 = Vector2();
     
     /// The velocity damping to apply to the body. Values closer to 0 deaccelerate faster, values closer to 1 deaccelerate slower.
     /// 1 never deaccelerates. Values outside the range [0, 1] inclusive may introduce instability
@@ -63,10 +63,10 @@ public final class Body: Equatable
     // Both these properties are in radians:
     
     /// The derived rotation of the body
-    public var derivedAngle: CGFloat = 0;
+    public private(set) var derivedAngle: CGFloat = 0;
     
     /// Omega (ω) is the relative angular speed of the body
-    public var derivedOmega: CGFloat = 0;
+    public private(set) var derivedOmega: CGFloat = 0;
     
     // Utilize to calculate the omega for the body
     private var lastAngle: CGFloat = 0;
@@ -100,9 +100,6 @@ public final class Body: Equatable
     
     /// Whether to render this body
     public var render = true;
-    
-    /// The color to use when rendering this body
-    public var color: UInt32 = 0xFFFFFFFF;
     
     /// The colision bitmask for this body
     public var bitmask: Bitmask = 0xFFFFFFFF;
