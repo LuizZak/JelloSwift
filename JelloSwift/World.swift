@@ -44,7 +44,6 @@ public class World
         for b in bodies
         {
             b.pointMassCollisions.removeAll(keepCapacity: true);
-            b.pointMasses.removeAll(keepCapacity: true);
         }
         
         // Reset bodies
