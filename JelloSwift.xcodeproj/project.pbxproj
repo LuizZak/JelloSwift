@@ -23,6 +23,8 @@
 		A0510AFD1AAA543E00C03017 /* SpringBodyJoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0510AFB1AAA543E00C03017 /* SpringBodyJoint.swift */; };
 		A0510B011AAA573B00C03017 /* ShapeJointLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0510B001AAA573B00C03017 /* ShapeJointLink.swift */; };
 		A0510B021AAA573B00C03017 /* ShapeJointLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0510B001AAA573B00C03017 /* ShapeJointLink.swift */; };
+		A0512D281AEA25AA00B0B87F /* CollisionObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0512D271AEA25AA00B0B87F /* CollisionObserver.swift */; };
+		A0512D291AEA25AA00B0B87F /* CollisionObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0512D271AEA25AA00B0B87F /* CollisionObserver.swift */; };
 		A05ECD5319B1A38C00F84326 /* GravityComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05ECD5219B1A38C00F84326 /* GravityComponent.swift */; };
 		A05ECD5419B1A6D700F84326 /* BodyComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06EC14E199FD4EE00402D4C /* BodyComponent.swift */; };
 		A05ECD5519B1A6D700F84326 /* SpringComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06EC14C199FD49200402D4C /* SpringComponent.swift */; };
@@ -129,6 +131,7 @@
 		A0510AF81AAA4FED00C03017 /* BodyJointLink.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BodyJointLink.swift; sourceTree = "<group>"; };
 		A0510AFB1AAA543E00C03017 /* SpringBodyJoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpringBodyJoint.swift; sourceTree = "<group>"; };
 		A0510B001AAA573B00C03017 /* ShapeJointLink.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShapeJointLink.swift; sourceTree = "<group>"; };
+		A0512D271AEA25AA00B0B87F /* CollisionObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollisionObserver.swift; sourceTree = "<group>"; };
 		A05ECD5219B1A38C00F84326 /* GravityComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GravityComponent.swift; sourceTree = "<group>"; };
 		A06EC14C199FD49200402D4C /* SpringComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpringComponent.swift; sourceTree = "<group>"; };
 		A06EC14E199FD4EE00402D4C /* BodyComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BodyComponent.swift; sourceTree = "<group>"; };
@@ -217,6 +220,14 @@
 			name = Joints;
 			sourceTree = "<group>";
 		};
+		A0512D261AEA256700B0B87F /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				A0512D271AEA25AA00B0B87F /* CollisionObserver.swift */,
+			);
+			name = Protocols;
+			sourceTree = "<group>";
+		};
 		A06EC14B199FD47E00402D4C /* BodyComponents */ = {
 			isa = PBXGroup;
 			children = (
@@ -302,6 +313,7 @@
 		A0C9550B199329180066F88F /* Jello */ = {
 			isa = PBXGroup;
 			children = (
+				A0512D261AEA256700B0B87F /* Protocols */,
 				A0510AEE1AAA342100C03017 /* Joints */,
 				A06EC14B199FD47E00402D4C /* BodyComponents */,
 				A0C955311993C3570066F88F /* Structs */,
@@ -481,6 +493,7 @@
 				A09CC4A51A251A880073BB62 /* Body.swift in Sources */,
 				A09CC4A61A251A880073BB62 /* Utils.swift in Sources */,
 				A09CC4A71A251A880073BB62 /* MaterialPair.swift in Sources */,
+				A0512D291AEA25AA00B0B87F /* CollisionObserver.swift in Sources */,
 				A09CC4A91A251A880073BB62 /* AppDelegate.swift in Sources */,
 				A09CC4AA1A251A880073BB62 /* World.swift in Sources */,
 				A09CC4AB1A251A880073BB62 /* ClosedShape.swift in Sources */,
@@ -515,6 +528,7 @@
 				A06EC14F199FD4EE00402D4C /* BodyComponent.swift in Sources */,
 				A0C9552C1993BC150066F88F /* Body.swift in Sources */,
 				A0C95526199344390066F88F /* Utils.swift in Sources */,
+				A0512D281AEA25AA00B0B87F /* CollisionObserver.swift in Sources */,
 				A0C955291993BB360066F88F /* MaterialPair.swift in Sources */,
 				A0C954EB199329130066F88F /* AppDelegate.swift in Sources */,
 				A0C9552F1993BFA50066F88F /* World.swift in Sources */,

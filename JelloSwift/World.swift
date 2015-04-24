@@ -28,9 +28,12 @@ public class World
     // material chart.
     public var materialPairs: [[MaterialPair]] = [];
     public var defaultMatPair: MaterialPair = MaterialPair();
-    public var materialCount = 0;
+    private var materialCount = 0;
     
-    public var collisionList: [BodyCollisionInformation] = [];
+    private var collisionList: [BodyCollisionInformation] = [];
+    
+    /// The object to report collisions to
+    public var collisionObserver:CollisionObserver?;
     
     public init()
     {
@@ -364,6 +367,15 @@ public class World
                 
                 // and the opposite case, B colliding with A
                 bodyCollide(body2, body1);
+            }
+        }
+        
+        // Notify collisions that will happen
+        if let observer = collisionObserver
+        {
+            for info in collisionList
+            {
+                observer.bodiesDidCollide(info);
             }
         }
         
