@@ -4,7 +4,7 @@ JelloSwift
 Soft-body physics dynamics library written in Swift
 ----------
 
-Video demo available here: https://www.youtube.com/watch?v=_onDvafjPl4
+Video demo available here: https://www.youtube.com/watch?v=0J6P5WaxSHA
 
 This is a port of JelloPhysics, a C#/C++ soft-body physics engine (the original license is included at the JelloPhysics-License.md file).
 
