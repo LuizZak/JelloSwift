@@ -27,7 +27,7 @@ public class World
     
     // material chart.
     public var materialPairs: [[MaterialPair]] = [];
-    public var defaultMatPair: MaterialPair = MaterialPair();
+    public var defaultMatPair = MaterialPair();
     private var materialCount = 0;
     
     private var collisionList: [BodyCollisionInformation] = [];
@@ -54,12 +54,10 @@ public class World
         collisionList = [];
         
         // Reset
-        materialCount = 1;
-        materialPairs = [];
-        
         defaultMatPair = MaterialPair();
         
-        materialPairs += [defaultMatPair];
+        materialCount = 1;
+        materialPairs = [[defaultMatPair]];
         
         let min = Vector2(-20.0, -20.0);
         let max = Vector2( 20.0,  20.0);

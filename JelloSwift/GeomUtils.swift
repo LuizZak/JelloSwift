@@ -17,8 +17,10 @@ public func polygonArea(points: [Vector2]) -> CGFloat
     var area: CGFloat = 0;
     var v2 = points.last!;
     
-    for p in points
+    let c = points.count;
+    for var i = 0; i < c; i++
     {
+        let p = points[i];
         area += (v2.X + p.X) * (v2.Y - p.Y);
         v2 = p;
     }

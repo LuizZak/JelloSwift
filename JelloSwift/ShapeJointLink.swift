@@ -111,8 +111,7 @@ public class ShapeJointLink: JointLinkType
         {
             let tempR = (p.position - position + offsetPosition).perpendicular();
             
-            p.force += tempR * torqueF;
-            p.force += force;
+            p.force += force + tempR * torqueF;
         }
     }
     

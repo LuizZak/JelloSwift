@@ -897,8 +897,7 @@ public final class Body: Equatable
         {
             let tempR = (point.position - pt).perpendicular();
             
-            point.force += tempR * torqueF;
-            point.force += force;
+            point.force += force + tempR * torqueF;
         }
     }
     
