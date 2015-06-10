@@ -59,7 +59,7 @@ public class BodyJoint: Equatable
     /**
      * Resolves this joint
      *
-     * :param: dt The delta time to update the resolve on
+     * - parameter dt: The delta time to update the resolve on
      */
     public func resolve(dt: CGFloat)
     {
@@ -90,7 +90,7 @@ public protocol JointLinkType
     
     /// Appies a given force to the subject of this joint link
     ///
-    /// :param: force A force to apply to the subjects of this joint link
+    /// - parameter force: A force to apply to the subjects of this joint link
     func applyForce(force: Vector2);
 }
 

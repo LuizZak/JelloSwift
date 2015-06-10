@@ -29,7 +29,7 @@ public class SpringBodyJoint : BodyJoint
     /**
      * Resolves this joint
      *
-     * :param: dt The delta time to update the resolve on
+     * - parameter dt: The delta time to update the resolve on
     */
     public override func resolve(dt: CGFloat)
     {
@@ -50,7 +50,7 @@ public class SpringBodyJoint : BodyJoint
         
         let targetDist = max(restDistance, min(maxRestDistance, dist));
         
-        let force = calculateSpringForce(pos1, _bodyLink1.velocity, pos2, _bodyLink2.velocity, targetDist, springK, springD);
+        let force = calculateSpringForce(pos1, velA: _bodyLink1.velocity, posB: pos2, velB: _bodyLink2.velocity, distance: targetDist, springK: springK, springD: springD);
         
         if(!_bodyLink1.isStatic && !_bodyLink2.isStatic)
         {

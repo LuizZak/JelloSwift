@@ -9,7 +9,7 @@
 import CoreGraphics
 
 /// Represents a 2D vector
-public struct Vector2: Comparable, Printable
+public struct Vector2: Comparable, CustomStringConvertible
 {
     /// A zeroed-value Vector2
     public static let Zero = Vector2(0, 0);
@@ -113,7 +113,7 @@ public struct Vector2: Comparable, Printable
     /// Returns a normalized version of this Vector2
     public func normalized() -> Vector2
     {
-        var mag = sqrt(X * X + Y * Y);
+        let mag = sqrt(X * X + Y * Y);
         
         if(mag > CGFloat.min)
         {
@@ -131,13 +131,13 @@ public struct Vector2: Comparable, Printable
 }
 
 /// Returns a Vector2 that represents the minimum coordinates between two Vector2 objects
-public func min(a: Vector2, b: Vector2) -> Vector2
+public func min(a: Vector2, _ b: Vector2) -> Vector2
 {
     return Vector2(min(a.X, b.X), min(a.Y, b.Y));
 }
 
 /// Returns a Vector2 that represents the maximum coordinates between two Vector2 objects
-public func max(a: Vector2, b: Vector2) -> Vector2
+public func max(a: Vector2, _ b: Vector2) -> Vector2
 {
     return Vector2(max(a.X, b.X), max(a.Y, b.Y));
 }

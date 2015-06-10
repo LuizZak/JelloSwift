@@ -34,13 +34,13 @@ public class EdgeJointLink: JointLinkType
     /// Gets the position, in world coordinates, at which this joint links with the underlying body
     public var position: Vector2
     {
-        return calculateVectorRatio(_pointMass1.position, _pointMass2.position, edgeRatio);
+        return calculateVectorRatio(_pointMass1.position, vec2: _pointMass2.position, ratio: edgeRatio);
     }
     
     /// Gets the velocity of the object this joint links to
     public var velocity: Vector2
     {
-        return calculateVectorRatio(_pointMass1.velocity, _pointMass2.velocity, edgeRatio);
+        return calculateVectorRatio(_pointMass1.velocity, vec2: _pointMass2.velocity, ratio: edgeRatio);
     }
     
     /// Gets the total mass of the subject of this joint link
@@ -67,7 +67,7 @@ public class EdgeJointLink: JointLinkType
     
     /// Appies a given force to the subject of this joint link
     ///
-    /// :param: force A force to apply to the subjects of this joint link
+    /// - parameter force: A force to apply to the subjects of this joint link
     public func applyForce(force: Vector2)
     {
         _pointMass1.applyForce(force * (1 - edgeRatio));

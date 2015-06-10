@@ -14,7 +14,7 @@ class DemoViewController: UIViewController
     {
         super.viewDidLoad()
         
-        var demo = DemoView(frame: self.view.frame);
+        let demo = DemoView(frame: self.view.frame);
         view.addSubview(demo);
     }
 
@@ -102,7 +102,7 @@ class DemoView: UIView
         
         for i in 0..<6
         {
-            var v = vec + Vector2(CGFloat(i - 3), CGFloat(2 + i * 1));
+            let v = vec + Vector2(CGFloat(i - 3), CGFloat(2 + i * 1));
             
             createBouncyBall(v);
         }
@@ -153,7 +153,7 @@ class DemoView: UIView
         platform.isStatic = true;
     }
     
-    override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent)
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?)
     {
         /* Called when a touch begins */
         if(inputMode == InputMode.CreateBall)
@@ -194,14 +194,14 @@ class DemoView: UIView
         }
     }
     
-    override func touchesMoved(touches: Set<NSObject>, withEvent event: UIEvent)
+    override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?)
     {
         let touch: AnyObject = touches.first!;
         let location = touch.locationInView(self);
         fingerLocation = toWorldCoords(Vector2(location.x, location.y));
     }
     
-    override func touchesEnded(touches: Set<NSObject>, withEvent event: UIEvent)
+    override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?)
     {
         // Reset dragging point
         draggingPoint = nil;
@@ -247,7 +247,7 @@ class DemoView: UIView
         // Dragging point
         if let p = draggingPoint where inputMode == InputMode.DragBody
         {
-            let dragForce = calculateSpringForce(p.position, p.velocity, fingerLocation, Vector2.Zero, 0, 700, 20);
+            let dragForce = calculateSpringForce(p.position, velA: p.velocity, posB: fingerLocation, velB: Vector2.Zero, distance: 0, springK: 700, springD: 20);
             
             p.applyForce(dragForce);
         }
@@ -257,7 +257,7 @@ class DemoView: UIView
     {
         let sw = Stopwatch();
         
-        var context = UIGraphicsGetCurrentContext();
+        let context = UIGraphicsGetCurrentContext();
         
         self.polyDrawer.reset();
         
@@ -331,7 +331,7 @@ class DemoView: UIView
         // Draw normals, for pressure bodies
         if let pComp = body.getComponentType(PressureComponent)
         {
-            for (i, p) in enumerate(shapePoints)
+            for (i, p) in shapePoints.enumerate()
             {
                 let s = CGPoint(vec: toScreenCoords(p));
                 let e = CGPoint(vec: toScreenCoords(p + pComp.normalList[i] / 3));
@@ -343,7 +343,7 @@ class DemoView: UIView
         polyDrawer.queuePoly(body.globalShape.map { CGPoint(vec: toScreenCoords($0)) }, fillColor: 0x33FFFFFF, strokeColor: 0xFF777777, lineWidth: 1);
         
         // Draw lines going from the body's outer points to the global shape indices
-        for (i, p) in enumerate(points)
+        for (i, p) in points.enumerate()
         {
             let start = p;
             let end = CGPoint(vec: toScreenCoords(body.globalShape[i]));
@@ -355,8 +355,8 @@ class DemoView: UIView
         polyDrawer.queuePoly(points, fillColor: 0xADFFFFFF, strokeColor: 0xFF000000);
         
         // Draw the body axis
-        let axisUp    = [body.derivedPos, body.derivedPos + rotateVector(Vector2(0, 0.6), body.derivedAngle)];
-        let axisRight = [body.derivedPos, body.derivedPos + rotateVector(Vector2(0.6, 0), body.derivedAngle)];
+        let axisUp    = [body.derivedPos, body.derivedPos + rotateVector(Vector2(0, 0.6), angleInRadians: body.derivedAngle)];
+        let axisRight = [body.derivedPos, body.derivedPos + rotateVector(Vector2(0.6, 0), angleInRadians: body.derivedAngle)];
         
         let axisUpCg = axisUp.map { CGPoint(vec: toScreenCoords($0)) };
         let axisRightCg = axisRight.map { CGPoint(vec: toScreenCoords($0)) };
@@ -522,14 +522,14 @@ class DemoView: UIView
         
         // Scale down
         carShape.transformOwn(0, localScale: Vector2(0.65, 0.65));
-        carShape.finish(recenter: true);
+        carShape.finish(true);
         
         let bodyOffset = Vector2(0, 0.4);
         
         let carBody = Body(world: world, shape: carShape, pointMasses: [0.7], position: pos + bodyOffset, angle: 0, scale: Vector2.One, kinematic: false, components: [SpringComponentCreator(shapeMatchingOn: true, edgeSpringK: 300, edgeSpringDamp: 30, shapeSpringK: 600, shapeSpringDamp: 30), GravityComponentCreator()]);
         
-        let leftWheel  = createBouncyBall(carBody.derivedPos + rotateVector(Vector2(-1.1, -0.5) - bodyOffset, carBody.derivedAngle), pinned: false, kinematic: false, radius: 0.5, mass: 0.5);
-        let rightWheel = createBouncyBall(carBody.derivedPos + rotateVector(Vector2( 1.1, -0.5) - bodyOffset, carBody.derivedAngle), pinned: false, kinematic: false, radius: 0.5, mass: 0.5);
+        let leftWheel  = createBouncyBall(carBody.derivedPos + rotateVector(Vector2(-1.1, -0.5) - bodyOffset, angleInRadians: carBody.derivedAngle), pinned: false, kinematic: false, radius: 0.5, mass: 0.5);
+        let rightWheel = createBouncyBall(carBody.derivedPos + rotateVector(Vector2( 1.1, -0.5) - bodyOffset, angleInRadians: carBody.derivedAngle), pinned: false, kinematic: false, radius: 0.5, mass: 0.5);
         
         // Create the left wheel constraint
         let ljWheel = BodyJointLink(body: leftWheel);

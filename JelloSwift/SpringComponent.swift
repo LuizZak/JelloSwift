@@ -45,7 +45,7 @@ public class SpringComponent: BodyComponent
             d = body.pointMasses[pointA].position.distanceTo(body.pointMasses[pointB].position);
         }
         
-        var s = InternalSpring(body.pointMasses[pointA], body.pointMasses[pointB], d, springK, damping);
+        let s = InternalSpring(body.pointMasses[pointA], body.pointMasses[pointB], d, springK, damping);
         
         springs += s;
         
@@ -94,7 +94,7 @@ public class SpringComponent: BodyComponent
     public func setSpringConstants(springID: Int, _ springK: CGFloat, _ springDamp: CGFloat)
     {
         // index is for all internal springs, AFTER the default internal springs.
-        var index = body.pointMasses.count + springID;
+        let index = body.pointMasses.count + springID;
         
         springs[index].springK = springK;
         springs[index].springD = springDamp;
@@ -124,7 +124,7 @@ public class SpringComponent: BodyComponent
             let p1 = s.pointMassA;
             let p2 = s.pointMassB;
             
-            let force = calculateSpringForce(p1.position, p1.velocity, p2.position, p2.velocity, s.distance, s.springK, s.springD);
+            let force = calculateSpringForce(p1.position, velA: p1.velocity, posB: p2.position, velB: p2.velocity, distance: s.distance, springK: s.springK, springD: s.springD);
             
             p1.force += force;
             p2.force -= force;
@@ -134,17 +134,17 @@ public class SpringComponent: BodyComponent
         {
             body.baseShape.transformVertices(&body.globalShape, worldPos: body.derivedPos, angleInRadians: body.derivedAngle, localScale: body.scale);
             
-            for (i, p) in enumerate(body.pointMasses)
+            for (i, p) in body.pointMasses.enumerate()
             {
                 let force: Vector2;
                 
                 if(!body.isKinematic)
                 {
-                    force = calculateSpringForce(p.position, p.velocity, body.globalShape[i], p.velocity, 0.0, shapeSpringK, shapeSpringDamp);
+                    force = calculateSpringForce(p.position, velA: p.velocity, posB: body.globalShape[i], velB: p.velocity, distance: 0.0, springK: shapeSpringK, springD: shapeSpringDamp);
                 }
                 else
                 {
-                    force = calculateSpringForce(p.position, p.velocity, body.globalShape[i], Vector2.Zero, 0.0, shapeSpringK, shapeSpringDamp);
+                    force = calculateSpringForce(p.position, velA: p.velocity, posB: body.globalShape[i], velB: Vector2.Zero, distance: 0.0, springK: shapeSpringK, springD: shapeSpringDamp);
                 }
                 
                 p.force += force;

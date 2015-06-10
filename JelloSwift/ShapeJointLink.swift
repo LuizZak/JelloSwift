@@ -54,7 +54,7 @@ public class ShapeJointLink: JointLinkType
             return Vector2.Zero;
         }
         
-        return rotateVector(offset, _body.derivedAngle);
+        return rotateVector(offset, angleInRadians: _body.derivedAngle);
     }
     
     /// Gets the velocity of the object this joint links to
@@ -102,8 +102,8 @@ public class ShapeJointLink: JointLinkType
     
     /// Appies a given force to the subject of this joint link
     ///
-    /// :param: force A force to apply to the subjects of this joint link
-    public func applyForce(var force: Vector2)
+    /// - parameter force: A force to apply to the subjects of this joint link
+    public func applyForce(force: Vector2)
     {
         let torqueF = offsetPosition =* force.perpendicular();
         

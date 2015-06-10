@@ -55,7 +55,7 @@ public class BodyJointLink: JointLinkType
     
     /// Appies a given force to the subject of this joint link
     ///
-    /// :param: force A force to apply to the subjects of this joint link
+    /// - parameter force: A force to apply to the subjects of this joint link
     public func applyForce(force: Vector2)
     {
         _body.addGlobalForce(position, force);

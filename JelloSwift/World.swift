@@ -233,21 +233,19 @@ public class World
     /**
      * Casts a ray between the given points and returns the first body it comes in contact with
      * 
-     * :param: start The start point to cast the ray from, in world coordinates
-     * :param: end The end point to end the ray cast at, in world coordinates
-     * :param: retPt When the ray hits something, this point represents the farthest point the ray reached.
+     * - parameter start: The start point to cast the ray from, in world coordinates
+     * - parameter end: The end point to end the ray cast at, in world coordinates
+     * - parameter retPt: When the ray hits something, this point represents the farthest point the ray reached.
      *               If the ray hits nothing, this is set as the end parameter
-     * :param: bit An optional collision bitmask that filters the bodies to collide using a bitwise AND (|) operation.
+     * - parameter bit: An optional collision bitmask that filters the bodies to collide using a bitwise AND (|) operation.
      *             If the value specified is 0, collision filtering is ignored and all bodies are considered for collision
-     * :param: ignoreList A custom list of bodies that will be ignored during collision checking. Provide an empty list
+     * - parameter ignoreList: A custom list of bodies that will be ignored during collision checking. Provide an empty list
      *                    to consider all bodies in the world
      *
      * :return: An optional Body? value specifying the body that was closest to the ray, if it hit any body, or nil if it hit nothing.
      */
     public func rayCast(start: Vector2, end: Vector2, inout _ retPt:Vector2?, bit: Bitmask = 0, _ ignoreList:[Body] = []) -> Body?
     {
-        var closestD = start.distanceTo(end);
-        var closestB:Body? = nil;
         var aabb:AABB? = nil;
         var lastBody:Body? = nil;
         
@@ -270,7 +268,7 @@ public class World
     /**
      * Updates the world by a specific timestep
      *
-     * :param: elapsed The elapsed time to update by, usually in seconds
+     * - parameter elapsed: The elapsed time to update by, usually in seconds
      */
     public func update(elapsed: CGFloat)
     {
@@ -306,7 +304,7 @@ public class World
         }
         
         let c = bodies.count;
-        for (i, body1) in enumerate(bodies)
+        for (i, body1) in bodies.enumerate()
         {
             for j in (i + 1)..<c
             {
@@ -390,7 +388,7 @@ public class World
     {
         let bBpCount = bB.pointMasses.count;
         
-        for (i, pmA) in enumerate(bA.pointMasses)
+        for (i, pmA) in bA.pointMasses.enumerate()
         {
             let pt = pmA.position;
             

@@ -32,7 +32,7 @@ public final class PointMass
     
     /// Integrates a single physics simulation step for this point mass
     ///
-    /// :param: elapsed The elapsed time to integrate by, usually in seconds
+    /// - parameter elapsed: The elapsed time to integrate by, usually in seconds
     public func integrate(elapsed: CGFloat)
     {
         if (mass != CGFloat.infinity)

@@ -30,7 +30,7 @@ public class ClosedShape
     }
     
     /// Adds a vertex to this closed shape
-    public func addVertex(#x: CGFloat, y: CGFloat)
+    public func addVertex(x x: CGFloat, y: CGFloat)
     {
         addVertex(Vector2(x, y));
     }
@@ -41,7 +41,7 @@ public class ClosedShape
         if(recenter)
         {
             // Find the average location of all the vertices
-            var center = averageVectors(localVertices);
+            let center = averageVectors(localVertices);
             
             localVertices = localVertices.map { $0 - center };
         }
@@ -50,14 +50,14 @@ public class ClosedShape
     /// Transforms all vertices by the given angle and scale
     public func transformOwn(angleInRadians: CGFloat, localScale: Vector2)
     {
-        localVertices = localVertices.map { rotateVector($0 * localScale, angleInRadians) };
+        localVertices = localVertices.map { rotateVector($0 * localScale, angleInRadians: angleInRadians) };
     }
     
     /// Gets a new list of vertices, transformed by the given position, angle, and scale.
     /// transformation is applied in the following order:  scale -> rotation -> position.
     public func transformVertices(worldPos: Vector2, angleInRadians: CGFloat, localScale: Vector2 = Vector2.One) -> [Vector2]
     {
-        return localVertices.map { rotateVector($0 * localScale, angleInRadians) + worldPos };
+        return localVertices.map { rotateVector($0 * localScale, angleInRadians: angleInRadians) + worldPos };
     }
     
     /// Transforms the points on this closed shape into the given array of points.
@@ -65,9 +65,9 @@ public class ClosedShape
     /// transformation is applied in the following order:  scale -> rotation -> position.
     public func transformVertices(inout target:[Vector2], worldPos: Vector2, angleInRadians: CGFloat, localScale: Vector2 = Vector2.One)
     {
-        for (i, l) in enumerate(localVertices)
+        for (i, l) in localVertices.enumerate()
         {
-            target[i] = rotateVector(l * localScale, angleInRadians) + worldPos;
+            target[i] = rotateVector(l * localScale, angleInRadians: angleInRadians) + worldPos;
         }
     }
 }

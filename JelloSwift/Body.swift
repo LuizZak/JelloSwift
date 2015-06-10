@@ -128,7 +128,7 @@ public final class Body: Equatable
         
         if(points.count == 1)
         {
-            for i in 0..<self.pointMasses.count - 1
+            for _ in 0..<self.pointMasses.count - 1
             {
                 points += (pointMasses[0]);
             }
@@ -153,7 +153,7 @@ public final class Body: Equatable
     /// Adds a body component to this body
     public func addComponentType<T: BodyComponent>(componentType: T.Type) -> T
     {
-        var instance = componentType(body: self);
+        let instance = componentType(body: self);
         
         self.components += instance;
         
@@ -257,8 +257,8 @@ public final class Body: Equatable
     /// Updates the AABB for this body, including padding for velocity given a timestep.
     /// This function is called by the World object on Update(), so the user should not need this in most cases.
     /// 
-    /// :param: elapsed elapsed The elapsed time to update by, usually in seconds
-    /// :param: forceUpdate Whether to force the update of the body, even if it's a static body
+    /// - parameter elapsed: elapsed The elapsed time to update by, usually in seconds
+    /// - parameter forceUpdate: Whether to force the update of the body, even if it's a static body
     public func updateAABB(elapsed: CGFloat, forceUpdate: Bool)
     {
         if(!isStatic && !forceUpdate)
@@ -343,7 +343,7 @@ public final class Body: Equatable
     {
         baseShape.transformVertices(&globalShape, worldPos: pos, angleInRadians: angle, localScale: scale);
         
-        for (i, pm) in enumerate(pointMasses)
+        for (i, pm) in pointMasses.enumerate()
         {
             pm.position = globalShape[i];
         }
@@ -390,7 +390,7 @@ public final class Body: Equatable
             var originalAngle: CGFloat = 0;
             
             let c = pointMasses.count;
-            for (i, pm) in enumerate(pointMasses)
+            for (i, pm) in pointMasses.enumerate()
             {
                 let baseNorm = baseShape[i].normalized();
                 let curNorm  = (pm.position - meanPos).normalized();
@@ -558,7 +558,7 @@ public final class Body: Equatable
         // line we are testing against goes from pt -> endPt.
         var inside = false;
         
-        var c = edges.count;
+        let c = edges.count;
         for var i = 0; i < c; i++
         {
             let e = edges[i];
@@ -575,8 +575,8 @@ public final class Body: Equatable
                 }
                 
                 // this line crosses the test line at some point... does it do so within our test range?
-                var slope = (edgeEnd.X - edgeSt.X) / (edgeEnd.Y - edgeSt.Y);
-                var hitX = edgeSt.X + ((pt.Y - edgeSt.Y) * slope);
+                let slope = (edgeEnd.X - edgeSt.X) / (edgeEnd.Y - edgeSt.Y);
+                let hitX = edgeSt.X + ((pt.Y - edgeSt.Y) * slope);
                 
                 if ((hitX >= pt.X) && (hitX <= endPt.X))
                 {
@@ -615,7 +615,7 @@ public final class Body: Equatable
             p1 = e.start;
             p2 = e.end;
             
-            if(lineIntersect(start, end, p1, p2, &p, &ua, &ub))
+            if(lineIntersect(start, ptB: end, ptC: p1, ptD: p2, hitPt: &p, Ua: &ua, Ub: &ub))
             {
                 return true;
             }
@@ -639,7 +639,6 @@ public final class Body: Equatable
         }
         
         // Test each edge against the line
-        let c = pointMasses.count;
         var p = Vector2();
         var p1 = Vector2();
         var p2 = Vector2();
@@ -654,7 +653,7 @@ public final class Body: Equatable
             p1 = e.start;
             p2 = e.end;
             
-            if(lineIntersect(pt1, pt2, p1, p2, &p, &ua, &ub))
+            if(lineIntersect(pt1, ptB: pt2, ptC: p1, ptD: p2, hitPt: &p, Ua: &ua, Ub: &ub))
             {
                 res = p;
                 col = true;
@@ -667,12 +666,12 @@ public final class Body: Equatable
     /**
      * Given a global point, finds the closest point on an edge of a specified index, returning the squared distance to the edge found
      *
-     * :param: pt The point to get the closest edge of, in world coordinates
-     * :param: edgeNum The index of the edge to search
-     * :param: normal A unit vector containing information about the normal of the edge found
-     * :param: hitPt The closest point in the edge to the global point provided
-     * :param: edgeD The ratio of the edge where the point was grabbed, [0-1] inclusive
-     * :returns: The squared distance to the closest edge found
+     * - parameter pt: The point to get the closest edge of, in world coordinates
+     * - parameter edgeNum: The index of the edge to search
+     * - parameter normal: A unit vector containing information about the normal of the edge found
+     * - parameter hitPt: The closest point in the edge to the global point provided
+     * - parameter edgeD: The ratio of the edge where the point was grabbed, [0-1] inclusive
+     * - returns: The squared distance to the closest edge found
     */
     public func getClosestPointOnEdgeSquared(pt: Vector2, _ edgeNum: Int, inout _ hitPt: Vector2, inout _ normal: Vector2, inout _ edgeD: CGFloat) -> CGFloat
     {
@@ -681,13 +680,10 @@ public final class Body: Equatable
         
         let edge = edges[edgeNum];
         
-        var ptA = edge.start;
-        var ptB = edge.end;
+        let ptA = edge.start;
+        let ptB = edge.end;
         
         let toP = pt - ptA;
-        
-        // get the length of the edge, and use that to normalize the vector.
-        let edgeLength = edge.length;
         
         // normal
         normal = edge.normal;
@@ -729,12 +725,12 @@ public final class Body: Equatable
     /**
      * Given a global point, finds the closest point on an edge of a specified index, returning the distance to the edge found
      *
-     * :param: pt The point to get the closest edge of, in world coordinates
-     * :param: edgeNum The index of the edge to search
-     * :param: normal A unit vector containing information about the normal of the edge found
-     * :param: hitPt The closest point in the edge to the global point provided
-     * :param: edgeD The ratio of the edge where the point was grabbed, [0-1] inclusive
-     * :returns: The distance to the closest edge found
+     * - parameter pt: The point to get the closest edge of, in world coordinates
+     * - parameter edgeNum: The index of the edge to search
+     * - parameter normal: A unit vector containing information about the normal of the edge found
+     * - parameter hitPt: The closest point in the edge to the global point provided
+     * - parameter edgeD: The ratio of the edge where the point was grabbed, [0-1] inclusive
+     * - returns: The distance to the closest edge found
     */
     public func getClosestPointOnEdge(pt: Vector2, _ edgeNum: Int, inout _ hitPt: Vector2, inout _ normal: Vector2, inout _ edgeD: CGFloat) -> CGFloat
     {
@@ -744,13 +740,13 @@ public final class Body: Equatable
     /**
      * Given a global point, finds the point on this body that is closest to the given global point, and if it's an edge, information about the edge it resides on
      *
-     * :param: pt The point to get the closest edge of, in world coordinates
-     * :param: hitPt The closest point to the pointmass or edge that was found
-     * :param: normal A unit vector containing information about the normal of the edge found
-     * :param: pointA The index of the first point of the closest edge found
-     * :param: pointB The index of the second point of the closest edge found
-     * :param: edgeD The ratio of the edge where the point was grabbed, [0-1] inclusive
-     * :returns: The distance to the closest edge found
+     * - parameter pt: The point to get the closest edge of, in world coordinates
+     * - parameter hitPt: The closest point to the pointmass or edge that was found
+     * - parameter normal: A unit vector containing information about the normal of the edge found
+     * - parameter pointA: The index of the first point of the closest edge found
+     * - parameter pointB: The index of the second point of the closest edge found
+     * - parameter edgeD: The ratio of the edge where the point was grabbed, [0-1] inclusive
+     * - returns: The distance to the closest edge found
     */
     public func getClosestPoint(pt: Vector2, inout _ hitPt: Vector2, inout _ normal: Vector2, inout _ pointA: Int, inout _ pointB: Int, inout _ edgeD: CGFloat) -> CGFloat
     {
@@ -791,9 +787,9 @@ public final class Body: Equatable
      * The tolerance is the distance to the edge that will be ignored if larget than that
      * Returns nil if no edge found (no points on the shape), or an array of the parameters that can be used to track down the shape's edge
      *
-     * :param: pt The point to get the closest edge of, in world coordinates
-     * :param: tolerance A tolerance distance for the edges detected - any edge farther than this distance is ignored
-     * :returns: A tuple containing information about the edge, if it was found, or nil if none was found.
+     * - parameter pt: The point to get the closest edge of, in world coordinates
+     * - parameter tolerance: A tolerance distance for the edges detected - any edge farther than this distance is ignored
+     * - returns: A tuple containing information about the edge, if it was found, or nil if none was found.
      *  Contents of the tuple:
      *  Vector2: The edge's closest position to the point provided
      *  CGFloat: The ratio of the edge where the point was grabbed, [0-1] inclusive
@@ -814,7 +810,7 @@ public final class Body: Equatable
         var closestAdotB: CGFloat = 0;
         var closestD: CGFloat = CGFloat.infinity;
         
-        for (i, pm) in enumerate(pointMasses)
+        for (i, pm) in pointMasses.enumerate()
         {
             let pm2 = pointMasses[(i + 1) % pointMasses.count];
             let len = (pm.position - pm2.position).magnitude();
@@ -881,8 +877,8 @@ public final class Body: Equatable
      * Applying a force with any position off-center of the body (different than derivedPos) will result in an additional torque
      * being applied to the body
      *
-     * :param: pt The point to apply the force, in world coordinates. Specify .derivedPos to apply a force at the exact center of the body
-     * :param: force The force to apply to the point masses in this body
+     * - parameter pt: The point to apply the force, in world coordinates. Specify .derivedPos to apply a force at the exact center of the body
+     * - parameter force: The force to apply to the point masses in this body
     */
     public func addGlobalForce(pt: Vector2, _ force: Vector2)
     {
@@ -904,7 +900,7 @@ public final class Body: Equatable
     /**
      * Adds a velocity vector to all the point masses in this body
      *
-     * :param: velocity The velocity to add to all the point masses in this body
+     * - parameter velocity: The velocity to add to all the point masses in this body
      */
     public func addVelocity(velocity: Vector2)
     {

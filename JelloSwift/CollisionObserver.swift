@@ -14,7 +14,7 @@ public protocol CollisionObserver
     /**
      Called by the World to notify of a body collision
     
-     :param: info The information for the collision
+     - parameter info: The information for the collision
      */
     func bodiesDidCollide(info: BodyCollisionInformation);
 }

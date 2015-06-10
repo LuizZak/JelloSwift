@@ -51,8 +51,7 @@ class PolyDrawer
     
     func queuePoly(vertices: [CGPoint], fillColor: UInt, strokeColor: UInt, lineWidth: CGFloat = 3)
     {
-        var converted: [CGPoint] = [];
-        var poly:Poly = Poly(points: vertices, lineColor: strokeColor, fillColor: fillColor, lineWidth: lineWidth);
+        let poly:Poly = Poly(points: vertices, lineColor: strokeColor, fillColor: fillColor, lineWidth: lineWidth);
         
         self.polys += poly;
     }
@@ -115,10 +114,10 @@ class PolyDrawer
 
 func uiColorFromUInt(color: UInt) -> UIColor
 {
-    var a: CGFloat = CGFloat((UInt(color >> 24) & UInt(0xFF))) / 255.0;
-    var r: CGFloat = CGFloat((UInt(color >> 16) & UInt(0xFF))) / 255.0;
-    var g: CGFloat = CGFloat((UInt(color >> 8) & UInt(0xFF))) / 255.0;
-    var b: CGFloat = CGFloat((color & UInt(0xFF))) / 255.0;
+    let a: CGFloat = CGFloat((UInt(color >> 24) & UInt(0xFF))) / 255.0;
+    let r: CGFloat = CGFloat((UInt(color >> 16) & UInt(0xFF))) / 255.0;
+    let g: CGFloat = CGFloat((UInt(color >> 8) & UInt(0xFF))) / 255.0;
+    let b: CGFloat = CGFloat((color & UInt(0xFF))) / 255.0;
     
     return UIColor(red: r, green: g, blue: b, alpha: a);
 }
