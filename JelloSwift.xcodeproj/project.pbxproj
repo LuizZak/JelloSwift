@@ -96,6 +96,7 @@
 		A0C9553D1995C2590066F88F /* RenderingSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C9553C1995C2590066F88F /* RenderingSettings.swift */; };
 		A0C9553E1995C2590066F88F /* RenderingSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C9553C1995C2590066F88F /* RenderingSettings.swift */; };
 		A0C9554019968CCA0066F88F /* PhysicsMathTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C9553F19968CCA0066F88F /* PhysicsMathTest.swift */; };
+		A0E336071B2C4E4E00A2E8DC /* SpriteKitPolyDrawer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E336061B2C4E4E00A2E8DC /* SpriteKitPolyDrawer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -164,6 +165,7 @@
 		A0C9553519946BA00066F88F /* GeomUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeomUtils.swift; sourceTree = "<group>"; };
 		A0C9553C1995C2590066F88F /* RenderingSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RenderingSettings.swift; sourceTree = "<group>"; };
 		A0C9553F19968CCA0066F88F /* PhysicsMathTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhysicsMathTest.swift; sourceTree = "<group>"; };
+		A0E336061B2C4E4E00A2E8DC /* SpriteKitPolyDrawer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpriteKitPolyDrawer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -243,6 +245,7 @@
 			isa = PBXGroup;
 			children = (
 				A081CFE11996B04D00C7CA49 /* PolyDrawer.swift */,
+				A0E336061B2C4E4E00A2E8DC /* SpriteKitPolyDrawer.swift */,
 			);
 			name = DrawingUtils;
 			sourceTree = "<group>";
@@ -517,6 +520,7 @@
 				A0510B011AAA573B00C03017 /* ShapeJointLink.swift in Sources */,
 				A027EE611AD1EF1900E849AC /* BodyEdge.swift in Sources */,
 				A06EC14D199FD49200402D4C /* SpringComponent.swift in Sources */,
+				A0E336071B2C4E4E00A2E8DC /* SpriteKitPolyDrawer.swift in Sources */,
 				A0C95520199342D10066F88F /* InternalSpring.swift in Sources */,
 				A05ECD5319B1A38C00F84326 /* GravityComponent.swift in Sources */,
 				A0510AF11AAA41D700C03017 /* PointJointLink.swift in Sources */,

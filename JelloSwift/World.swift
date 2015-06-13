@@ -246,7 +246,7 @@ public class World
      */
     public func rayCast(start: Vector2, end: Vector2, inout _ retPt:Vector2?, bit: Bitmask = 0, _ ignoreList:[Body] = []) -> Body?
     {
-        var aabb:AABB? = nil;
+        var aabb:AABB! = nil;
         var lastBody:Body? = nil;
         
         retPt = end;

@@ -623,7 +623,7 @@ public final class Body: Equatable
     }
     
     /// Returns whether the given ray collides with this Body, changing the resulting collision vector before returning
-    public func raycast(pt1: Vector2, _ pt2: Vector2, inout _ res: Vector2?, inout _ rayAABB: AABB?) -> Bool
+    public func raycast(pt1: Vector2, _ pt2: Vector2, inout _ res: Vector2?, inout _ rayAABB: AABB!) -> Bool
     {
         // Create and test against a temporary line AABB
         if (rayAABB == nil)
@@ -631,7 +631,7 @@ public final class Body: Equatable
             rayAABB = AABB(points: [pt1, pt2]);
         }
         
-        if(!aabb.intersects(rayAABB!))
+        if(!aabb.intersects(rayAABB))
         {
             return false;
         }

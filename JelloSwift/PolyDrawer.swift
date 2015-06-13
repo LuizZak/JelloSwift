@@ -8,7 +8,7 @@
 
 import UIKit
 
-private struct Poly
+private struct CoreGraphicsPoly
 {
     let points: [CGPoint];
     let fillColor: UIColor;
@@ -47,11 +47,11 @@ private struct Poly
 class PolyDrawer
 {
     /// An array of polygons to draw on the next flush call
-    private var polys: [Poly] = [];
+    private var polys: [CoreGraphicsPoly] = [];
     
     func queuePoly(vertices: [CGPoint], fillColor: UInt, strokeColor: UInt, lineWidth: CGFloat = 3)
     {
-        let poly:Poly = Poly(points: vertices, lineColor: strokeColor, fillColor: fillColor, lineWidth: lineWidth);
+        let poly:CoreGraphicsPoly = CoreGraphicsPoly(points: vertices, lineColor: strokeColor, fillColor: fillColor, lineWidth: lineWidth);
         
         self.polys += poly;
     }
