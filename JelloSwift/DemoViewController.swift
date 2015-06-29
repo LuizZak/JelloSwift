@@ -299,7 +299,7 @@ class DemoView: UIView
             let lineStart = toScreenCoords(p.position)
             let lineEnd = toScreenCoords(fingerLocation)
             
-            let points = [CGPoint(vec: lineStart), CGPoint(vec: lineEnd)]
+            let points = [lineStart.cgPoint, lineEnd.cgPoint]
             
             polyDrawer.queuePoly(points, fillColor: 0xFFFFFFFF, strokeColor: 0xFF00DD00)
         }
@@ -310,7 +310,7 @@ class DemoView: UIView
         let start = toScreenCoords(joint.bodyLink1.position)
         let end = toScreenCoords(joint.bodyLink2.position)
         
-        let points = [CGPoint(vec: start), CGPoint(vec: end)]
+        let points = [start.cgPoint, end.cgPoint]
         
         polyDrawer.queuePoly(points, fillColor: 0xFFFFFFFF, strokeColor: joint.enabled ? 0xFFEEEEEE : 0xFFCCCCCC)
     }
@@ -319,7 +319,7 @@ class DemoView: UIView
     {
         let shapePoints = body.vertices
         
-        let points = shapePoints.map { CGPoint(vec: toScreenCoords($0)) }
+        let points = shapePoints.map { toScreenCoords($0).cgPoint }
         
         if(!useDetailedRender)
         {
@@ -333,20 +333,20 @@ class DemoView: UIView
         {
             for (i, p) in shapePoints.enumerate()
             {
-                let s = CGPoint(vec: toScreenCoords(p))
-                let e = CGPoint(vec: toScreenCoords(p + pComp.normalList[i] / 3))
+                let s = toScreenCoords(p).cgPoint
+                let e = toScreenCoords(p + pComp.normalList[i] / 3).cgPoint
                 polyDrawer.queuePoly([s, e], fillColor: 0, strokeColor: 0xFFEC33EC, lineWidth: 1)
             }
         }
         
         // Draw the body's global shape
-        polyDrawer.queuePoly(body.globalShape.map { CGPoint(vec: toScreenCoords($0)) }, fillColor: 0x33FFFFFF, strokeColor: 0xFF777777, lineWidth: 1)
+        polyDrawer.queuePoly(body.globalShape.map { toScreenCoords($0).cgPoint }, fillColor: 0x33FFFFFF, strokeColor: 0xFF777777, lineWidth: 1)
         
         // Draw lines going from the body's outer points to the global shape indices
         for (i, p) in points.enumerate()
         {
             let start = p
-            let end = CGPoint(vec: toScreenCoords(body.globalShape[i]))
+            let end = toScreenCoords(body.globalShape[i]).cgPoint
             
             polyDrawer.queuePoly([start, end], fillColor: 0, strokeColor: 0xFF449944, lineWidth: 1)
         }
@@ -358,8 +358,8 @@ class DemoView: UIView
         let axisUp    = [body.derivedPos, body.derivedPos + rotateVector(Vector2(0, 0.6), angleInRadians: body.derivedAngle)]
         let axisRight = [body.derivedPos, body.derivedPos + rotateVector(Vector2(0.6, 0), angleInRadians: body.derivedAngle)]
         
-        let axisUpCg = axisUp.map { CGPoint(vec: toScreenCoords($0)) }
-        let axisRightCg = axisRight.map { CGPoint(vec: toScreenCoords($0)) }
+        let axisUpCg = axisUp.map { toScreenCoords($0).cgPoint }
+        let axisRightCg = axisRight.map { toScreenCoords($0).cgPoint }
         
         polyDrawer.queuePoly(axisUpCg, fillColor: 0xFFFFFFFF, strokeColor: 0xFFED0000, lineWidth: 1)
         polyDrawer.queuePoly(axisRightCg, fillColor: 0xFFFFFFFF, strokeColor: 0xFF00ED00, lineWidth: 1)

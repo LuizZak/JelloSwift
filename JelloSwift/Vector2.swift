@@ -20,6 +20,8 @@ public struct Vector2: Comparable, CustomStringConvertible
     public var Y: CGFloat
     public var description: String { return toString() }
     
+    public var cgPoint: CGPoint { return CGPoint(x: self.X, y: self.Y) }
+    
     public init()
     {
         self.X = 0
@@ -192,11 +194,11 @@ infix operator =/ { associativity left precedence 151 }
 ////
 public func ==(lhs: Vector2, rhs: Vector2) -> Bool
 {
-    return lhs.X == rhs.X && lhs.Y == rhs.Y
+    return funcOnVectors(lhs, rhs, ==)
 }
 public func <(lhs: Vector2, rhs: Vector2) -> Bool
 {
-    return lhs.X < rhs.X && lhs.Y < rhs.Y
+    return funcOnVectors(lhs, rhs, <)
 }
 
 // Unary operators
@@ -223,19 +225,19 @@ public func =/(lhs: Vector2, rhs: Vector2) -> CGFloat
 ////
 public func +(lhs: Vector2, rhs: Vector2) -> Vector2
 {
-    return Vector2(lhs.X + rhs.X, lhs.Y + rhs.Y)
+    return funcOnVectors(lhs, rhs, +)
 }
 public func -(lhs: Vector2, rhs: Vector2) -> Vector2
 {
-    return Vector2(lhs.X - rhs.X, lhs.Y - rhs.Y)
+    return funcOnVectors(lhs, rhs, -)
 }
 public func *(lhs: Vector2, rhs: Vector2) -> Vector2
 {
-    return Vector2(lhs.X * rhs.X, lhs.Y * rhs.Y)
+    return funcOnVectors(lhs, rhs, *)
 }
 public func /(lhs: Vector2, rhs: Vector2) -> Vector2
 {
-    return Vector2(lhs.X / rhs.X, lhs.Y / rhs.Y)
+    return funcOnVectors(lhs, rhs, /)
 }
 
 // CGFloat interaction
@@ -254,6 +256,16 @@ public func *(lhs: Vector2, rhs: CGFloat) -> Vector2
 public func /(lhs: Vector2, rhs: CGFloat) -> Vector2
 {
     return Vector2(lhs.X / rhs, lhs.Y / rhs)
+}
+
+private func funcOnVectors(lhs: Vector2, _ rhs: Vector2, _ f: (CGFloat, CGFloat) -> CGFloat) -> Vector2
+{
+    return Vector2(f(lhs.X, rhs.X), f(lhs.Y, rhs.Y))
+}
+
+private func funcOnVectors(lhs: Vector2, _ rhs: Vector2, _ f: (CGFloat, CGFloat) -> Bool) -> Bool
+{
+    return f(lhs.X, rhs.X) && f(lhs.Y, rhs.Y)
 }
 
 // Int interaction
@@ -328,13 +340,4 @@ public func *=(inout lhs: Vector2, rhs: Int)
 public func /=(inout lhs: Vector2, rhs: Int)
 {
     lhs = lhs / rhs
-}
-
-/// Extension to the CGPoint class that helps with Vector2 interactions
-public extension CGPoint
-{
-    init(vec: Vector2)
-    {
-        self.init(x: vec.X, y: vec.Y)
-    }
 }
