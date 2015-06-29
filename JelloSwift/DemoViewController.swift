@@ -450,7 +450,7 @@ class DemoView: UIView
         let l1 = BodyJointLink(body: b1)
         let l2 = BodyJointLink(body: b2)
         
-        SpringBodyJoint(world: world, link1: l1, link2: l2, springK: 100, springD: 20)
+        world.addJoint(SpringBodyJoint(world: world, link1: l1, link2: l2, springK: 100, springD: 20))
     }
     
     /// Creates a pinned box with a ball attached to one of its edges
@@ -463,7 +463,7 @@ class DemoView: UIView
         let l1 = BodyJointLink(body: b1)
         let l2 = EdgeJointLink(body: b2, edgeIndex: 2, edgeRatio: 0.5)
         
-        SpringBodyJoint(world: world, link1: l1, link2: l2, springK: 100, springD: 20)
+        world.addJoint(SpringBodyJoint(world: world, link1: l1, link2: l2, springK: 100, springD: 20))
     }
     
     /// Creates a pinned box with two balls attached to one of its edges
