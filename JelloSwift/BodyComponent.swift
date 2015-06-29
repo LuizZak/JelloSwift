@@ -12,12 +12,12 @@ import CoreGraphics
 public class BodyComponent: Equatable
 {
     // The body this body component is added into
-    public let body: Body;
+    public let body: Body
     
     // Initializes a new instance of the BodyComponent class
     public required init(body: Body)
     {
-        self.body = body;
+        self.body = body
     }
     
     // Makes the body component prepare itself after it has been added to a body
@@ -43,19 +43,19 @@ public class BodyComponent: Equatable
 
 public func ==(lhs: BodyComponent, rhs: BodyComponent) -> Bool
 {
-    return lhs === rhs;
+    return lhs === rhs
 }
 
 // Used to create body components into the body
 public class BodyComponentCreator
 {
-    public var bodyComponentClass: BodyComponent.Type = BodyComponent.self;
+    public var bodyComponentClass: BodyComponent.Type = BodyComponent.self
     
     public func attachToBody(body: Body)
     {
-        body.addComponentType(bodyComponentClass);
+        body.addComponentType(bodyComponentClass)
         
-        prepareBodyAfterComponent(body);
+        prepareBodyAfterComponent(body)
     }
     
     public func prepareBodyAfterComponent(body: Body)

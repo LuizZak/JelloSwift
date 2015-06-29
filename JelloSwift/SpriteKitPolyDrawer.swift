@@ -11,20 +11,20 @@ import SpriteKit
 
 internal struct Poly
 {
-    let points: [CGPoint];
-    let lineColor: SKColor;
-    let fillColor: SKColor;
+    let points: [CGPoint]
+    let lineColor: SKColor
+    let fillColor: SKColor
     
     var bounds: CGRect
     {
-        return AABB(points: points.map{ Vector2($0) }).cgRect;
+        return AABB(points: points.map{ Vector2($0) }).cgRect
     }
     
     init(points: [CGPoint], lineColor: SKColor, fillColor: SKColor)
     {
-        self.points = points;
-        self.lineColor = lineColor;
-        self.fillColor = fillColor;
+        self.points = points
+        self.lineColor = lineColor
+        self.fillColor = fillColor
     }
 }
 
@@ -34,84 +34,84 @@ internal struct Poly
 class SpriteKitPolyDrawer
 {
     /// The scene that holds this PolyDrawer
-    private var scene: SKScene;
+    private var scene: SKScene
     
     /// An array of polygons to draw on the next flush call
-    private var polys: [Poly] = [];
+    private var polys: [Poly] = []
     /// The canvas to draw the polygons onto
-    private var canvas: SKSpriteNode;
+    private var canvas: SKSpriteNode
     
     /// Pool of nodes
-    private var pool: ShapePool;
+    private var pool: ShapePool
     
     init(scene: SKScene)
     {
-        self.scene = scene;
+        self.scene = scene
         
-        self.canvas = SKSpriteNode();
-        self.canvas.anchorPoint = CGPointZero;
-        self.scene.addChild(canvas);
+        self.canvas = SKSpriteNode()
+        self.canvas.anchorPoint = CGPointZero
+        self.scene.addChild(canvas)
         
-        self.pool = ShapePool(startSize: 5);
+        self.pool = ShapePool(startSize: 5)
     }
     
     func queuePoly(vertices: [CGPoint], fillColor: UInt, strokeColor: UInt)
     {
-        let poly:Poly = Poly(points: vertices, lineColor: skColorFromUInt(strokeColor), fillColor: skColorFromUInt(fillColor));
+        let poly:Poly = Poly(points: vertices, lineColor: skColorFromUInt(strokeColor), fillColor: skColorFromUInt(fillColor))
         
-        self.polys += poly;
+        self.polys += poly
     }
     
     /// Flushes all the polygons currently queued and draw them on the screen
     func renderPolys()
     {
-        let area = CGRect(origin: CGPoint(), size: self.scene.size);
+        let area = CGRect(origin: CGPoint(), size: self.scene.size)
         
-        canvas.removeAllChildren();
+        canvas.removeAllChildren()
         
         if(polys.count == 0)
         {
-            return;
+            return
         }
         
-        let path = CGPathCreateMutable();
+        let path = CGPathCreateMutable()
         
         for pi in 0..<polys.count //poly in polys
         {
-            let poly = polys[pi];
+            let poly = polys[pi]
             
             // Verify polygon boundaries
             if(!poly.bounds.intersects(area))
             {
-                continue;
+                continue
             }
             
-            let c = poly.points.count == 2 ? poly.points.count : poly.points.count + 1;
+            let c = poly.points.count == 2 ? poly.points.count : poly.points.count + 1
             
-            let p = UnsafeMutablePointer<CGPoint>.alloc(c);
+            let p = UnsafeMutablePointer<CGPoint>.alloc(c)
             
             for i in 0..<c
             {
-                p[i] = poly.points[i % poly.points.count];
+                p[i] = poly.points[i % poly.points.count]
             }
             
             CGPathAddLines(path, nil, p, c)
             
-            p.dealloc(c);
+            p.dealloc(c)
             
-            //let node = pool.poolShape(); //SKShapeNode(points: p, count: UInt(poly.points.count + 1));
-            //node.path = path;
+            //let node = pool.poolShape() //SKShapeNode(points: p, count: UInt(poly.points.count + 1))
+            //node.path = path
         }
         
-        let node = SKShapeNode();
+        let node = SKShapeNode()
         
-        node.path = path;
-        node.fillColor = SKColor.whiteColor();
-        node.strokeColor = SKColor.blackColor();
-        node.lineJoin = kCGLineJoinRound;
-        node.lineWidth = 2;
+        node.path = path
+        node.fillColor = SKColor.whiteColor()
+        node.strokeColor = SKColor.blackColor()
+        node.lineJoin = kCGLineJoinRound
+        node.lineWidth = 2
         
-        canvas.addChild(node);
+        canvas.addChild(node)
     }
     
     /// Renders the contents of this PolyDrawer on a given CGContextRef
@@ -119,35 +119,35 @@ class SpriteKitPolyDrawer
     {
         for pi in 0..<polys.count //poly in polys
         {
-            let poly = polys[pi];
+            let poly = polys[pi]
             
-            let p = UnsafeMutablePointer<CGPoint>.alloc(poly.points.count + 1);
+            let p = UnsafeMutablePointer<CGPoint>.alloc(poly.points.count + 1)
             
             for i in 0..<poly.points.count + 1
             {
-                p[i] = poly.points[i % poly.points.count];
+                p[i] = poly.points[i % poly.points.count]
             }
             
-            let path = CGPathCreateMutable();
-            let transform = UnsafeMutablePointer<CGAffineTransform>.alloc(1);
-            transform[0] = CGAffineTransformIdentity;
+            let path = CGPathCreateMutable()
+            let transform = UnsafeMutablePointer<CGAffineTransform>.alloc(1)
+            transform[0] = CGAffineTransformIdentity
             
             CGPathAddLines(path, transform, p, poly.points.count + 1)
             
-            p.dealloc(poly.points.count + 1);
+            p.dealloc(poly.points.count + 1)
             
-            CGContextSetStrokeColorWithColor(context, poly.lineColor.CGColor);
-            CGContextSetFillColorWithColor(context, poly.fillColor.CGColor);
+            CGContextSetStrokeColorWithColor(context, poly.lineColor.CGColor)
+            CGContextSetFillColorWithColor(context, poly.fillColor.CGColor)
             
-            CGContextAddPath(context, path);
-            CGContextDrawPath(context, kCGPathFillStroke);
+            CGContextAddPath(context, path)
+            CGContextDrawPath(context, kCGPathFillStroke)
         }
     }
     
     /// Resets this PolyDrawer
     func reset()
     {
-        polys = [];
+        polys = []
     }
 }
 
@@ -155,17 +155,17 @@ class SpriteKitPolyDrawer
 private class ShapePool
 {
     /// The pool of nodes
-    private var shapePool:[SKShapeNode];
+    private var shapePool:[SKShapeNode]
     
     /// Initializes a new ShapePool, with a specified starting size for the pool
     init(startSize: Int)
     {
         // Init the starting pool
-        self.shapePool = [];
+        self.shapePool = []
         
         for _ in 0..<startSize
         {
-            self.shapePool += SKShapeNode();
+            self.shapePool += SKShapeNode()
         }
     }
     
@@ -175,25 +175,25 @@ private class ShapePool
         // Try to fetch a node from the pool, returning a new one if the pooling fails
         if(shapePool.count == 0)
         {
-            return SKShapeNode();
+            return SKShapeNode()
         }
         
-        return shapePool.removeLast();
+        return shapePool.removeLast()
     }
     
     /// Repools a node back into this shape pool
     func repoolShape(shape : SKShapeNode)
     {
-        shapePool += shape;
+        shapePool += shape
     }
 }
 
 func skColorFromUInt(color: UInt) -> SKColor
 {
-    let a: CGFloat = CGFloat((UInt(color >> 24) & UInt(0xFF))) / 255.0;
-    let r: CGFloat = CGFloat((UInt(color >> 16) & UInt(0xFF))) / 255.0;
-    let g: CGFloat = CGFloat((UInt(color >> 8) & UInt(0xFF))) / 255.0;
-    let b: CGFloat = CGFloat((color & UInt(0xFF))) / 255.0;
+    let a: CGFloat = CGFloat((UInt(color >> 24) & UInt(0xFF))) / 255.0
+    let r: CGFloat = CGFloat((UInt(color >> 16) & UInt(0xFF))) / 255.0
+    let g: CGFloat = CGFloat((UInt(color >> 8) & UInt(0xFF))) / 255.0
+    let b: CGFloat = CGFloat((color & UInt(0xFF))) / 255.0
     
-    return SKColor(red: r, green: g, blue: b, alpha: a);
+    return SKColor(red: r, green: g, blue: b, alpha: a)
 }

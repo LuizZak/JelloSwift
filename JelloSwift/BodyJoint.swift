@@ -11,25 +11,25 @@ import CoreGraphics
 
 public func ==(lhs: BodyJoint, rhs: BodyJoint) -> Bool
 {
-    return lhs === rhs;
+    return lhs === rhs
 }
 
 /// Base class for joints which unites two separate bodies
 public class BodyJoint: Equatable
 {
     /// Gets the first link that contins informationa bout the first body linked by this joint
-    internal let _bodyLink1: JointLinkType;
+    internal let _bodyLink1: JointLinkType
     /// Gets the second link that contins informationa bout the first body linked by this joint
-    internal let _bodyLink2: JointLinkType;
+    internal let _bodyLink2: JointLinkType
     
     /// Whether to allow collisions between the two objects joined by this BodyJoint.
     /// Defaults to false
-    public var allowCollisions: Bool = false;
+    public var allowCollisions: Bool = false
     
     /// Controls whether this valubody joint is enabled.
     /// Disabling body joints disables all of the physics of the joint.
     /// Note that collisions between bodies are still governed by .allowCollisions even if the joint is disabled
-    public var enabled: Bool = true;
+    public var enabled: Bool = true
     
     /// Gets the first link that contins informationa bout the first body linked by this joint
     public var bodyLink1: JointLinkType { return _bodyLink1 }
@@ -37,23 +37,23 @@ public class BodyJoint: Equatable
     public var bodyLink2: JointLinkType { return _bodyLink2 }
     
     /// Gets or sets the rest distance for this joint
-    public var restDistance: CGFloat;
+    public var restDistance: CGFloat
     /// Gets or sets the maximum resting distance for this joint.
     /// In case the maximum resting distance is different than the resting distance, the spring only applies
     /// forces if the distance between the links is dist > restDistance && dist < maxRestDistance.
     /// This value is automatically initialized to be the same as restDistance
-    public var maxRestDistance:CGFloat;
+    public var maxRestDistance:CGFloat
     
     public init(world: World, link1: JointLinkType, link2: JointLinkType, distance: CGFloat = -1)
     {
-        _bodyLink1 = link1;
-        _bodyLink2 = link2;
+        _bodyLink1 = link1
+        _bodyLink2 = link2
         
         // Automatic distance calculation
-        restDistance = distance >= 0 ? distance : link1.position.distanceTo(link2.position);
-        maxRestDistance = restDistance;
+        restDistance = distance >= 0 ? distance : link1.position.distanceTo(link2.position)
+        maxRestDistance = restDistance
         
-        world.addJoint(self);
+        world.addJoint(self)
     }
     
     /**
@@ -91,7 +91,7 @@ public protocol JointLinkType
     /// Appies a given force to the subject of this joint link
     ///
     /// - parameter force: A force to apply to the subjects of this joint link
-    func applyForce(force: Vector2);
+    func applyForce(force: Vector2)
 }
 
 /// The type of joint link of a BodyJointLink class

@@ -12,15 +12,15 @@ import CoreGraphics
 public class GravityComponent: BodyComponent
 {
     /// The gravity vector to apply to the body
-    public final var gravity: Vector2 = Vector2(0, -9.8);
+    public final var gravity: Vector2 = Vector2(0, -9.8)
     
     override public func accumulateExternalForces()
     {
-        super.accumulateExternalForces();
+        super.accumulateExternalForces()
         
         for p in body.pointMasses
         {
-            p.applyForce(gravity * p.mass);
+            p.applyForce(gravity * p.mass)
         }
     }
     
@@ -31,7 +31,7 @@ public class GravityComponent: BodyComponent
         {
             if let g = b.getComponentType(GravityComponent)
             {
-                g.gravity = newGravity;
+                g.gravity = newGravity
             }
         }
     }
@@ -40,22 +40,22 @@ public class GravityComponent: BodyComponent
 /// Component that can be added to bodies to add a gravity-like constant force
 public class GravityComponentCreator: BodyComponentCreator
 {
-    public var vector: Vector2;
+    public var vector: Vector2
     
     public required init(gravity: Vector2 = Vector2(0, -9.8))
     {
-        self.vector = gravity;
+        self.vector = gravity
         
-        super.init();
+        super.init()
         
-        self.bodyComponentClass = GravityComponent.self;
+        self.bodyComponentClass = GravityComponent.self
     }
     
     public override func prepareBodyAfterComponent(body: Body)
     {
         if let comp = body.getComponentType(GravityComponent)
         {
-            comp.gravity = self.vector;
+            comp.gravity = self.vector
         }
     }
 }

@@ -15,13 +15,13 @@ public class PointJointLink: JointLinkType
     // This is a very straightforward implementation, it basically delegates the calls to the underlying point mass
     
     /// The body that this joint link is linked to
-    private let _body: Body;
+    private let _body: Body
     
     /// The point mass this joint is linked to
-    private let _pointMass: PointMass;
+    private let _pointMass: PointMass
     
     /// Gets the body that this joint link is linked to
-    public var body: Body { return _body; }
+    public var body: Body { return _body }
     
     /// Gets the type of joint this joint link represents
     public var linkType: LinkType { return LinkType.Point }
@@ -29,32 +29,32 @@ public class PointJointLink: JointLinkType
     /// Gets the position, in world coordinates, at which this joint links with the underlying body
     public var position: Vector2
     {
-        return _pointMass.position;
+        return _pointMass.position
     }
     
     /// Gets the velocity of the object this joint links to
     public var velocity: Vector2
     {
-        return _pointMass.velocity;
+        return _pointMass.velocity
     }
     
     /// Gets the total mass of the subject of this joint link
     public var mass: CGFloat
     {
-        return _pointMass.mass;
+        return _pointMass.mass
     }
     
     /// Gets a value specifying whether the object referenced by this JointLinkType is static
     public var isStatic: Bool
     {
-        return isinf(_pointMass.mass);
+        return isinf(_pointMass.mass)
     }
     
     /// Inits a new point joint link with the specified parameters
     public init(body: Body, pointMassIndex: Int)
     {
-        _body = body;
-        _pointMass = _body.pointMasses[pointMassIndex];
+        _body = body
+        _pointMass = _body.pointMasses[pointMassIndex]
     }
     
     /// Appies a given force to the subject of this joint link
@@ -62,6 +62,6 @@ public class PointJointLink: JointLinkType
     /// - parameter force: A force to apply to the subjects of this joint link
     public func applyForce(force: Vector2)
     {
-        _pointMass.applyForce(force);
+        _pointMass.applyForce(force)
     }
 }

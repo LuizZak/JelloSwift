@@ -11,28 +11,28 @@ import CoreGraphics
 /// Contains a set of points that is equivalent as the internal shape of a sofy body
 public class ClosedShape
 {
-    public final var localVertices: [Vector2] = [];
+    public final var localVertices: [Vector2] = []
     
     /// Returns the Vector2 for the vertex with a given integer index on this ClosedShape
-    public subscript(i:Int) -> Vector2 { return localVertices[i]; }
+    public subscript(i:Int) -> Vector2 { return localVertices[i] }
     
     /// Start adding vertices to this closed shape.
     /// Calling this method will erase any existing verts
     public func begin()
     {
-        localVertices = [];
+        localVertices = []
     }
     
     /// Adds a vertex to this closed shape
     public func addVertex(vertex: Vector2)
     {
-        localVertices += vertex;
+        localVertices += vertex
     }
     
     /// Adds a vertex to this closed shape
     public func addVertex(x x: CGFloat, y: CGFloat)
     {
-        addVertex(Vector2(x, y));
+        addVertex(Vector2(x, y))
     }
     
     /// Finishes constructing this closed shape, and convert them to local space (by default)
@@ -41,23 +41,23 @@ public class ClosedShape
         if(recenter)
         {
             // Find the average location of all the vertices
-            let center = averageVectors(localVertices);
+            let center = averageVectors(localVertices)
             
-            localVertices = localVertices.map { $0 - center };
+            localVertices = localVertices.map { $0 - center }
         }
     }
     
     /// Transforms all vertices by the given angle and scale
     public func transformOwn(angleInRadians: CGFloat, localScale: Vector2)
     {
-        localVertices = localVertices.map { rotateVector($0 * localScale, angleInRadians: angleInRadians) };
+        localVertices = localVertices.map { rotateVector($0 * localScale, angleInRadians: angleInRadians) }
     }
     
     /// Gets a new list of vertices, transformed by the given position, angle, and scale.
     /// transformation is applied in the following order:  scale -> rotation -> position.
     public func transformVertices(worldPos: Vector2, angleInRadians: CGFloat, localScale: Vector2 = Vector2.One) -> [Vector2]
     {
-        return localVertices.map { rotateVector($0 * localScale, angleInRadians: angleInRadians) + worldPos };
+        return localVertices.map { rotateVector($0 * localScale, angleInRadians: angleInRadians) + worldPos }
     }
     
     /// Transforms the points on this closed shape into the given array of points.
@@ -67,7 +67,7 @@ public class ClosedShape
     {
         for (i, l) in localVertices.enumerate()
         {
-            target[i] = rotateVector(l * localScale, angleInRadians: angleInRadians) + worldPos;
+            target[i] = rotateVector(l * localScale, angleInRadians: angleInRadians) + worldPos
         }
     }
 }

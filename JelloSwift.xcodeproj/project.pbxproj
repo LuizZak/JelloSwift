@@ -412,9 +412,12 @@
 				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = "Luiz Fernando Silva";
 				TargetAttributes = {
+					A09CC4941A251A880073BB62 = {
+						DevelopmentTeam = S823PTZNBS;
+					};
 					A0C954E4199329130066F88F = {
 						CreatedOnToolsVersion = 6.0;
-						DevelopmentTeam = 2E2NEW4A56;
+						DevelopmentTeam = S823PTZNBS;
 					};
 					A0C954FA199329130066F88F = {
 						CreatedOnToolsVersion = 6.0;
@@ -618,7 +621,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_OPTIMIZATION_LEVEL = fast;
 				INFOPLIST_FILE = "JelloSwiftStressTest-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = "luizfernandosilva.${PRODUCT_NAME:rfc1034identifier}";
@@ -636,7 +639,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_OPTIMIZATION_LEVEL = fast;
 				INFOPLIST_FILE = "JelloSwiftStressTest-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = "luizfernandosilva.${PRODUCT_NAME:rfc1034identifier}";

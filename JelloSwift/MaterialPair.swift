@@ -12,25 +12,25 @@ import CoreGraphics
 public struct MaterialPair
 {
     // Whether the collision between the two bodies should happen
-    public var collide: Bool = true;
+    public var collide: Bool = true
     // The elasticity of the point mass when bouncing off the bodies
-    public var elasticity: CGFloat = 0.0;
+    public var elasticity: CGFloat = 0.0
     // The relative friction between the two bodies
-    public var friction: CGFloat = 1.0;
+    public var friction: CGFloat = 1.0
     // A function to call and utilize as a collision filter when figuring out whether the two bodies should collide
-    public var collisionFilter: (Body, Int, Body, Int, Int, Vector2, CGFloat) -> (Bool);
+    public var collisionFilter: (Body, Int, Body, Int, Int, Vector2, CGFloat) -> (Bool)
     
     public init()
     {
-        self.collide = true;
-        self.friction = 0.3;
-        self.elasticity = 0.2;
-        self.collisionFilter = defaultCollisionFilter;
+        self.collide = true
+        self.friction = 0.3
+        self.elasticity = 0.2
+        self.collisionFilter = defaultCollisionFilter
     }
 }
 
 // The default collision filter. Always returns true, so all collisions passed through it are approved
 public func defaultCollisionFilter(bodyA: Body, bodyApm: Int, bodyB: Body, bodyBpm1: Int, bodyBpm2: Int, hitPt: Vector2, normalVel: CGFloat) -> Bool
 {
-    return true;
+    return true
 }

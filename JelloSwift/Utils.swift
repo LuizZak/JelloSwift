@@ -10,12 +10,12 @@ import Foundation
 
 public func +=<T>(inout lhs:Array<T>, rhs:T)
 {
-    lhs.append(rhs);
+    lhs.append(rhs)
 }
 
 public func -=<T: Equatable>(inout lhs:Array<T>, rhs:T)
 {
-    lhs.remove(rhs);
+    lhs.remove(rhs)
 }
 
 extension Array
@@ -28,12 +28,12 @@ extension Array
             {
                 if(item == object)
                 {
-                    return true;
+                    return true
                 }
             }
         }
         
-        return false;
+        return false
     }
     
     mutating func remove<T: Equatable>(object : T)
@@ -44,9 +44,9 @@ extension Array
             {
                 if(item == object)
                 {
-                    self.removeAtIndex(i);
+                    self.removeAtIndex(i)
                     
-                    return;
+                    return
                 }
             }
         }
@@ -63,5 +63,5 @@ extension Array
 
 public func fillArray<T: Equatable>(object: T, count: Int) -> [T]
 {
-    return [T](count: count, repeatedValue: object);
+    return [T](count: count, repeatedValue: object)
 }

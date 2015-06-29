@@ -11,19 +11,19 @@ import CoreGraphics
 // Represents an internal spring inside a soft body object, and keeps points close together
 public struct InternalSpring
 {
-    public let pointMassA: PointMass;
-    public let pointMassB: PointMass;
+    public let pointMassA: PointMass
+    public let pointMassB: PointMass
     
-    public var distance: CGFloat = 0;
-    public var springK: CGFloat = 0;
-    public var springD: CGFloat = 0;
+    public var distance: CGFloat = 0
+    public var springK: CGFloat = 0
+    public var springD: CGFloat = 0
     
     public init(_ pmA: PointMass, _ pmB: PointMass, _ distance: CGFloat = 0, _ springK: CGFloat, _ springD: CGFloat)
     {
-        self.pointMassA = pmA;
-        self.pointMassB = pmB;
-        self.distance = distance;
-        self.springK = springK;
-        self.springD = springD;
+        self.pointMassA = pmA
+        self.pointMassB = pmB
+        self.distance = distance
+        self.springK = springK
+        self.springD = springD
     }
 }

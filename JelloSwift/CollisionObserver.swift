@@ -16,5 +16,5 @@ public protocol CollisionObserver
     
      - parameter info: The information for the collision
      */
-    func bodiesDidCollide(info: BodyCollisionInformation);
+    func bodiesDidCollide(info: BodyCollisionInformation)
 }

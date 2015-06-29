@@ -13,31 +13,31 @@ import CoreGraphics
 public class World
 {
     /// The bodies contained within this world
-    public var bodies: [Body] = [];
+    public var bodies: [Body] = []
     /// The joints contained within this world
-    public var joints: [BodyJoint] = [];
+    public var joints: [BodyJoint] = []
     
     // PRIVATE VARIABLES
-    private var worldLimits = AABB();
-    private var worldSize = Vector2();
-    private var worldGridStep = Vector2();
+    private var worldLimits = AABB()
+    private var worldSize = Vector2()
+    private var worldGridStep = Vector2()
     
-    public var penetrationThreshold: CGFloat = 0;
-    public var penetrationCount = 0;
+    public var penetrationThreshold: CGFloat = 0
+    public var penetrationCount = 0
     
     // material chart.
-    public var materialPairs: [[MaterialPair]] = [];
-    public var defaultMatPair = MaterialPair();
-    private var materialCount = 0;
+    public var materialPairs: [[MaterialPair]] = []
+    public var defaultMatPair = MaterialPair()
+    private var materialCount = 0
     
-    private var collisionList: [BodyCollisionInformation] = [];
+    private var collisionList: [BodyCollisionInformation] = []
     
     /// The object to report collisions to
-    public var collisionObserver:CollisionObserver?;
+    public var collisionObserver:CollisionObserver?
     
     public init()
     {
-        self.clear();
+        self.clear()
     }
     
     /// Clears the world's contents and readies it to be loaded again
@@ -46,66 +46,66 @@ public class World
         // Clear all the bodies
         for b in bodies
         {
-            b.pointMassCollisions.removeAll(keepCapacity: true);
+            b.pointMassCollisions.removeAll(keepCapacity: true)
         }
         
         // Reset bodies
-        bodies = [];
-        collisionList = [];
+        bodies = []
+        collisionList = []
         
         // Reset
-        defaultMatPair = MaterialPair();
+        defaultMatPair = MaterialPair()
         
-        materialCount = 1;
-        materialPairs = [[defaultMatPair]];
+        materialCount = 1
+        materialPairs = [[defaultMatPair]]
         
-        let min = Vector2(-20.0, -20.0);
-        let max = Vector2( 20.0,  20.0);
+        let min = Vector2(-20.0, -20.0)
+        let max = Vector2( 20.0,  20.0)
         
-        setWorldLimits(min, max);
+        setWorldLimits(min, max)
     
-        penetrationThreshold = 0.3;
+        penetrationThreshold = 0.3
     }
     
     /// WORLD SIZE
     public func setWorldLimits(min: Vector2, _ max: Vector2)
     {
-        worldLimits = AABB(min: min, max: max);
+        worldLimits = AABB(min: min, max: max)
         
-        worldSize = max - min;
+        worldSize = max - min
         
         // Divide the world into 1024 boxes (32 x 32) for broad-phase collision detection
-        worldGridStep = worldSize / 32;
+        worldGridStep = worldSize / 32
     }
     
     /// MATERIALS
     /// Adds a new material to the world. All previous material data is kept intact.
     public func addMaterial() -> Int
     {
-        let old = materialPairs;
-        materialCount++;
+        let old = materialPairs
+        materialCount++
         
-        materialPairs = [];
+        materialPairs = []
         
         // replace old data.
         for i in 0..<materialCount
         {
-            materialPairs.append([MaterialPair]());
+            materialPairs.append([MaterialPair]())
             
             for j in 0..<materialCount
             {
                 if ((i < (materialCount - 1)) && (j < (materialCount - 1)))
                 {
-                    materialPairs[i] += old[i][j];
+                    materialPairs[i] += old[i][j]
                 }
                 else
                 {
-                    materialPairs[i] += defaultMatPair;
+                    materialPairs[i] += defaultMatPair
                 }
             }
         }
         
-        return materialCount - 1;
+        return materialCount - 1
     }
     
     /// Enables or disables collision between 2 materials.
@@ -113,8 +113,8 @@ public class World
     {
         if ((a >= 0) && (a < materialCount) && (b >= 0) && (b < materialCount))
         {
-            materialPairs[a][b].collide = collide;
-            materialPairs[b][a].collide = collide;
+            materialPairs[a][b].collide = collide
+            materialPairs[b][a].collide = collide
         }
     }
     
@@ -123,11 +123,11 @@ public class World
     {
         if ((a >= 0) && (a < materialCount) && (b >= 0) && (b < materialCount))
         {
-            materialPairs[a][b].friction = friction;
-            materialPairs[a][b].elasticity = elasticity;
+            materialPairs[a][b].friction = friction
+            materialPairs[a][b].elasticity = elasticity
             
-            materialPairs[b][a].friction = friction;
-            materialPairs[b][a].elasticity = elasticity;
+            materialPairs[b][a].friction = friction
+            materialPairs[b][a].elasticity = elasticity
         }
     }
     
@@ -136,8 +136,8 @@ public class World
     {
         if ((a >= 0) && (a < materialCount) && (b >= 0) && (b < materialCount))
         {
-            materialPairs[a][b].collisionFilter = filter;
-            materialPairs[b][a].collisionFilter = filter;
+            materialPairs[a][b].collisionFilter = filter
+            materialPairs[b][a].collisionFilter = filter
         }
     }
     
@@ -146,14 +146,14 @@ public class World
     {
         if(!bodies.contains(body))
         {
-            bodies += body;
+            bodies += body
         }
     }
     
     /// Removes a body from the world. Call this outside of an update to remove the body.
     public func removeBody(body: Body)
     {
-        bodies -= body;
+        bodies -= body
     }
     
     /// Adds a joint to the world. Joints call this automatically during their initialization
@@ -161,45 +161,45 @@ public class World
     {
         if(!joints.contains(joint))
         {
-            joints += joint;
+            joints += joint
             
             // Setup the joint parenthood
-            joint.bodyLink1.body.joints += joint;
-            joint.bodyLink2.body.joints += joint;
+            joint.bodyLink1.body.joints += joint
+            joint.bodyLink2.body.joints += joint
         }
     }
     
     /// Removes a joint from the world
     public func removeJoint(joint: BodyJoint)
     {
-        joint.bodyLink1.body.joints -= joint;
-        joint.bodyLink2.body.joints -= joint;
+        joint.bodyLink1.body.joints -= joint
+        joint.bodyLink2.body.joints -= joint
         
-        joints -= joint;
+        joints -= joint
     }
     
     /// Finds the closest PointMass in the world to a given point
     public func getClosestPointMass(pt: Vector2) -> (Body?, PointMass?)
     {
-        var retBody: Body? = nil;
-        var retPoint: PointMass? = nil;
+        var retBody: Body? = nil
+        var retPoint: PointMass? = nil
         
-        var closestD = CGFloat.max;
+        var closestD = CGFloat.max
         
         for body in bodies
         {
-            var dist:CGFloat = 0;
-            let pm = body.getClosestPointMass(pt, &dist);
+            var dist:CGFloat = 0
+            let pm = body.getClosestPointMass(pt, &dist)
             
             if(dist < closestD)
             {
-                closestD = dist;
-                retBody = body;
-                retPoint = body.pointMasses[pm];
+                closestD = dist
+                retBody = body
+                retPoint = body.pointMasses[pm]
             }
         }
         
-        return (retBody, retPoint);
+        return (retBody, retPoint)
     }
     
     /// Given a global, get a body (if any) that contains this point.
@@ -210,24 +210,24 @@ public class World
         {
             if((bit == 0 || (body.bitmask & bit) != 0) && body.contains(pt))
             {
-                return body;
+                return body
             }
         }
         
-        return nil;
+        return nil
     }
     
     /// Given a global point, get all bodies (if any) that contain this point.
     /// Useful for picking objects with a cursor, etc.
     public func getBodiesContaining(pt: Vector2, bit: Bitmask) -> [Body]
     {
-        return bodies.filter { (($0.bitmask & bit) != 0 || bit == 0) && $0.contains(pt) };
+        return bodies.filter { (($0.bitmask & bit) != 0 || bit == 0) && $0.contains(pt) }
     }
     
     /// Returns a vector of bodies intersecting with the given line
     public func getBodiesIntersecting(start: Vector2, end: Vector2, bit: Bitmask) -> [Body]
     {
-        return bodies.filter { (($0.bitmask & bit) != 0 || bit == 0) && $0.intersectsLine(start, end) };
+        return bodies.filter { (($0.bitmask & bit) != 0 || bit == 0) && $0.intersectsLine(start, end) }
     }
     
     /**
@@ -246,23 +246,23 @@ public class World
      */
     public func rayCast(start: Vector2, end: Vector2, inout _ retPt:Vector2?, bit: Bitmask = 0, _ ignoreList:[Body] = []) -> Body?
     {
-        var aabb:AABB! = nil;
-        var lastBody:Body? = nil;
+        var aabb:AABB! = nil
+        var lastBody:Body? = nil
         
-        retPt = end;
+        retPt = end
         
         for body in bodies
         {
-            if((bit == 0 || (body.bitmask & bit) != 0) && (!ignoreList.contains(body)))
+            if((bit == 0 || (body.bitmask & bit) != 0) && !ignoreList.contains(body))
             {
                 if(body.raycast(start, end, &retPt, &aabb))
                 {
-                    lastBody = body;
+                    lastBody = body
                 }
             }
         }
         
-        return lastBody;
+        return lastBody
     }
     
     /**
@@ -272,74 +272,74 @@ public class World
      */
     public func update(elapsed: CGFloat)
     {
-        penetrationCount = 0;
+        penetrationCount = 0
         
         // Update the bodies
         for body in bodies
         {
-            body.derivePositionAndAngle(elapsed);
+            body.derivePositionAndAngle(elapsed)
             
             // Only update edge and normals pre-accumulation if the body has components
             if(body.componentCount > 0)
             {
-                body.updateEdgesAndNormals();
+                body.updateEdgesAndNormals()
             }
             
-            body.accumulateExternalForces();
-            body.accumulateInternalForces();
+            body.accumulateExternalForces()
+            body.accumulateInternalForces()
             
-            body.integrate(elapsed);
-            body.updateEdgesAndNormals();
+            body.integrate(elapsed)
+            body.updateEdgesAndNormals()
             
-            body.updateAABB(elapsed, forceUpdate: true);
-            body.resetCollisionInfo();
+            body.updateAABB(elapsed, forceUpdate: true)
+            body.resetCollisionInfo()
             
-            updateBodyBitmask(body);
+            updateBodyBitmask(body)
         }
         
         // Update the joints
         for joint in joints
         {
-            joint.resolve(elapsed);
+            joint.resolve(elapsed)
         }
         
-        let c = bodies.count;
+        let c = bodies.count
         for (i, body1) in bodies.enumerate()
         {
             for j in (i + 1)..<c
             {
-                let body2 = bodies[j];
+                let body2 = bodies[j]
                 
                 // another early-out - both bodies are static.
                 if (((body1.isStatic) && (body2.isStatic)) ||
                     ((body1.bitmaskX & body2.bitmaskX) == 0) &&
                     ((body1.bitmaskY & body2.bitmaskY) == 0))
                 {
-                    continue;
+                    continue
                 }
                 
                 // bitmask filtering
                 if((body1.bitmask & body2.bitmask) == 0)
                 {
-                    continue;
+                    continue
                 }
                 
                 // early out - these bodies materials are set NOT to collide
                 if (!materialPairs[body1.material][body2.material].collide)
                 {
-                    continue;
+                    continue
                 }
                 
                 // broad-phase collision via AABB.
                 // early out
                 if(!body1.aabb.intersects(body2.aabb))
                 {
-                    continue;
+                    continue
                 }
                 
                 // Joints relationship: if on body is joined to another by a joint, check the joint's rule for collision
                 
-                var skip = false;
+                var skip = false
                 for j in body1.joints
                 {
                     if(j.bodyLink1.body == body1 && j.bodyLink2.body == body2 ||
@@ -347,22 +347,22 @@ public class World
                     {
                         if(!j.allowCollisions)
                         {
-                            skip = true;
-                            break;
+                            skip = true
+                            break
                         }
                     }
                 }
                 
                 if(skip)
                 {
-                    continue;
+                    continue
                 }
                 
                 // okay, the AABB's of these 2 are intersecting.  now check for collision of A against B.
-                bodyCollide(body1, body2);
+                bodyCollide(body1, body2)
                 
                 // and the opposite case, B colliding with A
-                bodyCollide(body2, body1);
+                bodyCollide(body2, body1)
             }
         }
         
@@ -371,86 +371,86 @@ public class World
         {
             for info in collisionList
             {
-                observer.bodiesDidCollide(info);
+                observer.bodiesDidCollide(info)
             }
         }
         
-        handleCollisions();
+        handleCollisions()
         
         for body in bodies
         {
-            body.dampenVelocity();
+            body.dampenVelocity()
         }
     }
     
     /// Checks collision between two bodies, and store the collision information if they do
     private func bodyCollide(bA: Body, _ bB: Body)
     {
-        let bBpCount = bB.pointMasses.count;
+        let bBpCount = bB.pointMasses.count
         
         for (i, pmA) in bA.pointMasses.enumerate()
         {
-            let pt = pmA.position;
+            let pt = pmA.position
             
             // early out - if this point is not inside bodyB, skip it!
             if (!bB.contains(pt))
             {
-                continue;
+                continue
             }
             
-            let ptNorm = bA.pointNormals[i];
+            let ptNorm = bA.pointNormals[i]
             
             // this point is inside the other body.  now check if the edges on either side intersect with and edges on bodyB.
-            var closestAway = CGFloat.infinity;
-            var closestSame = CGFloat.infinity;
+            var closestAway = CGFloat.infinity
+            var closestSame = CGFloat.infinity
             
-            var infoAway = BodyCollisionInformation(bodyA: bA, bodyApm: i, bodyB: bB);
-            var infoSame = infoAway;
+            var infoAway = BodyCollisionInformation(bodyA: bA, bodyApm: i, bodyB: bB)
+            var infoSame = infoAway
             
-            var found = false;
+            var found = false
             
             for j in 0..<bBpCount
             {
-                let b1 = j;
-                let b2 = (j + 1) % (bBpCount);
+                let b1 = j
+                let b2 = (j + 1) % (bBpCount)
                 
-                var normal = Vector2();
-                var hitPt = Vector2();
-                var edgeD: CGFloat = 0;
+                var normal = Vector2()
+                var hitPt = Vector2()
+                var edgeD: CGFloat = 0
                 
                 // test against this edge.
                 let dist = bB.getClosestPointOnEdgeSquared(pt, j, &hitPt, &normal, &edgeD)
                 
                 // only perform the check if the normal for this edge is facing AWAY from the point normal.
-                let dot = ptNorm =* normal;
+                let dot = ptNorm =* normal
                 
                 if (dot <= 0.0)
                 {
                     if dist < closestAway
                     {
-                        closestAway = dist;
+                        closestAway = dist
                     
-                        infoAway.bodyBpmA = b1;
-                        infoAway.bodyBpmB = b2;
-                        infoAway.edgeD = edgeD;
-                        infoAway.hitPt = hitPt;
-                        infoAway.normal = normal;
-                        infoAway.penetration = dist;
-                        found = true;
+                        infoAway.bodyBpmA = b1
+                        infoAway.bodyBpmB = b2
+                        infoAway.edgeD = edgeD
+                        infoAway.hitPt = hitPt
+                        infoAway.normal = normal
+                        infoAway.penetration = dist
+                        found = true
                     }
                 }
                 else
                 {
                     if (dist < closestSame)
                     {
-                        closestSame = dist;
+                        closestSame = dist
                 
-                        infoSame.bodyBpmA = b1;
-                        infoSame.bodyBpmB = b2;
-                        infoSame.edgeD = edgeD;
-                        infoSame.hitPt = hitPt;
-                        infoSame.normal = normal;
-                        infoSame.penetration = dist;
+                        infoSame.bodyBpmA = b1
+                        infoSame.bodyBpmB = b2
+                        infoSame.edgeD = edgeD
+                        infoSame.hitPt = hitPt
+                        infoSame.normal = normal
+                        infoSame.penetration = dist
                     }
                 }
             }
@@ -460,31 +460,31 @@ public class World
             {
                 if(bA.collectCollisions)
                 {
-                    bA.pointMassCollisions += infoSame;
+                    bA.pointMassCollisions += infoSame
                 }
                 
                 if(bB.collectCollisions)
                 {
-                    bB.pointMassCollisions += infoSame;
+                    bB.pointMassCollisions += infoSame
                 }
                 
-                infoSame.penetration = sqrt(infoSame.penetration);
-                collisionList += infoSame;
+                infoSame.penetration = sqrt(infoSame.penetration)
+                collisionList += infoSame
             }
             else
             {
                 if(bA.collectCollisions)
                 {
-                    bA.pointMassCollisions += infoAway;
+                    bA.pointMassCollisions += infoAway
                 }
                 
                 if(bB.collectCollisions)
                 {
-                    bB.pointMassCollisions += infoAway;
+                    bB.pointMassCollisions += infoAway
                 }
                 
-                infoAway.penetration = sqrt(infoAway.penetration);
-                collisionList += infoAway;
+                infoAway.penetration = sqrt(infoAway.penetration)
+                collisionList += infoAway
             }
         }
     }
@@ -496,158 +496,152 @@ public class World
         {
             if(info.bodyA == nil || info.bodyB == nil)
             {
-                continue;
+                continue
             }
             
-            let bodyA = info.bodyA!;
-            let bodyB = info.bodyB!;
+            let bodyA = info.bodyA!
+            let bodyB = info.bodyB!
             
-            let A:PointMass = bodyA.pointMasses[info.bodyApm];
-            let B1:PointMass = bodyB.pointMasses[info.bodyBpmA];
-            let B2:PointMass = bodyB.pointMasses[info.bodyBpmB];
+            let A:PointMass = bodyA.pointMasses[info.bodyApm]
+            let B1:PointMass = bodyB.pointMasses[info.bodyBpmA]
+            let B2:PointMass = bodyB.pointMasses[info.bodyBpmB]
             
             // Velocity changes as a result of collision
-            let bVel = (B1.velocity + B2.velocity) * 0.5;
+            let bVel = (B1.velocity + B2.velocity) * 0.5
             
-            let relVel = A.velocity - bVel;
-            let relDot = relVel =* info.normal;
+            let relVel = A.velocity - bVel
+            let relDot = relVel =* info.normal
             
-            let material = materialPairs[bodyA.material][bodyB.material];
+            let material = materialPairs[bodyA.material][bodyB.material]
             
             if(!material.collisionFilter(bodyA, info.bodyApm, bodyB, info.bodyBpmA, info.bodyBpmB, info.hitPt, relDot))
             {
-                continue;
+                continue
             }
             
             if(info.penetration > penetrationThreshold)
             {
-                NSLog("penetration above Penetration Threshold!!  penetration = \(info.penetration), threshold = \(penetrationThreshold), difference = \(info.penetration-penetrationThreshold)");
+                NSLog("penetration above Penetration Threshold!!  penetration = \(info.penetration), threshold = \(penetrationThreshold), difference = \(info.penetration-penetrationThreshold)")
                 
-                penetrationCount++;
-                continue;
+                penetrationCount++
+                continue
             }
             
-            let b1inf = 1.0 - info.edgeD;
-            let b2inf = info.edgeD;
+            let b1inf = 1.0 - info.edgeD
+            let b2inf = info.edgeD
             
-            let b2MassSum = B1.mass + B2.mass;
+            let b2MassSum = B1.mass + B2.mass
             
-            let massSum = A.mass + b2MassSum;
+            let massSum = A.mass + b2MassSum
             
-            let rev_massSum = 1.0 / massSum;
+            let rev_massSum = 1.0 / massSum
             // Amount to move each party of the collision
-            let Amove: CGFloat;
-            let Bmove: CGFloat;
+            let Amove: CGFloat
+            let Bmove: CGFloat
             
             // Static detection - when one of the parties is static, the other should move the total amount of the penetration
             if(isinf(A.mass))
             {
-                Amove = 0;
-                Bmove = info.penetration + 0.001;
+                Amove = 0
+                Bmove = info.penetration + 0.001
             }
             else if(isinf(b2MassSum))
             {
-                Amove = info.penetration + 0.001;
-                Bmove = 0;
+                Amove = info.penetration + 0.001
+                Bmove = 0
             }
             else
             {
-                Amove = info.penetration * (b2MassSum * rev_massSum);
-                Bmove = info.penetration * (A.mass * rev_massSum);
+                Amove = info.penetration * (b2MassSum * rev_massSum)
+                Bmove = info.penetration * (A.mass * rev_massSum)
             }
             
-            let B1move = Bmove * b1inf;
-            let B2move = Bmove * b2inf;
+            let B1move = Bmove * b1inf
+            let B2move = Bmove * b2inf
             
-            let AinvMass = isinf(A.mass) ? 0 : 1.0 / A.mass;
-            let BinvMass = isinf(b2MassSum) ? 0 : 1.0 / b2MassSum;
+            let AinvMass = isinf(A.mass) ? 0 : 1.0 / A.mass
+            let BinvMass = isinf(b2MassSum) ? 0 : 1.0 / b2MassSum
             
-            let jDenom = AinvMass + BinvMass;
-            let elas = 1 + material.elasticity;
+            let jDenom = AinvMass + BinvMass
+            let elas = 1 + material.elasticity
             
-            let rev_jDenom = 1.0 / jDenom;
-            let j = -((relVel * elas) =* info.normal) * rev_jDenom;
+            let rev_jDenom = 1.0 / jDenom
+            let j = -((relVel * elas) =* info.normal) * rev_jDenom
             
             if(!isinf(A.mass) && isinf(b2MassSum))
             {
-                A.position += info.normal * Amove;
+                A.position += info.normal * Amove
             }
             
             if(!isinf(B1.mass))
             {
-                B1.position -= info.normal * B1move;
+                B1.position -= info.normal * B1move
             }
             if(!isinf(B2.mass))
             {
-                B2.position -= info.normal * B2move;
+                B2.position -= info.normal * B2move
             }
             
-            let tangent = info.normal.perpendicular();
+            let tangent = info.normal.perpendicular()
             
-            let friction = material.friction;
-            let f = (relVel =* tangent) * friction * rev_jDenom;
+            let friction = material.friction
+            let f = (relVel =* tangent) * friction * rev_jDenom
             
             if(relDot <= 0.0001)
             {
                 if(!isinf(A.mass))
                 {
-                    let rev_AMass = 1.0 / A.mass;
+                    let rev_AMass = 1.0 / A.mass
                     
-                    A.velocity += (info.normal * (j * rev_AMass)) - (tangent * (f * rev_AMass));
+                    A.velocity += (info.normal * (j * rev_AMass)) - (tangent * (f * rev_AMass))
                 }
                 
                 if(!isinf(b2MassSum))
                 {
-                    let rev_BMass = 1.0 / b2MassSum;
+                    let rev_BMass = 1.0 / b2MassSum
                     
-                    let jComp = info.normal * j * rev_BMass;
-                    let fComp = tangent * (f / rev_BMass);
+                    let jComp = info.normal * j * rev_BMass
+                    let fComp = tangent * (f / rev_BMass)
                     
-                    B1.velocity -= (jComp * b1inf) - (fComp * b1inf);
-                    B2.velocity -= (jComp * b2inf) - (fComp * b2inf);
+                    B1.velocity -= (jComp * b1inf) - (fComp * b1inf)
+                    B2.velocity -= (jComp * b2inf) - (fComp * b2inf)
                 }
             }
         }
         
-        collisionList = [];
+        collisionList = []
     }
     
     /// Update bodies' bitmask for early collision filtering
     public func updateBodyBitmask(body: Body)
     {
-        let box = body.aabb;
+        let box = body.aabb
         
-        let rev_Divider = worldGridStep / CGFloat(1.0);
+        let rev_Divider = worldGridStep / CGFloat(1.0)
         
-        var min = (box.minimum - worldGridStep) * rev_Divider;
-        var max = (box.maximum - worldGridStep) * rev_Divider;
+        let minVec = max(Vector2.Zero, min(Vector2(32, 32), (box.minimum - worldGridStep) * rev_Divider))
+        let maxVec = max(Vector2.Zero, min(Vector2(32, 32), (box.maximum - worldGridStep) * rev_Divider))
+        
+        assert(minVec.X >= 0 && minVec.X <= 32 && minVec.Y >= 0 && minVec.Y <= 32)
+        assert(maxVec.X >= 0 && maxVec.X <= 32 && maxVec.Y >= 0 && maxVec.Y <= 32)
+        
+        body.bitmaskX = 0
+        body.bitmaskY = 0
         
         // In case the body is contained within an invalid bound, disable collision completely
-        if(isnan(min.X) || isnan(min.Y) || isnan(max.X) || isnan(max.Y))
+        if(isnan(minVec.X) || isnan(minVec.Y) || isnan(maxVec.X) || isnan(maxVec.Y))
         {
-            body.bitmaskX = 0;
-            body.bitmaskY = 0;
-            
-            return;
+            return
         }
         
-        if(max.X < 0) { max.X = 0; } else if(max.X > 32) { max.X = 32; }
-        if(max.Y < 0) { max.Y = 0; } else if(max.Y > 32) { max.Y = 32; }
-        
-        if(min.X < 0) { min.X = 0; } else if(min.X > 32) { min.X = 32; }
-        if(min.Y < 0) { min.Y = 0; } else if(min.Y > 32) { min.Y = 32; }
-        
-        body.bitmaskX = 0;
-        body.bitmaskY = 0;
-        
-        for i in Int(min.X)...Int(max.X)
+        for i in Int(minVec.X)...Int(maxVec.X)
         {
-            body.bitmaskX +& i;
+            body.bitmaskX +& i
         }
         
-        for i in Int(min.Y)...Int(max.Y)
+        for i in Int(minVec.Y)...Int(maxVec.Y)
         {
-            body.bitmaskY +& i;
+            body.bitmaskY +& i
         }
     }
 }
