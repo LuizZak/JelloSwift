@@ -78,9 +78,6 @@ public class PressureComponentCreator : BodyComponentCreator
     
     public override func prepareBodyAfterComponent(body: Body)
     {
-        if let comp = body.getComponentType(PressureComponent)
-        {
-            comp.gasAmmount = self.gasAmmount
-        }
+        body.getComponentType(PressureComponent)?.gasAmmount = gasAmmount
     }
 }

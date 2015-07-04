@@ -298,28 +298,25 @@ public class World
         }
         
         // Update the joints
-        for joint in joints
-        {
-            joint.resolve(elapsed)
-        }
+        joints.forEach { $0.resolve(elapsed) }
         
         let c = bodies.count
         for (i, body1) in bodies.enumerate()
         {
-            for j in (i + 1)..<c
+            innerLoop: for j in (i + 1)..<c
             {
                 let body2 = bodies[j]
+                
+                // bitmask filtering
+                if((body1.bitmask & body2.bitmask) == 0)
+                {
+                    continue
+                }
                 
                 // another early-out - both bodies are static.
                 if (((body1.isStatic) && (body2.isStatic)) ||
                     ((body1.bitmaskX & body2.bitmaskX) == 0) &&
                     ((body1.bitmaskY & body2.bitmaskY) == 0))
-                {
-                    continue
-                }
-                
-                // bitmask filtering
-                if((body1.bitmask & body2.bitmask) == 0)
                 {
                     continue
                 }
@@ -339,7 +336,6 @@ public class World
                 
                 // Joints relationship: if on body is joined to another by a joint, check the joint's rule for collision
                 
-                var skip = false
                 for j in body1.joints
                 {
                     if(j.bodyLink1.body == body1 && j.bodyLink2.body == body2 ||
@@ -347,15 +343,9 @@ public class World
                     {
                         if(!j.allowCollisions)
                         {
-                            skip = true
-                            break
+                            continue innerLoop
                         }
                     }
-                }
-                
-                if(skip)
-                {
-                    continue
                 }
                 
                 // okay, the AABB's of these 2 are intersecting.  now check for collision of A against B.
@@ -369,18 +359,12 @@ public class World
         // Notify collisions that will happen
         if let observer = collisionObserver
         {
-            for info in collisionList
-            {
-                observer.bodiesDidCollide(info)
-            }
+            collisionList.forEach { observer.bodiesDidCollide($0) }
         }
         
         handleCollisions()
         
-        for body in bodies
-        {
-            body.dampenVelocity()
-        }
+        bodies.forEach { $0.dampenVelocity() }
     }
     
     /// Checks collision between two bodies, and store the collision information if they do

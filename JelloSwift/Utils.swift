@@ -54,11 +54,19 @@ extension Array
         }
     }
     
-    func forEach(doThis: (element: T) -> Void)
+    func forEach(@noescape doThis: (element: T) -> Void)
     {
         for e in self
         {
             doThis(element: e)
+        }
+    }
+    
+    func forEach(@noescape doThis: (index: Int, element: T) -> Void)
+    {
+        for e in self.enumerate()
+        {
+            doThis(e)
         }
     }
 }

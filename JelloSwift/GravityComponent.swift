@@ -18,10 +18,7 @@ public final class GravityComponent: BodyComponent
     {
         super.accumulateExternalForces()
         
-        for p in body.pointMasses
-        {
-            p.applyForce(gravity * p.mass)
-        }
+        body.pointMasses.forEach { $0.applyForce(gravity * $0.mass) }
     }
     
     /// Changes the gravity of the bodies on a given world object
@@ -29,10 +26,7 @@ public final class GravityComponent: BodyComponent
     {
         for b in world.bodies
         {
-            if let g = b.getComponentType(GravityComponent)
-            {
-                g.gravity = newGravity
-            }
+            b.getComponentType(GravityComponent)?.gravity = newGravity
         }
     }
 }
@@ -53,9 +47,6 @@ public class GravityComponentCreator: BodyComponentCreator
     
     public override func prepareBodyAfterComponent(body: Body)
     {
-        if let comp = body.getComponentType(GravityComponent)
-        {
-            comp.gravity = self.vector
-        }
+        body.getComponentType(GravityComponent)?.gravity = vector
     }
 }

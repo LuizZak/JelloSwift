@@ -144,10 +144,7 @@ public final class Body: Equatable
         }
         
         // Add the components now
-        for comp in components
-        {
-            comp.attachToBody(self)
-        }
+        components.forEach { $0.attachToBody(self) }
     }
     
     /// Adds a body component to this body
@@ -306,10 +303,7 @@ public final class Body: Equatable
     /// Sets the mass for all the PointMass objects in this body
     public func setMassAll(mass: CGFloat)
     {
-        for point in pointMasses
-        {
-            point.mass = mass
-        }
+        pointMasses.forEach { $0.mass = mass }
         
         isStatic = isinf(mass)
     }
@@ -443,20 +437,14 @@ public final class Body: Equatable
     /// These should be forces that try to maintain the shape of the body.
     public func accumulateInternalForces()
     {
-        for comp in components
-        {
-            comp.accumulateInternalForces()
-        }
+        components.forEach { $0.accumulateInternalForces() }
     }
     
     /// This function should add all external forces to the Force member variable of each PointMass in the body.
     /// These are external forces acting on the PointMasses, such as gravity, etc.
     public func accumulateExternalForces()
     {
-        for comp in components
-        {
-            comp.accumulateExternalForces()
-        }
+        components.forEach { $0.accumulateExternalForces() }
     }
     
     /// Integrates the point masses for this Body.
@@ -467,10 +455,7 @@ public final class Body: Equatable
             return
         }
         
-        for point in pointMasses
-        {
-            point.integrate(elapsed)
-        }
+        pointMasses.forEach { $0.integrate(elapsed) }
     }
     
     /// Applies the velocity damping to the point masses
@@ -481,10 +466,7 @@ public final class Body: Equatable
             return
         }
         
-        for point in pointMasses
-        {
-            point.velocity *= velDamping
-        }
+        pointMasses.forEach { $0.velocity *= velDamping }
     }
     
     /// Applies a rotational clockwise torque of a given force on this body
@@ -903,7 +885,7 @@ public final class Body: Equatable
             return
         }
         
-        pointMasses.forEach({ $0.velocity += velocity })
+        pointMasses.forEach{ $0.velocity += velocity }
     }
     
     /// Resets the collision information of the body

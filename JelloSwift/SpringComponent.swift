@@ -202,9 +202,9 @@ public class SpringComponentCreator : BodyComponentCreator
         comp.setEdgeSpringConstants(edgeSpringK, edgeSpringDamp)
         comp.setShapeMatchingConstants(shapeSpringK, shapeSpringDamp)
         
-        innerSprings.forEach({ element in
+        innerSprings.forEach{ element in
             comp.addInternalSpring(element.indexA, pointB: element.indexB, springK: element.springK, damping: element.springD, dist: element.dist)
-        })
+        }
     }
 }
 
