@@ -9,7 +9,7 @@
 import CoreGraphics
 
 /// Represents an axis-aligned bounding box, utilized to figure out the AABB of soft-bodies
-public final class AABB
+public struct AABB
 {
     /// The validity of this AABB
     public var validity = PointValidity.Invalid
@@ -51,7 +51,7 @@ public final class AABB
         self.expandToInclude(points)
     }
     
-    public func clear()
+    public mutating func clear()
     {
         self.minimum = Vector2.Zero
         self.maximum = Vector2.Zero
@@ -59,7 +59,7 @@ public final class AABB
         validity = PointValidity.Invalid
     }
     
-    public func expandToInclude(point: Vector2)
+    public mutating func expandToInclude(point: Vector2)
     {
         if(validity == PointValidity.Invalid)
         {
@@ -75,7 +75,7 @@ public final class AABB
         }
     }
     
-    public func expandToInclude(points: [Vector2])
+    public mutating func expandToInclude(points: [Vector2])
     {
         if(points.count == 0)
         {
