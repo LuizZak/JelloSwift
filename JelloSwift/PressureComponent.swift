@@ -9,12 +9,12 @@
 import CoreGraphics
 
 // Represents a Pressure component that can be added to a body to include gas pressure as an internal force
-public class PressureComponent: BodyComponent
+public final class PressureComponent: BodyComponent
 {
     // PRIVATE VARIABLES
-    public final var volume: CGFloat = 0
-    public final var gasAmmount: CGFloat = 0
-    public final var normalList: [Vector2] = []
+    public var volume: CGFloat = 0
+    public var gasAmmount: CGFloat = 0
+    public var normalList: [Vector2] = []
     
     override public func prepare(body: Body)
     {

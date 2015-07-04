@@ -245,12 +245,13 @@ class DemoView: UIView
     func updateDrag()
     {
         // Dragging point
-        if let p = draggingPoint where inputMode == InputMode.DragBody
-        {
-            let dragForce = calculateSpringForce(p.position, velA: p.velocity, posB: fingerLocation, velB: Vector2.Zero, distance: 0, springK: 700, springD: 20)
-            
-            p.applyForce(dragForce)
+        guard let p = draggingPoint where inputMode == InputMode.DragBody else {
+            return
         }
+        
+        let dragForce = calculateSpringForce(p.position, velA: p.velocity, posB: fingerLocation, velB: Vector2.Zero, distance: 0, springK: 700, springD: 20)
+        
+        p.applyForce(dragForce)
     }
     
     func render()
@@ -293,16 +294,17 @@ class DemoView: UIView
     func drawDrag(context: CGContextRef)
     {
         // Dragging point
-        if let p = draggingPoint where inputMode == InputMode.DragBody
-        {
-            // Create the path to draw
-            let lineStart = toScreenCoords(p.position)
-            let lineEnd = toScreenCoords(fingerLocation)
-            
-            let points = [lineStart.cgPoint, lineEnd.cgPoint]
-            
-            polyDrawer.queuePoly(points, fillColor: 0xFFFFFFFF, strokeColor: 0xFF00DD00)
+        guard let p = draggingPoint where inputMode == InputMode.DragBody else {
+            return
         }
+        
+        // Create the path to draw
+        let lineStart = toScreenCoords(p.position)
+        let lineEnd = toScreenCoords(fingerLocation)
+        
+        let points = [lineStart.cgPoint, lineEnd.cgPoint]
+        
+        polyDrawer.queuePoly(points, fillColor: 0xFFFFFFFF, strokeColor: 0xFF00DD00)
     }
     
     func drawJoint(joint: BodyJoint)

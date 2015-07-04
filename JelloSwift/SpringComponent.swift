@@ -9,26 +9,26 @@
 import CoreGraphics
 
 /// Represents a Spring component that can be added to a body to include spring-based physics in the body's point masses
-public class SpringComponent: BodyComponent
+public final class SpringComponent: BodyComponent
 {
     /// Gets the count of springs on this spring component
-    public final var springCount: Int { return springs.count }
+    public var springCount: Int { return springs.count }
     
     /// The list of internal springs for the body
-    private final var springs:[InternalSpring] = []
+    private var springs:[InternalSpring] = []
     /// Whether the shape matching is on - turning on shape matching will make the soft body try to mantain its original
     /// shape as specified by its baseShape
-    private final var shapeMatchingOn = true
+    private var shapeMatchingOn = true
     
     /// The spring constant for the edges of the spring body
-    private final var edgeSpringK: CGFloat = 50
+    private var edgeSpringK: CGFloat = 50
     /// The spring dampness for the edges of the spring body
-    private final var edgeSpringDamp: CGFloat = 2
+    private var edgeSpringDamp: CGFloat = 2
     
     /// The spring constant for the shape matching of the body - ignored if shape matching is off
-    private final var shapeSpringK: CGFloat = 200
+    private var shapeSpringK: CGFloat = 200
     /// The spring dampness for the shape matching of the body - ignored if the shape matching is off
-    private final var shapeSpringDamp: CGFloat = 10
+    private var shapeSpringDamp: CGFloat = 10
     
     override public func prepare(body: Body)
     {
@@ -193,17 +193,18 @@ public class SpringComponentCreator : BodyComponentCreator
     
     public override func prepareBodyAfterComponent(body: Body)
     {
-        if let comp = body.getComponentType(SpringComponent)
-        {
-            comp.shapeMatchingOn = self.shapeMatchingOn
-            
-            comp.setEdgeSpringConstants(edgeSpringK, edgeSpringDamp)
-            comp.setShapeMatchingConstants(shapeSpringK, shapeSpringDamp)
-            
-            innerSprings.forEach({ element in
-                comp.addInternalSpring(element.indexA, pointB: element.indexB, springK: element.springK, damping: element.springD, dist: element.dist)
-            })
+        guard let comp = body.getComponentType(SpringComponent) else {
+            return
         }
+        
+        comp.shapeMatchingOn = self.shapeMatchingOn
+        
+        comp.setEdgeSpringConstants(edgeSpringK, edgeSpringDamp)
+        comp.setShapeMatchingConstants(shapeSpringK, shapeSpringDamp)
+        
+        innerSprings.forEach({ element in
+            comp.addInternalSpring(element.indexA, pointB: element.indexB, springK: element.springK, damping: element.springD, dist: element.dist)
+        })
     }
 }
 

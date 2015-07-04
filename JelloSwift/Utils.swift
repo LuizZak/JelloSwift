@@ -24,12 +24,13 @@ extension Array
     {
         for i in 0..<self.count
         {
-            if let item = self[i] as? T
+            guard let item = self[i] as? T else {
+                continue
+            }
+            
+            if(item == object)
             {
-                if(item == object)
-                {
-                    return true
-                }
+                return true
             }
         }
         
@@ -40,14 +41,15 @@ extension Array
     {
         for i in 0..<self.count
         {
-            if let item = self[i] as? T
+            guard let item = self[i] as? T else {
+                continue
+            }
+
+            if(item == object)
             {
-                if(item == object)
-                {
-                    self.removeAtIndex(i)
-                    
-                    return
-                }
+                self.removeAtIndex(i)
+                
+                return
             }
         }
     }
