@@ -494,17 +494,13 @@ public class World
     {
         for info in collisionList
         {
-            if(info.bodyA == nil || info.bodyB == nil)
-            {
+            guard let bodyA = info.bodyA, bodyB = info.bodyB else {
                 continue
             }
             
-            let bodyA = info.bodyA!
-            let bodyB = info.bodyB!
-            
-            let A:PointMass = bodyA.pointMasses[info.bodyApm]
-            let B1:PointMass = bodyB.pointMasses[info.bodyBpmA]
-            let B2:PointMass = bodyB.pointMasses[info.bodyBpmB]
+            let A = bodyA.pointMasses[info.bodyApm]
+            let B1 = bodyB.pointMasses[info.bodyBpmA]
+            let B2 = bodyB.pointMasses[info.bodyBpmB]
             
             // Velocity changes as a result of collision
             let bVel = (B1.velocity + B2.velocity) * 0.5

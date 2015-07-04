@@ -207,9 +207,8 @@ public final class Body: Equatable
             pointNormals = [Vector2](count: c, repeatedValue: Vector2.Zero)
         }
         
-        for var i = 0; i < c; i++
+        for (i, curEdge) in edges.enumerate()
         {
-            let curEdge = edges[i]
             let prev = (i - 1) < 0 ? c - 1 : i - 1
             
             let edge1N = edges[prev].difference
@@ -231,9 +230,8 @@ public final class Body: Equatable
         }
         
         // Update edges
-        for var i = 0; i < c; i++
+        for (i, curP) in pointMasses.enumerate()
         {
-            let curP = pointMasses[i]
             let nextP = pointMasses[(i + 1) % c]
             
             edges[i] = BodyEdge(edgeIndex: i, start: curP.position, end: nextP.position)
@@ -794,7 +792,7 @@ public final class Body: Equatable
      *  PointMass: The first point mass on the edge
      *  PointMass: The second point mass on the edge
      */
-    public func getClosestEdge(pt: Vector2, _ tolerance: CGFloat = CGFloat.infinity) -> (Vector2, CGFloat, PointMass, PointMass)?
+    public func getClosestEdge(pt: Vector2, _ tolerance: CGFloat = CGFloat.infinity) -> (edgePosition: Vector2, edgeRatio: CGFloat, edgePoint1: PointMass, edgePoint2: PointMass)?
     {
         if(pointMasses.count == 0)
         {

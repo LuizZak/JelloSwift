@@ -140,7 +140,7 @@ class DemoView: UIView
         createBox(toWorldCoords(Vector2(size.width * 0.5, 16)), size: Vector2(17, 0.5), isStatic: true)
         
         // Create the ground box
-        let box = ClosedShape()
+        var box = ClosedShape()
         box.begin()
         box.addVertex(Vector2(-10,   1))
         box.addVertex(Vector2( 0,  0.6)) // A little inward slope
@@ -369,7 +369,7 @@ class DemoView: UIView
     func createBox(pos: Vector2, size: Vector2, pinned: Bool = false, kinematic: Bool = false, isStatic: Bool = false, angle: CGFloat = 0, mass: CGFloat = 0.5) -> Body
     {
         // Create the closed shape for the box's physics body
-        let shape = ClosedShape()
+        var shape = ClosedShape()
         shape.begin()
         shape.addVertex(Vector2(-size.X,  size.Y))
         shape.addVertex(Vector2( size.X,  size.Y))
@@ -410,7 +410,7 @@ class DemoView: UIView
     func createBouncyBall(pos: Vector2, pinned: Bool = false, kinematic: Bool = false, radius: CGFloat = 1, mass: CGFloat = 0.5, def: Int = 12) -> Body
     {
         // Create the closed shape for the ball's physics body
-        let shape = ClosedShape()
+        var shape = ClosedShape()
         shape.begin()
         for i in 0..<def
         {
@@ -496,7 +496,7 @@ class DemoView: UIView
     /// Creates a car structure
     func createCarStructure(pos: Vector2)
     {
-        let carShape = ClosedShape()
+        var carShape = ClosedShape()
         
         // Add the car shape vertices
         carShape.begin()

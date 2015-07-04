@@ -9,34 +9,34 @@
 import CoreGraphics
 
 /// Contains a set of points that is equivalent as the internal shape of a sofy body
-public class ClosedShape
+public struct ClosedShape
 {
-    public final var localVertices: [Vector2] = []
+    public var localVertices: [Vector2] = []
     
     /// Returns the Vector2 for the vertex with a given integer index on this ClosedShape
     public subscript(i:Int) -> Vector2 { return localVertices[i] }
     
     /// Start adding vertices to this closed shape.
     /// Calling this method will erase any existing verts
-    public func begin()
+    public mutating func begin()
     {
         localVertices = []
     }
     
     /// Adds a vertex to this closed shape
-    public func addVertex(vertex: Vector2)
+    public mutating func addVertex(vertex: Vector2)
     {
         localVertices += vertex
     }
     
     /// Adds a vertex to this closed shape
-    public func addVertex(x x: CGFloat, y: CGFloat)
+    public mutating func addVertex(x x: CGFloat, y: CGFloat)
     {
         addVertex(Vector2(x, y))
     }
     
     /// Finishes constructing this closed shape, and convert them to local space (by default)
-    public func finish(recenter: Bool = true)
+    public mutating func finish(recenter: Bool = true)
     {
         if(recenter)
         {
@@ -48,7 +48,7 @@ public class ClosedShape
     }
     
     /// Transforms all vertices by the given angle and scale
-    public func transformOwn(angleInRadians: CGFloat, localScale: Vector2)
+    public mutating func transformOwn(angleInRadians: CGFloat, localScale: Vector2)
     {
         localVertices = localVertices.map { rotateVector($0 * localScale, angleInRadians: angleInRadians) }
     }

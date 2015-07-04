@@ -51,10 +51,10 @@ public class PressureComponent: BodyComponent
         // now loop through, adding forces!
         let invVolume = 1 / volume
         
-        for i in 0..<c
+        for (i, e) in body.edges.enumerate()
         {
             let j = (i + 1) % c
-            let pressureV = (invVolume * body.edges[i].length * (gasAmmount))
+            let pressureV = (invVolume * e.length * (gasAmmount))
             
             body.pointMasses[i].force += normalList[i] * pressureV
             body.pointMasses[j].force += normalList[j] * pressureV

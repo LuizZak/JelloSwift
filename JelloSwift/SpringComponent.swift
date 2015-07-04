@@ -118,9 +118,8 @@ public class SpringComponent: BodyComponent
     {
         super.accumulateInternalForces()
         
-        for var i = 0; i < springs.count; i++
+        for s in springs
         {
-            let s = springs[i]
             let p1 = s.pointMassA
             let p2 = s.pointMassB
             

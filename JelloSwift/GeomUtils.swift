@@ -15,14 +15,14 @@ public let PI = CGFloat(M_PI)
 public func polygonArea(points: [Vector2]) -> CGFloat
 {
     var area: CGFloat = 0
-    var v2 = points.last!
     
-    let c = points.count
-    for var i = 0; i < c; i++
+    if var v2 = points.last
     {
-        let p = points[i]
-        area += (v2.X + p.X) * (v2.Y - p.Y)
-        v2 = p
+        for p in points
+        {
+            area += (v2.X + p.X) * (v2.Y - p.Y)
+            v2 = p
+        }
     }
     
     return area / 2
