@@ -170,12 +170,12 @@ class DemoView: UIView
         else if(inputMode == InputMode.DragBody)
         {
             // Select the closest point-mass to drag
-            let touch: AnyObject = touches.first!
+            let touch: UITouch = touches.first!
             let location = touch.locationInView(self)
             fingerLocation = toWorldCoords(Vector2(location.x, location.y))
             
             var closest: PointMass? = nil
-            var closestD: CGFloat = CGFloat.max
+            var closestD = CGFloat.max
             
             for body in world.bodies
             {
