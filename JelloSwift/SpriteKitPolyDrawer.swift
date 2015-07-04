@@ -108,7 +108,7 @@ class SpriteKitPolyDrawer
         node.path = path
         node.fillColor = SKColor.whiteColor()
         node.strokeColor = SKColor.blackColor()
-        node.lineJoin = kCGLineJoinRound
+        node.lineJoin = .Round
         node.lineWidth = 2
         
         canvas.addChild(node)
@@ -140,7 +140,7 @@ class SpriteKitPolyDrawer
             CGContextSetFillColorWithColor(context, poly.fillColor.CGColor)
             
             CGContextAddPath(context, path)
-            CGContextDrawPath(context, kCGPathFillStroke)
+            CGContextDrawPath(context, .FillStroke)
         }
     }
     
