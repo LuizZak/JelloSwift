@@ -28,7 +28,7 @@ public struct Vector2: Comparable, CustomStringConvertible
         self.Y = 0
     }
     
-    public init(_ x:Int, _ y:Int)
+    public init(_ x: Int, _ y: Int)
     {
         self.X = CGFloat(x)
         self.Y = CGFloat(y)
@@ -207,6 +207,26 @@ public prefix func -(lhs: Vector2) -> Vector2
     return Vector2(-lhs.X, -lhs.Y)
 }
 
+public prefix func ++(inout x: Vector2) -> Vector2
+{
+    return Vector2(++x.X, ++x.Y)
+}
+
+public postfix func ++(inout x: Vector2) -> Vector2
+{
+    return Vector2(x.X++, x.Y++)
+}
+
+public prefix func --(inout x: Vector2) -> Vector2
+{
+    return Vector2(--x.X, --x.Y)
+}
+
+public postfix func --(inout x: Vector2) -> Vector2
+{
+    return Vector2(x.X--, x.Y--)
+}
+
 // DOT operator
 /// Calculates the dot product between two provided coordinates
 public func =*(lhs: Vector2, rhs: Vector2) -> CGFloat
@@ -238,6 +258,10 @@ public func *(lhs: Vector2, rhs: Vector2) -> Vector2
 public func /(lhs: Vector2, rhs: Vector2) -> Vector2
 {
     return funcOnVectors(lhs, rhs, /)
+}
+public func %(lhs: Vector2, rhs: Vector2) -> Vector2
+{
+    return funcOnVectors(lhs, rhs, %)
 }
 
 // CGFloat interaction
@@ -324,7 +348,7 @@ public func /=(inout lhs: Vector2, rhs: CGFloat)
     lhs = lhs / rhs
 }
 
-// CGFloat interaction
+// Int interaction
 public func +=(inout lhs: Vector2, rhs: Int)
 {
     lhs = lhs + rhs

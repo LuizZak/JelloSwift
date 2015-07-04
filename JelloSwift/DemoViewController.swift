@@ -488,6 +488,9 @@ class DemoView: UIView
         // Enable collision between the bodies
         joint1.allowCollisions = true
         joint2.allowCollisions = true
+        
+        world.addJoint(joint1)
+        world.addJoint(joint2)
     }
     
     /// Creates a car structure
@@ -545,6 +548,9 @@ class DemoView: UIView
         
         let rightJoint = SpringBodyJoint(world: world, link1: rjWheel, link2: rjCar, springK: 100, springD: 15, distance: 0)
         rightJoint.allowCollisions = true
+        
+        world.addJoint(leftJoint)
+        world.addJoint(rightJoint)
     }
 }
 

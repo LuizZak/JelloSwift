@@ -37,27 +37,12 @@ public final class AABB
         
     }
     
-    public init(min: Vector2?, max: Vector2?)
+    public init(min: Vector2, max: Vector2)
     {
         self.validity = PointValidity.Valid
-        
-        if let mi = min
-        {
-            self.minimum = mi
-        }
-        else
-        {
-            self.validity = PointValidity.Invalid
-        }
-        
-        if let ma = max
-        {
-            self.maximum = ma
-        }
-        else
-        {
-            self.validity = PointValidity.Invalid
-        }
+      
+        self.minimum = min
+        self.maximum = max
     }
     
     public init(points: [Vector2])

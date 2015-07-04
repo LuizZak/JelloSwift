@@ -10,6 +10,7 @@
 		A027EE611AD1EF1900E849AC /* BodyEdge.swift in Sources */ = {isa = PBXBuildFile; fileRef = A027EE601AD1EF1900E849AC /* BodyEdge.swift */; };
 		A027EE621AD1EF1900E849AC /* BodyEdge.swift in Sources */ = {isa = PBXBuildFile; fileRef = A027EE601AD1EF1900E849AC /* BodyEdge.swift */; };
 		A027EE631AD2073900E849AC /* BodyEdge.swift in Sources */ = {isa = PBXBuildFile; fileRef = A027EE601AD1EF1900E849AC /* BodyEdge.swift */; };
+		A03231251B4863CB00D725ED /* SpriteKitPolyDrawer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E336061B2C4E4E00A2E8DC /* SpriteKitPolyDrawer.swift */; };
 		A0510AED1AAA341C00C03017 /* BodyJoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0510AEC1AAA341C00C03017 /* BodyJoint.swift */; };
 		A0510AEF1AAA404300C03017 /* BodyJoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0510AEC1AAA341C00C03017 /* BodyJoint.swift */; };
 		A0510AF11AAA41D700C03017 /* PointJointLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0510AF01AAA41D700C03017 /* PointJointLink.swift */; };
@@ -488,6 +489,7 @@
 				A0510B021AAA573B00C03017 /* ShapeJointLink.swift in Sources */,
 				A027EE621AD1EF1900E849AC /* BodyEdge.swift in Sources */,
 				A09CC49D1A251A880073BB62 /* SpringComponent.swift in Sources */,
+				A03231251B4863CB00D725ED /* SpriteKitPolyDrawer.swift in Sources */,
 				A09CC49E1A251A880073BB62 /* InternalSpring.swift in Sources */,
 				A09CC49F1A251A880073BB62 /* GravityComponent.swift in Sources */,
 				A09CC4A01A251A880073BB62 /* PressureComponent.swift in Sources */,

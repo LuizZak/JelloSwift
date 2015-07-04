@@ -596,7 +596,7 @@ public final class Body: Equatable
         }
         
         // Create and test against a temporary line AABB
-        let lineAABB: AABB = AABB(points: [start, end])
+        let lineAABB = AABB(points: [start, end])
         if(!aabb.intersects(lineAABB))
         {
             return false
@@ -851,9 +851,8 @@ public final class Body: Equatable
     {
         var closestSQD = CGFloat.max
         var closest = -1
-        var i = 0
         
-        for point in pointMasses
+        for (i, point) in pointMasses.enumerate()
         {
             let thisD = pos.distanceToSquared(point.position)
             
@@ -862,7 +861,6 @@ public final class Body: Equatable
                 closestSQD = thisD
                 closest = i
             }
-            i++
         }
         
         dist = sqrt(closestSQD)
