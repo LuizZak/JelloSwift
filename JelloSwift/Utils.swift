@@ -36,8 +36,11 @@ extension Array
             }
         }
     }
-    
-    func forEach(@noescape doThis: (element: T) -> Void)
+}
+
+extension SequenceType
+{
+    func forEach(@noescape doThis: (element: Self.Generator.Element) -> Void)
     {
         for e in self
         {
@@ -45,17 +48,14 @@ extension Array
         }
     }
     
-    func forEach(@noescape doThis: (index: Int, element: T) -> Void)
+    func forEach(@noescape doThis: (index: Int, element: Self.Generator.Element) -> Void)
     {
         for e in self.enumerate()
         {
             doThis(e)
         }
     }
-}
-
-extension SequenceType
-{
+    
     func first(compute: Self.Generator.Element -> Bool) -> Self.Generator.Element?
     {
         for item in self
