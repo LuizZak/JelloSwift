@@ -15,15 +15,15 @@ public struct BodyEdge
     public var edgeIndex = 0
     
     /// The start position of the edge
-    public var start: Vector2 = Vector2.Zero
+    public var start = Vector2.Zero
     /// The end position of the edge
-    public var end: Vector2 = Vector2.Zero
+    public var end = Vector2.Zero
     
     /// The normal for the edge
-    public var normal: Vector2 = Vector2.Zero
+    public var normal = Vector2.Zero
     
     /// The difference between the start and end points, normalized
-    public var difference: Vector2 = Vector2.Zero
+    public var difference = Vector2.Zero
     
     /// The edge's length
     public var length: CGFloat = 0

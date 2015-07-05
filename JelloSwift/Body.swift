@@ -74,7 +74,7 @@ public final class Body: Equatable
     /// Gets a list of vertices that represents the current position of each PointMass in this body
     public var vertices: [Vector2]
     {
-        return pointMasses.map({ $0.position })
+        return pointMasses.map { $0.position }
     }
     
     /// The bounding box for this body
@@ -544,6 +544,8 @@ public final class Body: Equatable
             let edgeEnd = e.end
             
             // perform check now...
+            
+            // Check if the edge crosses the imaginary horizontal line from top to bottom or bottom to top
             if (((edgeSt.Y <= pt.Y) && (edgeEnd.Y > pt.Y)) || ((edgeSt.Y > pt.Y) && (edgeEnd.Y <= pt.Y)))
             {
                 // The edge lies completely to the left of our imaginary line
