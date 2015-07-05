@@ -528,39 +528,36 @@ public class World
                 Bmove = info.penetration * (A.mass * rev_massSum)
             }
             
-            let B1move = Bmove * b1inf
-            let B2move = Bmove * b2inf
-            
-            let AinvMass = isinf(A.mass) ? 0 : 1.0 / A.mass
-            let BinvMass = isinf(b2MassSum) ? 0 : 1.0 / b2MassSum
-            
-            let jDenom = AinvMass + BinvMass
-            let elas = 1 + material.elasticity
-            
-            let rev_jDenom = 1.0 / jDenom
-            let j = -((relVel * elas) =* info.normal) * rev_jDenom
-            
-            if(!isinf(A.mass) && isinf(b2MassSum))
+            if(!isinf(A.mass))
             {
                 A.position += info.normal * Amove
             }
             
             if(!isinf(B1.mass))
             {
-                B1.position -= info.normal * B1move
+                B1.position -= info.normal * (Bmove * b1inf)
             }
             if(!isinf(B2.mass))
             {
-                B2.position -= info.normal * B2move
+                B2.position -= info.normal * (Bmove * b2inf)
             }
             
-            let tangent = info.normal.perpendicular()
-            
-            let friction = material.friction
-            let f = (relVel =* tangent) * friction * rev_jDenom
-            
-            if(relDot <= 0.0001)
+            if(relDot <= 0.0001 && (!isinf(A.mass) || !isinf(b2MassSum)))
             {
+                let AinvMass = isinf(A.mass) ? 0 : 1.0 / A.mass
+                let BinvMass = isinf(b2MassSum) ? 0 : 1.0 / b2MassSum
+                
+                let jDenom = AinvMass + BinvMass
+                let elas = 1 + material.elasticity
+                
+                let rev_jDenom = 1.0 / jDenom
+                let j = -((relVel * elas) =* info.normal) * rev_jDenom
+                
+                let tangent = info.normal.perpendicular()
+                
+                let friction = material.friction
+                let f = (relVel =* tangent) * friction * rev_jDenom
+                
                 if(!isinf(A.mass))
                 {
                     let rev_AMass = 1.0 / A.mass
