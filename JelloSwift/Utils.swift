@@ -97,7 +97,8 @@ extension SequenceType
     }
 }
 
-public func fillArray<T>(object: T, count: Int) -> [T]
+/// Returns the static type of the given object
+func typeof<T>(e: T) -> T.Type
 {
-    return [T](count: count, repeatedValue: object)
+    return T.self
 }

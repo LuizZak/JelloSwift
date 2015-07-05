@@ -223,7 +223,7 @@ public final class Body: Equatable
         // Maintain the edge count the same as the point mass count
         if(edges.count != c)
         {
-            edges = ContiguousArray<BodyEdge>(count: c, repeatedValue: BodyEdge())
+            edges = typeof(edges).init(count: c, repeatedValue: BodyEdge())
         }
         
         // Update edges
@@ -317,16 +317,17 @@ public final class Body: Equatable
     /// Sets the mass for all the point masses from a list of masses
     public func setMassFromList(masses: [CGFloat])
     {
-        var allStatic = true
+        isStatic = true
         
         for i in 0..<min(masses.count, self.pointMasses.count)
         {
-            allStatic = allStatic && isinf(masses[i])
+            if(!isinf(masses[i]))
+            {
+                isStatic = false
+            }
             
             self.pointMasses[i].mass = masses[i]
         }
-        
-        isStatic = allStatic
     }
     
     /// Sets the position and angle of the body manually.
