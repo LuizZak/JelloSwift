@@ -13,9 +13,9 @@ import CoreGraphics
 public class World
 {
     /// The bodies contained within this world
-    public var bodies: [Body] = []
+    public var bodies: ContiguousArray<Body> = []
     /// The joints contained within this world
-    public var joints: [BodyJoint] = []
+    public var joints: ContiguousArray<BodyJoint> = []
     
     // PRIVATE VARIABLES
     private var worldLimits = AABB()

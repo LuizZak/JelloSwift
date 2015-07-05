@@ -13,12 +13,42 @@ public func +=<T>(inout lhs:Array<T>, rhs:T)
     lhs.append(rhs)
 }
 
+public func +=<T>(inout lhs:ContiguousArray<T>, rhs:T)
+{
+    lhs.append(rhs)
+}
+
 public func -=<T: Equatable>(inout lhs:Array<T>, rhs:T)
 {
     lhs.remove(rhs)
 }
 
+public func -=<T: Equatable>(inout lhs:ContiguousArray<T>, rhs:T)
+{
+    lhs.remove(rhs)
+}
+
 extension Array
+{
+    mutating func remove<T: Equatable>(object : T)
+    {
+        for i in 0..<self.count
+        {
+            guard let item = self[i] as? T else {
+                continue
+            }
+            
+            if(item == object)
+            {
+                self.removeAtIndex(i)
+                
+                return
+            }
+        }
+    }
+}
+
+extension ContiguousArray
 {
     mutating func remove<T: Equatable>(object : T)
     {

@@ -20,7 +20,7 @@ public final class Body: Equatable
     internal var edges: ContiguousArray<BodyEdge> = []
     
     /// List of point normals
-    internal var pointNormals:[Vector2] = []
+    internal var pointNormals:ContiguousArray<Vector2> = []
     
     /// List of body joints this body participates in
     public internal(set) var joints: [BodyJoint] = []
@@ -32,7 +32,7 @@ public final class Body: Equatable
     public var globalShape: [Vector2] = []
     
     /// The array of point masses for the body
-    public private(set) var pointMasses: [PointMass] = []
+    public private(set) var pointMasses: ContiguousArray<PointMass> = []
     
     /// An array of all the collision that involve this body
     public var pointMassCollisions: [BodyCollisionInformation] = []
@@ -41,20 +41,20 @@ public final class Body: Equatable
     public var collectCollisions = false
     
     /// The scale for this body's shape
-    public var scale: Vector2 = Vector2()
+    public var scale = Vector2.One
     
     /// The derived center position of this body - in world coordinates
-    public private(set) var derivedPos: Vector2 = Vector2()
+    public private(set) var derivedPos = Vector2.Zero
     
     /// The derived velocity of this body - in world coordinates. The derivation assumes the mean of the velocity of all the point masses
-    public private(set) var derivedVel: Vector2 = Vector2()
+    public private(set) var derivedVel = Vector2.Zero
     
     /// The velocity damping to apply to the body. Values closer to 0 deaccelerate faster, values closer to 1 deaccelerate slower.
     /// 1 never deaccelerates. Values outside the range [0, 1] inclusive may introduce instability
     public var velDamping: CGFloat = 0.999
     
     /// The array of body components for this body object
-    private var components: [BodyComponent] = []
+    private var components: ContiguousArray<BodyComponent> = []
     
     /// Gets the ammount of components in this body
     public var componentCount: Int { return components.count }
@@ -201,7 +201,7 @@ public final class Body: Equatable
         
         if(pointNormals.count != c)
         {
-            pointNormals = [Vector2](count: c, repeatedValue: Vector2.Zero)
+            pointNormals = pointNormals.dynamicType.init(count: c, repeatedValue: Vector2.Zero)
         }
         
         for (i, curEdge) in edges.enumerate()
