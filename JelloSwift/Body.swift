@@ -17,7 +17,7 @@ public func ==(lhs: Body, rhs: Body) -> Bool
 public final class Body: Equatable
 {
     /// List of edges on the body
-    internal var edges:[BodyEdge] = []
+    internal var edges: ContiguousArray<BodyEdge> = []
     
     /// List of point normals
     internal var pointNormals:[Vector2] = []
@@ -223,7 +223,7 @@ public final class Body: Equatable
         // Maintain the edge count the same as the point mass count
         if(edges.count != c)
         {
-            edges = [BodyEdge](count: c, repeatedValue: BodyEdge())
+            edges = ContiguousArray<BodyEdge>(count: c, repeatedValue: BodyEdge())
         }
         
         // Update edges
@@ -533,34 +533,70 @@ public final class Body: Equatable
         // lines in the polygon it intersects.  if that number is odd, we are inside.  if it's even, we are outside.
         // in this implementation we will always use a line that moves off in the positive X direction from the point
         // to simplify things.
-        let endPt = Vector2(aabb.maximum.X + 0.1, pt.Y)
+        let endPt: Vector2
         
         // line we are testing against goes from pt -> endPt.
         var inside = false
         
-        for e in edges
+        if(pt.X < aabb.midX)
         {
-            let edgeSt = e.start
-            let edgeEnd = e.end
+            endPt = Vector2(aabb.minimum.X - 0.1, pt.Y)
             
-            // perform check now...
-            
-            // Check if the edge crosses the imaginary horizontal line from top to bottom or bottom to top
-            if (((edgeSt.Y <= pt.Y) && (edgeEnd.Y > pt.Y)) || ((edgeSt.Y > pt.Y) && (edgeEnd.Y <= pt.Y)))
+            for e in edges
             {
+                let edgeSt = e.start
+                let edgeEnd = e.end
+                
+                // perform check now...
+                
+                // The edge lies completely to the right of our imaginary line
+                if(edgeSt.X > pt.X && edgeEnd.X > pt.X)
+                {
+                    continue
+                }
+                
+                // Check if the edge crosses the imaginary horizontal line from top to bottom or bottom to top
+                if (((edgeSt.Y <= pt.Y) && (edgeEnd.Y > pt.Y)) || ((edgeSt.Y > pt.Y) && (edgeEnd.Y <= pt.Y)))
+                {
+                    // this line crosses the test line at some point... does it do so within our test range?
+                    let slope = (edgeEnd.X - edgeSt.X) / (edgeEnd.Y - edgeSt.Y)
+                    let hitX = edgeSt.X + ((pt.Y - edgeSt.Y) * slope)
+                    
+                    if ((hitX <= pt.X) && (hitX >= endPt.X))
+                    {
+                        inside = !inside
+                    }
+                }
+            }
+        }
+        else
+        {
+            endPt = Vector2(aabb.maximum.X + 0.1, pt.Y)
+            
+            for e in edges
+            {
+                let edgeSt = e.start
+                let edgeEnd = e.end
+                
+                // perform check now...
+                
                 // The edge lies completely to the left of our imaginary line
                 if(edgeSt.X < pt.X && edgeEnd.X < pt.X)
                 {
                     continue
                 }
                 
-                // this line crosses the test line at some point... does it do so within our test range?
-                let slope = (edgeEnd.X - edgeSt.X) / (edgeEnd.Y - edgeSt.Y)
-                let hitX = edgeSt.X + ((pt.Y - edgeSt.Y) * slope)
-                
-                if ((hitX >= pt.X) && (hitX <= endPt.X))
+                // Check if the edge crosses the imaginary horizontal line from top to bottom or bottom to top
+                if (((edgeSt.Y <= pt.Y) && (edgeEnd.Y > pt.Y)) || ((edgeSt.Y > pt.Y) && (edgeEnd.Y <= pt.Y)))
                 {
-                    inside = !inside
+                    // this line crosses the test line at some point... does it do so within our test range?
+                    let slope = (edgeEnd.X - edgeSt.X) / (edgeEnd.Y - edgeSt.Y)
+                    let hitX = edgeSt.X + ((pt.Y - edgeSt.Y) * slope)
+                    
+                    if ((hitX >= pt.X) && (hitX <= endPt.X))
+                    {
+                        inside = !inside
+                    }
                 }
             }
         }

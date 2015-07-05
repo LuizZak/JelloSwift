@@ -52,8 +52,11 @@ extension Array
             doThis(e)
         }
     }
-    
-    func first(compute: T -> Bool) -> T?
+}
+
+extension SequenceType
+{
+    func first(compute: Self.Generator.Element -> Bool) -> Self.Generator.Element?
     {
         for item in self
         {
@@ -66,9 +69,9 @@ extension Array
         return nil
     }
     
-    func last(compute: T -> Bool) -> T?
+    func last(compute: Self.Generator.Element -> Bool) -> Self.Generator.Element?
     {
-        var last: T?
+        var last: Self.Generator.Element?
         for item in self
         {
             if(compute(item))
@@ -80,7 +83,7 @@ extension Array
         return last
     }
     
-    func any(compute: T -> Bool) -> Bool
+    func any(compute: Self.Generator.Element -> Bool) -> Bool
     {
         for item in self
         {

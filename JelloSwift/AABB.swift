@@ -28,6 +28,11 @@ public struct AABB
     /// Gets the height of this AABB
     public var height: CGFloat { return maximum.Y - minimum.Y }
     
+    /// Gets the middle X position of this AABB
+    public var midX: CGFloat { return ((minimum + maximum) / 2).X }
+    /// Gets the middle Y position of this AABB
+    public var midY: CGFloat { return ((minimum + maximum) / 2).X }
+    
     // This guy has to be lower case otherwise sourcekit crashes
     /// Gets a CGRect that represents the boundaries of this AABB object
     public var cgRect: CGRect { return CGRect(x: x, y: y, width: width, height: height) }

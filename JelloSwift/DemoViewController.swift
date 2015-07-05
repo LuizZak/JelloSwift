@@ -63,7 +63,7 @@ class DemoView: UIView
         initLabels()
         
         // Do any additional setup after loading the view.
-        timer = CADisplayLink(target: self, selector: Selector("gameLoop"))
+        timer = CADisplayLink(target: self, selector: "gameLoop")
         timer.addToRunLoop(NSRunLoop.mainRunLoop(), forMode: NSDefaultRunLoopMode)
         
         initializeLevel()
