@@ -717,7 +717,7 @@ public final class Body: Equatable
         else
         {
             // point lies somewhere on the line segment.
-            let pd = (toP =* edge.difference.perpendicular())
+            let pd = (toP =* edge.normal)
             dist = pd * pd
             
             hitPt = ptA + (edge.difference * x)
@@ -813,7 +813,7 @@ public final class Body: Equatable
         var closestP2 = pointMasses[0]
         var closestV = Vector2()
         var closestAdotB: CGFloat = 0
-        var closestD: CGFloat = CGFloat.infinity
+        var closestD = CGFloat.infinity
         
         for (i, pm) in pointMasses.enumerate()
         {
