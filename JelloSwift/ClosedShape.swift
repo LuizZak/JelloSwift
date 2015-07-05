@@ -14,7 +14,7 @@ public struct ClosedShape
     public var localVertices: [Vector2] = []
     
     /// Returns the Vector2 for the vertex with a given integer index on this ClosedShape
-    public subscript(i:Int) -> Vector2 { return localVertices[i] }
+    public subscript(i: Int) -> Vector2 { return localVertices[i] }
     
     /// Start adding vertices to this closed shape.
     /// Calling this method will erase any existing verts
@@ -65,9 +65,6 @@ public struct ClosedShape
     /// transformation is applied in the following order:  scale -> rotation -> position.
     public func transformVertices(inout target:[Vector2], worldPos: Vector2, angleInRadians: CGFloat, localScale: Vector2 = Vector2.One)
     {
-        for (i, l) in localVertices.enumerate()
-        {
-            target[i] = rotateVector(l * localScale, angleInRadians: angleInRadians) + worldPos
-        }
+        target = transformVertices(worldPos, angleInRadians: angleInRadians, localScale: localScale)
     }
 }

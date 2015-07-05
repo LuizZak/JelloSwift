@@ -31,6 +31,11 @@ class DemoView: UIView
     var timer: CADisplayLink! = nil
     var polyDrawer: PolyDrawer
     
+    var updateLabelStopwatch: Stopwatch = Stopwatch(startTime: 0)
+    var renderLabelStopwatch: Stopwatch = Stopwatch(startTime: 0)
+    
+    let updateInterval = 0.5
+    
     var inputMode: InputMode = InputMode.DragBody
     
     // The current point being dragged around
@@ -223,10 +228,15 @@ class DemoView: UIView
         
         updateWithTimeSinceLastUpdate(timer.timestamp)
         
-        let time = round(sw.stop() * 1000 * 20) / 20
-        let fps = 1000 / time
-        
-        physicsTimeLabel.text = String(format: "Physics update time: %0.2lfms (%0.0lffps)", time, fps)
+        if(updateLabelStopwatch.duration > updateInterval)
+        {
+            updateLabelStopwatch.reset()
+            
+            let time = round(sw.stop() * 1000 * 20) / 20
+            let fps = 1000 / time
+            
+            physicsTimeLabel.text = String(format: "Physics update time: %0.2lfms (%0.0lffps)", time, fps)
+        }
     }
     
     func updateWithTimeSinceLastUpdate(timeSinceLast: CFTimeInterval)
@@ -276,10 +286,15 @@ class DemoView: UIView
         polyDrawer.renderOnContext(context)
         polyDrawer.reset()
         
-        let time = round(sw.stop() * 1000 * 20) / 20
-        let fps = 1000 / time
-                                                           //  VVVVVV  AIN'T GOT NO TIME TO DYNAMICALLY ALIGN, BABEY!
-        renderTimeLabel.text = String(format: "Render time:              %0.2lfms (%0.0lffps)", time, fps)
+        if(renderLabelStopwatch.duration > updateInterval)
+        {
+            renderLabelStopwatch.reset()
+            
+            let time = round(sw.stop() * 1000 * 20) / 20
+            let fps = 1000 / time
+                                                               //  VVVVVV  AIN'T GOT NO TIME TO DYNAMICALLY ALIGN, BABEY!
+            renderTimeLabel.text = String(format: "Render time:              %0.2lfms (%0.0lffps)", time, fps)
+        }
     }
     
     func gameLoop()
@@ -570,9 +585,9 @@ class Stopwatch
     var startTime:CFAbsoluteTime
     var endTime:CFAbsoluteTime?
     
-    init()
+    init(startTime: CFAbsoluteTime = CFAbsoluteTimeGetCurrent())
     {
-        startTime = CFAbsoluteTimeGetCurrent()
+        self.startTime = startTime
     }
     
     func start()
@@ -587,6 +602,11 @@ class Stopwatch
         return duration!
     }
     
+    func reset()
+    {
+        start()
+    }
+    
     var duration:CFAbsoluteTime?
     {
         if let endTime = endTime
@@ -595,7 +615,7 @@ class Stopwatch
         }
         else
         {
-            return nil
+            return CFAbsoluteTimeGetCurrent() - startTime
         }
     }
 }
