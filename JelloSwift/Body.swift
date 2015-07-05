@@ -223,7 +223,7 @@ public final class Body: Equatable
         // Maintain the edge count the same as the point mass count
         if(edges.count != c)
         {
-            edges = typeof(edges).init(count: c, repeatedValue: BodyEdge())
+            edges = edges.dynamicType.init(count: c, repeatedValue: BodyEdge())
         }
         
         // Update edges

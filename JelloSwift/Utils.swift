@@ -96,9 +96,3 @@ extension SequenceType
         return false
     }
 }
-
-/// Returns the static type of the given object
-func typeof<T>(e: T) -> T.Type
-{
-    return T.self
-}
