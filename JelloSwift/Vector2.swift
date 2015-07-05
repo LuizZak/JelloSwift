@@ -58,12 +58,6 @@ public struct Vector2: Comparable, CustomStringConvertible
         self.Y = point.y
     }
     
-    /// Returns the magnitude (or square root of the squared length) of this Vector2
-    public func magnitude() -> CGFloat
-    {
-        return sqrt(length())
-    }
-    
     /// Returns the angle in radians of this Vector2
     public func angle() -> CGFloat
     {
@@ -74,6 +68,12 @@ public struct Vector2: Comparable, CustomStringConvertible
     public func length() -> CGFloat
     {
         return X * X + Y * Y
+    }
+    
+    /// Returns the magnitude (or square root of the squared length) of this Vector2
+    public func magnitude() -> CGFloat
+    {
+        return sqrt(length())
     }
     
     /// Returns the distance between this Vector2 and another Vector2
@@ -115,14 +115,14 @@ public struct Vector2: Comparable, CustomStringConvertible
     /// Returns a normalized version of this Vector2
     public func normalized() -> Vector2
     {
-        let mag = sqrt(X * X + Y * Y)
+        let mag = magnitude()
         
         if(mag > CGFloat.min)
         {
-            return Vector2(X / mag, Y / mag)
+            return self / mag
         }
         
-        return Vector2(X, Y)
+        return self
     }
     
     /// Returns a string representation of this Vector2 value
@@ -165,10 +165,10 @@ public func rotateVector(vec: Vector2, angleInRadians: Double) -> Vector2
         return vec
     }
     
-    let c = cos(angleInRadians)
-    let s = sin(angleInRadians)
+    let c = CGFloat(cos(angleInRadians))
+    let s = CGFloat(sin(angleInRadians))
     
-    return Vector2((c * Double(vec.X)) - (s * Double(vec.Y)), (c * Double(vec.Y)) + (s * Double(vec.X)))
+    return Vector2((c * vec.X) - (s * vec.Y), (c * vec.Y) + (s * vec.X))
 }
 
 /// Returns whether rotating from A to B is counter-clockwise

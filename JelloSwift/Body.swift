@@ -374,7 +374,7 @@ public final class Body: Equatable
             
         if(freeRotate)
         {
-            let meanPos:Vector2 = isPined ? averageVectors(vertices) : derivedPos
+            let meanPos = isPined ? averageVectors(vertices) : derivedPos
             
             // find the average angle of all of the masses.
             var angle: CGFloat = 0
@@ -680,7 +680,6 @@ public final class Body: Equatable
     */
     public func getClosestPointOnEdgeSquared(pt: Vector2, _ edgeNum: Int, inout _ hitPt: Vector2, inout _ normal: Vector2, inout _ edgeD: CGFloat) -> CGFloat
     {
-        edgeD = 0
         var dist: CGFloat = 0
         
         let edge = edges[edgeNum]
