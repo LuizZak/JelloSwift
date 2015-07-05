@@ -12,25 +12,16 @@ import CoreGraphics
 public struct BodyCollisionInformation: Equatable
 {
     public weak var bodyA: Body?
-    public let bodyApm: Int
+    public var bodyApm: Int = -1
     
     public weak var bodyB: Body?
-    public var bodyBpmA: Int
-    public var bodyBpmB: Int
+    public var bodyBpmA: Int = -1
+    public var bodyBpmB: Int = -1
     
     public var hitPt: Vector2 = Vector2()
     public var edgeD: CGFloat = 0
     public var normal: Vector2 = Vector2()
     public var penetration: CGFloat = 0
-    
-    public init()
-    {
-        self.bodyA = nil
-        self.bodyB = nil
-        self.bodyApm = -1
-        self.bodyBpmA = -1
-        self.bodyBpmB = -1
-    }
     
     public init(bodyA: Body, bodyApm: Int, bodyB: Body)
     {

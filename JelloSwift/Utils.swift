@@ -20,23 +20,6 @@ public func -=<T: Equatable>(inout lhs:Array<T>, rhs:T)
 
 extension Array
 {
-    func contains<T: Equatable>(object : T) -> Bool
-    {
-        for i in 0..<self.count
-        {
-            guard let item = self[i] as? T else {
-                continue
-            }
-            
-            if(item == object)
-            {
-                return true
-            }
-        }
-        
-        return false
-    }
-    
     mutating func remove<T: Equatable>(object : T)
     {
         for i in 0..<self.count
@@ -44,7 +27,7 @@ extension Array
             guard let item = self[i] as? T else {
                 continue
             }
-
+            
             if(item == object)
             {
                 self.removeAtIndex(i)
@@ -69,9 +52,49 @@ extension Array
             doThis(e)
         }
     }
+    
+    func first(compute: T -> Bool) -> T?
+    {
+        for item in self
+        {
+            if(compute(item))
+            {
+                return item
+            }
+        }
+        
+        return nil
+    }
+    
+    func last(compute: T -> Bool) -> T?
+    {
+        var last: T?
+        for item in self
+        {
+            if(compute(item))
+            {
+                last = item
+            }
+        }
+        
+        return last
+    }
+    
+    func any(compute: T -> Bool) -> Bool
+    {
+        for item in self
+        {
+            if(compute(item))
+            {
+                return true
+            }
+        }
+        
+        return false
+    }
 }
 
-public func fillArray<T: Equatable>(object: T, count: Int) -> [T]
+public func fillArray<T>(object: T, count: Int) -> [T]
 {
     return [T](count: count, repeatedValue: object)
 }

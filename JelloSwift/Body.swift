@@ -584,22 +584,10 @@ public final class Body: Equatable
         
         // Test each edge against the line
         var p = Vector2()
-        var p1 = Vector2()
-        var p2 = Vector2()
         var ua: CGFloat = 0
         var ub: CGFloat = 0
-        for e in edges
-        {
-            p1 = e.start
-            p2 = e.end
-            
-            if(lineIntersect(start, ptB: end, ptC: p1, ptD: p2, hitPt: &p, Ua: &ua, Ub: &ub))
-            {
-                return true
-            }
-        }
         
-        return false
+        return edges.any { e in lineIntersect(start, ptB: end, ptC: e.start, ptD: e.end, hitPt: &p, Ua: &ua, Ub: &ub) }
     }
     
     /// Returns whether the given ray collides with this Body, changing the resulting collision vector before returning

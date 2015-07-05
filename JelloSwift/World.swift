@@ -206,15 +206,7 @@ public class World
     /// Useful for picking objects with a cursor, etc.
     public func getBodyContaining(pt: Vector2, bit: Bitmask) -> Body?
     {
-        for body in bodies
-        {
-            if((bit == 0 || (body.bitmask & bit) != 0) && body.contains(pt))
-            {
-                return body
-            }
-        }
-        
-        return nil
+        return bodies.first { body in ((bit == 0 || (body.bitmask & bit) != 0) && body.contains(pt)) }
     }
     
     /// Given a global point, get all bodies (if any) that contain this point.
@@ -440,7 +432,7 @@ public class World
             }
             
             // we've checked all edges on BodyB.  add the collision info to the stack.
-            if ((found) && (closestAway > penetrationThreshold) && (closestSame < closestAway))
+            if (found && (closestAway > penetrationThreshold) && (closestSame < closestAway))
             {
                 if(bA.collectCollisions)
                 {
