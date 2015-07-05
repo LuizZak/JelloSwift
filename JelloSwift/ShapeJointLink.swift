@@ -12,9 +12,6 @@ import CoreGraphics
 /// Represents a joint link that links to multiple point masses of a body
 public class ShapeJointLink: JointLinkType
 {
-    /// The body that this joint link is linked to
-    private let _body: Body
-    
     /// The point masses this joint is linked to
     private let _pointMasses: [PointMass]
     
@@ -22,10 +19,10 @@ public class ShapeJointLink: JointLinkType
     private let _indices: [Int]
     
     /// Gets the body that this joint link is linked to
-    public var body: Body { return _body }
+    public private(set) var body: Body
     
     /// Gets the type of joint this joint link represents
-    public var linkType: LinkType { return LinkType.Shape }
+    public let linkType: LinkType = LinkType.Shape
     
     /// The offset to apply to the position of this shape joint, in body coordinates
     public var offset: Vector2 = Vector2.Zero
@@ -54,7 +51,7 @@ public class ShapeJointLink: JointLinkType
             return Vector2.Zero
         }
         
-        return rotateVector(offset, angleInRadians: _body.derivedAngle)
+        return rotateVector(offset, angleInRadians: body.derivedAngle)
     }
     
     /// Gets the velocity of the object this joint links to
@@ -95,7 +92,7 @@ public class ShapeJointLink: JointLinkType
     /// Inits a new point joint link with the specified parameters
     public init(body: Body, pointMassIndexes: [Int])
     {
-        _body = body
+        self.body = body
         _pointMasses = pointMassIndexes.map { body.pointMasses[$0] }
         _indices = pointMassIndexes
     }
@@ -127,10 +124,10 @@ public class ShapeJointLink: JointLinkType
         
         for i in _indices
         {
-            let pm = _body.pointMasses[i]
+            let pm = body.pointMasses[i]
             
-            let baseNorm = _body.baseShape.localVertices[i].normalized()
-            let curNorm  = (pm.position - _body.derivedPos).normalized()
+            let baseNorm = body.baseShape.localVertices[i].normalized()
+            let curNorm  = (pm.position - body.derivedPos).normalized()
             
             var thisAngle = atan2(baseNorm.X * curNorm.Y - baseNorm.Y * curNorm.X, baseNorm =* curNorm)
             

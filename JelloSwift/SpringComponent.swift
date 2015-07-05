@@ -15,7 +15,7 @@ public final class SpringComponent: BodyComponent
     public var springCount: Int { return springs.count }
     
     /// The list of internal springs for the body
-    private var springs:[InternalSpring] = []
+    private var springs: [InternalSpring] = []
     /// Whether the shape matching is on - turning on shape matching will make the soft body try to mantain its original
     /// shape as specified by its baseShape
     private var shapeMatchingOn = true
@@ -32,7 +32,7 @@ public final class SpringComponent: BodyComponent
     
     override public func prepare(body: Body)
     {
-        self._buildDefaultSprings()
+        clearAllSprings()
     }
     
     /// Adds an internal spring to this body

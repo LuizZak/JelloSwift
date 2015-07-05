@@ -20,7 +20,7 @@ public final class Body: Equatable
     internal var edges: ContiguousArray<BodyEdge> = []
     
     /// List of point normals
-    internal var pointNormals:ContiguousArray<Vector2> = []
+    internal var pointNormals: ContiguousArray<Vector2> = []
     
     /// List of body joints this body participates in
     public internal(set) var joints: [BodyJoint] = []
@@ -295,6 +295,8 @@ public final class Body: Equatable
             {
                 pointMasses += PointMass(mass: 0.0, position: globalShape[i])
             }
+            
+            components.forEach { $0.prepare(self) }
             
             updateEdges()
         }

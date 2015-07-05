@@ -23,16 +23,15 @@ private struct CoreGraphicsPoly
         return AABB(points: points.map{ Vector2($0) }).cgRect
     }
     
-    init(points: [CGPoint], lineColor: UInt, fillColor: UInt, lineWidth: CGFloat)
+    init(var points: [CGPoint], lineColor: UInt, fillColor: UInt, lineWidth: CGFloat)
     {
         // Wrap the values around so the shape is closed
-        var p = points
-        if let first = p.first
+        if let first = points.first
         {
-            p.append(first)
+            points.append(first)
         }
         
-        self.points = p
+        self.points = points
         self.lineColor = uiColorFromUInt(lineColor)
         self.fillColor = uiColorFromUInt(fillColor)
         self.lineColorUInt = lineColor

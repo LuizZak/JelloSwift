@@ -12,9 +12,6 @@ import CoreGraphics
 /// Represents a joint link that links to an edge of a body
 public class EdgeJointLink: JointLinkType
 {
-    /// The body that this joint link is linked to
-    private let _body: Body
-    
     /// The first point mass this joint is linked to
     private let _pointMass1: PointMass
     /// The second point mass this joint is linked to
@@ -26,10 +23,10 @@ public class EdgeJointLink: JointLinkType
     public var edgeRatio: CGFloat
     
     /// Gets the body that this joint link is linked to
-    public var body: Body { return _body }
+    public private(set) var body: Body
     
     /// Gets the type of joint this joint link represents
-    public var linkType: LinkType { return LinkType.Edge }
+    public let linkType: LinkType = LinkType.Edge
     
     /// Gets the position, in world coordinates, at which this joint links with the underlying body
     public var position: Vector2
@@ -58,9 +55,9 @@ public class EdgeJointLink: JointLinkType
     /// Inits a new edge joint link with the specified parameters
     public init(body: Body, edgeIndex: Int, edgeRatio: CGFloat = 0.5)
     {
-        _body = body
-        _pointMass1 = _body.pointMasses[edgeIndex % _body.pointMasses.count]
-        _pointMass2 = _body.pointMasses[(edgeIndex + 1) % _body.pointMasses.count]
+        self.body = body
+        _pointMass1 = body.pointMasses[edgeIndex % body.pointMasses.count]
+        _pointMass2 = body.pointMasses[(edgeIndex + 1) % body.pointMasses.count]
         
         self.edgeRatio = edgeRatio
     }

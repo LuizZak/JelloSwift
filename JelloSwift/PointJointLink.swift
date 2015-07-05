@@ -14,17 +14,14 @@ public class PointJointLink: JointLinkType
 {
     // This is a very straightforward implementation, it basically delegates the calls to the underlying point mass
     
-    /// The body that this joint link is linked to
-    private let _body: Body
-    
     /// The point mass this joint is linked to
     private let _pointMass: PointMass
     
     /// Gets the body that this joint link is linked to
-    public var body: Body { return _body }
+    public private(set) var body: Body
     
     /// Gets the type of joint this joint link represents
-    public var linkType: LinkType { return LinkType.Point }
+    public let linkType: LinkType = LinkType.Point
     
     /// Gets the position, in world coordinates, at which this joint links with the underlying body
     public var position: Vector2
@@ -53,8 +50,8 @@ public class PointJointLink: JointLinkType
     /// Inits a new point joint link with the specified parameters
     public init(body: Body, pointMassIndex: Int)
     {
-        _body = body
-        _pointMass = _body.pointMasses[pointMassIndex]
+        self.body = body
+        _pointMass = body.pointMasses[pointMassIndex]
     }
     
     /// Appies a given force to the subject of this joint link

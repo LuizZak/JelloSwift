@@ -14,43 +14,40 @@ public class BodyJointLink: JointLinkType
 {
     // Like the PointJointLink, this is a very straightforward implementation, delegating most of the methods to the underlying body object
     
-    /// The body that this joint link is linked to
-    private let _body: Body
-    
     /// Gets the body that this joint link is linked to
-    public var body: Body { return _body }
+    public private(set) var body: Body
     
     /// Gets the type of joint this joint link represents
-    public var linkType: LinkType { return LinkType.Body }
+    public let linkType: LinkType = LinkType.Body
     
     /// Gets the position, in world coordinates, at which this joint links with the underlying body
     public var position: Vector2
     {
-        return _body.derivedPos
+        return body.derivedPos
     }
     
     /// Gets the velocity of the object this joint links to
     public var velocity: Vector2
     {
-        return _body.derivedVel
+        return body.derivedVel
     }
     
     /// Gets the total mass of the subject of this joint link
     public var mass: CGFloat
     {
-        return _body.pointMasses.reduce(0, combine: { $0 + $1.mass })
+        return body.pointMasses.reduce(0, combine: { $0 + $1.mass })
     }
     
     /// Gets a value specifying whether the object referenced by this JointLinkType is static
     public var isStatic: Bool
     {
-        return _body.isStatic || _body.isPined
+        return body.isStatic || body.isPined
     }
     
     /// Inits a new body joint link with the specified parameters
     public init(body: Body)
     {
-        _body = body
+        self.body = body
     }
     
     /// Appies a given force to the subject of this joint link
@@ -58,6 +55,6 @@ public class BodyJointLink: JointLinkType
     /// - parameter force: A force to apply to the subjects of this joint link
     public func applyForce(force: Vector2)
     {
-        _body.addGlobalForce(position, force)
+        self.body.addGlobalForce(position, force)
     }
 }
