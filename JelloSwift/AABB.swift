@@ -109,7 +109,15 @@ public struct AABB
             return false
         }
         
-        return point >= minimum && point <= maximum
+        if(point.X >= minimum.X && point.Y >= minimum.Y)
+        {
+            if(point.X <= maximum.X && point.Y <= maximum.Y)
+            {
+                return true
+            }
+        }
+        
+        return false
     }
     
     public func intersects(box: AABB) -> Bool

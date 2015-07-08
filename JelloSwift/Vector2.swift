@@ -9,7 +9,7 @@
 import CoreGraphics
 
 /// Represents a 2D vector
-public struct Vector2: Comparable, CustomStringConvertible
+public struct Vector2: Equatable, CustomStringConvertible
 {
     /// A zeroed-value Vector2
     public static let Zero = Vector2(0, 0)
@@ -195,10 +195,6 @@ infix operator =/ { associativity left precedence 151 }
 public func ==(lhs: Vector2, rhs: Vector2) -> Bool
 {
     return funcOnVectors(lhs, rhs, ==)
-}
-public func <(lhs: Vector2, rhs: Vector2) -> Bool
-{
-    return funcOnVectors(lhs, rhs, <)
 }
 
 // Unary operators
