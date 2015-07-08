@@ -70,6 +70,14 @@ extension ContiguousArray
 
 extension SequenceType
 {
+    func forEach(@noescape doThis: () -> ())
+    {
+        for _ in self
+        {
+            doThis()
+        }
+    }
+    
     func forEach(@noescape doThis: (element: Self.Generator.Element) -> Void)
     {
         for e in self

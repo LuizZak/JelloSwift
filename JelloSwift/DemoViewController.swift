@@ -253,10 +253,7 @@ class DemoView: UIView, CollisionObserver
         updateDrag()
         
         // Update the physics world
-        for _ in 0..<5
-        {
-            world.update(1.0 / 200)
-        }
+        (0..<5).forEach { self.world.update(1.0 / 200) }
     }
     
     // Updates the dragging functionality
@@ -280,14 +277,8 @@ class DemoView: UIView, CollisionObserver
         
         polyDrawer.reset()
         
-        for joint in world.joints
-        {
-            drawJoint(joint)
-        }
-        for body in world.bodies
-        {
-            drawBody(body)
-        }
+        world.joints.forEach(drawJoint)
+        world.bodies.forEach(drawBody)
         
         drawDrag(context)
         
