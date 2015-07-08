@@ -25,7 +25,7 @@ class DemoViewController: UIViewController
     }
 }
 
-class DemoView: UIView
+class DemoView: UIView, CollisionObserver
 {
     var world: World = World()
     var timer: CADisplayLink! = nil
@@ -51,6 +51,8 @@ class DemoView: UIView
     /// renders, along with the body shape, the body's normals, global shape and axis
     var useDetailedRender = true
     
+    var collisions: [BodyCollisionInformation] = []
+    
     override init(frame: CGRect)
     {
         polyDrawer = PolyDrawer()
@@ -73,6 +75,8 @@ class DemoView: UIView
         
         opaque = false
         backgroundColor = UIColor(white: 0.7, alpha: 1)
+        
+        world.collisionObserver = self
     }
 
     required init(coder aDecoder: NSCoder)
@@ -85,6 +89,10 @@ class DemoView: UIView
         super.init(coder: aDecoder)
         
         initLabels()
+    }
+    
+    func bodiesDidCollide(info: BodyCollisionInformation) {
+        collisions += info
     }
     
     func initLabels()
@@ -282,6 +290,17 @@ class DemoView: UIView
         }
         
         drawDrag(context)
+        
+        // Draw collisions
+        for info in collisions
+        {
+            let pointB = info.hitPt
+            let normal = info.normal
+            
+            polyDrawer.queuePoly([pointB, pointB + normal / 4].map(toScreenCoords).map { $0.cgPoint }, fillColor: 0, strokeColor: 0xFFFF0000, lineWidth: 1)
+        }
+        
+        collisions.removeAll()
         
         polyDrawer.renderOnContext(context)
         polyDrawer.reset()
