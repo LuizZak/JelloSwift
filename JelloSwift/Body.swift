@@ -114,7 +114,7 @@ public final class Body: Equatable
         self.aabb = AABB()
         self.derivedPos = position
         self.derivedAngle = angle
-        self.derivedVel = Vector2()
+        self.derivedVel = Vector2.Zero
         self.derivedOmega = 0
         self.lastAngle = derivedAngle
         self.scale = scale
@@ -287,7 +287,7 @@ public final class Body: Equatable
         {
             pointMasses = []
             edges = []
-            globalShape = [Vector2](count: shape.localVertices.count, repeatedValue: Vector2())
+            globalShape = [Vector2](count: shape.localVertices.count, repeatedValue: Vector2.Zero)
             
             baseShape.transformVertices(&globalShape, worldPos: derivedPos, angleInRadians: derivedAngle, localScale: scale)
             
@@ -534,8 +534,8 @@ public final class Body: Equatable
         
         // basic idea: draw a line from the point to a point known to be outside the body.  count the number of
         // lines in the polygon it intersects.  if that number is odd, we are inside.  if it's even, we are outside.
-        // in this implementation we will always use a line that moves off in the positive X direction from the point
-        // to simplify things.
+        // in this implementation we will always use a line that moves off in the X direction from the point to
+        // simplify things.
         let endPt: Vector2
         
         // line we are testing against goes from pt -> endPt.
@@ -617,18 +617,13 @@ public final class Body: Equatable
         }
         
         // Create and test against a temporary line AABB
-        let lineAABB = AABB(points: [start, end])
-        if(!aabb.intersects(lineAABB))
+        if(!aabb.intersects(AABB(points: [start, end])))
         {
             return false
         }
         
         // Test each edge against the line
-        var p = Vector2()
-        var ua: CGFloat = 0
-        var ub: CGFloat = 0
-        
-        return edges.any { e in lineIntersect(start, ptB: end, ptC: e.start, ptD: e.end, hitPt: &p, Ua: &ua, Ub: &ub) }
+        return edges.any { e in lineIntersect(start, ptB: end, ptC: e.start, ptD: e.end) != nil }
     }
     
     /// Returns whether the given ray collides with this Body, changing the resulting collision vector before returning
@@ -646,12 +641,9 @@ public final class Body: Equatable
         }
         
         // Test each edge against the line
-        var p = Vector2()
-        var p1 = Vector2()
-        var p2 = Vector2()
+        var p1 = Vector2.Zero
+        var p2 = Vector2.Zero
         var col = false
-        var ua: CGFloat = 0
-        var ub: CGFloat = 0
         
         res = pt2
         
@@ -660,7 +652,7 @@ public final class Body: Equatable
             p1 = e.start
             p2 = e.end
             
-            if(lineIntersect(pt1, ptB: pt2, ptC: p1, ptD: p2, hitPt: &p, Ua: &ua, Ub: &ub))
+            if let (p, _, _) = lineIntersect(pt1, ptB: pt2, ptC: p1, ptD: p2)
             {
                 res = p
                 col = true
@@ -765,8 +757,8 @@ public final class Body: Equatable
         let c = pointMasses.count
         for i in 0..<c
         {
-            var tempHit = Vector2()
-            var tempNorm = Vector2()
+            var tempHit = Vector2.Zero
+            var tempNorm = Vector2.Zero
             var tempEdgeD: CGFloat = 0
             
             let dist = getClosestPointOnEdgeSquared(pt, i, &tempHit, &tempNorm, &tempEdgeD)
@@ -812,7 +804,7 @@ public final class Body: Equatable
         var found = false
         var closestP1 = pointMasses[0]
         var closestP2 = pointMasses[0]
-        var closestV = Vector2()
+        var closestV = Vector2.Zero
         var closestAdotB: CGFloat = 0
         var closestD = CGFloat.infinity
         

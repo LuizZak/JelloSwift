@@ -20,7 +20,7 @@ private struct CoreGraphicsPoly
     
     var bounds: CGRect
     {
-        return AABB(points: points.map{ Vector2($0) }).cgRect
+        return AABB(points: points.map { Vector2($0) }).cgRect
     }
     
     init(var points: [CGPoint], lineColor: UInt, fillColor: UInt, lineWidth: CGFloat)
@@ -32,8 +32,8 @@ private struct CoreGraphicsPoly
         }
         
         self.points = points
-        self.lineColor = uiColorFromUInt(lineColor)
-        self.fillColor = uiColorFromUInt(fillColor)
+        self.lineColor = colorFromUInt(lineColor)
+        self.fillColor = colorFromUInt(fillColor)
         self.lineColorUInt = lineColor
         self.fillColorUInt = fillColor
         self.lineWidth = lineWidth
@@ -74,7 +74,7 @@ class PolyDrawer
             let path = CGPathCreateMutable()
             
             CGPathAddLines(path, nil, poly.points, poly.points.count)
-            
+          
             CGContextSetStrokeColorWithColor(context, poly.lineColor.CGColor)
             CGContextSetFillColorWithColor(context, poly.fillColor.CGColor)
             CGContextSetLineWidth(context, poly.lineWidth)
@@ -110,12 +110,12 @@ class PolyDrawer
     }
 }
 
-func uiColorFromUInt(color: UInt) -> UIColor
+func colorFromUInt(color: UInt) -> UIColor
 {
-    let a: CGFloat = CGFloat((UInt(color >> 24) & UInt(0xFF))) / 255.0
-    let r: CGFloat = CGFloat((UInt(color >> 16) & UInt(0xFF))) / 255.0
-    let g: CGFloat = CGFloat((UInt(color >> 8) & UInt(0xFF))) / 255.0
-    let b: CGFloat = CGFloat((color & UInt(0xFF))) / 255.0
+    let a = CGFloat((color >> 24) & 0xFF) / 255.0
+    let r = CGFloat((color >> 16) & 0xFF) / 255.0
+    let g = CGFloat((color >> 8) & 0xFF) / 255.0
+    let b = CGFloat(color & 0xFF) / 255.0
     
     return UIColor(red: r, green: g, blue: b, alpha: a)
 }

@@ -19,8 +19,8 @@ public class World
     
     // PRIVATE VARIABLES
     private var worldLimits = AABB()
-    private var worldSize = Vector2()
-    private var worldGridStep = Vector2()
+    private var worldSize = Vector2.Zero
+    private var worldGridStep = Vector2.Zero
     
     public var penetrationThreshold: CGFloat = 0
     public var penetrationCount = 0
@@ -368,7 +368,6 @@ public class World
         {
             let pt = pmA.position
             
-            // early out - if this point is not inside bodyB, skip it!
             if (!bB.contains(pt))
             {
                 continue
@@ -390,8 +389,8 @@ public class World
                 let b1 = j
                 let b2 = (j + 1) % (bBpCount)
                 
-                var normal = Vector2()
-                var hitPt = Vector2()
+                var normal = Vector2.Zero
+                var hitPt = Vector2.Zero
                 var edgeD: CGFloat = 0
                 
                 // test against this edge.

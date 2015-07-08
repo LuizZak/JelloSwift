@@ -267,24 +267,33 @@ public func %(lhs: Vector2, rhs: Vector2) -> Vector2
 // CGFloat interaction
 public func +(lhs: Vector2, rhs: CGFloat) -> Vector2
 {
-    return Vector2(lhs.X + rhs, lhs.Y + rhs)
+    return funcOnVectors(lhs, rhs, +)
 }
 public func -(lhs: Vector2, rhs: CGFloat) -> Vector2
 {
-    return Vector2(lhs.X - rhs, lhs.Y - rhs)
+    return funcOnVectors(lhs, rhs, -)
 }
 public func *(lhs: Vector2, rhs: CGFloat) -> Vector2
 {
-    return Vector2(lhs.X * rhs, lhs.Y * rhs)
+    return funcOnVectors(lhs, rhs, *)
 }
 public func /(lhs: Vector2, rhs: CGFloat) -> Vector2
 {
-    return Vector2(lhs.X / rhs, lhs.Y / rhs)
+    return funcOnVectors(lhs, rhs, /)
+}
+public func %(lhs: Vector2, rhs: CGFloat) -> Vector2
+{
+    return funcOnVectors(lhs, rhs, %)
 }
 
 private func funcOnVectors(lhs: Vector2, _ rhs: Vector2, _ f: (CGFloat, CGFloat) -> CGFloat) -> Vector2
 {
     return Vector2(f(lhs.X, rhs.X), f(lhs.Y, rhs.Y))
+}
+
+private func funcOnVectors(lhs: Vector2, _ rhs: CGFloat, _ f: (CGFloat, CGFloat) -> CGFloat) -> Vector2
+{
+    return Vector2(f(lhs.X, rhs), f(lhs.Y, rhs))
 }
 
 private func funcOnVectors(lhs: Vector2, _ rhs: Vector2, _ f: (CGFloat, CGFloat) -> Bool) -> Bool

@@ -19,7 +19,7 @@ class ClosedShapeTests: XCTestCase
         shape.begin()
         shape.addVertex(Vector2(0, 0))
         shape.addVertex(Vector2(1, 0))
-        shape.addVertex(Vector2(1, 1))
+        shape.addVertex(Vector2.One)
         shape.addVertex(Vector2(0, 1))
         shape.finish(recenter: true)
         
@@ -41,7 +41,7 @@ class ClosedShapeTests: XCTestCase
         shape.begin()
         shape.addVertex(Vector2(0, 0))
         shape.addVertex(Vector2(1, 0))
-        shape.addVertex(Vector2(1, 1))
+        shape.addVertex(Vector2.One)
         shape.addVertex(Vector2(0, 1))
         shape.finish(recenter: true)
         
@@ -63,7 +63,7 @@ class ClosedShapeTests: XCTestCase
         shape.begin()
         shape.addVertex(Vector2(0, 0))
         shape.addVertex(Vector2(1, 0))
-        shape.addVertex(Vector2(1, 1))
+        shape.addVertex(Vector2.One)
         shape.addVertex(Vector2(0, 1))
         shape.finish(recenter: true)
         

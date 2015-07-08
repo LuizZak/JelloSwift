@@ -119,15 +119,15 @@ class DemoView: UIView
         pb2.getComponentType(SpringComponent)?.setShapeMatchingConstants(200, 10)
         
         // Create some free boxes around the level
-        createBox(toWorldCoords(Vector2(size.width / 2, size.height / 3)), size: Vector2(1, 1))
-        createBox(toWorldCoords(Vector2(size.width * 0.4, size.height / 3)), size: Vector2(1, 1))
-        let box3 = createBox(toWorldCoords(Vector2(size.width * 0.6, size.height / 3)), size: Vector2(1, 1))
+        createBox(toWorldCoords(Vector2(size.width / 2, size.height / 3)), size: Vector2.One)
+        createBox(toWorldCoords(Vector2(size.width * 0.4, size.height / 3)), size: Vector2.One)
+        let box3 = createBox(toWorldCoords(Vector2(size.width * 0.6, size.height / 3)), size: Vector2.One)
         
         // Lock the rotation of the third box
         box3.freeRotate = false
         
         // Create a pinned box in the middle of the level
-        let pinnedBox = createBox(toWorldCoords(Vector2(size.width / 2, size.height / 2)), size: Vector2(1, 1), pinned: true)
+        let pinnedBox = createBox(toWorldCoords(Vector2(size.width / 2, size.height / 2)), size: Vector2.One, pinned: true)
         // Increase the velocity damping of the pinned box so it doesn't jiggles around nonstop
         pinnedBox.velDamping = 0.99
         
@@ -474,7 +474,7 @@ class DemoView: UIView
     func createBallBoxLinkedStructure(pos: Vector2)
     {
         let b1 = createBouncyBall(pos - Vector2(0, 2), pinned: false, kinematic: false, radius: 1, mass: 1)
-        let b2 = createBox(pos, size: Vector2(1, 1), pinned: true, kinematic: false, mass: 1)
+        let b2 = createBox(pos, size: Vector2.One, pinned: true, kinematic: false, mass: 1)
         
         // Create the joint links
         let l1 = BodyJointLink(body: b1)

@@ -15,8 +15,8 @@ public struct AABB
     public var validity = PointValidity.Invalid
     
     /// Minimum and maximum points for this bounding box
-    public var minimum = Vector2()
-    public var maximum = Vector2()
+    public var minimum = Vector2.Zero
+    public var maximum = Vector2.Zero
     
     /// Gets the X position of this AABB
     public var x: CGFloat { return minimum.X }
@@ -31,7 +31,7 @@ public struct AABB
     /// Gets the middle X position of this AABB
     public var midX: CGFloat { return ((minimum + maximum) / 2).X }
     /// Gets the middle Y position of this AABB
-    public var midY: CGFloat { return ((minimum + maximum) / 2).X }
+    public var midY: CGFloat { return ((minimum + maximum) / 2).Y }
     
     // This guy has to be lower case otherwise sourcekit crashes
     /// Gets a CGRect that represents the boundaries of this AABB object

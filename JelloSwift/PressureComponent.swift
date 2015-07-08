@@ -18,7 +18,7 @@ public final class PressureComponent: BodyComponent
     
     override public func prepare(body: Body)
     {
-        normalList = [Vector2](count: body.pointMasses.count, repeatedValue: Vector2())
+        normalList = [Vector2](count: body.pointMasses.count, repeatedValue: Vector2.Zero)
     }
     
     override public func accumulateInternalForces()
@@ -46,7 +46,7 @@ public final class PressureComponent: BodyComponent
             edge1N = edge2N
         }
         
-        volume = max(0.5, polygonArea(body.vertices))
+        volume = max(0.5, polygonArea(body.pointMasses))
         
         // now loop through, adding forces!
         let invVolume = 1 / volume

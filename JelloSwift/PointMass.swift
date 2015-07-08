@@ -24,7 +24,7 @@ public final class PointMass
     /// The global force of the point mass
     public var force: Vector2 = Vector2.Zero
     
-    public init(mass: CGFloat = 0, position: Vector2 = Vector2())
+    public init(mass: CGFloat = 0, position: Vector2 = Vector2.Zero)
     {
         self.mass = mass
         self.position = position
@@ -44,7 +44,7 @@ public final class PointMass
             position += (velocity * elapsed)
         }
         
-        force = Vector2()
+        force = Vector2.Zero
     }
     
     // Applies the given force vector to this point mass
