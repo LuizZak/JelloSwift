@@ -38,11 +38,11 @@ public class GravityComponentCreator: BodyComponentCreator
     
     public required init(gravity: Vector2 = Vector2(0, -9.8))
     {
-        self.vector = gravity
+        vector = gravity
         
         super.init()
         
-        self.bodyComponentClass = GravityComponent.self
+        bodyComponentClass = GravityComponent.self
     }
     
     public override func prepareBodyAfterComponent(body: Body)

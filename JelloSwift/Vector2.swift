@@ -20,42 +20,42 @@ public struct Vector2: Equatable, CustomStringConvertible
     public var Y: CGFloat
     public var description: String { return toString() }
     
-    public var cgPoint: CGPoint { return CGPoint(x: self.X, y: self.Y) }
+    public var cgPoint: CGPoint { return CGPoint(x: X, y: Y) }
     
     public init()
     {
-        self.X = 0
-        self.Y = 0
+        X = 0
+        Y = 0
     }
     
     public init(_ x: Int, _ y: Int)
     {
-        self.X = CGFloat(x)
-        self.Y = CGFloat(y)
+        X = CGFloat(x)
+        Y = CGFloat(y)
     }
     
     public init(_ x:CGFloat, _ y:CGFloat)
     {
-        self.X = x
-        self.Y = y
+        X = x
+        Y = y
     }
     
     public init(_ x:Double, _ y:Double)
     {
-        self.X = CGFloat(x)
-        self.Y = CGFloat(y)
+        X = CGFloat(x)
+        Y = CGFloat(y)
     }
     
     public init(value: CGFloat)
     {
-        self.X = value
-        self.Y = value
+        X = value
+        Y = value
     }
     
     public init(_ point: CGPoint)
     {
-        self.X = point.x
-        self.Y = point.y
+        X = point.x
+        Y = point.y
     }
     
     /// Returns the angle in radians of this Vector2

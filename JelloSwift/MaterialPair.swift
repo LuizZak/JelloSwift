@@ -22,10 +22,10 @@ public struct MaterialPair
     
     public init()
     {
-        self.collide = true
-        self.friction = 0.3
-        self.elasticity = 0.2
-        self.collisionFilter = defaultCollisionFilter
+        collide = true
+        friction = 0.3
+        elasticity = 0.2
+        collisionFilter = defaultCollisionFilter
     }
 }
 

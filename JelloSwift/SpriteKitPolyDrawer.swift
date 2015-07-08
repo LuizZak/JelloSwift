@@ -48,24 +48,24 @@ class SpriteKitPolyDrawer
     {
         self.scene = scene
         
-        self.canvas = SKSpriteNode()
-        self.canvas.anchorPoint = CGPointZero
+        canvas = SKSpriteNode()
+        canvas.anchorPoint = CGPointZero
         self.scene.addChild(canvas)
         
-        self.pool = ShapePool(startSize: 5)
+        pool = ShapePool(startSize: 5)
     }
     
     func queuePoly(vertices: [CGPoint], fillColor: UInt, strokeColor: UInt)
     {
         let poly:Poly = Poly(points: vertices, lineColor: skColorFromUInt(strokeColor), fillColor: skColorFromUInt(fillColor))
         
-        self.polys += poly
+        polys += poly
     }
     
     /// Flushes all the polygons currently queued and draw them on the screen
     func renderPolys()
     {
-        let area = CGRect(origin: CGPoint(), size: self.scene.size)
+        let area = CGRect(origin: CGPoint(), size: scene.size)
         
         canvas.removeAllChildren()
         
@@ -161,11 +161,11 @@ private class ShapePool
     init(startSize: Int)
     {
         // Init the starting pool
-        self.shapePool = []
+        shapePool = []
         
         for _ in 0..<startSize
         {
-            self.shapePool += SKShapeNode()
+            shapePool += SKShapeNode()
         }
     }
     

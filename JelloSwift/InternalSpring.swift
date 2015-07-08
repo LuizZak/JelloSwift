@@ -20,8 +20,8 @@ public struct InternalSpring
     
     public init(_ pmA: PointMass, _ pmB: PointMass, _ distance: CGFloat = 0, _ springK: CGFloat, _ springD: CGFloat)
     {
-        self.pointMassA = pmA
-        self.pointMassB = pmB
+        pointMassA = pmA
+        pointMassB = pmB
         self.distance = distance
         self.springK = springK
         self.springD = springD

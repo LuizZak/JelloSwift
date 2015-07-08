@@ -111,18 +111,18 @@ public final class Body: Equatable
     
     public init(world: World?, shape: ClosedShape, pointMasses: [CGFloat] = [1], position: Vector2 = Vector2.Zero, angle: CGFloat = 0, scale: Vector2 = Vector2.One, kinematic: Bool = false, components: [BodyComponentCreator] = [])
     {
-        self.aabb = AABB()
-        self.derivedPos = position
-        self.derivedAngle = angle
-        self.derivedVel = Vector2.Zero
-        self.derivedOmega = 0
-        self.lastAngle = derivedAngle
+        aabb = AABB()
+        derivedPos = position
+        derivedAngle = angle
+        derivedVel = Vector2.Zero
+        derivedOmega = 0
+        lastAngle = derivedAngle
         self.scale = scale
-        self.material = 0
-        self.isStatic = false
-        self.isKinematic = kinematic
-        self.render = true
-        self.setShape(shape)
+        material = 0
+        isStatic = false
+        isKinematic = kinematic
+        render = true
+        setShape(shape)
         
         var points = pointMasses
         
@@ -136,7 +136,7 @@ public final class Body: Equatable
         
         setMassFromList(points)
         
-        self.updateAABB(0, forceUpdate: true)
+        updateAABB(0, forceUpdate: true)
         
         if let w = world
         {
@@ -152,7 +152,7 @@ public final class Body: Equatable
     {
         let instance = componentType.init(body: self)
         
-        self.components += instance
+        components += instance
         
         instance.prepare(self)
         
@@ -163,7 +163,7 @@ public final class Body: Equatable
     /// If no matching components are found, nil is returned instead
     public func getComponentType<T: BodyComponent>(componentType: T.Type) -> T?
     {
-        for comp in self.components
+        for comp in components
         {
             if(comp is T)
             {
@@ -177,11 +177,11 @@ public final class Body: Equatable
     /// Removes a component from this body
     public func removeComponentType<T: BodyComponent>(componentType: T.Type)
     {
-        for comp in self.components
+        for comp in components
         {
             if(comp is T)
             {
-                self.components -= comp
+                components -= comp
                 break
             }
         }
@@ -313,7 +313,7 @@ public final class Body: Equatable
     /// Sets the mass for a single PointMass individually
     public func setMassIndividual(index: Int, mass: CGFloat)
     {
-        self.pointMasses[index].mass = mass
+        pointMasses[index].mass = mass
     }
     
     /// Sets the mass for all the point masses from a list of masses
@@ -321,14 +321,14 @@ public final class Body: Equatable
     {
         isStatic = true
         
-        for i in 0..<min(masses.count, self.pointMasses.count)
+        for i in 0..<min(masses.count, pointMasses.count)
         {
             if(!isinf(masses[i]))
             {
                 isStatic = false
             }
             
-            self.pointMasses[i].mass = masses[i]
+            pointMasses[i].mass = masses[i]
         }
     }
     

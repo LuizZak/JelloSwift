@@ -44,22 +44,22 @@ public struct AABB
     
     public init(min: Vector2, max: Vector2)
     {
-        self.validity = PointValidity.Valid
+        validity = PointValidity.Valid
       
-        self.minimum = min
-        self.maximum = max
+        minimum = min
+        maximum = max
     }
     
     public init(points: [Vector2])
     {
-        self.validity = PointValidity.Invalid
-        self.expandToInclude(points)
+        validity = PointValidity.Invalid
+        expandToInclude(points)
     }
     
     public mutating func clear()
     {
-        self.minimum = Vector2.Zero
-        self.maximum = Vector2.Zero
+        minimum = Vector2.Zero
+        maximum = Vector2.Zero
         
         validity = PointValidity.Invalid
     }
@@ -68,15 +68,15 @@ public struct AABB
     {
         if(validity == PointValidity.Invalid)
         {
-            self.minimum = point
-            self.maximum = point
+            minimum = point
+            maximum = point
             
             validity = PointValidity.Valid
         }
         else
         {
-            self.minimum = min(self.minimum, point)
-            self.maximum = max(self.maximum, point)
+            minimum = min(minimum, point)
+            maximum = max(maximum, point)
         }
     }
     
@@ -89,22 +89,22 @@ public struct AABB
         
         if(validity == PointValidity.Invalid)
         {
-            self.minimum = points[0]
-            self.maximum = points[0]
+            minimum = points[0]
+            maximum = points[0]
             
             validity = PointValidity.Valid
         }
         
         for p in points
         {
-            self.minimum = min(self.minimum, p)
-            self.maximum = max(self.maximum, p)
+            minimum = min(minimum, p)
+            maximum = max(maximum, p)
         }
     }
     
     public func contains(point: Vector2) -> Bool
     {
-        if(self.validity == PointValidity.Invalid)
+        if(validity == PointValidity.Invalid)
         {
             return false
         }
@@ -122,7 +122,7 @@ public struct AABB
     
     public func intersects(box: AABB) -> Bool
     {
-        if(self.validity == .Invalid || box.validity == .Invalid)
+        if(validity == .Invalid || box.validity == .Invalid)
         {
             return false
         }

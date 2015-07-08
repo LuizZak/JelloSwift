@@ -73,7 +73,7 @@ public class PressureComponentCreator : BodyComponentCreator
         
         super.init()
         
-        self.bodyComponentClass = PressureComponent.self
+        bodyComponentClass = PressureComponent.self
     }
     
     public override func prepareBodyAfterComponent(body: Body)

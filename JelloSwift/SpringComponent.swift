@@ -188,7 +188,7 @@ public class SpringComponentCreator : BodyComponentCreator
         
         super.init()
         
-        self.bodyComponentClass = SpringComponent.self
+        bodyComponentClass = SpringComponent.self
     }
     
     public override func prepareBodyAfterComponent(body: Body)
@@ -197,7 +197,7 @@ public class SpringComponentCreator : BodyComponentCreator
             return
         }
         
-        comp.shapeMatchingOn = self.shapeMatchingOn
+        comp.shapeMatchingOn = shapeMatchingOn
         
         comp.setEdgeSpringConstants(edgeSpringK, edgeSpringDamp)
         comp.setShapeMatchingConstants(shapeSpringK, shapeSpringDamp)

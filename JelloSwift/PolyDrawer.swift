@@ -34,8 +34,8 @@ private struct CoreGraphicsPoly
         self.points = points
         self.lineColor = colorFromUInt(lineColor)
         self.fillColor = colorFromUInt(fillColor)
-        self.lineColorUInt = lineColor
-        self.fillColorUInt = fillColor
+        lineColorUInt = lineColor
+        fillColorUInt = fillColor
         self.lineWidth = lineWidth
     }
 }

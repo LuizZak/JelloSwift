@@ -32,7 +32,7 @@ extension Array
 {
     mutating func remove<T: Equatable>(object : T)
     {
-        for i in 0..<self.count
+        for i in 0..<count
         {
             guard let item = self[i] as? T else {
                 continue
@@ -40,7 +40,7 @@ extension Array
             
             if(item == object)
             {
-                self.removeAtIndex(i)
+                removeAtIndex(i)
                 
                 return
             }
@@ -52,7 +52,7 @@ extension ContiguousArray
 {
     mutating func remove<T: Equatable>(object : T)
     {
-        for i in 0..<self.count
+        for i in 0..<count
         {
             guard let item = self[i] as? T else {
                 continue
@@ -60,7 +60,7 @@ extension ContiguousArray
             
             if(item == object)
             {
-                self.removeAtIndex(i)
+                removeAtIndex(i)
                 
                 return
             }
@@ -80,7 +80,7 @@ extension SequenceType
     
     func forEach(@noescape doThis: (index: Int, element: Self.Generator.Element) -> Void)
     {
-        for e in self.enumerate()
+        for e in enumerate()
         {
             doThis(e)
         }

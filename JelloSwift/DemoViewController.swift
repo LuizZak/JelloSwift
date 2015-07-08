@@ -14,7 +14,7 @@ class DemoViewController: UIViewController
     {
         super.viewDidLoad()
         
-        let demo = DemoView(frame: self.view.frame)
+        let demo = DemoView(frame: view.frame)
         view.addSubview(demo)
     }
 
@@ -106,7 +106,7 @@ class DemoView: UIView, CollisionObserver
     
     func initializeLevel()
     {
-        let size = self.frame.size
+        let size = frame.size
         
         // Create basic shapes
         let vec = toWorldCoords(Vector2(size.width, 400) / 2)
@@ -226,7 +226,7 @@ class DemoView: UIView, CollisionObserver
     {
         // Drawing code
         autoreleasepool {
-            self.render()
+            render()
         }
     }
     
@@ -278,7 +278,7 @@ class DemoView: UIView, CollisionObserver
         
         let context = UIGraphicsGetCurrentContext()
         
-        self.polyDrawer.reset()
+        polyDrawer.reset()
         
         for joint in world.joints
         {
@@ -321,7 +321,7 @@ class DemoView: UIView, CollisionObserver
         dispatch_async(dispatch_get_main_queue()) {
             self.update()
         }
-        self.setNeedsDisplay()
+        setNeedsDisplay()
     }
     
     /// Renders the dragging shape line

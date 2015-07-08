@@ -28,8 +28,8 @@ public struct BodyCollisionInformation: Equatable
         self.bodyA = bodyA
         self.bodyApm = bodyApm
         self.bodyB = bodyB
-        self.bodyBpmA = -1
-        self.bodyBpmB = -1
+        bodyBpmA = -1
+        bodyBpmB = -1
     }
     
     public init(bodyA: Body, bodyApm: Int, bodyB: Body, bodyBpmA: Int, bodyBpmB: Int)
