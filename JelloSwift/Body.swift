@@ -204,14 +204,16 @@ public final class Body: Equatable
             pointNormals = pointNormals.dynamicType.init(count: c, repeatedValue: Vector2.Zero)
         }
         
+        guard var prev = edges.last else { return }
+        
         for (i, curEdge) in edges.enumerate()
         {
-            let prev = (i - 1) < 0 ? c - 1 : i - 1
-            
-            let edge1N = edges[prev].difference
+            let edge1N = prev.difference
             let edge2N = curEdge.difference
             
             pointNormals[i] = (edge1N + edge2N).perpendicular().normalized()
+            
+            prev = curEdge
         }
     }
     

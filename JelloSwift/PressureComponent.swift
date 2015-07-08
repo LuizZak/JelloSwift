@@ -14,18 +14,16 @@ public final class PressureComponent: BodyComponent
     // PRIVATE VARIABLES
     public var volume: CGFloat = 0
     public var gasAmmount: CGFloat = 0
-    public var normalList: [Vector2] = []
     
     override public func prepare(body: Body)
     {
-        normalList = [Vector2](count: body.pointMasses.count, repeatedValue: Vector2.Zero)
+        
     }
     
     override public func accumulateInternalForces()
     {
         super.accumulateInternalForces()
-        // internal forces based on pressure equations.  we need 2 loops to do this.  one to find the overall volume of the
-        // body, and 1 to apply forces. we will need the normals for the edges in both loops, so we will cache them and remember them.
+        
         volume = 0
         
         let c = body.pointMasses.count
@@ -33,17 +31,6 @@ public final class PressureComponent: BodyComponent
         if(c < 1)
         {
             return
-        }
-        
-        var edge1N = body.edges.last!.difference
-        
-        for i in 0..<c
-        {
-            let edge2N = body.edges[i].difference
-            
-            normalList[i] = (edge1N + edge2N).perpendicular().normalized()
-            
-            edge1N = edge2N
         }
         
         volume = max(0.5, polygonArea(body.pointMasses))
@@ -54,10 +41,10 @@ public final class PressureComponent: BodyComponent
         for (i, e) in body.edges.enumerate()
         {
             let j = (i + 1) % c
-            let pressureV = (invVolume * e.length * (gasAmmount))
+            let pressureV = (invVolume * e.length * gasAmmount)
             
-            body.pointMasses[i].force += normalList[i] * pressureV
-            body.pointMasses[j].force += normalList[j] * pressureV
+            body.pointMasses[i].force += body.pointNormals[i] * pressureV
+            body.pointMasses[j].force += body.pointNormals[j] * pressureV
         }
     }
 }

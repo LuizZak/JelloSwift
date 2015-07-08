@@ -364,12 +364,14 @@ class DemoView: UIView, CollisionObserver
         }
         
         // Draw normals, for pressure bodies
-        if let pComp = body.getComponentType(PressureComponent)
+        if body.getComponentType(PressureComponent) != nil
         {
-            for (i, p) in shapePoints.enumerate()
+            for (i, normal) in body.pointNormals.enumerate()
             {
+                let p = shapePoints[i]
+                
                 let s = toScreenCoords(p).cgPoint
-                let e = toScreenCoords(p + pComp.normalList[i] / 3).cgPoint
+                let e = toScreenCoords(p + normal / 3).cgPoint
                 polyDrawer.queuePoly([s, e], fillColor: 0, strokeColor: 0xFFEC33EC, lineWidth: 1)
             }
         }
