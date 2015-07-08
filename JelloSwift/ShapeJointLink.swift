@@ -22,10 +22,10 @@ public class ShapeJointLink: JointLinkType
     public private(set) var body: Body
     
     /// Gets the type of joint this joint link represents
-    public let linkType: LinkType = LinkType.Shape
+    public let linkType = LinkType.Shape
     
     /// The offset to apply to the position of this shape joint, in body coordinates
-    public var offset: Vector2 = Vector2.Zero
+    public var offset = Vector2.Zero
     
     /// Gets the position, in world coordinates, at which this joint links with the underlying body
     public var position: Vector2

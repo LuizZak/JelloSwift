@@ -12,7 +12,7 @@ import CoreGraphics
 public struct MaterialPair
 {
     // Whether the collision between the two bodies should happen
-    public var collide: Bool = true
+    public var collide = true
     // The elasticity of the point mass when bouncing off the bodies
     public var elasticity: CGFloat = 0.0
     // The relative friction between the two bodies

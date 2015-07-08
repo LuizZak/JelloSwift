@@ -50,7 +50,7 @@ class PolyDrawer
     
     func queuePoly(vertices: [CGPoint], fillColor: UInt, strokeColor: UInt, lineWidth: CGFloat = 3)
     {
-        let poly:CoreGraphicsPoly = CoreGraphicsPoly(points: vertices, lineColor: strokeColor, fillColor: fillColor, lineWidth: lineWidth)
+        let poly = CoreGraphicsPoly(points: vertices, lineColor: strokeColor, fillColor: fillColor, lineWidth: lineWidth)
         
         self.polys += poly
     }

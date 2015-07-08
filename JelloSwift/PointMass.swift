@@ -18,11 +18,11 @@ public final class PointMass
     public var mass: CGFloat = 1
     
     /// The global position of the point, in world coordinates
-    public var position: Vector2 = Vector2.Zero
+    public var position = Vector2.Zero
     /// The global velocity of the point mass
-    public var velocity: Vector2 = Vector2.Zero
+    public var velocity = Vector2.Zero
     /// The global force of the point mass
-    public var force: Vector2 = Vector2.Zero
+    public var force = Vector2.Zero
     
     public init(mass: CGFloat = 0, position: Vector2 = Vector2.Zero)
     {

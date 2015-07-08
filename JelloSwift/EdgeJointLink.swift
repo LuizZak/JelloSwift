@@ -26,7 +26,7 @@ public class EdgeJointLink: JointLinkType
     public private(set) var body: Body
     
     /// Gets the type of joint this joint link represents
-    public let linkType: LinkType = LinkType.Edge
+    public let linkType = LinkType.Edge
     
     /// Gets the position, in world coordinates, at which this joint links with the underlying body
     public var position: Vector2

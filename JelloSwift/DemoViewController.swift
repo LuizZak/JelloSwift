@@ -27,22 +27,22 @@ class DemoViewController: UIViewController
 
 class DemoView: UIView, CollisionObserver
 {
-    var world: World = World()
+    var world = World()
     var timer: CADisplayLink! = nil
     var polyDrawer: PolyDrawer
     
-    var updateLabelStopwatch: Stopwatch = Stopwatch(startTime: 0)
-    var renderLabelStopwatch: Stopwatch = Stopwatch(startTime: 0)
+    var updateLabelStopwatch = Stopwatch(startTime: 0)
+    var renderLabelStopwatch = Stopwatch(startTime: 0)
     
     let updateInterval = 0.5
     
-    var inputMode: InputMode = InputMode.DragBody
+    var inputMode = InputMode.DragBody
     
     // The current point being dragged around
     var draggingPoint: PointMass? = nil
     
     // The location of the user's finger, in physics world coordinates
-    var fingerLocation: Vector2 = Vector2.Zero
+    var fingerLocation = Vector2.Zero
     
     var physicsTimeLabel: UILabel
     var renderTimeLabel: UILabel

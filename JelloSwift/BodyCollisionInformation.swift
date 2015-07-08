@@ -18,9 +18,9 @@ public struct BodyCollisionInformation: Equatable
     public var bodyBpmA: Int = -1
     public var bodyBpmB: Int = -1
     
-    public var hitPt: Vector2 = Vector2.Zero
+    public var hitPt = Vector2.Zero
     public var edgeD: CGFloat = 0
-    public var normal: Vector2 = Vector2.Zero
+    public var normal = Vector2.Zero
     public var penetration: CGFloat = 0
     
     public init(bodyA: Body, bodyApm: Int, bodyB: Body)

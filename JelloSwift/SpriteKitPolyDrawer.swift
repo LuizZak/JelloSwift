@@ -57,7 +57,7 @@ class SpriteKitPolyDrawer
     
     func queuePoly(vertices: [CGPoint], fillColor: UInt, strokeColor: UInt)
     {
-        let poly:Poly = Poly(points: vertices, lineColor: skColorFromUInt(strokeColor), fillColor: skColorFromUInt(fillColor))
+        let poly = Poly(points: vertices, lineColor: skColorFromUInt(strokeColor), fillColor: skColorFromUInt(fillColor))
         
         polys += poly
     }
@@ -190,10 +190,10 @@ private class ShapePool
 
 func skColorFromUInt(color: UInt) -> SKColor
 {
-    let a: CGFloat = CGFloat((UInt(color >> 24) & UInt(0xFF))) / 255.0
-    let r: CGFloat = CGFloat((UInt(color >> 16) & UInt(0xFF))) / 255.0
-    let g: CGFloat = CGFloat((UInt(color >> 8) & UInt(0xFF))) / 255.0
-    let b: CGFloat = CGFloat((color & UInt(0xFF))) / 255.0
+    let a = CGFloat((UInt(color >> 24) & UInt(0xFF))) / 255.0
+    let r = CGFloat((UInt(color >> 16) & UInt(0xFF))) / 255.0
+    let g = CGFloat((UInt(color >> 8) & UInt(0xFF))) / 255.0
+    let b = CGFloat((color & UInt(0xFF))) / 255.0
     
     return SKColor(red: r, green: g, blue: b, alpha: a)
 }
