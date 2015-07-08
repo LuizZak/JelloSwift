@@ -313,15 +313,15 @@ public class World
                     continue
                 }
                 
-                // early out - these bodies materials are set NOT to collide
-                if (!materialPairs[body1.material][body2.material].collide)
+                // broad-phase collision via AABB.
+                // early out
+                if(!body1.aabb.intersects(body2.aabb))
                 {
                     continue
                 }
                 
-                // broad-phase collision via AABB.
-                // early out
-                if(!body1.aabb.intersects(body2.aabb))
+                // early out - these bodies materials are set NOT to collide
+                if (!materialPairs[body1.material][body2.material].collide)
                 {
                     continue
                 }

@@ -119,7 +119,17 @@ public struct AABB
             return false
         }
         
-        return self.minimum <= box.maximum && self.maximum >= box.minimum
+        // X overlap check.
+        if((minimum.X <= box.maximum.X) && (maximum.X >= box.minimum.X))
+        {
+            // Y overlap check
+            if((minimum.Y <= box.maximum.Y) && (maximum.Y >= box.minimum.Y))
+            {
+                return true;
+            }
+        }
+        
+        return false;
     }
 }
 

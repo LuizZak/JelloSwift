@@ -21,7 +21,7 @@ class ClosedShapeTests: XCTestCase
         shape.addVertex(Vector2(1, 0))
         shape.addVertex(Vector2.One)
         shape.addVertex(Vector2(0, 1))
-        shape.finish(recenter: true)
+        shape.finish(true)
         
         // Create the transformed shape with no modifications
         var transformed = shape.transformVertices(Vector2.Zero, angleInRadians: 0, localScale: Vector2.One)
@@ -43,7 +43,7 @@ class ClosedShapeTests: XCTestCase
         shape.addVertex(Vector2(1, 0))
         shape.addVertex(Vector2.One)
         shape.addVertex(Vector2(0, 1))
-        shape.finish(recenter: true)
+        shape.finish(true)
         
         // Create the transformed shape with no modifications
         var transformed = shape.transformVertices(Vector2.One, angleInRadians: 0, localScale: Vector2.One)
@@ -65,7 +65,7 @@ class ClosedShapeTests: XCTestCase
         shape.addVertex(Vector2(1, 0))
         shape.addVertex(Vector2.One)
         shape.addVertex(Vector2(0, 1))
-        shape.finish(recenter: true)
+        shape.finish(true)
         
         // Create the transformed shape with no modifications
         var transformed = shape.transformVertices(Vector2.One, angleInRadians: PI, localScale: Vector2.One)

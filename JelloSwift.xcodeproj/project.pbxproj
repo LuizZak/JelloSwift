@@ -31,6 +31,10 @@
 		A05ECD5519B1A6D700F84326 /* SpringComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06EC14C199FD49200402D4C /* SpringComponent.swift */; };
 		A05ECD5619B1A6D700F84326 /* PressureComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06EC150199FDB2300402D4C /* PressureComponent.swift */; };
 		A05ECD5719B1A6D700F84326 /* GravityComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05ECD5219B1A38C00F84326 /* GravityComponent.swift */; };
+		A06733541B4DA51E00E54020 /* AABBTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06733531B4DA51E00E54020 /* AABBTests.swift */; };
+		A06733551B4DA5CD00E54020 /* CollisionObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0512D271AEA25AA00B0B87F /* CollisionObserver.swift */; };
+		A06733561B4DA5EC00E54020 /* PolyDrawer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A081CFE11996B04D00C7CA49 /* PolyDrawer.swift */; };
+		A06733571B4DA5EE00E54020 /* SpriteKitPolyDrawer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E336061B2C4E4E00A2E8DC /* SpriteKitPolyDrawer.swift */; };
 		A06EC14D199FD49200402D4C /* SpringComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06EC14C199FD49200402D4C /* SpringComponent.swift */; };
 		A06EC14F199FD4EE00402D4C /* BodyComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06EC14E199FD4EE00402D4C /* BodyComponent.swift */; };
 		A06EC151199FDB2300402D4C /* PressureComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06EC150199FDB2300402D4C /* PressureComponent.swift */; };
@@ -135,6 +139,7 @@
 		A0510B001AAA573B00C03017 /* ShapeJointLink.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShapeJointLink.swift; sourceTree = "<group>"; };
 		A0512D271AEA25AA00B0B87F /* CollisionObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollisionObserver.swift; sourceTree = "<group>"; };
 		A05ECD5219B1A38C00F84326 /* GravityComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GravityComponent.swift; sourceTree = "<group>"; };
+		A06733531B4DA51E00E54020 /* AABBTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AABBTests.swift; sourceTree = "<group>"; };
 		A06EC14C199FD49200402D4C /* SpringComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpringComponent.swift; sourceTree = "<group>"; };
 		A06EC14E199FD4EE00402D4C /* BodyComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BodyComponent.swift; sourceTree = "<group>"; };
 		A06EC150199FDB2300402D4C /* PressureComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = PressureComponent.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -296,6 +301,7 @@
 		A0C954FE199329130066F88F /* JelloSwiftTests */ = {
 			isa = PBXGroup;
 			children = (
+				A06733531B4DA51E00E54020 /* AABBTests.swift */,
 				A0C95501199329130066F88F /* JelloSwiftTests.swift */,
 				A0C9553F19968CCA0066F88F /* PhysicsMathTest.swift */,
 				A07D54701997E4EE003C9669 /* PointMassTests.swift */,
@@ -324,7 +330,6 @@
 				A0C9552E1993BFA50066F88F /* World.swift */,
 				A0C9552B1993BC150066F88F /* Body.swift */,
 				A0C95522199343DF0066F88F /* ClosedShape.swift */,
-				A0C95510199336460066F88F /* AABB.swift */,
 				A0C9550E199333D30066F88F /* PointMass.swift */,
 				A0C9553519946BA00066F88F /* GeomUtils.swift */,
 				A0C95525199344390066F88F /* Utils.swift */,
@@ -336,6 +341,7 @@
 		A0C955311993C3570066F88F /* Structs */ = {
 			isa = PBXGroup;
 			children = (
+				A0C95510199336460066F88F /* AABB.swift */,
 				A0C9551F199342D10066F88F /* InternalSpring.swift */,
 				A0C955281993BB360066F88F /* MaterialPair.swift */,
 				A0C9550C199329280066F88F /* Vector2.swift */,
@@ -571,11 +577,15 @@
 				A0A4B4D31AC6405B0097AFDC /* SpringBodyJoint.swift in Sources */,
 				A0C955301993BFA50066F88F /* World.swift in Sources */,
 				A0C9554019968CCA0066F88F /* PhysicsMathTest.swift in Sources */,
+				A06733561B4DA5EC00E54020 /* PolyDrawer.swift in Sources */,
 				A0C9551819933ADA0066F88F /* PointMass.swift in Sources */,
+				A06733551B4DA5CD00E54020 /* CollisionObserver.swift in Sources */,
 				A0A4B4DA1AC6406C0097AFDC /* PointJointLink.swift in Sources */,
 				A0C95521199342D10066F88F /* InternalSpring.swift in Sources */,
 				A0C95502199329130066F88F /* JelloSwiftTests.swift in Sources */,
 				A0C955341993C37C0066F88F /* BodyCollisionInformation.swift in Sources */,
+				A06733571B4DA5EE00E54020 /* SpriteKitPolyDrawer.swift in Sources */,
+				A06733541B4DA51E00E54020 /* AABBTests.swift in Sources */,
 				A0A4B4D41AC6405E0097AFDC /* BodyJoint.swift in Sources */,
 				A0510AF51AAA4B4500C03017 /* GeomUtilsTests.swift in Sources */,
 				A0C95524199343DF0066F88F /* ClosedShape.swift in Sources */,
