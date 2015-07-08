@@ -91,10 +91,6 @@ class DemoView: UIView, CollisionObserver
         initLabels()
     }
     
-    func bodiesDidCollide(info: BodyCollisionInformation) {
-        collisions += info
-    }
-    
     func initLabels()
     {
         physicsTimeLabel.frame = CGRect(x: 20, y: 20, width: 500, height: 20)
@@ -282,13 +278,16 @@ class DemoView: UIView, CollisionObserver
         
         drawDrag(context)
         
-        // Draw collisions
-        for info in collisions
+        if(useDetailedRender)
         {
-            let pointB = info.hitPt
-            let normal = info.normal
-            
-            polyDrawer.queuePoly([pointB, pointB + normal / 4].map(toScreenCoords).map { $0.cgPoint }, fillColor: 0, strokeColor: 0xFFFF0000, lineWidth: 1)
+            // Draw collisions
+            for info in collisions
+            {
+                let pointB = info.hitPt
+                let normal = info.normal
+                
+                polyDrawer.queuePoly([pointB, pointB + normal / 4].map(toScreenCoords).map { $0.cgPoint }, fillColor: 0, strokeColor: 0xFFFF0000, lineWidth: 1)
+            }
         }
         
         collisions.removeAll()
@@ -314,6 +313,15 @@ class DemoView: UIView, CollisionObserver
         }
         setNeedsDisplay()
     }
+    
+    
+    func bodiesDidCollide(info: BodyCollisionInformation)
+    {
+        collisions += info
+    }
+    
+    
+    // MARK: - Rendering
     
     /// Renders the dragging shape line
     func drawDrag(context: CGContextRef)
@@ -391,6 +399,8 @@ class DemoView: UIView, CollisionObserver
         polyDrawer.queuePoly(axisUpCg, fillColor: 0xFFFFFFFF, strokeColor: 0xFFED0000, lineWidth: 1)
         polyDrawer.queuePoly(axisRightCg, fillColor: 0xFFFFFFFF, strokeColor: 0xFF00ED00, lineWidth: 1)
     }
+    
+    // MARK: - Helper body creation methods
     
     /// Creates a box at the specified world coordinates with the specified size
     func createBox(pos: Vector2, size: Vector2, pinned: Bool = false, kinematic: Bool = false, isStatic: Bool = false, angle: CGFloat = 0, mass: CGFloat = 0.5) -> Body
