@@ -478,7 +478,7 @@ public class World
             let B2 = bodyB.pointMasses[info.bodyBpmB]
             
             // Velocity changes as a result of collision
-            let bVel = (B1.velocity + B2.velocity) * 0.5
+            let bVel = (B1.velocity + B2.velocity) / 2
             
             let relVel = A.velocity - bVel
             let relDot = relVel =* info.normal
@@ -505,7 +505,6 @@ public class World
             
             let massSum = A.mass + b2MassSum
             
-            let rev_massSum = 1.0 / massSum
             // Amount to move each party of the collision
             let Amove: CGFloat
             let Bmove: CGFloat
@@ -523,8 +522,8 @@ public class World
             }
             else
             {
-                Amove = info.penetration * (b2MassSum * rev_massSum)
-                Bmove = info.penetration * (A.mass * rev_massSum)
+                Amove = info.penetration * (b2MassSum / massSum)
+                Bmove = info.penetration * (A.mass / massSum)
             }
             
             if(!isinf(A.mass))
@@ -549,27 +548,22 @@ public class World
                 let jDenom = AinvMass + BinvMass
                 let elas = 1 + material.elasticity
                 
-                let rev_jDenom = 1.0 / jDenom
-                let j = -((relVel * elas) =* info.normal) * rev_jDenom
+                let j = -((relVel * elas) =* info.normal) / jDenom
                 
                 let tangent = info.normal.perpendicular()
                 
                 let friction = material.friction
-                let f = (relVel =* tangent) * friction * rev_jDenom
+                let f = (relVel =* tangent) * friction / jDenom
                 
                 if(!isinf(A.mass))
                 {
-                    let rev_AMass = 1.0 / A.mass
-                    
-                    A.velocity += (info.normal * (j * rev_AMass)) - (tangent * (f * rev_AMass))
+                    A.velocity += (info.normal * (j / A.mass)) - (tangent * (f / A.mass))
                 }
                 
                 if(!isinf(b2MassSum))
                 {
-                    let rev_BMass = 1.0 / b2MassSum
-                    
-                    let jComp = info.normal * j * rev_BMass
-                    let fComp = tangent * (f / rev_BMass)
+                    let jComp = info.normal * j / b2MassSum
+                    let fComp = tangent * (f * b2MassSum)
                     
                     B1.velocity -= (jComp * b1inf) - (fComp * b1inf)
                     B2.velocity -= (jComp * b2inf) - (fComp * b2inf)

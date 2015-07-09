@@ -43,8 +43,8 @@ public final class PressureComponent: BodyComponent
             let j = (i + 1) % c
             let pressureV = (invVolume * e.length * gasAmmount)
             
-            body.pointMasses[i].force += body.pointNormals[i] * pressureV
-            body.pointMasses[j].force += body.pointNormals[j] * pressureV
+            body.pointMasses[i].applyForce(body.pointNormals[i] * pressureV)
+            body.pointMasses[j].applyForce(body.pointNormals[j] * pressureV)
         }
     }
 }
