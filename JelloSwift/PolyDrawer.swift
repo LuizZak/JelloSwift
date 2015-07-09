@@ -48,9 +48,9 @@ class PolyDrawer
     /// An array of polygons to draw on the next flush call
     private var polys: [CoreGraphicsPoly] = []
     
-    func queuePoly(vertices: [CGPoint], fillColor: UInt, strokeColor: UInt, lineWidth: CGFloat = 3)
+    func queuePoly<T: SequenceType where T.Generator.Element == CGPoint>(vertices: T, fillColor: UInt, strokeColor: UInt, lineWidth: CGFloat = 3)
     {
-        let poly = CoreGraphicsPoly(points: vertices, lineColor: strokeColor, fillColor: fillColor, lineWidth: lineWidth)
+        let poly = CoreGraphicsPoly(points: [CGPoint](vertices), lineColor: strokeColor, fillColor: fillColor, lineWidth: lineWidth)
         
         self.polys += poly
     }

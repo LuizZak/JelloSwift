@@ -356,7 +356,7 @@ public class World
         
         handleCollisions()
         
-        bodies.forEach { $0.dampenVelocity() }
+        bodies.forEach { $0.dampenVelocity(elapsed) }
     }
     
     /// Checks collision between two bodies, and store the collision information if they do

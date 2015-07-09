@@ -41,7 +41,7 @@ public final class PointMass
             
             velocity += force * elapMass
             
-            position += (velocity * elapsed)
+            position += velocity * elapsed
         }
         
         force = Vector2.Zero

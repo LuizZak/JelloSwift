@@ -464,14 +464,14 @@ public final class Body: Equatable
     }
     
     /// Applies the velocity damping to the point masses
-    public func dampenVelocity()
+    public func dampenVelocity(elapsed: CGFloat)
     {
         if(isStatic)
         {
             return
         }
         
-        pointMasses.forEach { $0.velocity *= velDamping }
+        pointMasses.forEach { $0.velocity -= ($0.velocity - ($0.velocity * velDamping)) * (elapsed * 200) }
     }
     
     /// Applies a rotational clockwise torque of a given force on this body

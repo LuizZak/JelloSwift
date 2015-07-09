@@ -329,7 +329,6 @@
 				A0C955311993C3570066F88F /* Structs */,
 				A0C9552E1993BFA50066F88F /* World.swift */,
 				A0C9552B1993BC150066F88F /* Body.swift */,
-				A0C95522199343DF0066F88F /* ClosedShape.swift */,
 				A0C9550E199333D30066F88F /* PointMass.swift */,
 				A0C9553519946BA00066F88F /* GeomUtils.swift */,
 				A0C95525199344390066F88F /* Utils.swift */,
@@ -341,6 +340,7 @@
 		A0C955311993C3570066F88F /* Structs */ = {
 			isa = PBXGroup;
 			children = (
+				A0C95522199343DF0066F88F /* ClosedShape.swift */,
 				A0C95510199336460066F88F /* AABB.swift */,
 				A0C9551F199342D10066F88F /* InternalSpring.swift */,
 				A0C955281993BB360066F88F /* MaterialPair.swift */,
