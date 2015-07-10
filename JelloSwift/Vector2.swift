@@ -370,3 +370,23 @@ public func /=(inout lhs: Vector2, rhs: Int)
 {
     lhs = lhs / rhs
 }
+
+public func round(x: Vector2) -> Vector2
+{
+    return Vector2(round(x.X), round(x.Y))
+}
+
+public func ceil(x: Vector2) -> Vector2
+{
+    return Vector2(ceil(x.X), ceil(x.Y))
+}
+
+public func floor(x: Vector2) -> Vector2
+{
+    return Vector2(floor(x.X), floor(x.Y))
+}
+
+public func abs(x: Vector2) -> Vector2
+{
+    return Vector2(abs(x.X), abs(x.Y))
+}

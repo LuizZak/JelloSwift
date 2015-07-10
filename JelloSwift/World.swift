@@ -90,7 +90,7 @@ public class World
         // replace old data.
         for i in 0..<materialCount
         {
-            materialPairs.append([MaterialPair]())
+            materialPairs.append([])
             
             for j in 0..<materialCount
             {
@@ -306,7 +306,7 @@ public class World
                 }
                 
                 // another early-out - both bodies are static.
-                if (((body1.isStatic) && (body2.isStatic)) ||
+                if ((body1.isStatic && body2.isStatic) ||
                     ((body1.bitmaskX & body2.bitmaskX) == 0) &&
                     ((body1.bitmaskY & body2.bitmaskY) == 0))
                 {
@@ -327,7 +327,6 @@ public class World
                 }
                 
                 // Joints relationship: if on body is joined to another by a joint, check the joint's rule for collision
-                
                 for j in body1.joints
                 {
                     if(j.bodyLink1.body == body1 && j.bodyLink2.body == body2 ||
@@ -575,7 +574,7 @@ public class World
     }
     
     /// Update bodies' bitmask for early collision filtering
-    public func updateBodyBitmask(body: Body)
+    private func updateBodyBitmask(body: Body)
     {
         let box = body.aabb
         

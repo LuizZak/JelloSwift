@@ -568,7 +568,7 @@ class DemoView: UIView, CollisionObserver
         
         let bodyOffset = Vector2(0, 0.4)
         
-        let carBody = Body(world: world, shape: carShape, pointMasses: [0.7], position: pos + bodyOffset, angle: 0, scale: Vector2.One, kinematic: false, components: [SpringComponentCreator(shapeMatchingOn: true, edgeSpringK: 300, edgeSpringDamp: 30, shapeSpringK: 600, shapeSpringDamp: 30), GravityComponentCreator()])
+        let carBody = Body(world: world, shape: carShape, pointMasses: [0.7], position: pos + bodyOffset, components: [SpringComponentCreator(shapeMatchingOn: true, edgeSpringK: 300, edgeSpringDamp: 30, shapeSpringK: 600, shapeSpringDamp: 30), GravityComponentCreator()])
         
         let leftWheel  = createBouncyBall(carBody.derivedPos + rotateVector(Vector2(-1.1, -0.5) - bodyOffset, angleInRadians: carBody.derivedAngle), pinned: false, kinematic: false, radius: 0.5, mass: 0.5)
         let rightWheel = createBouncyBall(carBody.derivedPos + rotateVector(Vector2( 1.1, -0.5) - bodyOffset, angleInRadians: carBody.derivedAngle), pinned: false, kinematic: false, radius: 0.5, mass: 0.5)

@@ -70,6 +70,8 @@ extension ContiguousArray
 
 extension SequenceType
 {
+    typealias T = Self.Generator.Element
+    
     func forEach(@noescape doThis: () -> ())
     {
         for _ in self
@@ -78,7 +80,7 @@ extension SequenceType
         }
     }
     
-    func forEach(@noescape doThis: (element: Self.Generator.Element) -> Void)
+    func forEach(@noescape doThis: (element: T) -> Void)
     {
         for e in self
         {
@@ -86,7 +88,7 @@ extension SequenceType
         }
     }
     
-    func forEach(@noescape doThis: (index: Int, element: Self.Generator.Element) -> Void)
+    func forEach(@noescape doThis: (index: Int, element: T) -> Void)
     {
         for e in enumerate()
         {
@@ -94,7 +96,7 @@ extension SequenceType
         }
     }
     
-    func first(compute: Self.Generator.Element -> Bool) -> Self.Generator.Element?
+    func first(compute: T -> Bool) -> T?
     {
         for item in self
         {
@@ -107,9 +109,9 @@ extension SequenceType
         return nil
     }
     
-    func last(compute: Self.Generator.Element -> Bool) -> Self.Generator.Element?
+    func last(compute: T -> Bool) -> T?
     {
-        var last: Self.Generator.Element?
+        var last: T?
         for item in self
         {
             if(compute(item))
@@ -121,7 +123,7 @@ extension SequenceType
         return last
     }
     
-    func any(compute: Self.Generator.Element -> Bool) -> Bool
+    func any(compute: T -> Bool) -> Bool
     {
         for item in self
         {
