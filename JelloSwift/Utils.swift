@@ -8,36 +8,32 @@
 
 import Foundation
 
-public func +=<T>(inout lhs:Array<T>, rhs:T)
+public func +=<T>(inout lhs: Array<T>, rhs: T)
 {
     lhs.append(rhs)
 }
 
-public func +=<T>(inout lhs:ContiguousArray<T>, rhs:T)
+public func +=<T>(inout lhs: ContiguousArray<T>, rhs: T)
 {
     lhs.append(rhs)
 }
 
-public func -=<T: Equatable>(inout lhs:Array<T>, rhs:T)
+public func -=<T: Equatable>(inout lhs: Array<T>, rhs: T)
 {
     lhs.remove(rhs)
 }
 
-public func -=<T: Equatable>(inout lhs:ContiguousArray<T>, rhs:T)
+public func -=<T: Equatable>(inout lhs: ContiguousArray<T>, rhs: T)
 {
     lhs.remove(rhs)
 }
 
-extension Array
+extension Array where T: Equatable
 {
-    mutating func remove<T: Equatable>(object : T)
+    mutating func remove(object: T)
     {
-        for i in 0..<count
+        for (i, item) in self.enumerate()
         {
-            guard let item = self[i] as? T else {
-                continue
-            }
-            
             if(item == object)
             {
                 removeAtIndex(i)
@@ -48,16 +44,12 @@ extension Array
     }
 }
 
-extension ContiguousArray
+extension ContiguousArray where T: Equatable
 {
-    mutating func remove<T: Equatable>(object : T)
+    mutating func remove(object: T)
     {
-        for i in 0..<count
+        for (i, item) in self.enumerate()
         {
-            guard let item = self[i] as? T else {
-                continue
-            }
-            
             if(item == object)
             {
                 removeAtIndex(i)
