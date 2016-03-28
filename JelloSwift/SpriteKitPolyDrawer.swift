@@ -17,7 +17,7 @@ internal struct Poly
     
     var bounds: CGRect
     {
-        return AABB(points: points.map{ Vector2($0) }).cgRect
+        return AABB(points: points.map(Vector2.init)).cgRect
     }
     
     init(points: [CGPoint], lineColor: SKColor, fillColor: SKColor)

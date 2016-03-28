@@ -65,7 +65,7 @@ class DemoView: UIView, CollisionObserver
         initLabels()
         
         // Do any additional setup after loading the view.
-        timer = CADisplayLink(target: self, selector: "gameLoop")
+        timer = CADisplayLink(target: self, selector: #selector(DemoView.gameLoop))
         timer.addToRunLoop(NSRunLoop.mainRunLoop(), forMode: NSDefaultRunLoopMode)
         
         initializeLevel()
@@ -79,7 +79,7 @@ class DemoView: UIView, CollisionObserver
         world.collisionObserver = self
     }
 
-    required init(coder aDecoder: NSCoder)
+    required init?(coder aDecoder: NSCoder)
     {
         polyDrawer = PolyDrawer()
         
@@ -267,9 +267,12 @@ class DemoView: UIView, CollisionObserver
     
     func render()
     {
-        let sw = Stopwatch()
+        guard let context = UIGraphicsGetCurrentContext() else {
+            print("Error rendering scene: Could not get context to draw scene on!")
+            return
+        }
         
-        let context = UIGraphicsGetCurrentContext()
+        let sw = Stopwatch.startNew()
         
         polyDrawer.reset()
         
@@ -392,13 +395,15 @@ class DemoView: UIView, CollisionObserver
         polyDrawer.queuePoly(points, fillColor: 0xADFFFFFF, strokeColor: 0xFF000000)
         
         // Draw the body axis
-        let axisUp    = [body.derivedPos, body.derivedPos + rotateVector(Vector2(0, 0.6), angleInRadians: body.derivedAngle)]
-        let axisRight = [body.derivedPos, body.derivedPos + rotateVector(Vector2(0.6, 0), angleInRadians: body.derivedAngle)]
+        let axisUp    = [body.derivedPos, body.derivedPos + Vector2(0, 0.6).rotate(body.derivedAngle)]
+        let axisRight = [body.derivedPos, body.derivedPos + Vector2(0.6, 0).rotate(body.derivedAngle)]
         
         let axisUpCg = axisUp.map { toScreenCoords($0).cgPoint }
         let axisRightCg = axisRight.map { toScreenCoords($0).cgPoint }
         
+        // Rep Up vector
         polyDrawer.queuePoly(axisUpCg, fillColor: 0xFFFFFFFF, strokeColor: 0xFFED0000, lineWidth: 1)
+        // Green Right vector
         polyDrawer.queuePoly(axisRightCg, fillColor: 0xFFFFFFFF, strokeColor: 0xFF00ED00, lineWidth: 1)
     }
     
@@ -622,6 +627,11 @@ class Stopwatch
         endTime = CFAbsoluteTimeGetCurrent()
         
         return duration!
+    }
+    
+    static func startNew() -> Stopwatch
+    {
+        return Stopwatch(startTime: CFAbsoluteTimeGetCurrent())
     }
     
     func reset()

@@ -83,7 +83,7 @@ public class World
     public func addMaterial() -> Int
     {
         let old = materialPairs
-        materialCount++
+        materialCount += 1
         
         materialPairs = []
         
@@ -206,7 +206,7 @@ public class World
     /// Useful for picking objects with a cursor, etc.
     public func getBodyContaining(pt: Vector2, bit: Bitmask) -> Body?
     {
-        return bodies.first { body in ((bit == 0 || (body.bitmask & bit) != 0) && body.contains(pt)) }
+        return bodies.firstOrDefault { body in ((bit == 0 || (body.bitmask & bit) != 0) && body.contains(pt)) }
     }
     
     /// Given a global point, get all bodies (if any) that contain this point.
@@ -227,34 +227,37 @@ public class World
      * 
      * - parameter start: The start point to cast the ray from, in world coordinates
      * - parameter end: The end point to end the ray cast at, in world coordinates
-     * - parameter retPt: When the ray hits something, this point represents the farthest point the ray reached.
-     *               If the ray hits nothing, this is set as the end parameter
      * - parameter bit: An optional collision bitmask that filters the bodies to collide using a bitwise AND (|) operation.
      *             If the value specified is 0, collision filtering is ignored and all bodies are considered for collision
      * - parameter ignoreList: A custom list of bodies that will be ignored during collision checking. Provide an empty list
      *                    to consider all bodies in the world
      *
-     * :return: An optional Body? value specifying the body that was closest to the ray, if it hit any body, or nil if it hit nothing.
+     * :return: An optional tuple containing the farthest point reached by the ray, and a Body value specifying the body that was closest to the ray, if it hit any body, or nil if it hit nothing.
      */
-    public func rayCast(start: Vector2, end: Vector2, inout _ retPt:Vector2?, bit: Bitmask = 0, _ ignoreList:[Body] = []) -> Body?
+    public func rayCast(start: Vector2, end: Vector2, bit: Bitmask = 0, ignoreList:[Body] = []) -> (retPt: Vector2, body: Body)?
     {
         var aabb:AABB! = nil
         var lastBody:Body? = nil
         
-        retPt = end
+        var retPt: Vector2 = end
         
         for body in bodies
         {
             if((bit == 0 || (body.bitmask & bit) != 0) && !ignoreList.contains(body))
             {
-                if(body.raycast(start, end, &retPt, &aabb))
+                if(body.raycast(start: start, end: end, farPoint: &retPt, rayAABB: &aabb))
                 {
                     lastBody = body
                 }
             }
         }
         
-        return lastBody
+        if let body = lastBody
+        {
+            return (retPt, body)
+        }
+        
+        return nil
     }
     
     /**
@@ -493,7 +496,7 @@ public class World
             {
                 NSLog("penetration above Penetration Threshold!!  penetration = \(info.penetration), threshold = \(penetrationThreshold), difference = \(info.penetration-penetrationThreshold)")
                 
-                penetrationCount++
+                penetrationCount += 1
                 continue
             }
             

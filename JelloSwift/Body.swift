@@ -128,10 +128,7 @@ public final class Body: Equatable
         
         if(points.count == 1)
         {
-            for _ in 0..<self.pointMasses.count - 1
-            {
-                points += (pointMasses[0])
-            }
+            points = [CGFloat](count: self.pointMasses.count, repeatedValue: pointMasses[0])
         }
         
         setMassFromList(points)
@@ -285,23 +282,25 @@ public final class Body: Equatable
     {
         baseShape = shape
         
-        if(baseShape.localVertices.count != pointMasses.count)
+        if(baseShape.localVertices.count == pointMasses.count)
         {
-            pointMasses = []
-            edges = []
-            globalShape = [Vector2](count: shape.localVertices.count, repeatedValue: Vector2.Zero)
-            
-            baseShape.transformVertices(&globalShape, worldPos: derivedPos, angleInRadians: derivedAngle, localScale: scale)
-            
-            for i in 0..<baseShape.localVertices.count
-            {
-                pointMasses += PointMass(mass: 0.0, position: globalShape[i])
-            }
-            
-            components.forEach { $0.prepare(self) }
-            
-            updateEdges()
+            return
         }
+        
+        pointMasses = []
+        edges = []
+        globalShape = [Vector2](count: shape.localVertices.count, repeatedValue: Vector2.Zero)
+        
+        baseShape.transformVertices(&globalShape, worldPos: derivedPos, angleInRadians: derivedAngle, localScale: scale)
+        
+        for i in 0..<baseShape.localVertices.count
+        {
+            pointMasses += PointMass(mass: 0.0, position: globalShape[i])
+        }
+        
+        components.forEach { $0.prepare(self) }
+        
+        updateEdges()
     }
     
     /// Sets the mass for all the PointMass objects in this body
@@ -629,12 +628,12 @@ public final class Body: Equatable
     }
     
     /// Returns whether the given ray collides with this Body, changing the resulting collision vector before returning
-    public func raycast(pt1: Vector2, _ pt2: Vector2, inout _ res: Vector2?, inout _ rayAABB: AABB!) -> Bool
+    public func raycast(start start: Vector2, end: Vector2, inout farPoint: Vector2, inout rayAABB: AABB!) -> Bool
     {
         // Create and test against a temporary line AABB
         if (rayAABB == nil)
         {
-            rayAABB = AABB(points: [pt1, pt2])
+            rayAABB = AABB(points: [start, end])
         }
         
         if(!aabb.intersects(rayAABB))
@@ -647,16 +646,16 @@ public final class Body: Equatable
         var p2 = Vector2.Zero
         var col = false
         
-        res = pt2
+        farPoint = end
         
         for e in edges
         {
             p1 = e.start
             p2 = e.end
             
-            if let (p, _, _) = lineIntersect(pt1, ptB: pt2, ptC: p1, ptD: p2)
+            if let (p, _, _) = lineIntersect(start, ptB: end, ptC: p1, ptD: p2)
             {
-                res = p
+                farPoint = p
                 col = true
             }
         }

@@ -9,12 +9,19 @@
 import CoreGraphics
 
 /// Contains a set of points that is equivalent as the internal shape of a sofy body
-public struct ClosedShape
+public struct ClosedShape: ArrayLiteralConvertible
 {
-    public var localVertices: [Vector2] = []
+    public typealias Element = Vector2
+    
+    private(set) public var localVertices: [Vector2] = []
     
     /// Returns the Vector2 for the vertex with a given integer index on this ClosedShape
     public subscript(i: Int) -> Vector2 { return localVertices[i] }
+    
+    public init(arrayLiteral elements: ClosedShape.Element...)
+    {
+        localVertices = elements
+    }
     
     /// Start adding vertices to this closed shape.
     /// Calling this method will erase any existing verts
@@ -55,6 +62,7 @@ public struct ClosedShape
     
     /// Gets a new list of vertices, transformed by the given position, angle, and scale.
     /// transformation is applied in the following order:  scale -> rotation -> position.
+    @warn_unused_result
     public func transformVertices(worldPos: Vector2, angleInRadians: CGFloat, localScale: Vector2 = Vector2.One) -> [Vector2]
     {
         return localVertices.map { rotateVector($0 * localScale, angleInRadians: angleInRadians) + worldPos }

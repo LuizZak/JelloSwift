@@ -20,11 +20,12 @@ private struct CoreGraphicsPoly
     
     var bounds: CGRect
     {
-        return AABB(points: points.map { Vector2($0) }).cgRect
+        return AABB(points: points.map(Vector2.init)).cgRect
     }
     
-    init(var points: [CGPoint], lineColor: UInt, fillColor: UInt, lineWidth: CGFloat)
+    init(points: [CGPoint], lineColor: UInt, fillColor: UInt, lineWidth: CGFloat)
     {
+        var points = points
         // Wrap the values around so the shape is closed
         if let first = points.first
         {
