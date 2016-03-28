@@ -195,7 +195,7 @@ public class World
             {
                 closestD = dist
                 retBody = body
-                retPoint = body.pointMasses[pm]
+                retPoint = pm
             }
         }
         

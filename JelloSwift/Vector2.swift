@@ -194,7 +194,7 @@ public func vectorsAreCCW(A: Vector2, B: Vector2) -> Bool
 
 /// Averages a list of vectors into one normalized Vector2 point
 @warn_unused_result
-public func averageVectors<T: CollectionType where T.Generator.Element == Vector2, T.Index: BidirectionalIndexType, T.Index.Distance == Int>(vectors: T) -> Vector2
+public func averageVectors<T: CollectionType where T.Generator.Element == Vector2, T.Index.Distance == Int>(vectors: T) -> Vector2
 {
     return vectors.reduce(Vector2.Zero, combine: +) / vectors.count
 }

@@ -86,7 +86,8 @@ public final class Body: Equatable
     /// Whether this body is static
     public var isStatic = false
     
-    /// Whether this body is kinematic - kinematic bodies do not rotate or move their base shape, so they always appear to not move, like a static body, but can be squished and moved, like a dynamic body
+    /// Whether this body is kinematic - kinematic bodies do not rotate or move their base shape, so they
+    /// always appear to not move, like a static body, but can be squished and moved, like a dynamic body
     public var isKinematic = false
     
     /// Whether this body is pinned - pinned bodies rotate around their axis, but try to remain in place, like a kinematic body
@@ -362,7 +363,7 @@ public final class Body: Equatable
     /// you can juse access the DerivedPosition, DerivedAngle, DerivedVelocity, and DerivedOmega properties.
     public func derivePositionAndAngle(elapsed: CGFloat)
     {
-        // no need it this is a static body, or kinematically controlled.
+        // No need if this is a static body, or kinematically controlled.
         if (isStatic || isKinematic)
         {
             return
@@ -847,8 +848,8 @@ public final class Body: Equatable
         return nil
     }
     
-    /// Find the closest PointMass in this body, given a global point
-    public func getClosestPointMass(pos: Vector2, inout _ dist: CGFloat) -> Int
+    /// Find the closest PointMass index in this body, given a global point
+    public func getClosestPointMass(pos: Vector2, inout _ dist: CGFloat) -> PointMass
     {
         var closestSQD = CGFloat.max
         var closest = -1
@@ -866,7 +867,7 @@ public final class Body: Equatable
         
         dist = sqrt(closestSQD)
         
-        return closest
+        return pointMasses[closest]
     }
     
     /**
