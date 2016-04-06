@@ -129,7 +129,7 @@ public final class Body: Equatable
         
         if(points.count == 1)
         {
-            points = [CGFloat](count: self.pointMasses.count, repeatedValue: pointMasses[0])
+            points = .init(count: self.pointMasses.count, repeatedValue: pointMasses[0])
         }
         
         setMassFromList(points)
@@ -199,7 +199,7 @@ public final class Body: Equatable
         
         if(pointNormals.count != c)
         {
-            pointNormals = pointNormals.dynamicType.init(count: c, repeatedValue: Vector2.Zero)
+            pointNormals = .init(count: c, repeatedValue: Vector2.Zero)
         }
         
         guard var prev = edges.last else { return }
@@ -223,7 +223,7 @@ public final class Body: Equatable
         // Maintain the edge count the same as the point mass count
         if(edges.count != c)
         {
-            edges = edges.dynamicType.init(count: c, repeatedValue: BodyEdge())
+            edges = .init(count: c, repeatedValue: BodyEdge())
         }
         
         // Update edges

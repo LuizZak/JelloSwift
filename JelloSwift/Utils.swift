@@ -13,58 +13,14 @@ enum SequenceError: ErrorType
     case ElementNotFound
 }
 
-public func +=<T>(inout lhs: Array<T>, rhs: T)
+public func +=<T, U: RangeReplaceableCollectionType where U.Generator.Element == T>(inout lhs: U, rhs: T)
 {
     lhs.append(rhs)
 }
 
-public func +=<T>(inout lhs: ContiguousArray<T>, rhs: T)
-{
-    lhs.append(rhs)
-}
-
-public func -=<T: AnyObject>(inout lhs: Array<T>, rhs: T)
+public func -=<T: Equatable, U: RangeReplaceableCollectionType where U.Generator.Element == T>(inout lhs: U, rhs: T)
 {
     lhs.remove(rhs)
-}
-
-public func -=<T: AnyObject>(inout lhs: ContiguousArray<T>, rhs: T)
-{
-    lhs.remove(rhs)
-}
-
-extension Array where Element: AnyObject
-{
-    /// Removes a given object from this array
-    mutating func remove(object: Element)
-    {
-        for (i, item) in self.enumerate()
-        {
-            if(item === object)
-            {
-                removeAtIndex(i)
-                
-                return
-            }
-        }
-    }
-}
-
-extension ContiguousArray where Element: AnyObject
-{
-    /// Removes a given object from this contiguous array
-    mutating func remove(object: Element)
-    {
-        for (i, item) in self.enumerate()
-        {
-            if(item === object)
-            {
-                removeAtIndex(i)
-                
-                return
-            }
-        }
-    }
 }
 
 extension SequenceType
@@ -77,15 +33,6 @@ extension SequenceType
         for _ in self
         {
             doThis()
-        }
-    }
-    
-    /// Runs a block statement for every item on this sequence, using the index and element as arguments
-    func forEach(@noescape doThis: (index: Int, element: T) -> Void)
-    {
-        for e in enumerate()
-        {
-            doThis(index: e.index, element: e.element)
         }
     }
     
@@ -174,6 +121,40 @@ extension SequenceType
         }
         
         return true
+    }
+}
+
+extension RangeReplaceableCollectionType where Generator.Element: Equatable
+{
+    /// Removes a given element from this collection, using the element's equality check to determine the first match to remove
+    mutating func remove(object: Self.Generator.Element)
+    {
+        for i in self.startIndex..<self.endIndex
+        {
+            if (self[i] == object)
+            {
+                self.removeAtIndex(i)
+                
+                return
+            }
+        }
+    }
+}
+
+extension RangeReplaceableCollectionType
+{
+    /// Removes a given element from this collection, using the provided equality check to determine deletion matches
+    mutating func remove(object: Self.Generator.Element, @noescape compare: Self.Generator.Element throws -> Bool) rethrows
+    {
+        for i in self.startIndex..<self.endIndex
+        {
+            if (try compare(self[i]))
+            {
+                self.removeAtIndex(i)
+                
+                return
+            }
+        }
     }
 }
 
