@@ -444,8 +444,8 @@ class DemoView: UIView, CollisionObserver
         // The two first arguments are the indexes of the point masses to link, the next two are the spring constants,
         // and the last one is the distance the spring will try to mantain the two point masses at.
         // Specifying the distance as -1 sets it as the current distance between the specified point masses
-        springComp?.addInternalSpring(0, pointB: 2, springK: 100, damping: 10, dist: -1)
-        springComp?.addInternalSpring(1, pointB: 3, springK: 100, damping: 10, dist: -1)
+        springComp?.addInternalSpring(body, pointA: 0, pointB: 2, springK: 100, damping: 10, dist: -1)
+        springComp?.addInternalSpring(body, pointA: 1, pointB: 3, springK: 100, damping: 10, dist: -1)
         
         return body
     }

@@ -182,7 +182,10 @@ public func rotateVector(vec: Vector2, angleInRadians: Double) -> Vector2
     let c = CGFloat(cos(angleInRadians))
     let s = CGFloat(sin(angleInRadians))
     
-    return Vector2((c * vec.X) - (s * vec.Y), (c * vec.Y) + (s * vec.X))
+    let newX: CGFloat = (c * vec.X) - (s * vec.Y)
+    let newY: CGFloat = (c * vec.Y) + (s * vec.X)
+    
+    return Vector2(newX, newY)
 }
 
 /// Returns whether rotating from A to B is counter-clockwise

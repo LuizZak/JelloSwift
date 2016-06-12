@@ -32,11 +32,11 @@ public final class SpringComponent: BodyComponent
     
     override public func prepare(body: Body)
     {
-        clearAllSprings()
+        clearAllSprings(body)
     }
     
     /// Adds an internal spring to this body
-    public func addInternalSpring(pointA: Int, pointB: Int, springK: CGFloat, damping: CGFloat, dist: CGFloat = -1) -> InternalSpring
+    public func addInternalSpring(body: Body, pointA: Int, pointB: Int, springK: CGFloat, damping: CGFloat, dist: CGFloat = -1) -> InternalSpring
     {
         var dist = dist
         if(dist < 0)
@@ -53,19 +53,19 @@ public final class SpringComponent: BodyComponent
     
     /// Clears all the internal springs from the body.
     /// The original edge springs are mantained
-    public func clearAllSprings()
+    public func clearAllSprings(body: Body)
     {
         springs = []
         
-        _buildDefaultSprings()
+        _buildDefaultSprings(body)
     }
     
     /// Builds the default edge internal springs for this spring body
-    public func _buildDefaultSprings()
+    public func _buildDefaultSprings(body: Body)
     {
         for i in 0..<body.pointMasses.count
         {
-            addInternalSpring(i, pointB: (i + 1) % body.pointMasses.count, springK: edgeSpringK, damping: edgeSpringDamp)
+            addInternalSpring(body, pointA: i, pointB: (i + 1) % body.pointMasses.count, springK: edgeSpringK, damping: edgeSpringDamp)
         }
     }
     
@@ -77,7 +77,7 @@ public final class SpringComponent: BodyComponent
     }
     
     /// Changes the spring constants for the springs around the shape itself (edge springs)
-    public func setEdgeSpringConstants(edgeSpringK: CGFloat, _ edgeSpringDamp: CGFloat)
+    public func setEdgeSpringConstants(body: Body, edgeSpringK: CGFloat, _ edgeSpringDamp: CGFloat)
     {
         // we know that the first n springs in the list are the edge springs.
         for i in 0..<body.pointMasses.count
@@ -90,7 +90,7 @@ public final class SpringComponent: BodyComponent
     /// Sets the spring constant for the given spring index.
     /// The spring index starts from pointMasses.count and onwards, so the first spring
     /// will not be the first edge spring.
-    public func setSpringConstants(springID: Int, _ springK: CGFloat, _ springDamp: CGFloat)
+    public func setSpringConstants(body: Body, springID: Int, _ springK: CGFloat, _ springDamp: CGFloat)
     {
         // index is for all internal springs, AFTER the default internal springs.
         let index = body.pointMasses.count + springID
@@ -101,21 +101,21 @@ public final class SpringComponent: BodyComponent
     
     /// Gets the spring constant of a spring at the specified index.
     /// This ignores the default edge springs, so the index is always + body.pointMasses.count
-    public func getSpringK(springID: Int) -> CGFloat
+    public func getSpringK(body: Body, springID: Int) -> CGFloat
     {
         return springs[body.pointMasses.count + springID].springK
     }
     
     /// Gets the spring dampness of a spring at the specified index
     /// This ignores the default edge springs, so the index is always + body.pointMasses.count
-    public func getSpringD(springID: Int) -> CGFloat
+    public func getSpringD(body: Body, springID: Int) -> CGFloat
     {
         return springs[body.pointMasses.count + springID].springD
     }
     
-    override public func accumulateInternalForces()
+    override public func accumulateInternalForces(body: Body)
     {
-        super.accumulateInternalForces()
+        super.accumulateInternalForces(body)
         
         for s in springs
         {
@@ -198,11 +198,11 @@ public class SpringComponentCreator : BodyComponentCreator
         
         comp.shapeMatchingOn = shapeMatchingOn
         
-        comp.setEdgeSpringConstants(edgeSpringK, edgeSpringDamp)
+        comp.setEdgeSpringConstants(body, edgeSpringK: edgeSpringK, edgeSpringDamp)
         comp.setShapeMatchingConstants(shapeSpringK, shapeSpringDamp)
         
         innerSprings.forEach{ element in
-            comp.addInternalSpring(element.indexA, pointB: element.indexB, springK: element.springK, damping: element.springD, dist: element.dist)
+            comp.addInternalSpring(body, pointA: element.indexA, pointB: element.indexB, springK: element.springK, damping: element.springD, dist: element.dist)
         }
     }
 }

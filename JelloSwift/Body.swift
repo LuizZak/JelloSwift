@@ -442,14 +442,14 @@ public final class Body: Equatable
     /// These should be forces that try to maintain the shape of the body.
     public func accumulateInternalForces()
     {
-        components.forEach { $0.accumulateInternalForces() }
+        components.forEach { $0.accumulateInternalForces(self) }
     }
     
     /// This function should add all external forces to the Force member variable of each PointMass in the body.
     /// These are external forces acting on the PointMasses, such as gravity, etc.
     public func accumulateExternalForces()
     {
-        components.forEach { $0.accumulateExternalForces() }
+        components.forEach { $0.accumulateExternalForces(self) }
     }
     
     /// Integrates the point masses for this Body.
@@ -471,7 +471,7 @@ public final class Body: Equatable
             return
         }
         
-        pointMasses.forEach { $0.velocity -= ($0.velocity - ($0.velocity * velDamping)) * (elapsed * 200) }
+        pointMasses.forEach { (pm: PointMass) -> Void in pm.velocity -= (pm.velocity - (pm.velocity * velDamping)) * (elapsed * 200) }
     }
     
     /// Applies a rotational clockwise torque of a given force on this body

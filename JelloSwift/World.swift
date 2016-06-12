@@ -10,7 +10,7 @@ import Foundation
 import CoreGraphics
 
 /// Represents a simulation world, containing soft bodies and the code utilized to make them interact with each other
-public class World
+public final class World
 {
     /// The bodies contained within this world
     public var bodies: ContiguousArray<Body> = []
@@ -544,18 +544,18 @@ public class World
             
             if(relDot <= 0.0001 && (!isinf(A.mass) || !isinf(b2MassSum)))
             {
-                let AinvMass = isinf(A.mass) ? 0 : 1.0 / A.mass
-                let BinvMass = isinf(b2MassSum) ? 0 : 1.0 / b2MassSum
+                let AinvMass: CGFloat = isinf(A.mass) ? 0 : 1.0 / A.mass
+                let BinvMass: CGFloat = isinf(b2MassSum) ? 0 : 1.0 / b2MassSum
                 
-                let jDenom = AinvMass + BinvMass
-                let elas = 1 + material.elasticity
+                let jDenom: CGFloat = AinvMass + BinvMass
+                let elas: CGFloat = 1 + material.elasticity
                 
-                let j = -((relVel * elas) =* info.normal) / jDenom
+                let j: CGFloat = -((relVel * elas) =* info.normal) / jDenom
                 
-                let tangent = info.normal.perpendicular()
+                let tangent: Vector2 = info.normal.perpendicular()
                 
-                let friction = material.friction
-                let f = (relVel =* tangent) * friction / jDenom
+                let friction: CGFloat = material.friction
+                let f: CGFloat = (relVel =* tangent) * friction / jDenom
                 
                 if(!isinf(A.mass))
                 {
