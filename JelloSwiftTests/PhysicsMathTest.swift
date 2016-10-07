@@ -13,8 +13,8 @@ class PhysicsMathTest: XCTestCase
 {
     func testVector2Perp()
     {
-        var vec1 = Vector2(0, 1)
-        var vecPerp = vec1.perpendicular()
+        let vec1 = Vector2(0, 1)
+        let vecPerp = vec1.perpendicular()
         
         XCTAssert(vecPerp.X == -vec1.Y && vecPerp.Y == vec1.X, "Pass")
     }
@@ -36,8 +36,8 @@ class PhysicsMathTest: XCTestCase
     
     func testVector2Math()
     {
-        var vec1 = Vector2(4, 6)
-        var vec2 = Vector2(9, 7)
+        let vec1 = Vector2(4, 6)
+        let vec2 = Vector2(9, 7)
         
         XCTAssert((vec1 =* vec2) == CGFloat(4 * 9 + 6 * 7), "DOT product test failed!")
         XCTAssert((vec1 =/ vec2) == CGFloat(4 * 9 - 6 * 7), "CROSS product test failed!")

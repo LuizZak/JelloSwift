@@ -12,7 +12,7 @@ import CoreGraphics
 public struct AABB
 {
     /// The validity of this AABB
-    public var validity = PointValidity.Invalid
+    public var validity = PointValidity.invalid
     
     /// Minimum and maximum points for this bounding box
     public var minimum = Vector2.Zero
@@ -44,7 +44,7 @@ public struct AABB
     
     public init(min: Vector2, max: Vector2)
     {
-        validity = PointValidity.Valid
+        validity = PointValidity.valid
       
         minimum = min
         maximum = max
@@ -52,7 +52,7 @@ public struct AABB
     
     public init(points: [Vector2])
     {
-        validity = PointValidity.Invalid
+        validity = PointValidity.invalid
         expandToInclude(points)
     }
     
@@ -61,17 +61,17 @@ public struct AABB
         minimum = Vector2.Zero
         maximum = Vector2.Zero
         
-        validity = PointValidity.Invalid
+        validity = PointValidity.invalid
     }
     
-    public mutating func expandToInclude(point: Vector2)
+    public mutating func expandToInclude(_ point: Vector2)
     {
-        if(validity == PointValidity.Invalid)
+        if(validity == PointValidity.invalid)
         {
             minimum = point
             maximum = point
             
-            validity = PointValidity.Valid
+            validity = PointValidity.valid
         }
         else
         {
@@ -80,19 +80,19 @@ public struct AABB
         }
     }
     
-    public mutating func expandToInclude(points: [Vector2])
+    public mutating func expandToInclude(_ points: [Vector2])
     {
         if(points.count == 0)
         {
             return
         }
         
-        if(validity == PointValidity.Invalid)
+        if(validity == PointValidity.invalid)
         {
             minimum = points[0]
             maximum = points[0]
             
-            validity = PointValidity.Valid
+            validity = PointValidity.valid
         }
         
         for p in points
@@ -102,9 +102,9 @@ public struct AABB
         }
     }
     
-    public func contains(point: Vector2) -> Bool
+    public func contains(_ point: Vector2) -> Bool
     {
-        if(validity == PointValidity.Invalid)
+        if(validity == PointValidity.invalid)
         {
             return false
         }
@@ -120,9 +120,9 @@ public struct AABB
         return false
     }
     
-    public func intersects(box: AABB) -> Bool
+    public func intersects(_ box: AABB) -> Bool
     {
-        if(validity == .Invalid || box.validity == .Invalid)
+        if(validity == .invalid || box.validity == .invalid)
         {
             return false
         }
@@ -144,6 +144,6 @@ public struct AABB
 // Specifies the point validity for a whole AABB
 public enum PointValidity
 {
-    case Valid
-    case Invalid
+    case valid
+    case invalid
 }

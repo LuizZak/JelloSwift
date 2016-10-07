@@ -18,9 +18,9 @@ public final class World
     public var joints: ContiguousArray<BodyJoint> = []
     
     // PRIVATE VARIABLES
-    private var worldLimits = AABB()
-    private var worldSize = Vector2.Zero
-    private var worldGridStep = Vector2.Zero
+    fileprivate var worldLimits = AABB()
+    fileprivate var worldSize = Vector2.Zero
+    fileprivate var worldGridStep = Vector2.Zero
     
     public var penetrationThreshold: CGFloat = 0
     public var penetrationCount = 0
@@ -28,9 +28,9 @@ public final class World
     // material chart.
     public var materialPairs: [[MaterialPair]] = []
     public var defaultMatPair = MaterialPair()
-    private var materialCount = 0
+    fileprivate var materialCount = 0
     
-    private var collisionList: [BodyCollisionInformation] = []
+    fileprivate var collisionList: [BodyCollisionInformation] = []
     
     /// The object to report collisions to
     public var collisionObserver: CollisionObserver?
@@ -46,7 +46,7 @@ public final class World
         // Clear all the bodies
         for b in bodies
         {
-            b.pointMassCollisions.removeAll(keepCapacity: true)
+            b.pointMassCollisions.removeAll(keepingCapacity: true)
         }
         
         // Reset bodies
@@ -68,7 +68,7 @@ public final class World
     }
     
     /// WORLD SIZE
-    public func setWorldLimits(min: Vector2, _ max: Vector2)
+    public func setWorldLimits(_ min: Vector2, _ max: Vector2)
     {
         worldLimits = AABB(min: min, max: max)
         
@@ -109,7 +109,7 @@ public final class World
     }
     
     /// Enables or disables collision between 2 materials.
-    public func setMaterialPairCollide(a: Int, b: Int, collide: Bool)
+    public func setMaterialPairCollide(_ a: Int, b: Int, collide: Bool)
     {
         if ((a >= 0) && (a < materialCount) && (b >= 0) && (b < materialCount))
         {
@@ -119,7 +119,7 @@ public final class World
     }
     
     /// Sets the collision response variables for a pair of materials.
-    public func setMaterialPairData(a: Int, b: Int, friction: CGFloat, elasticity: CGFloat)
+    public func setMaterialPairData(_ a: Int, b: Int, friction: CGFloat, elasticity: CGFloat)
     {
         if ((a >= 0) && (a < materialCount) && (b >= 0) && (b < materialCount))
         {
@@ -132,7 +132,7 @@ public final class World
     }
     
     /// Sets a user function to call when 2 bodies of the given materials collide.
-    public func setMaterialPairFilterCallback(a: Int, b: Int, filter: (Body, Int, Body, Int, Int, Vector2, CGFloat) -> (Bool))
+    public func setMaterialPairFilterCallback(_ a: Int, b: Int, filter: @escaping (Body, Int, Body, Int, Int, Vector2, CGFloat) -> (Bool))
     {
         if ((a >= 0) && (a < materialCount) && (b >= 0) && (b < materialCount))
         {
@@ -142,7 +142,7 @@ public final class World
     }
     
     /// Adds a body to the world. Bodies do this automatically on their constructors, you should not need to call this method most of the times.
-    public func addBody(body: Body)
+    public func addBody(_ body: Body)
     {
         if(!bodies.contains(body))
         {
@@ -151,13 +151,13 @@ public final class World
     }
     
     /// Removes a body from the world. Call this outside of an update to remove the body.
-    public func removeBody(body: Body)
+    public func removeBody(_ body: Body)
     {
         bodies -= body
     }
     
     /// Adds a joint to the world. Joints call this automatically during their initialization
-    public func addJoint(joint: BodyJoint)
+    public func addJoint(_ joint: BodyJoint)
     {
         if(!joints.contains(joint))
         {
@@ -170,7 +170,7 @@ public final class World
     }
     
     /// Removes a joint from the world
-    public func removeJoint(joint: BodyJoint)
+    public func removeJoint(_ joint: BodyJoint)
     {
         joint.bodyLink1.body.joints -= joint
         joint.bodyLink2.body.joints -= joint
@@ -179,12 +179,12 @@ public final class World
     }
     
     /// Finds the closest PointMass in the world to a given point
-    public func getClosestPointMass(pt: Vector2) -> (Body?, PointMass?)
+    public func getClosestPointMass(_ pt: Vector2) -> (Body?, PointMass?)
     {
         var retBody: Body? = nil
         var retPoint: PointMass? = nil
         
-        var closestD = CGFloat.max
+        var closestD = CGFloat.greatestFiniteMagnitude
         
         for body in bodies
         {
@@ -204,20 +204,20 @@ public final class World
     
     /// Given a global, get a body (if any) that contains this point.
     /// Useful for picking objects with a cursor, etc.
-    public func getBodyContaining(pt: Vector2, bit: Bitmask) -> Body?
+    public func getBodyContaining(_ pt: Vector2, bit: Bitmask) -> Body?
     {
         return bodies.firstOrDefault { body in ((bit == 0 || (body.bitmask & bit) != 0) && body.contains(pt)) }
     }
     
     /// Given a global point, get all bodies (if any) that contain this point.
     /// Useful for picking objects with a cursor, etc.
-    public func getBodiesContaining(pt: Vector2, bit: Bitmask) -> [Body]
+    public func getBodiesContaining(_ pt: Vector2, bit: Bitmask) -> [Body]
     {
         return bodies.filter { (($0.bitmask & bit) != 0 || bit == 0) && $0.contains(pt) }
     }
     
     /// Returns a vector of bodies intersecting with the given line
-    public func getBodiesIntersecting(start: Vector2, end: Vector2, bit: Bitmask) -> [Body]
+    public func getBodiesIntersecting(_ start: Vector2, end: Vector2, bit: Bitmask) -> [Body]
     {
         return bodies.filter { (($0.bitmask & bit) != 0 || bit == 0) && $0.intersectsLine(start, end) }
     }
@@ -234,7 +234,7 @@ public final class World
      *
      * :return: An optional tuple containing the farthest point reached by the ray, and a Body value specifying the body that was closest to the ray, if it hit any body, or nil if it hit nothing.
      */
-    public func rayCast(start: Vector2, end: Vector2, bit: Bitmask = 0, ignoreList:[Body] = []) -> (retPt: Vector2, body: Body)?
+    public func rayCast(_ start: Vector2, end: Vector2, bit: Bitmask = 0, ignoreList:[Body] = []) -> (retPt: Vector2, body: Body)?
     {
         var aabb:AABB! = nil
         var lastBody:Body? = nil
@@ -265,7 +265,7 @@ public final class World
      *
      * - parameter elapsed: The elapsed time to update by, usually in seconds
      */
-    public func update(elapsed: CGFloat)
+    public func update(_ elapsed: CGFloat)
     {
         penetrationCount = 0
         
@@ -296,7 +296,7 @@ public final class World
         joints.forEach { $0.resolve(elapsed) }
         
         let c = bodies.count
-        for (i, body1) in bodies.enumerate()
+        for (i, body1) in bodies.enumerated()
         {
             innerLoop: for j in (i + 1)..<c
             {
@@ -362,11 +362,11 @@ public final class World
     }
     
     /// Checks collision between two bodies, and store the collision information if they do
-    private func bodyCollide(bA: Body, _ bB: Body)
+    fileprivate func bodyCollide(_ bA: Body, _ bB: Body)
     {
         let bBpCount = bB.pointMasses.count
         
-        for (i, pmA) in bA.pointMasses.enumerate()
+        for (i, pmA) in bA.pointMasses.enumerated()
         {
             let pt = pmA.position
             
@@ -467,11 +467,11 @@ public final class World
     }
     
     /// Solves the collisions between bodies
-    private func handleCollisions()
+    fileprivate func handleCollisions()
     {
         for info in collisionList
         {
-            guard let bodyA = info.bodyA, bodyB = info.bodyB else {
+            guard let bodyA = info.bodyA, let bodyB = info.bodyB else {
                 continue
             }
             
@@ -512,12 +512,12 @@ public final class World
             let Bmove: CGFloat
             
             // Static detection - when one of the parties is static, the other should move the total amount of the penetration
-            if(isinf(A.mass))
+            if(A.mass.isInfinite)
             {
                 Amove = 0
                 Bmove = info.penetration + 0.001
             }
-            else if(isinf(b2MassSum))
+            else if(b2MassSum.isInfinite)
             {
                 Amove = info.penetration + 0.001
                 Bmove = 0
@@ -528,24 +528,24 @@ public final class World
                 Bmove = info.penetration * (A.mass / massSum)
             }
             
-            if(!isinf(A.mass))
+            if(!A.mass.isInfinite)
             {
                 A.position += info.normal * Amove
             }
             
-            if(!isinf(B1.mass))
+            if(!B1.mass.isInfinite)
             {
                 B1.position -= info.normal * (Bmove * b1inf)
             }
-            if(!isinf(B2.mass))
+            if(!B2.mass.isInfinite)
             {
                 B2.position -= info.normal * (Bmove * b2inf)
             }
             
-            if(relDot <= 0.0001 && (!isinf(A.mass) || !isinf(b2MassSum)))
+            if(relDot <= 0.0001 && (!A.mass.isInfinite || !b2MassSum.isInfinite))
             {
-                let AinvMass: CGFloat = isinf(A.mass) ? 0 : 1.0 / A.mass
-                let BinvMass: CGFloat = isinf(b2MassSum) ? 0 : 1.0 / b2MassSum
+                let AinvMass: CGFloat = A.mass.isInfinite ? 0 : 1.0 / A.mass
+                let BinvMass: CGFloat = b2MassSum.isInfinite ? 0 : 1.0 / b2MassSum
                 
                 let jDenom: CGFloat = AinvMass + BinvMass
                 let elas: CGFloat = 1 + material.elasticity
@@ -557,12 +557,12 @@ public final class World
                 let friction: CGFloat = material.friction
                 let f: CGFloat = (relVel =* tangent) * friction / jDenom
                 
-                if(!isinf(A.mass))
+                if(!A.mass.isInfinite)
                 {
                     A.velocity += (info.normal * (j / A.mass)) - (tangent * (f / A.mass))
                 }
                 
-                if(!isinf(b2MassSum))
+                if(!b2MassSum.isInfinite)
                 {
                     let jComp = info.normal * j / b2MassSum
                     let fComp = tangent * (f * b2MassSum)
@@ -577,7 +577,7 @@ public final class World
     }
     
     /// Update bodies' bitmask for early collision filtering
-    private func updateBodyBitmask(body: Body)
+    fileprivate func updateBodyBitmask(_ body: Body)
     {
         let box = body.aabb
         
@@ -593,7 +593,7 @@ public final class World
         body.bitmaskY = 0
         
         // In case the body is contained within an invalid bound, disable collision completely
-        if(isnan(minVec.X) || isnan(minVec.Y) || isnan(maxVec.X) || isnan(maxVec.Y))
+        if(minVec.X.isNaN || minVec.Y.isNaN || maxVec.X.isNaN || maxVec.Y.isNaN)
         {
             return
         }

@@ -12,8 +12,8 @@ import CoreGraphics
 public let PI = CGFloat(M_PI)
 
 /// Returns an approximation of the area of the polygon defined by a given set of vertices
-@warn_unused_result
-public func polygonArea<T: CollectionType where T.Generator.Element == Vector2, T.Index: BidirectionalIndexType>(points: T) -> CGFloat
+
+public func polygonArea<T: BidirectionalCollection>(_ points: T) -> CGFloat where T.Iterator.Element == Vector2, T.Index: Comparable
 {
     if(points.count < 3)
     {
@@ -35,16 +35,16 @@ public func polygonArea<T: CollectionType where T.Generator.Element == Vector2, 
 }
 
 /// Returns an approximation of the area of the polygon defined by a given set of point masses
-@warn_unused_result
-public func polygonArea<T: CollectionType where T.Generator.Element == PointMass>(points: T) -> CGFloat
+
+public func polygonArea<T: Collection>(_ points: T) -> CGFloat where T.Iterator.Element == PointMass
 {
     return polygonArea(points.map { $0.position })
 }
 
 /// Checks if 2 line segments intersect. (line AB collides with line CD)
 /// Returns a tuple containing information about the hit detection, or nil, if the lines don't intersect
-@warn_unused_result
-public func lineIntersect(ptA: Vector2, ptB: Vector2, ptC: Vector2, ptD: Vector2) ->  (hitPt: Vector2, Ua: CGFloat, Ub: CGFloat)?
+
+public func lineIntersect(_ ptA: Vector2, ptB: Vector2, ptC: Vector2, ptD: Vector2) ->  (hitPt: Vector2, Ua: CGFloat, Ub: CGFloat)?
 {
     let denom = ((ptD.Y - ptC.Y) * (ptB.X - ptA.X)) - ((ptD.X - ptC.X) * (ptB.Y - ptA.Y))
     
@@ -72,8 +72,8 @@ public func lineIntersect(ptA: Vector2, ptB: Vector2, ptC: Vector2, ptD: Vector2
 }
 
 // Calculates a spring force, given position, velocity, spring constant, and damping factor
-@warn_unused_result
-public func calculateSpringForce(posA: Vector2, velA: Vector2, posB: Vector2, velB: Vector2, distance: CGFloat, springK: CGFloat, springD:CGFloat) -> Vector2
+
+public func calculateSpringForce(_ posA: Vector2, velA: Vector2, posB: Vector2, velB: Vector2, distance: CGFloat, springK: CGFloat, springD:CGFloat) -> Vector2
 {
     var dist = posA.distanceTo(posB)
     
@@ -93,8 +93,8 @@ public func calculateSpringForce(posA: Vector2, velA: Vector2, posB: Vector2, ve
 }
 
 /// Returns a Vector2 that represents a point between vec1 and vec2, with a given ratio specified
-@warn_unused_result
-public func calculateVectorRatio(vec1: Vector2, vec2: Vector2, ratio: CGFloat) -> Vector2
+
+public func calculateVectorRatio(_ vec1: Vector2, vec2: Vector2, ratio: CGFloat) -> Vector2
 {
     return vec1 + (vec2 - vec1) * ratio
 }

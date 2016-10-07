@@ -8,27 +8,27 @@
 
 import UIKit
 
-enum SequenceError: ErrorType
+enum SequenceError: Error
 {
-    case ElementNotFound
+    case elementNotFound
 }
 
-public func +=<T, U: RangeReplaceableCollectionType where U.Generator.Element == T>(inout lhs: U, rhs: T)
+public func +=<T, U: RangeReplaceableCollection>(lhs: inout U, rhs: T) where U.Iterator.Element == T
 {
     lhs.append(rhs)
 }
 
-public func -=<T: Equatable, U: RangeReplaceableCollectionType where U.Generator.Element == T>(inout lhs: U, rhs: T)
+public func -=<T: Equatable, U: RangeReplaceableCollection>(lhs: inout U, rhs: T) where U.Iterator.Element == T
 {
     lhs.remove(rhs)
 }
 
-extension SequenceType
+extension Sequence
 {
-    typealias T = Self.Generator.Element
+    typealias T = Self.Iterator.Element
     
     /// Runs a block statement for every item on this sequence
-    func forEach(@noescape doThis: () -> ())
+    func forEach(_ doThis: () -> ())
     {
         for _ in self
         {
@@ -40,7 +40,7 @@ extension SequenceType
     
     /// Returns the first item in the sequence that when passed through `compute` returns true.
     /// Returns nil if no item was found
-    func firstOrDefault(compute: T -> Bool) -> T?
+    func firstOrDefault(_ compute: (T) -> Bool) -> T?
     {
         for item in self
         {
@@ -55,7 +55,7 @@ extension SequenceType
     
     /// Returns the last item in the sequence that when passed through `compute` returns true.
     /// Returns nil if no item was found
-    func lastOrDefault(compute: T -> Bool) -> T?
+    func lastOrDefault(_ compute: (T) -> Bool) -> T?
     {
         var last: T?
         for item in self
@@ -71,31 +71,31 @@ extension SequenceType
     
     /// Returns the first item in the sequence that when passed through `compute` returns true.
     /// Throws a `SequenceError.ElementNotFound` error if no element is found
-    func first(compute: T -> Bool) throws -> T
+    func first(_ compute: (T) -> Bool) throws -> T
     {
         if let first = firstOrDefault(compute) {
             return first
         }
         
-        throw SequenceError.ElementNotFound
+        throw SequenceError.elementNotFound
     }
     
     /// Returns the last item in the sequence that when passed through `compute` returns true.
     /// Throws a `SequenceError.ElementNotFound` error if no element is found
-    func last(compute: T -> Bool) throws -> T
+    func last(_ compute: (T) -> Bool) throws -> T
     {
         if let last = lastOrDefault(compute) {
             return last
         }
         
-        throw SequenceError.ElementNotFound
+        throw SequenceError.elementNotFound
     }
     
     // MARK: Helper collection checking methods
     
     /// Returns true if any of the elements in this sequence return true when passed through `compute`.
     /// Succeeds fast on the first item that returns true
-    func any(compute: T -> Bool) -> Bool
+    func any(_ compute: (T) -> Bool) -> Bool
     {
         for item in self
         {
@@ -110,7 +110,7 @@ extension SequenceType
     
     /// Returns true if all of the elements in this sequence return true when passed through `compute`.
     /// Fails fast on the first item that returns false
-    func all(compute: T -> Bool) -> Bool
+    func all(_ compute: (T) -> Bool) -> Bool
     {
         for item in self
         {
@@ -124,34 +124,40 @@ extension SequenceType
     }
 }
 
-extension RangeReplaceableCollectionType where Generator.Element: Equatable
+extension RangeReplaceableCollection where Iterator.Element: Equatable
 {
     /// Removes a given element from this collection, using the element's equality check to determine the first match to remove
-    mutating func remove(object: Self.Generator.Element)
+    mutating func remove(_ object: Self.Iterator.Element)
     {
-        for i in self.startIndex..<self.endIndex
+        var index = self.startIndex
+        
+        while(index != self.endIndex)
         {
-            if (self[i] == object)
+            index = self.index(after: index)
+            
+            if(self[index] == object)
             {
-                self.removeAtIndex(i)
-                
+                self.remove(at: index)
                 return
             }
         }
     }
 }
 
-extension RangeReplaceableCollectionType
+extension RangeReplaceableCollection
 {
     /// Removes a given element from this collection, using the provided equality check to determine deletion matches
-    mutating func remove(object: Self.Generator.Element, @noescape compare: Self.Generator.Element throws -> Bool) rethrows
+    mutating func remove(object: Self.Iterator.Element, compare: (Self.Iterator.Element) throws -> Bool) rethrows
     {
-        for i in self.startIndex..<self.endIndex
+        var index = self.startIndex
+        
+        while(index != self.endIndex)
         {
-            if (try compare(self[i]))
+            index = self.index(after: index)
+            
+            if(try compare(self[index]))
             {
-                self.removeAtIndex(i)
-                
+                self.remove(at: index)
                 return
             }
         }
@@ -159,12 +165,12 @@ extension RangeReplaceableCollectionType
 }
 
 extension UIColor {
-    func flattenWithColor(foreColor: UIColor) -> UIColor {
+    func flattenWithColor(_ foreColor: UIColor) -> UIColor {
         return flattenColors(self, withColor: foreColor)
     }
     
     func toRGBA() -> Int32 {
-        func denormalize(value: CGFloat) -> Int32 {
+        func denormalize(_ value: CGFloat) -> Int32 {
             return Int32(max(0, min(255, value * 255)))
         }
         
@@ -177,7 +183,7 @@ extension UIColor {
         return ret
     }
     
-    static func fromARGB(argb: Int32) -> UIColor {
+    static func fromARGB(_ argb: Int32) -> UIColor {
         let blue = argb & 0xff;
         let green = argb >> 8 & 0xff;
         let red = argb >> 16 & 0xff;
@@ -187,7 +193,7 @@ extension UIColor {
     }
 }
 
-func flattenColors(backColor: UIColor, withColor foreColor: UIColor) -> UIColor {
+func flattenColors(_ backColor: UIColor, withColor foreColor: UIColor) -> UIColor {
     // Based off an answer by an anonymous user on StackOverlow http://stackoverflow.com/questions/1718825/blend-formula-for-gdi/2223241#2223241
     var backR: CGFloat = 0, backG: CGFloat = 0, backB: CGFloat = 0, backA: CGFloat = 0
     
