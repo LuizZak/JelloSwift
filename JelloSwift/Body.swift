@@ -150,7 +150,7 @@ public final class Body: Equatable
     {
         let instance = componentType.init(body: self)
         
-        components += instance
+        components.append(instance)
         
         instance.prepare(self)
         
@@ -175,11 +175,11 @@ public final class Body: Equatable
     /// Removes a component from this body
     public func removeComponentType<T: BodyComponent>(componentType: T.Type)
     {
-        for comp in components
+        for (i, comp) in components.enumerate()
         {
             if(comp is T)
             {
-                components -= comp
+                components.removeAtIndex(i)
                 break
             }
         }

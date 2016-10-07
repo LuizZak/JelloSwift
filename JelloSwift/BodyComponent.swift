@@ -9,7 +9,7 @@
 import CoreGraphics
 
 // Represents a component that can be added to a body to change it's physical characteristics
-public class BodyComponent: Equatable
+public class BodyComponent
 {
     // Initializes a new instance of the BodyComponent class
     public required init(body: Body)
@@ -36,11 +36,6 @@ public class BodyComponent: Equatable
     {
         
     }
-}
-
-public func ==(lhs: BodyComponent, rhs: BodyComponent) -> Bool
-{
-    return lhs === rhs
 }
 
 // Used to create body components into the body
