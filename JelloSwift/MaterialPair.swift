@@ -30,7 +30,7 @@ public struct MaterialPair
 }
 
 // The default collision filter. Always returns true, so all collisions passed through it are approved
-public func defaultCollisionFilter(bodyA: Body, bodyApm: Int, bodyB: Body, bodyBpm1: Int, bodyBpm2: Int, hitPt: Vector2, normalVel: CGFloat) -> Bool
+public func defaultCollisionFilter(_ bodyA: Body, bodyApm: Int, bodyB: Body, bodyBpm1: Int, bodyBpm2: Int, hitPt: Vector2, normalVel: CGFloat) -> Bool
 {
     return true
 }

@@ -7,6 +7,26 @@
 //
 
 import UIKit
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
+
 
 class DemoViewController: UIViewController
 {
@@ -36,7 +56,7 @@ class DemoView: UIView, CollisionObserver
     
     let updateInterval = 0.5
     
-    var inputMode = InputMode.DragBody
+    var inputMode = InputMode.dragBody
     
     // The current point being dragged around
     var draggingPoint: PointMass? = nil
@@ -66,14 +86,14 @@ class DemoView: UIView, CollisionObserver
         
         // Do any additional setup after loading the view.
         timer = CADisplayLink(target: self, selector: #selector(DemoView.gameLoop))
-        timer.addToRunLoop(NSRunLoop.mainRunLoop(), forMode: NSDefaultRunLoopMode)
+        timer.add(to: RunLoop.main, forMode: RunLoopMode.defaultRunLoopMode)
         
         initializeLevel()
         
         renderingOffset = Vector2(300, frame.size.height)
         renderingScale = Vector2(renderingScale.X, -renderingScale.Y)
         
-        opaque = false
+        isOpaque = false
         backgroundColor = UIColor(white: 0.7, alpha: 1)
         
         world.collisionObserver = self
@@ -119,8 +139,8 @@ class DemoView: UIView, CollisionObserver
         // Create a few pinned bodies
         let pb1 = createBouncyBall(toWorldCoords(Vector2(size.width * 0.2, size.height / 2)), pinned: true, radius: 3)
         let pb2 = createBouncyBall(toWorldCoords(Vector2(size.width * 0.8, size.height / 2)), pinned: true, radius: 3)
-        pb1.getComponentType(SpringComponent)?.setShapeMatchingConstants(200, 10)
-        pb2.getComponentType(SpringComponent)?.setShapeMatchingConstants(200, 10)
+        pb1.getComponentType(SpringComponent.self)?.setShapeMatchingConstants(200, 10)
+        pb2.getComponentType(SpringComponent.self)?.setShapeMatchingConstants(200, 10)
         
         // Create some free boxes around the level
         createBox(toWorldCoords(Vector2(size.width / 2, size.height / 3)), size: Vector2.One)
@@ -162,29 +182,29 @@ class DemoView: UIView, CollisionObserver
         platform.isStatic = true
     }
     
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?)
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?)
     {
         /* Called when a touch begins */
-        if(inputMode == InputMode.CreateBall)
+        if(inputMode == InputMode.createBall)
         {
             for touch: AnyObject in touches
             {
-                let location = touch.locationInView(self)
+                let location = touch.location(in: self)
                 
                 let vecLoc = toWorldCoords(Vector2(location.x, location.y))
                 
                 createBouncyBall(vecLoc)
             }
         }
-        else if(inputMode == InputMode.DragBody)
+        else if(inputMode == InputMode.dragBody)
         {
             // Select the closest point-mass to drag
             let touch: UITouch = touches.first!
-            let location = touch.locationInView(self)
+            let location = touch.location(in: self)
             fingerLocation = toWorldCoords(Vector2(location.x, location.y))
             
             var closest: PointMass? = nil
-            var closestD = CGFloat.max
+            var closestD = CGFloat.greatestFiniteMagnitude
             
             for body in world.bodies
             {
@@ -203,14 +223,14 @@ class DemoView: UIView, CollisionObserver
         }
     }
     
-    override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?)
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?)
     {
         let touch: AnyObject = touches.first!
-        let location = touch.locationInView(self)
+        let location = touch.location(in: self)
         fingerLocation = toWorldCoords(Vector2(location.x, location.y))
     }
     
-    override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?)
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?)
     {
         // Reset dragging point
         draggingPoint = nil
@@ -218,7 +238,7 @@ class DemoView: UIView, CollisionObserver
     
     // Only override drawRect: if you perform custom drawing.
     // An empty implementation adversely affects performance during animation.
-    override func drawRect(rect: CGRect)
+    override func draw(_ rect: CGRect)
     {
         // Drawing code
         autoreleasepool {
@@ -243,20 +263,22 @@ class DemoView: UIView, CollisionObserver
         }
     }
     
-    func updateWithTimeSinceLastUpdate(timeSinceLast: CFTimeInterval)
+    func updateWithTimeSinceLastUpdate(_ timeSinceLast: CFTimeInterval)
     {
         /* Called before each frame is rendered */
         updateDrag()
         
         // Update the physics world
-        (0..<5).forEach { self.world.update(1.0 / 200) }
+        for _ in 0..<5 {
+            self.world.update(1.0 / 200)
+        }
     }
     
     // Updates the dragging functionality
     func updateDrag()
     {
         // Dragging point
-        guard let p = draggingPoint where inputMode == InputMode.DragBody else {
+        guard let p = draggingPoint , inputMode == InputMode.dragBody else {
             return
         }
         
@@ -311,14 +333,14 @@ class DemoView: UIView, CollisionObserver
     
     func gameLoop()
     {
-        dispatch_async(dispatch_get_main_queue()) {
+        DispatchQueue.main.async {
             self.update()
         }
         setNeedsDisplay()
     }
     
     
-    func bodiesDidCollide(info: BodyCollisionInformation)
+    func bodiesDidCollide(_ info: BodyCollisionInformation)
     {
         collisions += info
     }
@@ -327,10 +349,10 @@ class DemoView: UIView, CollisionObserver
     // MARK: - Rendering
     
     /// Renders the dragging shape line
-    func drawDrag(context: CGContextRef)
+    func drawDrag(_ context: CGContext)
     {
         // Dragging point
-        guard let p = draggingPoint where inputMode == InputMode.DragBody else {
+        guard let p = draggingPoint , inputMode == InputMode.dragBody else {
             return
         }
         
@@ -343,7 +365,7 @@ class DemoView: UIView, CollisionObserver
         polyDrawer.queuePoly(points, fillColor: 0xFFFFFFFF, strokeColor: 0xFF00DD00)
     }
     
-    func drawJoint(joint: BodyJoint)
+    func drawJoint(_ joint: BodyJoint)
     {
         let start = toScreenCoords(joint.bodyLink1.position)
         let end = toScreenCoords(joint.bodyLink2.position)
@@ -353,7 +375,7 @@ class DemoView: UIView, CollisionObserver
         polyDrawer.queuePoly(points, fillColor: 0xFFFFFFFF, strokeColor: joint.enabled ? 0xFFEEEEEE : 0xFFCCCCCC)
     }
     
-    func drawBody(body: Body)
+    func drawBody(_ body: Body)
     {
         let shapePoints = body.vertices
         
@@ -367,9 +389,9 @@ class DemoView: UIView, CollisionObserver
         }
         
         // Draw normals, for pressure bodies
-        if body.getComponentType(PressureComponent) != nil
+        if body.getComponentType(PressureComponent.self) != nil
         {
-            for (i, normal) in body.pointNormals.enumerate()
+            for (i, normal) in body.pointNormals.enumerated()
             {
                 let p = shapePoints[i]
                 
@@ -383,7 +405,7 @@ class DemoView: UIView, CollisionObserver
         polyDrawer.queuePoly(body.globalShape.map { toScreenCoords($0).cgPoint }, fillColor: 0x33FFFFFF, strokeColor: 0xFF777777, lineWidth: 1)
         
         // Draw lines going from the body's outer points to the global shape indices
-        for (i, p) in points.enumerate()
+        for (i, p) in points.enumerated()
         {
             let start = p
             let end = toScreenCoords(body.globalShape[i]).cgPoint
@@ -410,7 +432,8 @@ class DemoView: UIView, CollisionObserver
     // MARK: - Helper body creation methods
     
     /// Creates a box at the specified world coordinates with the specified size
-    func createBox(pos: Vector2, size: Vector2, pinned: Bool = false, kinematic: Bool = false, isStatic: Bool = false, angle: CGFloat = 0, mass: CGFloat = 0.5) -> Body
+    @discardableResult
+    func createBox(_ pos: Vector2, size: Vector2, pinned: Bool = false, kinematic: Bool = false, isStatic: Bool = false, angle: CGFloat = 0, mass: CGFloat = 0.5) -> Body
     {
         // Create the closed shape for the box's physics body
         var shape = ClosedShape()
@@ -435,11 +458,11 @@ class DemoView: UIView, CollisionObserver
             comps += GravityComponentCreator()
         }
         
-        let body = Body(world: world, shape: shape, pointMasses: [isStatic ? CGFloat.infinity : mass], kinematic: kinematic, position: pos, components: comps)
+        let body = Body(world: world, shape: shape, pointMasses: [isStatic ? CGFloat.infinity : mass], position: pos, kinematic: kinematic, components: comps)
         body.isPined = pinned
         
         // In order to have the box behave correctly, we need to add some internal springs to the body
-        let springComp = body.getComponentType(SpringComponent)
+        let springComp = body.getComponentType(SpringComponent.self)
         
         // The two first arguments are the indexes of the point masses to link, the next two are the spring constants,
         // and the last one is the distance the spring will try to mantain the two point masses at.
@@ -451,7 +474,8 @@ class DemoView: UIView, CollisionObserver
     }
     
     /// Creates a bouncy ball at the specified world coordinates
-    func createBouncyBall(pos: Vector2, pinned: Bool = false, kinematic: Bool = false, radius: CGFloat = 1, mass: CGFloat = 0.5, def: Int = 12) -> Body
+    @discardableResult
+    func createBouncyBall(_ pos: Vector2, pinned: Bool = false, kinematic: Bool = false, radius: CGFloat = 1, mass: CGFloat = 0.5, def: Int = 12) -> Body
     {
         // Create the closed shape for the ball's physics body
         var shape = ClosedShape()
@@ -477,7 +501,7 @@ class DemoView: UIView, CollisionObserver
         // Add a gravity component taht will pull the body down
         comps += GravityComponentCreator()
         
-        let body = Body(world: world, shape: shape, pointMasses: [mass], kinematic: kinematic, position: pos, components: comps)
+        let body = Body(world: world, shape: shape, pointMasses: [mass], position: pos, kinematic: kinematic, components: comps)
         
         body.isPined = pinned
         
@@ -485,7 +509,7 @@ class DemoView: UIView, CollisionObserver
     }
     
     /// Creates two linked bouncy balls in a given position in the world
-    func createLinkedBouncyBalls(pos: Vector2)
+    func createLinkedBouncyBalls(_ pos: Vector2)
     {
         let b1 = createBouncyBall(pos - Vector2(1, 0), pinned: false, kinematic: false, radius: 1)
         let b2 = createBouncyBall(pos + Vector2(1, 0), pinned: false, kinematic: false, radius: 1)
@@ -498,7 +522,7 @@ class DemoView: UIView, CollisionObserver
     }
     
     /// Creates a pinned box with a ball attached to one of its edges
-    func createBallBoxLinkedStructure(pos: Vector2)
+    func createBallBoxLinkedStructure(_ pos: Vector2)
     {
         let b1 = createBouncyBall(pos - Vector2(0, 2), pinned: false, kinematic: false, radius: 1, mass: 1)
         let b2 = createBox(pos, size: Vector2.One, pinned: true, kinematic: false, mass: 1)
@@ -511,7 +535,7 @@ class DemoView: UIView, CollisionObserver
     }
     
     /// Creates a pinned box with two balls attached to one of its edges
-    func createScaleStructure(pos: Vector2)
+    func createScaleStructure(_ pos: Vector2)
     {
         let b1 = createBox(pos, size: Vector2(2, 1), pinned: true, kinematic: false)
         let b2 = createBouncyBall(pos + Vector2(-1.2, -2), pinned: false, kinematic: false, radius: 1)
@@ -538,7 +562,7 @@ class DemoView: UIView, CollisionObserver
     }
     
     /// Creates a car structure
-    func createCarStructure(pos: Vector2)
+    func createCarStructure(_ pos: Vector2)
     {
         var carShape = ClosedShape()
         
@@ -602,9 +626,9 @@ class DemoView: UIView, CollisionObserver
 enum InputMode: Int
 {
     /// Creates a jiggly ball under the finger on tap
-    case CreateBall
+    case createBall
     /// Allows dragging bodies around
-    case DragBody
+    case dragBody
 }
 
 class Stopwatch

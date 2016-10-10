@@ -33,7 +33,7 @@ public final class PointMass
     /// Integrates a single physics simulation step for this point mass
     ///
     /// - parameter elapsed: The elapsed time to integrate by, usually in seconds
-    public func integrate(elapsed: CGFloat)
+    public func integrate(_ elapsed: CGFloat)
     {
         if (mass != CGFloat.infinity)
         {
@@ -48,7 +48,7 @@ public final class PointMass
     }
     
     // Applies the given force vector to this point mass
-    public func applyForce(force: Vector2)
+    public func applyForce(_ force: Vector2)
     {
         self.force += force
     }

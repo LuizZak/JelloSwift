@@ -10,12 +10,12 @@ import Foundation
 import CoreGraphics
 
 /// Represents a joint that links two joint links with spring forces
-public class SpringBodyJoint : BodyJoint
+open class SpringBodyJoint : BodyJoint
 {
     /// The spring coefficient for this spring body joint
-    public var springK: CGFloat
+    open var springK: CGFloat
     /// The spring dampness for this spring body joint
-    public var springD: CGFloat
+    open var springD: CGFloat
     
     /// Inits a new spring body joint witht he specified parameters. Leave the distance as -1 to calculate the distance automatically from the current distance of the two provided joint links
     public init(world: World, link1: JointLinkType, link2: JointLinkType, springK: CGFloat, springD: CGFloat, distance: CGFloat = -1)
@@ -31,7 +31,7 @@ public class SpringBodyJoint : BodyJoint
      *
      * - parameter dt: The delta time to update the resolve on
     */
-    public override func resolve(dt: CGFloat)
+    open override func resolve(_ dt: CGFloat)
     {
         if(!enabled)
         {

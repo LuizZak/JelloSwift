@@ -60,36 +60,36 @@ public struct Vector2: Equatable, CustomStringConvertible
     }
     
     /// Returns the angle in radians of this Vector2
-    @warn_unused_result
+    
     public func angle() -> CGFloat
     {
         return atan2(Y, X)
     }
     
     /// Returns the squared length of this Vector2
-    @warn_unused_result
+    
     public func length() -> CGFloat
     {
         return X * X + Y * Y
     }
     
     /// Returns the magnitude (or square root of the squared length) of this Vector2
-    @warn_unused_result
+    
     public func magnitude() -> CGFloat
     {
         return sqrt(length())
     }
     
     /// Returns the distance between this Vector2 and another Vector2
-    @warn_unused_result
-    public func distanceTo(vec: Vector2) -> CGFloat
+    
+    public func distanceTo(_ vec: Vector2) -> CGFloat
     {
         return (self - vec).magnitude()
     }
     
     /// Returns the distance squared between this Vector2 and another Vector2
-    @warn_unused_result
-    public func distanceToSquared(vec: Vector2) -> CGFloat
+    
+    public func distanceToSquared(_ vec: Vector2) -> CGFloat
     {
         return (self - vec).length()
     }
@@ -104,7 +104,7 @@ public struct Vector2: Equatable, CustomStringConvertible
     }
     
     /// Returns a Vector2 perpendicular to this Vector2
-    @warn_unused_result
+    
     public func perpendicular() -> Vector2
     {
         return Vector2(-Y, X)
@@ -120,12 +120,12 @@ public struct Vector2: Equatable, CustomStringConvertible
     }
     
     /// Returns a normalized version of this Vector2
-    @warn_unused_result
+    
     public func normalized() -> Vector2
     {
         let mag = magnitude()
         
-        if(mag > CGFloat.min)
+        if(mag > CGFloat.leastNormalMagnitude)
         {
             return self / mag
         }
@@ -134,7 +134,7 @@ public struct Vector2: Equatable, CustomStringConvertible
     }
     
     /// Returns a string representation of this Vector2 value
-    @warn_unused_result
+    
     public func toString() -> String
     {
         return "{ \(self.X) : \(self.Y) }"
@@ -143,38 +143,38 @@ public struct Vector2: Equatable, CustomStringConvertible
 
 extension Vector2
 {
-    @warn_unused_result
-    func rotate(angleInRadians: CGFloat) -> Vector2
+    
+    func rotate(_ angleInRadians: CGFloat) -> Vector2
     {
         return rotateVector(self, angleInRadians: Double(angleInRadians))
     }
 }
 
 /// Returns a Vector2 that represents the minimum coordinates between two Vector2 objects
-@warn_unused_result
-public func min(a: Vector2, _ b: Vector2) -> Vector2
+
+public func min(_ a: Vector2, _ b: Vector2) -> Vector2
 {
     return Vector2(min(a.X, b.X), min(a.Y, b.Y))
 }
 
 /// Returns a Vector2 that represents the maximum coordinates between two Vector2 objects
-@warn_unused_result
-public func max(a: Vector2, _ b: Vector2) -> Vector2
+
+public func max(_ a: Vector2, _ b: Vector2) -> Vector2
 {
     return Vector2(max(a.X, b.X), max(a.Y, b.Y))
 }
 
 /// Rotates a given vector by an angle in radians
-@warn_unused_result
-public func rotateVector(vec: Vector2, angleInRadians: CGFloat) -> Vector2
+
+public func rotateVector(_ vec: Vector2, angleInRadians: CGFloat) -> Vector2
 {
     return rotateVector(vec, angleInRadians: Double(angleInRadians))
 }
 
-@warn_unused_result
-public func rotateVector(vec: Vector2, angleInRadians: Double) -> Vector2
+
+public func rotateVector(_ vec: Vector2, angleInRadians: Double) -> Vector2
 {
-    if(angleInRadians % (M_PI * 2) == 0)
+    if(angleInRadians.truncatingRemainder(dividingBy: (M_PI * 2)) == 0)
     {
         return vec
     }
@@ -189,71 +189,79 @@ public func rotateVector(vec: Vector2, angleInRadians: Double) -> Vector2
 }
 
 /// Returns whether rotating from A to B is counter-clockwise
-@warn_unused_result
-public func vectorsAreCCW(A: Vector2, B: Vector2) -> Bool
+
+public func vectorsAreCCW(_ A: Vector2, B: Vector2) -> Bool
 {
     return (B =* A.perpendicular()) >= 0.0
 }
 
 /// Averages a list of vectors into one normalized Vector2 point
-@warn_unused_result
-public func averageVectors<T: CollectionType where T.Generator.Element == Vector2, T.Index.Distance == Int>(vectors: T) -> Vector2
+
+public func averageVectors<T: Collection>(_ vectors: T) -> Vector2 where T.Iterator.Element == Vector2, T.IndexDistance == Int
 {
-    return vectors.reduce(Vector2.Zero, combine: +) / vectors.count
+    return vectors.reduce(Vector2.Zero, +) / vectors.count
 }
 
 ////////
 //// Define the operations to be performed on the Vector2
 ////////
-infix operator =* { associativity left precedence 150 }
-infix operator =/ { associativity left precedence 151 }
+infix operator =* : MultiplicationPrecedence
+infix operator =/ : MultiplicationPrecedence
 
 ////
 // Comparision operators
 ////
-@warn_unused_result
+
 public func ==(lhs: Vector2, rhs: Vector2) -> Bool
 {
     return funcOnVectors(lhs, rhs, ==)
 }
 
 // Unary operators
-@warn_unused_result
+
 public prefix func -(lhs: Vector2) -> Vector2
 {
     return Vector2(-lhs.X, -lhs.Y)
 }
 
-public prefix func ++(inout x: Vector2) -> Vector2
+public prefix func ++(x: inout Vector2) -> Vector2
 {
-    return Vector2(++x.X, ++x.Y)
+    x += 1
+    return x
 }
 
-public postfix func ++(inout x: Vector2) -> Vector2
+public postfix func ++(x: inout Vector2) -> Vector2
 {
-    return Vector2(x.X++, x.Y++)
+    defer {
+        x += 1
+    }
+    return x
 }
 
-public prefix func --(inout x: Vector2) -> Vector2
+public prefix func --(x: inout Vector2) -> Vector2
 {
-    return Vector2(--x.X, --x.Y)
+    x -= 1
+    return x
 }
 
-public postfix func --(inout x: Vector2) -> Vector2
+public postfix func --(x: inout Vector2) -> Vector2
 {
-    return Vector2(x.X--, x.Y--)
+    defer {
+        x -= 1
+    }
+    return x
 }
 
 // DOT operator
 /// Calculates the dot product between two provided coordinates
-@warn_unused_result
+
 public func =*(lhs: Vector2, rhs: Vector2) -> CGFloat
 {
     return lhs.X * rhs.X + lhs.Y * rhs.Y
 }
 
 // CROSS operator
-@warn_unused_result
+
 public func =/(lhs: Vector2, rhs: Vector2) -> CGFloat
 {
     return lhs.X * rhs.X - lhs.Y * rhs.Y
@@ -262,105 +270,105 @@ public func =/(lhs: Vector2, rhs: Vector2) -> CGFloat
 ////
 // Basic arithmetic operators
 ////
-@warn_unused_result
+
 public func +(lhs: Vector2, rhs: Vector2) -> Vector2
 {
     return funcOnVectors(lhs, rhs, +)
 }
 
-@warn_unused_result
+
 public func -(lhs: Vector2, rhs: Vector2) -> Vector2
 {
     return funcOnVectors(lhs, rhs, -)
 }
 
-@warn_unused_result
+
 public func *(lhs: Vector2, rhs: Vector2) -> Vector2
 {
     return funcOnVectors(lhs, rhs, *)
 }
 
-@warn_unused_result
+
 public func /(lhs: Vector2, rhs: Vector2) -> Vector2
 {
     return funcOnVectors(lhs, rhs, /)
 }
 
-@warn_unused_result
+
 public func %(lhs: Vector2, rhs: Vector2) -> Vector2
 {
-    return funcOnVectors(lhs, rhs, %)
+    return Vector2(lhs.X.truncatingRemainder(dividingBy: rhs.X), lhs.Y.truncatingRemainder(dividingBy: rhs.Y))
 }
 
 // CGFloat interaction
-@warn_unused_result
+
 public func +(lhs: Vector2, rhs: CGFloat) -> Vector2
 {
     return funcOnVectors(lhs, rhs, +)
 }
 
-@warn_unused_result
+
 public func -(lhs: Vector2, rhs: CGFloat) -> Vector2
 {
     return funcOnVectors(lhs, rhs, -)
 }
 
-@warn_unused_result
+
 public func *(lhs: Vector2, rhs: CGFloat) -> Vector2
 {
     return funcOnVectors(lhs, rhs, *)
 }
 
-@warn_unused_result
+
 public func /(lhs: Vector2, rhs: CGFloat) -> Vector2
 {
     return funcOnVectors(lhs, rhs, /)
 }
 
-@warn_unused_result
+
 public func %(lhs: Vector2, rhs: CGFloat) -> Vector2
 {
-    return funcOnVectors(lhs, rhs, %)
+    return Vector2(lhs.X.truncatingRemainder(dividingBy: rhs), lhs.Y.truncatingRemainder(dividingBy: rhs))
 }
 
-@warn_unused_result
-private func funcOnVectors(lhs: Vector2, _ rhs: Vector2, _ f: (CGFloat, CGFloat) -> CGFloat) -> Vector2
+
+private func funcOnVectors(_ lhs: Vector2, _ rhs: Vector2, _ f: (CGFloat, CGFloat) -> CGFloat) -> Vector2
 {
     return Vector2(f(lhs.X, rhs.X), f(lhs.Y, rhs.Y))
 }
 
-@warn_unused_result
-private func funcOnVectors(lhs: Vector2, _ rhs: CGFloat, _ f: (CGFloat, CGFloat) -> CGFloat) -> Vector2
+
+private func funcOnVectors(_ lhs: Vector2, _ rhs: CGFloat, _ f: (CGFloat, CGFloat) -> CGFloat) -> Vector2
 {
     return Vector2(f(lhs.X, rhs), f(lhs.Y, rhs))
 }
 
-@warn_unused_result
-private func funcOnVectors(lhs: Vector2, _ rhs: Vector2, _ f: (CGFloat, CGFloat) -> Bool) -> Bool
+
+private func funcOnVectors(_ lhs: Vector2, _ rhs: Vector2, _ f: (CGFloat, CGFloat) -> Bool) -> Bool
 {
     return f(lhs.X, rhs.X) && f(lhs.Y, rhs.Y)
 }
 
 // Int interaction
-@warn_unused_result
+
 public func +(lhs: Vector2, rhs: Int) -> Vector2
 {
     return lhs + CGFloat(rhs)
 }
 
-@warn_unused_result
+
 public func -(lhs: Vector2, rhs: Int) -> Vector2
 {
     return lhs - CGFloat(rhs)
 }
 
-@warn_unused_result
+
 public func *(lhs: Vector2, rhs: Int) -> Vector2
 {
     return lhs * CGFloat(rhs)
 }
 
-@warn_unused_result
+
 public func /(lhs: Vector2, rhs: Int) -> Vector2
 {
     return lhs / CGFloat(rhs)
@@ -369,75 +377,75 @@ public func /(lhs: Vector2, rhs: Int) -> Vector2
 ////
 // Compound assignment operators
 ////
-public func +=(inout lhs: Vector2, rhs: Vector2)
+public func +=(lhs: inout Vector2, rhs: Vector2)
 {
     lhs = lhs + rhs
 }
-public func -=(inout lhs: Vector2, rhs: Vector2)
+public func -=(lhs: inout Vector2, rhs: Vector2)
 {
     lhs = lhs - rhs
 }
-public func *=(inout lhs: Vector2, rhs: Vector2)
+public func *=(lhs: inout Vector2, rhs: Vector2)
 {
     lhs = lhs * rhs
 }
-public func /=(inout lhs: Vector2, rhs: Vector2)
+public func /=(lhs: inout Vector2, rhs: Vector2)
 {
     lhs = lhs / rhs
 }
 
 // CGFloat interaction
-public func +=(inout lhs: Vector2, rhs: CGFloat)
+public func +=(lhs: inout Vector2, rhs: CGFloat)
 {
     lhs = lhs + rhs
 }
-public func -=(inout lhs: Vector2, rhs: CGFloat)
+public func -=(lhs: inout Vector2, rhs: CGFloat)
 {
     lhs = lhs - rhs
 }
-public func *=(inout lhs: Vector2, rhs: CGFloat)
+public func *=(lhs: inout Vector2, rhs: CGFloat)
 {
     lhs = lhs * rhs
 }
-public func /=(inout lhs: Vector2, rhs: CGFloat)
+public func /=(lhs: inout Vector2, rhs: CGFloat)
 {
     lhs = lhs / rhs
 }
 
 // Int interaction
-public func +=(inout lhs: Vector2, rhs: Int)
+public func +=(lhs: inout Vector2, rhs: Int)
 {
     lhs = lhs + rhs
 }
-public func -=(inout lhs: Vector2, rhs: Int)
+public func -=(lhs: inout Vector2, rhs: Int)
 {
     lhs = lhs - rhs
 }
-public func *=(inout lhs: Vector2, rhs: Int)
+public func *=(lhs: inout Vector2, rhs: Int)
 {
     lhs = lhs * rhs
 }
-public func /=(inout lhs: Vector2, rhs: Int)
+public func /=(lhs: inout Vector2, rhs: Int)
 {
     lhs = lhs / rhs
 }
 
-public func round(x: Vector2) -> Vector2
+public func round(_ x: Vector2) -> Vector2
 {
     return Vector2(round(x.X), round(x.Y))
 }
 
-public func ceil(x: Vector2) -> Vector2
+public func ceil(_ x: Vector2) -> Vector2
 {
     return Vector2(ceil(x.X), ceil(x.Y))
 }
 
-public func floor(x: Vector2) -> Vector2
+public func floor(_ x: Vector2) -> Vector2
 {
     return Vector2(floor(x.X), floor(x.Y))
 }
 
-public func abs(x: Vector2) -> Vector2
+public func abs(_ x: Vector2) -> Vector2
 {
     return Vector2(abs(x.X), abs(x.Y))
 }

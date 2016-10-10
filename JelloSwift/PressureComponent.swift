@@ -15,12 +15,12 @@ public final class PressureComponent: BodyComponent
     public var volume: CGFloat = 0
     public var gasAmmount: CGFloat = 0
     
-    override public func prepare(body: Body)
+    override public func prepare(_ body: Body)
     {
         
     }
     
-    override public func accumulateInternalForces(body: Body)
+    override public func accumulateInternalForces(_ body: Body)
     {
         super.accumulateInternalForces(body)
         
@@ -38,7 +38,7 @@ public final class PressureComponent: BodyComponent
         // now loop through, adding forces!
         let invVolume = 1 / volume
         
-        for (i, e) in body.edges.enumerate()
+        for (i, e) in body.edges.enumerated()
         {
             let j = (i + 1) % c
             let pressureV = (invVolume * e.length * gasAmmount)
@@ -50,9 +50,9 @@ public final class PressureComponent: BodyComponent
 }
 
 // Creator for the Spring component
-public class PressureComponentCreator : BodyComponentCreator
+open class PressureComponentCreator : BodyComponentCreator
 {
-    public var gasAmmount: CGFloat
+    open var gasAmmount: CGFloat
     
     public required init(gasAmmount: CGFloat = 0)
     {
@@ -63,8 +63,8 @@ public class PressureComponentCreator : BodyComponentCreator
         bodyComponentClass = PressureComponent.self
     }
     
-    public override func prepareBodyAfterComponent(body: Body)
+    open override func prepareBodyAfterComponent(_ body: Body)
     {
-        body.getComponentType(PressureComponent)?.gasAmmount = gasAmmount
+        body.getComponentType(PressureComponent.self)?.gasAmmount = gasAmmount
     }
 }

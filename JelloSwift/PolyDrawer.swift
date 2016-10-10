@@ -47,9 +47,9 @@ private struct CoreGraphicsPoly
 class PolyDrawer
 {
     /// An array of polygons to draw on the next flush call
-    private var polys: [CoreGraphicsPoly] = []
+    fileprivate var polys: [CoreGraphicsPoly] = []
     
-    func queuePoly<T: SequenceType where T.Generator.Element == CGPoint>(vertices: T, fillColor: UInt, strokeColor: UInt, lineWidth: CGFloat = 3)
+    func queuePoly<T: Sequence>(_ vertices: T, fillColor: UInt, strokeColor: UInt, lineWidth: CGFloat = 3) where T.Iterator.Element == CGPoint
     {
         let poly = CoreGraphicsPoly(points: [CGPoint](vertices), lineColor: strokeColor, fillColor: fillColor, lineWidth: lineWidth)
         
@@ -57,7 +57,7 @@ class PolyDrawer
     }
     
     /// Renders the contents of this PolyDrawer on a given CGContextRef
-    func renderOnContext(context: CGContextRef)
+    func renderOnContext(_ context: CGContext)
     {
         for poly in polys
         {
@@ -70,48 +70,48 @@ class PolyDrawer
                 continue
             }
             
-            CGContextSaveGState(context)
+            context.saveGState()
             
-            let path = CGPathCreateMutable()
+            let path = CGMutablePath()
             
-            CGPathAddLines(path, nil, poly.points, poly.points.count)
+            path.addLines(between: poly.points)
           
-            CGContextSetStrokeColorWithColor(context, poly.lineColor.CGColor)
-            CGContextSetFillColorWithColor(context, poly.fillColor.CGColor)
-            CGContextSetLineWidth(context, poly.lineWidth)
-            CGContextSetLineJoin(context, CGLineJoin.Round)
-            CGContextSetLineCap(context, CGLineCap.Round)
+            context.setStrokeColor(poly.lineColor.cgColor)
+            context.setFillColor(poly.fillColor.cgColor)
+            context.setLineWidth(poly.lineWidth)
+            context.setLineJoin(CGLineJoin.round)
+            context.setLineCap(CGLineCap.round)
             
-            CGContextAddPath(context, path)
+            context.addPath(path)
             
             if(hasLine && hasFill && poly.points.count > 3)
             {
-                CGContextDrawPath(context, CGPathDrawingMode.FillStroke)
+                context.drawPath(using: CGPathDrawingMode.fillStroke)
             }
             else
             {
                 if(hasFill && poly.points.count > 3)
                 {
-                    CGContextFillPath(context)
+                    context.fillPath()
                 }
                 if(hasLine)
                 {
-                    CGContextStrokePath(context)
+                    context.strokePath()
                 }
             }
             
-            CGContextRestoreGState(context)
+            context.restoreGState()
         }
     }
     
     /// Resets this PolyDrawer
     func reset()
     {
-        polys.removeAll(keepCapacity: false)
+        polys.removeAll(keepingCapacity: false)
     }
 }
 
-func colorFromUInt(color: UInt) -> UIColor
+func colorFromUInt(_ color: UInt) -> UIColor
 {
     let a = CGFloat((color >> 24) & 0xFF) / 255.0
     let r = CGFloat((color >> 16) & 0xFF) / 255.0

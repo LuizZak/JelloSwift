@@ -10,36 +10,36 @@ import Foundation
 import CoreGraphics
 
 /// Represents a joint link that links to a while body
-public class BodyJointLink: JointLinkType
+open class BodyJointLink: JointLinkType
 {
     // Like the PointJointLink, this is a very straightforward implementation, delegating most of the methods to the underlying body object
     
     /// Gets the body that this joint link is linked to
-    public private(set) var body: Body
+    open fileprivate(set) var body: Body
     
     /// Gets the type of joint this joint link represents
-    public let linkType = LinkType.Body
+    open let linkType = LinkType.body
     
     /// Gets the position, in world coordinates, at which this joint links with the underlying body
-    public var position: Vector2
+    open var position: Vector2
     {
         return body.derivedPos
     }
     
     /// Gets the velocity of the object this joint links to
-    public var velocity: Vector2
+    open var velocity: Vector2
     {
         return body.derivedVel
     }
     
     /// Gets the total mass of the subject of this joint link
-    public var mass: CGFloat
+    open var mass: CGFloat
     {
-        return body.pointMasses.reduce(0, combine: { $0 + $1.mass })
+        return body.pointMasses.reduce(0, { $0 + $1.mass })
     }
     
     /// Gets a value specifying whether the object referenced by this JointLinkType is static
-    public var isStatic: Bool
+    open var isStatic: Bool
     {
         return body.isStatic || body.isPined
     }
@@ -53,7 +53,7 @@ public class BodyJointLink: JointLinkType
     /// Appies a given force to the subject of this joint link
     ///
     /// - parameter force: A force to apply to the subjects of this joint link
-    public func applyForce(force: Vector2)
+    open func applyForce(_ force: Vector2)
     {
         body.addGlobalForce(position, force)
     }
