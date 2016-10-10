@@ -17,10 +17,10 @@ public func ==(lhs: Body, rhs: Body) -> Bool
 public final class Body: Equatable
 {
     /// List of edges on the body
-    internal var edges: ContiguousArray<BodyEdge> = []
+    internal var edges: [BodyEdge] = []
     
     /// List of point normals
-    internal var pointNormals: ContiguousArray<Vector2> = []
+    internal var pointNormals: [Vector2] = []
     
     /// List of body joints this body participates in
     public internal(set) var joints: [BodyJoint] = []
