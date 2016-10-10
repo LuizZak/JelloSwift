@@ -9,7 +9,7 @@
 import Foundation
 
 /// Protocol to be implemented by objects that want to be notified of all collisions in a physics World
-public protocol CollisionObserver
+public protocol CollisionObserver: class
 {
     /**
      Called by the World to notify of a body collision

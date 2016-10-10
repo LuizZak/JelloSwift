@@ -33,7 +33,7 @@ public final class World
     fileprivate var collisionList: [BodyCollisionInformation] = []
     
     /// The object to report collisions to
-    public var collisionObserver: CollisionObserver?
+    public weak var collisionObserver: CollisionObserver?
     
     public init()
     {
