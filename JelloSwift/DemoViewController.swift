@@ -34,6 +34,8 @@ class DemoViewController: UIViewController
     {
         super.viewDidLoad()
         
+        self.view.backgroundColor = UIColor(white: 0.7, alpha: 1)
+        
         let demo = DemoView(frame: view.frame)
         view.addSubview(demo)
     }
@@ -68,6 +70,10 @@ class DemoView: UIView, CollisionObserver
     var physicsTimeLabel: UILabel
     var renderTimeLabel: UILabel
     
+    /// A semaphore for accessing the world object.
+    /// Used to dispatch update loop in a different thread, and synchronize on rendering
+    var worldSemaphore: DispatchSemaphore = DispatchSemaphore(value: 1)
+    
     /// Whether to perform a detailed render of the scene. Detailed rendering
     /// renders, along with the body shape, the body's normals, global shape and axis
     var useDetailedRender = true
@@ -95,7 +101,6 @@ class DemoView: UIView, CollisionObserver
         renderingScale = Vector2(renderingScale.X, -renderingScale.Y)
         
         isOpaque = false
-        backgroundColor = UIColor(white: 0.7, alpha: 1)
         
         world.collisionObserver = self
     }
@@ -254,7 +259,9 @@ class DemoView: UIView, CollisionObserver
     {
         // Drawing code
         autoreleasepool {
+            worldSemaphore.wait()
             render()
+            worldSemaphore.signal()
         }
     }
     
@@ -306,8 +313,10 @@ class DemoView: UIView, CollisionObserver
     
     func gameLoop()
     {
-        DispatchQueue.main.async {
+        DispatchQueue.global().async {
+            self.worldSemaphore.wait()
             self.update()
+            self.worldSemaphore.signal()
         }
         setNeedsDisplay()
     }
@@ -336,7 +345,9 @@ class DemoView: UIView, CollisionObserver
             let avgMilli = intervals.map { $0 * 1000 }.reduce(0, +) / CFAbsoluteTime(intervals.count)
             let avgMilliRounded = round(avgMilli * 100) / 100
             
-            physicsTimeLabel.text = String(format: "Physics update time: %0.2lfms (%0.0lffps) Avg time (last 200 frames): %0.2lfms", timeMilliRounded, fps, avgMilliRounded)
+            DispatchQueue.main.async {
+                self.physicsTimeLabel.text = String(format: "Physics update time: %0.2lfms (%0.0lffps) Avg time (last 200 frames): %0.2lfms", timeMilliRounded, fps, avgMilliRounded)
+            }
         }
     }
     
