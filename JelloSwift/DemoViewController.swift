@@ -53,6 +53,7 @@ class DemoView: UIView, CollisionObserver
     
     var updateLabelStopwatch = Stopwatch(startTime: 0)
     var renderLabelStopwatch = Stopwatch(startTime: 0)
+    var intervals: [CFAbsoluteTime] = []
     
     let updateInterval = 0.5
     
@@ -109,6 +110,13 @@ class DemoView: UIView, CollisionObserver
         super.init(coder: aDecoder)
         
         initLabels()
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        physicsTimeLabel.frame = CGRect(x: 20, y: 20, width: self.bounds.width - 40, height: 20)
+        renderTimeLabel.frame = CGRect(x: 20, y: 37, width: self.bounds.width - 40, height: 20)
     }
     
     func initLabels()
@@ -252,14 +260,25 @@ class DemoView: UIView, CollisionObserver
         
         updateWithTimeSinceLastUpdate(timer.timestamp)
         
+        let time = sw.stop()
+        
+        intervals += time
+        if(intervals.count > 200) {
+            intervals = Array(intervals.dropFirst(intervals.count - 200))
+        }
+        
         if(updateLabelStopwatch.duration > updateInterval)
         {
             updateLabelStopwatch.reset()
             
-            let time = round(sw.stop() * 1000 * 20) / 20
-            let fps = 1000 / time
+            let timeMilli = time * 1000
+            let timeMilliRounded = round(timeMilli * 20) / 20
+            let fps = 1000 / timeMilliRounded
             
-            physicsTimeLabel.text = String(format: "Physics update time: %0.2lfms (%0.0lffps)", time, fps)
+            let avgMilli = intervals.map { $0 * 1000 }.reduce(0, +) / CFAbsoluteTime(intervals.count)
+            let avgMilliRounded = round(avgMilli * 20) / 20
+            
+            physicsTimeLabel.text = String(format: "Physics update time: %0.2lfms (%0.0lffps) Avg time (last 200 frames): %0.2lfms", timeMilliRounded, fps, avgMilliRounded)
         }
     }
     
