@@ -18,7 +18,7 @@ open class SpringBodyJoint : BodyJoint
     open var springD: CGFloat
     
     /// Inits a new spring body joint witht he specified parameters. Leave the distance as -1 to calculate the distance automatically from the current distance of the two provided joint links
-    public init(world: World, link1: JointLinkType, link2: JointLinkType, springK: CGFloat, springD: CGFloat, distance: CGFloat = -1)
+    public init(world: World, link1: JointLinkType, link2: JointLinkType, springK: CGFloat, springD: CGFloat, distance: CGFloat? = nil)
     {
         self.springK = springK
         self.springD = springD
