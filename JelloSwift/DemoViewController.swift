@@ -190,6 +190,8 @@ class DemoView: UIView, CollisionObserver
         platform.isStatic = true
     }
     
+    // MARK: - Touch
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?)
     {
         /* Called when a touch begins */
@@ -244,6 +246,8 @@ class DemoView: UIView, CollisionObserver
         draggingPoint = nil
     }
     
+    // MARK: - Drawing
+    
     // Only override drawRect: if you perform custom drawing.
     // An empty implementation adversely affects performance during animation.
     override func draw(_ rect: CGRect)
@@ -252,6 +256,60 @@ class DemoView: UIView, CollisionObserver
         autoreleasepool {
             render()
         }
+    }
+    
+    func render()
+    {
+        guard let context = UIGraphicsGetCurrentContext() else {
+            print("Error rendering scene: Could not get context to draw scene on!")
+            return
+        }
+        
+        let sw = Stopwatch.startNew()
+        
+        polyDrawer.reset()
+        
+        world.joints.forEach(drawJoint)
+        world.bodies.forEach(drawBody)
+        
+        drawDrag(context)
+        
+        if(useDetailedRender)
+        {
+            // Draw collisions
+            for info in collisions
+            {
+                let pointB = info.hitPt
+                let normal = info.normal
+                
+                polyDrawer.queuePoly([pointB, pointB + normal / 4].map(toScreenCoords).map { $0.cgPoint }, fillColor: 0, strokeColor: 0xFFFF0000, lineWidth: 1)
+            }
+        }
+        
+        collisions.removeAll()
+        
+        polyDrawer.renderOnContext(context)
+        polyDrawer.reset()
+        
+        if(renderLabelStopwatch.duration > updateInterval)
+        {
+            renderLabelStopwatch.reset()
+            
+            let time = round(sw.stop() * 1000 * 20) / 20
+            let fps = 1000 / time
+                                                               //  VVVVVV  AIN'T GOT NO TIME TO DYNAMICALLY ALIGN, BABEY!
+            renderTimeLabel.text = String(format: "Render time:              %0.2lfms (%0.0lffps)", time, fps)
+        }
+    }
+    
+    // MARK: - Update Loop (CADisplayLink)
+    
+    func gameLoop()
+    {
+        DispatchQueue.main.async {
+            self.update()
+        }
+        setNeedsDisplay()
     }
     
     func update()
@@ -306,66 +364,13 @@ class DemoView: UIView, CollisionObserver
         p.applyForce(dragForce)
     }
     
-    func render()
-    {
-        guard let context = UIGraphicsGetCurrentContext() else {
-            print("Error rendering scene: Could not get context to draw scene on!")
-            return
-        }
-        
-        let sw = Stopwatch.startNew()
-        
-        polyDrawer.reset()
-        
-        world.joints.forEach(drawJoint)
-        world.bodies.forEach(drawBody)
-        
-        drawDrag(context)
-        
-        if(useDetailedRender)
-        {
-            // Draw collisions
-            for info in collisions
-            {
-                let pointB = info.hitPt
-                let normal = info.normal
-                
-                polyDrawer.queuePoly([pointB, pointB + normal / 4].map(toScreenCoords).map { $0.cgPoint }, fillColor: 0, strokeColor: 0xFFFF0000, lineWidth: 1)
-            }
-        }
-        
-        collisions.removeAll()
-        
-        polyDrawer.renderOnContext(context)
-        polyDrawer.reset()
-        
-        if(renderLabelStopwatch.duration > updateInterval)
-        {
-            renderLabelStopwatch.reset()
-            
-            let time = round(sw.stop() * 1000 * 20) / 20
-            let fps = 1000 / time
-                                                               //  VVVVVV  AIN'T GOT NO TIME TO DYNAMICALLY ALIGN, BABEY!
-            renderTimeLabel.text = String(format: "Render time:              %0.2lfms (%0.0lffps)", time, fps)
-        }
-    }
-    
-    func gameLoop()
-    {
-        DispatchQueue.main.async {
-            self.update()
-        }
-        setNeedsDisplay()
-    }
-    
-    
     func bodiesDidCollide(_ info: BodyCollisionInformation)
     {
         collisions += info
     }
     
     
-    // MARK: - Rendering
+    // MARK: - Rendering Utils
     
     /// Renders the dragging shape line
     func drawDrag(_ context: CGContext)
