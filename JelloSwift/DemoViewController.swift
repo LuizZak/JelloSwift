@@ -272,11 +272,11 @@ class DemoView: UIView, CollisionObserver
             updateLabelStopwatch.reset()
             
             let timeMilli = time * 1000
-            let timeMilliRounded = round(timeMilli * 20) / 20
+            let timeMilliRounded = round(timeMilli * 100) / 100
             let fps = 1000 / timeMilliRounded
             
             let avgMilli = intervals.map { $0 * 1000 }.reduce(0, +) / CFAbsoluteTime(intervals.count)
-            let avgMilliRounded = round(avgMilli * 20) / 20
+            let avgMilliRounded = round(avgMilli * 100) / 100
             
             physicsTimeLabel.text = String(format: "Physics update time: %0.2lfms (%0.0lffps) Avg time (last 200 frames): %0.2lfms", timeMilliRounded, fps, avgMilliRounded)
         }
