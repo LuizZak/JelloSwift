@@ -193,6 +193,26 @@ public final class Body: Equatable
         updateNormals()
     }
     
+    /// Updates the cached edge information of the body
+    public func updateEdges()
+    {
+        let c = pointMasses.count
+        
+        // Maintain the edge count the same as the point mass count
+        if(edges.count != c)
+        {
+            edges = .init(repeating: BodyEdge(), count: c)
+        }
+        
+        // Update edges
+        for (i, curP) in pointMasses.enumerated()
+        {
+            let nextP = pointMasses[(i + 1) % c]
+            
+            edges[i] = BodyEdge(edgeIndex: i, start: curP.position, end: nextP.position)
+        }
+    }
+    
     /// Updates the point normals of the body
     public func updateNormals()
     {
@@ -213,26 +233,6 @@ public final class Body: Equatable
             pointNormals[i] = (edge1N + edge2N).perpendicular().normalized()
             
             prev = curEdge
-        }
-    }
-    
-    /// Updates the cached edge information of the body
-    public func updateEdges()
-    {
-        let c = pointMasses.count
-        
-        // Maintain the edge count the same as the point mass count
-        if(edges.count != c)
-        {
-            edges = .init(repeating: BodyEdge(), count: c)
-        }
-        
-        // Update edges
-        for (i, curP) in pointMasses.enumerated()
-        {
-            let nextP = pointMasses[(i + 1) % c]
-            
-            edges[i] = BodyEdge(edgeIndex: i, start: curP.position, end: nextP.position)
         }
     }
     
@@ -445,14 +445,20 @@ public final class Body: Equatable
     /// These should be forces that try to maintain the shape of the body.
     public func accumulateInternalForces()
     {
-        components.forEach { $0.accumulateInternalForces(self) }
+        for component in components
+        {
+            component.accumulateInternalForces(self)
+        }
     }
     
     /// This function should add all external forces to the Force member variable of each PointMass in the body.
     /// These are external forces acting on the PointMasses, such as gravity, etc.
     public func accumulateExternalForces()
     {
-        components.forEach { $0.accumulateExternalForces(self) }
+        for component in components
+        {
+            component.accumulateExternalForces(self)
+        }
     }
     
     /// Integrates the point masses for this Body.
@@ -463,7 +469,10 @@ public final class Body: Equatable
             return
         }
         
-        pointMasses.forEach { $0.integrate(elapsed) }
+        for pointMass in pointMasses
+        {
+            pointMass.integrate(elapsed)
+        }
     }
     
     /// Applies the velocity damping to the point masses
@@ -474,7 +483,10 @@ public final class Body: Equatable
             return
         }
         
-        pointMasses.forEach { (pm: PointMass) -> Void in pm.velocity -= (pm.velocity - (pm.velocity * velDamping)) * (elapsed * 200) }
+        for pointMass in pointMasses
+        {
+            pointMass.velocity -= (pointMass.velocity - (pointMass.velocity * velDamping)) * (elapsed * 200)
+        }
     }
     
     /// Applies a rotational clockwise torque of a given force on this body
@@ -546,6 +558,10 @@ public final class Body: Equatable
         // line we are testing against goes from pt -> endPt.
         var inside = false
         
+        // If the line lies to the left of the body, apply the test going from the point to the left
+        // this way we may end up reducing the total ammount of edges to test against.
+        // This basic assumption may not hold for every body, but for most bodies (specially round),
+        // this may hold true most of the time.
         if(pt.X < aabb.midX)
         {
             endPt = Vector2(aabb.minimum.X - 0.1, pt.Y)
@@ -757,7 +773,7 @@ public final class Body: Equatable
         pointB = -1
         edgeD = 0
         
-        var closestD = CGFloat.greatestFiniteMagnitude
+        var closestD = CGFloat.infinity
         
         let c = pointMasses.count
         for i in 0..<c
@@ -808,7 +824,7 @@ public final class Body: Equatable
         
         var found = false
         var closestP1 = pointMasses[0]
-        var closestP2 = pointMasses[0]
+        var closestP2 = closestP1
         var closestV = Vector2.Zero
         var closestAdotB: CGFloat = 0
         var closestD = CGFloat.infinity
@@ -910,7 +926,10 @@ public final class Body: Equatable
             return
         }
         
-        pointMasses.forEach{ $0.velocity += velocity }
+        for pointMass in pointMasses
+        {
+            pointMass.velocity += velocity
+        }
     }
     
     /// Resets the collision information of the body
