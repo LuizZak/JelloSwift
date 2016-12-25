@@ -44,7 +44,7 @@ public struct AABB
     
     public init(min: Vector2, max: Vector2)
     {
-        validity = PointValidity.valid
+        validity = .valid
       
         minimum = min
         maximum = max
@@ -52,26 +52,22 @@ public struct AABB
     
     public init(points: [Vector2])
     {
-        validity = PointValidity.invalid
         expandToInclude(points)
     }
     
     public mutating func clear()
     {
-        minimum = Vector2.Zero
-        maximum = Vector2.Zero
-        
-        validity = PointValidity.invalid
+        validity = .invalid
     }
     
     public mutating func expandToInclude(_ point: Vector2)
     {
-        if(validity == PointValidity.invalid)
+        if(validity == .invalid)
         {
             minimum = point
             maximum = point
             
-            validity = PointValidity.valid
+            validity = .valid
         }
         else
         {
@@ -87,12 +83,12 @@ public struct AABB
             return
         }
         
-        if(validity == PointValidity.invalid)
+        if(validity == .invalid)
         {
             minimum = points[0]
             maximum = points[0]
             
-            validity = PointValidity.valid
+            validity = .valid
         }
         
         for p in points
@@ -104,7 +100,7 @@ public struct AABB
     
     public func contains(_ point: Vector2) -> Bool
     {
-        if(validity == PointValidity.invalid)
+        if(validity == .invalid)
         {
             return false
         }
@@ -133,11 +129,11 @@ public struct AABB
             // Y overlap check
             if((minimum.Y <= box.maximum.Y) && (maximum.Y >= box.minimum.Y))
             {
-                return true;
+                return true
             }
         }
         
-        return false;
+        return false
     }
 }
 
