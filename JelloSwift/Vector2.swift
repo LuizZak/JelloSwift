@@ -43,11 +43,6 @@ public struct Vector2: Equatable, CustomStringConvertible
         }
     }
     
-    /*
-    public var X: CGFloat
-    public var Y: CGFloat
-    */
-    
     public var description: String { return "{ \(self.X) : \(self.Y) }" }
     
     public var cgPoint: CGPoint { return CGPoint(x: X, y: Y) }
