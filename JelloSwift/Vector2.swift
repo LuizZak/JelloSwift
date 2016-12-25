@@ -185,7 +185,15 @@ public func max(_ a: Vector2, _ b: Vector2) -> Vector2
 /// Rotates a given vector by an angle in radians
 public func rotateVector(_ vec: Vector2, angleInRadians: CGFloat) -> Vector2
 {
-    return rotateVector(vec, angleInRadians: Double(angleInRadians))
+    if(angleInRadians.truncatingRemainder(dividingBy: (CGFloat(M_PI) * 2)) == 0)
+    {
+        return vec
+    }
+    
+    let c = cos(angleInRadians)
+    let s = sin(angleInRadians)
+    
+    return Vector2((c * vec.X) - (s * vec.Y), (c * vec.Y) + (s * vec.X))
 }
 
 public func rotateVector(_ vec: Vector2, angleInRadians: Double) -> Vector2
@@ -301,16 +309,6 @@ public func /(lhs: Vector2, rhs: CGFloat) -> Vector2
 public func %(lhs: Vector2, rhs: CGFloat) -> Vector2
 {
     return Vector2(lhs.X.truncatingRemainder(dividingBy: rhs), lhs.Y.truncatingRemainder(dividingBy: rhs))
-}
-
-private func funcOnVectors(_ lhs: Vector2, _ rhs: Vector2, _ f: (CGFloat, CGFloat) -> CGFloat) -> Vector2
-{
-    return Vector2(f(lhs.X, rhs.X), f(lhs.Y, rhs.Y))
-}
-
-private func funcOnVectors(_ lhs: Vector2, _ rhs: CGFloat, _ f: (CGFloat, CGFloat) -> CGFloat) -> Vector2
-{
-    return Vector2(f(lhs.X, rhs), f(lhs.Y, rhs))
 }
 
 private func funcOnVectors(_ lhs: Vector2, _ rhs: Vector2, _ f: (CGFloat, CGFloat) -> Bool) -> Bool
