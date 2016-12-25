@@ -13,9 +13,9 @@ import CoreGraphics
 open class SpringBodyJoint : BodyJoint
 {
     /// The spring coefficient for this spring body joint
-    open var springK: CGFloat
+    var springK: CGFloat
     /// The spring dampness for this spring body joint
-    open var springD: CGFloat
+    var springD: CGFloat
     
     /// Inits a new spring body joint witht he specified parameters. Leave the distance as -1 to calculate the distance automatically from the current distance of the two provided joint links
     public init(world: World, link1: JointLinkType, link2: JointLinkType, springK: CGFloat, springD: CGFloat, distance: CGFloat? = nil)
@@ -38,8 +38,8 @@ open class SpringBodyJoint : BodyJoint
             return
         }
         
-        let pos1 = _bodyLink1.position
-        let pos2 = _bodyLink2.position
+        let pos1 = bodyLink1.position
+        let pos2 = bodyLink2.position
         
         let dist = pos1.distanceTo(pos2)
         // Affordable distance
@@ -50,25 +50,25 @@ open class SpringBodyJoint : BodyJoint
         
         let targetDist = max(restDistance, min(maxRestDistance, dist))
         
-        let force = calculateSpringForce(pos1, velA: _bodyLink1.velocity, posB: pos2, velB: _bodyLink2.velocity, distance: targetDist, springK: springK, springD: springD)
+        let force = calculateSpringForce(pos1, velA: bodyLink1.velocity, posB: pos2, velB: bodyLink2.velocity, distance: targetDist, springK: springK, springD: springD)
         
-        if(!_bodyLink1.isStatic && !_bodyLink2.isStatic)
+        if(!bodyLink1.isStatic && !bodyLink2.isStatic)
         {
-            let mass1 = _bodyLink1.mass
-            let mass2 = _bodyLink2.mass
+            let mass1 = bodyLink1.mass
+            let mass2 = bodyLink2.mass
             let massSum = mass1 + mass2
             
-            _bodyLink1.applyForce( force * (massSum / mass1))
-            _bodyLink2.applyForce(-force * (massSum / mass2))
+            bodyLink1.applyForce( force * (massSum / mass1))
+            bodyLink2.applyForce(-force * (massSum / mass2))
         }
         // Static bodies:
-        else if(!_bodyLink1.isStatic && _bodyLink2.isStatic)
+        else if(!bodyLink1.isStatic && bodyLink2.isStatic)
         {
-            _bodyLink1.applyForce(force)
+            bodyLink1.applyForce(force)
         }
-        else if(!_bodyLink2.isStatic && _bodyLink1.isStatic)
+        else if(!bodyLink2.isStatic && bodyLink1.isStatic)
         {
-            _bodyLink2.applyForce(-force)
+            bodyLink2.applyForce(-force)
         }
     }
 }
