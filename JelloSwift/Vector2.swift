@@ -24,6 +24,7 @@ public struct Vector2: Equatable, CustomStringConvertible
     ///Used to match `CGFloat`'s native type
     typealias NativeVectorType = float2
     #endif
+    
     var theVector: NativeVectorType
     
     public var X: CGFloat {
@@ -61,12 +62,12 @@ public struct Vector2: Equatable, CustomStringConvertible
         theVector = NativeVectorType(CGFloat.NativeType(x), CGFloat.NativeType(y))
     }
     
-    public init(_ x:CGFloat, _ y:CGFloat)
+    public init(_ x: CGFloat, _ y: CGFloat)
     {
         theVector = NativeVectorType(x.native, y.native)
     }
     
-    public init(_ x:Double, _ y:Double)
+    public init(_ x: Double, _ y: Double)
     {
         theVector = NativeVectorType(CGFloat.NativeType(x), CGFloat.NativeType(y))
     }
@@ -102,13 +103,13 @@ public struct Vector2: Equatable, CustomStringConvertible
     /// Returns the distance between this Vector2 and another Vector2
     public func distanceTo(_ vec: Vector2) -> CGFloat
     {
-        return CGFloat(distance(self.theVector,vec.theVector))
+        return CGFloat(distance(self.theVector, vec.theVector))
     }
     
     /// Returns the distance squared between this Vector2 and another Vector2
     public func distanceToSquared(_ vec: Vector2) -> CGFloat
     {
-        return CGFloat(distance_squared(self.theVector,vec.theVector))
+        return CGFloat(distance_squared(self.theVector, vec.theVector))
     }
     
     /// Makes this Vector2 perpendicular to its current position.
@@ -123,7 +124,7 @@ public struct Vector2: Equatable, CustomStringConvertible
     /// Returns a Vector2 perpendicular to this Vector2
     public func perpendicular() -> Vector2
     {
-        return Vector2(-Y, X)
+        return Vector2(-theVector.y, theVector.x)
     }
     
     // Normalizes this Vector2 instance.
@@ -151,10 +152,13 @@ extension Vector2
         return CGFloat(simd.dot(theVector, other.theVector))
     }
     
-    /// Calculates the cross product between this and another provided Vector2
+    /// Calculates the cross product between this and another provided Vector2.
+    /// The resulting scalar would match the 'z' axis of the cross product between
+    /// 3d vectors matching the x and y coordinates of the operands, with the 'z'
+    /// coordinate being 0.
     public func cross(with other: Vector2) -> CGFloat
     {
-        return X * other.X - Y * other.Y
+        return CGFloat(theVector.x * other.theVector.x - theVector.y * other.theVector.y)
     }
 }
 
