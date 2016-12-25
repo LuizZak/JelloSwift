@@ -35,7 +35,7 @@ open class BodyJointLink: JointLinkType
     /// Gets the total mass of the subject of this joint link
     open var mass: CGFloat
     {
-        return body.pointMasses.reduce(0, { $0 + $1.mass })
+        return body.pointMasses.reduce(0) { $0 + $1.mass }
     }
     
     /// Gets a value specifying whether the object referenced by this JointLinkType is static
