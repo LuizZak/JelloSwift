@@ -399,7 +399,7 @@ public final class World
                 let dist = bB.getClosestPointOnEdgeSquared(pt, j, &hitPt, &normal, &edgeD)
                 
                 // only perform the check if the normal for this edge is facing AWAY from the point normal.
-                let dot = ptNorm =* normal
+                let dot = ptNorm • normal
                 
                 if (dot <= 0.0)
                 {
@@ -483,7 +483,7 @@ public final class World
             let bVel = (B1.velocity + B2.velocity) / 2
             
             let relVel = A.velocity - bVel
-            let relDot = relVel =* info.normal
+            let relDot = relVel • info.normal
             
             let material = materialPairs[bodyA.material][bodyB.material]
             
@@ -550,12 +550,12 @@ public final class World
                 let jDenom: CGFloat = AinvMass + BinvMass
                 let elas: CGFloat = 1 + material.elasticity
                 
-                let j: CGFloat = -((relVel * elas) =* info.normal) / jDenom
+                let j: CGFloat = -((relVel * elas) • info.normal) / jDenom
                 
                 let tangent: Vector2 = info.normal.perpendicular()
                 
                 let friction: CGFloat = material.friction
-                let f: CGFloat = (relVel =* tangent) * friction / jDenom
+                let f: CGFloat = (relVel • tangent) * friction / jDenom
                 
                 if(!A.mass.isInfinite)
                 {

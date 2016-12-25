@@ -37,7 +37,7 @@ open class ShapeJointLink: JointLinkType
             center += p.position
         }
         
-        center /= _pointMasses.count
+        center /= CGFloat(_pointMasses.count)
         center += offsetPosition
         
         return center
@@ -64,7 +64,7 @@ open class ShapeJointLink: JointLinkType
             totalVel += p.velocity
         }
         
-        totalVel /= _pointMasses.count
+        totalVel /= CGFloat(_pointMasses.count)
         
         return totalVel
     }
@@ -102,7 +102,7 @@ open class ShapeJointLink: JointLinkType
     /// - parameter force: A force to apply to the subjects of this joint link
     open func applyForce(_ force: Vector2)
     {
-        let torqueF = offsetPosition =* force.perpendicular()
+        let torqueF = offsetPosition • force.perpendicular()
         
         for p in _pointMasses
         {
@@ -129,7 +129,7 @@ open class ShapeJointLink: JointLinkType
             let baseNorm = body.baseShape.localVertices[i].normalized()
             let curNorm  = (pm.position - body.derivedPos).normalized()
             
-            var thisAngle = atan2(baseNorm.X * curNorm.Y - baseNorm.Y * curNorm.X, baseNorm =* curNorm)
+            var thisAngle = atan2(baseNorm.X * curNorm.Y - baseNorm.Y * curNorm.X, baseNorm • curNorm)
             
             if (i == 0)
             {

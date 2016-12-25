@@ -83,7 +83,7 @@ public func calculateSpringForce(_ posA: Vector2, velA: Vector2, posB: Vector2, 
     dist = distance - dist
     
     let relVel = velA - velB
-    let totalRelVel = relVel =* BtoA
+    let totalRelVel = relVel • BtoA
     
     return BtoA * ((dist * springK) - (totalRelVel * springD))
 }

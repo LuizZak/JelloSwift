@@ -39,7 +39,7 @@ class PhysicsMathTest: XCTestCase
         let vec1 = Vector2(4, 6)
         let vec2 = Vector2(9, 7)
         
-        XCTAssert((vec1 =* vec2) == CGFloat(4 * 9 + 6 * 7), "DOT product test failed!")
+        XCTAssert((vec1 • vec2) == CGFloat(4 * 9 + 6 * 7), "DOT product test failed!")
         XCTAssert((vec1 =/ vec2) == CGFloat(4 * 9 - 6 * 7), "CROSS product test failed!")
     }
     

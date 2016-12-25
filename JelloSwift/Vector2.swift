@@ -19,7 +19,7 @@ public struct Vector2: Equatable, CustomStringConvertible
     public var X: CGFloat
     public var Y: CGFloat
     
-    public var description: String { return toString() }
+    public var description: String { return "{ \(self.X) : \(self.Y) }" }
     
     public var cgPoint: CGPoint { return CGPoint(x: X, y: Y) }
     
@@ -125,11 +125,21 @@ public struct Vector2: Equatable, CustomStringConvertible
         
         return self
     }
-    
-    /// Returns a string representation of this Vector2 value
-    public func toString() -> String
+}
+
+/// Dot and Cross products
+extension Vector2
+{
+    /// Calculates the dot product between this and another provided Vector2
+    public func dot(with other: Vector2) -> CGFloat
     {
-        return "{ \(self.X) : \(self.Y) }"
+        return X * other.X + Y * other.Y
+    }
+    
+    /// Calculates the cross product between this and another provided Vector2
+    public func cross(with other: Vector2) -> CGFloat
+    {
+        return X * other.X - Y * other.Y
     }
 }
 
@@ -178,19 +188,19 @@ public func rotateVector(_ vec: Vector2, angleInRadians: Double) -> Vector2
 /// Returns whether rotating from A to B is counter-clockwise
 public func vectorsAreCCW(_ A: Vector2, B: Vector2) -> Bool
 {
-    return (B =* A.perpendicular()) >= 0.0
+    return (B • A.perpendicular()) >= 0.0
 }
 
 /// Averages a list of vectors into one normalized Vector2 point
 public func averageVectors<T: Collection>(_ vectors: T) -> Vector2 where T.Iterator.Element == Vector2, T.IndexDistance == Int
 {
-    return vectors.reduce(Vector2.Zero, +) / vectors.count
+    return vectors.reduce(Vector2.Zero, +) / CGFloat(vectors.count)
 }
 
 ////////
 //// Define the operations to be performed on the Vector2
 ////////
-infix operator =* : MultiplicationPrecedence
+infix operator • : MultiplicationPrecedence
 infix operator =/ : MultiplicationPrecedence
 
 ////
@@ -237,15 +247,15 @@ public postfix func --(x: inout Vector2) -> Vector2
 
 // DOT operator
 /// Calculates the dot product between two provided coordinates
-public func =*(lhs: Vector2, rhs: Vector2) -> CGFloat
+public func •(lhs: Vector2, rhs: Vector2) -> CGFloat
 {
-    return lhs.X * rhs.X + lhs.Y * rhs.Y
+    return lhs.dot(with: rhs)
 }
 
 // CROSS operator
 public func =/(lhs: Vector2, rhs: Vector2) -> CGFloat
 {
-    return lhs.X * rhs.X - lhs.Y * rhs.Y
+    return lhs.cross(with: rhs)
 }
 
 ////
@@ -317,27 +327,6 @@ private func funcOnVectors(_ lhs: Vector2, _ rhs: Vector2, _ f: (CGFloat, CGFloa
     return f(lhs.X, rhs.X) && f(lhs.Y, rhs.Y)
 }
 
-// Int interaction
-public func +(lhs: Vector2, rhs: Int) -> Vector2
-{
-    return lhs + CGFloat(rhs)
-}
-
-public func -(lhs: Vector2, rhs: Int) -> Vector2
-{
-    return lhs - CGFloat(rhs)
-}
-
-public func *(lhs: Vector2, rhs: Int) -> Vector2
-{
-    return lhs * CGFloat(rhs)
-}
-
-public func /(lhs: Vector2, rhs: Int) -> Vector2
-{
-    return lhs / CGFloat(rhs)
-}
-
 ////
 // Compound assignment operators
 ////
@@ -372,24 +361,6 @@ public func *=(lhs: inout Vector2, rhs: CGFloat)
     lhs = lhs * rhs
 }
 public func /=(lhs: inout Vector2, rhs: CGFloat)
-{
-    lhs = lhs / rhs
-}
-
-// Int interaction
-public func +=(lhs: inout Vector2, rhs: Int)
-{
-    lhs = lhs + rhs
-}
-public func -=(lhs: inout Vector2, rhs: Int)
-{
-    lhs = lhs - rhs
-}
-public func *=(lhs: inout Vector2, rhs: Int)
-{
-    lhs = lhs * rhs
-}
-public func /=(lhs: inout Vector2, rhs: Int)
 {
     lhs = lhs / rhs
 }
