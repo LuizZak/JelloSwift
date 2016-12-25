@@ -327,7 +327,7 @@ class DemoView: UIView, CollisionObserver
         
         updateWithTimeSinceLastUpdate(timer.timestamp)
         
-        let time = sw.stop()
+        let time = sw.stop() * 1000
         
         intervals += time
         if(intervals.count > 200) {
@@ -338,11 +338,11 @@ class DemoView: UIView, CollisionObserver
         {
             updateLabelStopwatch.reset()
             
-            let timeMilli = time * 1000
+            let timeMilli = time
             let timeMilliRounded = round(timeMilli * 100) / 100
             let fps = 1000 / timeMilliRounded
             
-            let avgMilli = intervals.map { $0 * 1000 }.reduce(0, +) / CFAbsoluteTime(intervals.count)
+            let avgMilli = intervals.reduce(0, +) / CFAbsoluteTime(intervals.count)
             let avgMilliRounded = round(avgMilli * 100) / 100
             
             DispatchQueue.main.async {
