@@ -54,10 +54,10 @@ public struct ClosedShape: ExpressibleByArrayLiteral
         }
     }
     
-    /// Transforms all vertices by the given angle and scale
+    /// Transforms all vertices by the given angle and scale locally
     public mutating func transformOwn(_ angleInRadians: CGFloat, localScale: Vector2)
     {
-        localVertices = localVertices.map { rotateVector($0 * localScale, angleInRadians: angleInRadians) }
+        localVertices = localVertices.map { transform(vertex: $0, worldPos: Vector2.Zero, angleInRadians: angleInRadians, localScale: localScale) }
     }
     
     /// Gets a new list of vertices, transformed by the given position, angle, and scale.
@@ -65,14 +65,22 @@ public struct ClosedShape: ExpressibleByArrayLiteral
     
     public func transformVertices(_ worldPos: Vector2, angleInRadians: CGFloat, localScale: Vector2 = Vector2.One) -> [Vector2]
     {
-        return localVertices.map { rotateVector($0 * localScale, angleInRadians: angleInRadians) + worldPos }
+        return localVertices.map { transform(vertex: $0, worldPos: worldPos, angleInRadians: angleInRadians, localScale: localScale) }
     }
     
     /// Transforms the points on this closed shape into the given array of points.
-    /// The array of points must have the same count of vertices as this closed shape
-    /// transformation is applied in the following order:  scale -> rotation -> position.
-    public func transformVertices(_ target:inout [Vector2], worldPos: Vector2, angleInRadians: CGFloat, localScale: Vector2 = Vector2.One)
+    /// Transformation is applied in the following order:  scale -> rotation -> position.
+    /// - note: The target array of points must have the **same** count of vertices as this closed shape.
+    public func transformVertices(_ target: inout [Vector2], worldPos: Vector2, angleInRadians: CGFloat, localScale: Vector2 = Vector2.One)
     {
-        target = transformVertices(worldPos, angleInRadians: angleInRadians, localScale: localScale)
+        for i in 0..<(min(target.count, localVertices.count))
+        {
+            target[i] = transform(vertex: localVertices[i], worldPos: worldPos, angleInRadians: angleInRadians, localScale: localScale)
+        }
+    }
+    
+    private func transform(vertex: Vector2, worldPos: Vector2, angleInRadians: CGFloat, localScale: Vector2) -> Vector2
+    {
+        return rotateVector(vertex * localScale, angleInRadians: angleInRadians) + worldPos
     }
 }

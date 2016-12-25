@@ -293,7 +293,7 @@ class DemoView: UIView, CollisionObserver
             }
         }
         
-        collisions.removeAll()
+        collisions.removeAll(keepingCapacity: true)
         
         polyDrawer.renderOnContext(context)
         polyDrawer.reset()

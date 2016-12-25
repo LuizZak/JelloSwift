@@ -370,16 +370,18 @@ public final class Body: Equatable
             return
         }
         
+        let currentDerivedPosition = PointMass.averagePosition(pointMasses)
+        
         if(!isPined)
         {
             // Find the geometric center and average velocity
-            derivedPos = averageVectors(vertices)
-            derivedVel = averageVectors(pointMasses.map { $0.velocity })
+            derivedPos = currentDerivedPosition
+            derivedVel = PointMass.averageVelocity(pointMasses)
         }
             
         if(freeRotate)
         {
-            let meanPos = isPined ? averageVectors(vertices) : derivedPos
+            let meanPos = isPined ? currentDerivedPosition : derivedPos
             
             // find the average angle of all of the masses.
             var angle: CGFloat = 0
