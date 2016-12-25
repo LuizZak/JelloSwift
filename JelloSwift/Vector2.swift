@@ -14,8 +14,8 @@ public struct Vector2: Equatable, CustomStringConvertible
 {
     /// A zeroed-value Vector2
     public static let zero = Vector2(0, 0)
-    /// A one-valued Vector2
-    public static let one = Vector2(1, 1)
+    /// An unit-valued Vector2
+    public static let unit = Vector2(1, 1)
     
     #if arch(x86_64) || arch(arm64)
     ///Used to match `CGFloat`'s native type

@@ -41,7 +41,7 @@ public final class Body: Equatable
     public var collectCollisions = false
     
     /// The scale for this body's shape
-    public var scale = Vector2.one
+    public var scale = Vector2.unit
     
     /// The derived center position of this body - in world coordinates
     public fileprivate(set) var derivedPos = Vector2.zero
@@ -110,7 +110,7 @@ public final class Body: Equatable
     /// The Y-axis bitmask for the body - used for collision filtering
     public var bitmaskY: Bitmask = 0
     
-    public init(world: World?, shape: ClosedShape, pointMasses: [CGFloat] = [1], position: Vector2 = Vector2.zero, angle: CGFloat = 0, scale: Vector2 = Vector2.one, kinematic: Bool = false, components: [BodyComponentCreator] = [])
+    public init(world: World?, shape: ClosedShape, pointMasses: [CGFloat] = [1], position: Vector2 = Vector2.zero, angle: CGFloat = 0, scale: Vector2 = Vector2.unit, kinematic: Bool = false, components: [BodyComponentCreator] = [])
     {
         aabb = AABB()
         derivedPos = position
