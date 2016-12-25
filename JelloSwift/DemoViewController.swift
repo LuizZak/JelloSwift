@@ -346,7 +346,7 @@ class DemoView: UIView, CollisionObserver
             let avgMilliRounded = round(avgMilli * 100) / 100
             
             DispatchQueue.main.async {
-                self.physicsTimeLabel.text = String(format: "Physics update time: %0.2lfms (%0.0lffps) Avg time (last 200 frames): %0.2lfms", timeMilliRounded, fps, avgMilliRounded)
+                self.physicsTimeLabel.text = String(format: "Physics update time: %0.2lfms (%0.0lffps) Avg time (last \(self.intervals.count) frames): %0.2lfms", timeMilliRounded, fps, avgMilliRounded)
             }
         }
     }
