@@ -65,7 +65,7 @@ class DemoView: UIView, CollisionObserver
     var draggingPoint: PointMass? = nil
     
     // The location of the user's finger, in physics world coordinates
-    var fingerLocation = Vector2.Zero
+    var fingerLocation = Vector2.zero
     
     var physicsTimeLabel: UILabel
     var renderTimeLabel: UILabel
@@ -98,7 +98,7 @@ class DemoView: UIView, CollisionObserver
         initializeLevel()
         
         renderingOffset = Vector2(300, frame.size.height)
-        renderingScale = Vector2(renderingScale.X, -renderingScale.Y)
+        renderingScale = Vector2(renderingScale.x, -renderingScale.y)
         
         isOpaque = false
         
@@ -156,15 +156,15 @@ class DemoView: UIView, CollisionObserver
         pb2.getComponentType(SpringComponent.self)?.setShapeMatchingConstants(200, 10)
         
         // Create some free boxes around the level
-        createBox(toWorldCoords(Vector2(size.width / 2, size.height / 3)), size: Vector2.One)
-        createBox(toWorldCoords(Vector2(size.width * 0.4, size.height / 3)), size: Vector2.One)
-        let box3 = createBox(toWorldCoords(Vector2(size.width * 0.6, size.height / 3)), size: Vector2.One)
+        createBox(toWorldCoords(Vector2(size.width / 2, size.height / 3)), size: Vector2.unit)
+        createBox(toWorldCoords(Vector2(size.width * 0.4, size.height / 3)), size: Vector2.unit)
+        let box3 = createBox(toWorldCoords(Vector2(size.width * 0.6, size.height / 3)), size: Vector2.unit)
         
         // Lock the rotation of the third box
         box3.freeRotate = false
         
         // Create a pinned box in the middle of the level
-        let pinnedBox = createBox(toWorldCoords(Vector2(size.width / 2, size.height / 2)), size: Vector2.One, pinned: true)
+        let pinnedBox = createBox(toWorldCoords(Vector2(size.width / 2, size.height / 2)), size: Vector2.unit, pinned: true)
         // Increase the velocity damping of the pinned box so it doesn't jiggles around nonstop
         pinnedBox.velDamping = 0.99
         
@@ -370,7 +370,7 @@ class DemoView: UIView, CollisionObserver
             return
         }
         
-        let dragForce = calculateSpringForce(p.position, velA: p.velocity, posB: fingerLocation, velB: Vector2.Zero, distance: 0, springK: 700, springD: 20)
+        let dragForce = calculateSpringForce(p.position, velA: p.velocity, posB: fingerLocation, velB: Vector2.zero, distance: 0, springK: 700, springD: 20)
         
         p.applyForce(dragForce)
     }
@@ -473,13 +473,13 @@ class DemoView: UIView, CollisionObserver
         // Create the closed shape for the box's physics body
         var shape = ClosedShape()
         shape.begin()
-        shape.addVertex(Vector2(-size.X,  size.Y))
-        shape.addVertex(Vector2( size.X,  size.Y))
-        shape.addVertex(Vector2( size.X, -size.Y))
-        shape.addVertex(Vector2(-size.X, -size.Y))
+        shape.addVertex(Vector2(-size.x,  size.y))
+        shape.addVertex(Vector2( size.x,  size.y))
+        shape.addVertex(Vector2( size.x, -size.y))
+        shape.addVertex(Vector2(-size.x, -size.y))
         shape.finish()
         
-        shape.transformOwn(angle, localScale: Vector2.One)
+        shape.transformOwn(angle, localScale: Vector2.unit)
         
         var comps = [BodyComponentCreator]()
         
@@ -560,7 +560,7 @@ class DemoView: UIView, CollisionObserver
     func createBallBoxLinkedStructure(_ pos: Vector2)
     {
         let b1 = createBouncyBall(pos - Vector2(0, 2), pinned: false, kinematic: false, radius: 1, mass: 1)
-        let b2 = createBox(pos, size: Vector2.One, pinned: true, kinematic: false, mass: 1)
+        let b2 = createBox(pos, size: Vector2.unit, pinned: true, kinematic: false, mass: 1)
         
         // Create the joint links
         let l1 = BodyJointLink(body: b1)

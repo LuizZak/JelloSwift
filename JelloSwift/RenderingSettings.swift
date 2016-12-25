@@ -47,9 +47,9 @@ public func setCamera(_ position: Vector2, scale: Vector2)
 /// Sets the camera position and scale from scalar values
 public func setCamera(_ positionX: CGFloat, positionY: CGFloat, scaleX: CGFloat, scaleY: CGFloat)
 {
-    renderingOffset.X = positionX
-    renderingOffset.Y = positionY
+    renderingOffset.x = positionX
+    renderingOffset.y = positionY
     
-    renderingScale.X = scaleX
-    renderingScale.Y = scaleY
+    renderingScale.x = scaleX
+    renderingScale.y = scaleY
 }

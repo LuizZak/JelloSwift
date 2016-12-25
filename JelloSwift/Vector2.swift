@@ -13,9 +13,9 @@ import simd
 public struct Vector2: Equatable, CustomStringConvertible
 {
     /// A zeroed-value Vector2
-    public static let Zero = Vector2(0, 0)
-    /// A one-valued Vector2
-    public static let One = Vector2(1, 1)
+    public static let zero = Vector2(0, 0)
+    /// An unit-valued Vector2
+    public static let unit = Vector2(1, 1)
     
     #if arch(x86_64) || arch(arm64)
     ///Used to match `CGFloat`'s native type
@@ -24,9 +24,10 @@ public struct Vector2: Equatable, CustomStringConvertible
     ///Used to match `CGFloat`'s native type
     typealias NativeVectorType = float2
     #endif
+    
     var theVector: NativeVectorType
     
-    public var X: CGFloat {
+    public var x: CGFloat {
         get {
             return CGFloat(theVector.x)
         }
@@ -34,7 +35,7 @@ public struct Vector2: Equatable, CustomStringConvertible
             theVector.x = newValue.native
         }
     }
-    public var Y: CGFloat {
+    public var y: CGFloat {
         get {
             return CGFloat(theVector.y)
         }
@@ -43,9 +44,9 @@ public struct Vector2: Equatable, CustomStringConvertible
         }
     }
     
-    public var description: String { return "{ \(self.X) : \(self.Y) }" }
+    public var description: String { return "{ \(self.x) : \(self.y) }" }
     
-    public var cgPoint: CGPoint { return CGPoint(x: X, y: Y) }
+    public var cgPoint: CGPoint { return CGPoint(x: x, y: y) }
     
     init(_ vector: NativeVectorType) {
         theVector = vector
@@ -61,12 +62,12 @@ public struct Vector2: Equatable, CustomStringConvertible
         theVector = NativeVectorType(CGFloat.NativeType(x), CGFloat.NativeType(y))
     }
     
-    public init(_ x:CGFloat, _ y:CGFloat)
+    public init(_ x: CGFloat, _ y: CGFloat)
     {
         theVector = NativeVectorType(x.native, y.native)
     }
     
-    public init(_ x:Double, _ y:Double)
+    public init(_ x: Double, _ y: Double)
     {
         theVector = NativeVectorType(CGFloat.NativeType(x), CGFloat.NativeType(y))
     }
@@ -84,7 +85,7 @@ public struct Vector2: Equatable, CustomStringConvertible
     /// Returns the angle in radians of this Vector2
     public func angle() -> CGFloat
     {
-        return atan2(Y, X)
+        return atan2(y, x)
     }
     
     /// Returns the squared length of this Vector2
@@ -102,13 +103,13 @@ public struct Vector2: Equatable, CustomStringConvertible
     /// Returns the distance between this Vector2 and another Vector2
     public func distanceTo(_ vec: Vector2) -> CGFloat
     {
-        return CGFloat(distance(self.theVector,vec.theVector))
+        return CGFloat(distance(self.theVector, vec.theVector))
     }
     
     /// Returns the distance squared between this Vector2 and another Vector2
     public func distanceToSquared(_ vec: Vector2) -> CGFloat
     {
-        return CGFloat(distance_squared(self.theVector,vec.theVector))
+        return CGFloat(distance_squared(self.theVector, vec.theVector))
     }
     
     /// Makes this Vector2 perpendicular to its current position.
@@ -123,7 +124,7 @@ public struct Vector2: Equatable, CustomStringConvertible
     /// Returns a Vector2 perpendicular to this Vector2
     public func perpendicular() -> Vector2
     {
-        return Vector2(-Y, X)
+        return Vector2(-theVector.y, theVector.x)
     }
     
     // Normalizes this Vector2 instance.
@@ -151,10 +152,13 @@ extension Vector2
         return CGFloat(simd.dot(theVector, other.theVector))
     }
     
-    /// Calculates the cross product between this and another provided Vector2
+    /// Calculates the cross product between this and another provided Vector2.
+    /// The resulting scalar would match the 'z' axis of the cross product between
+    /// 3d vectors matching the x and y coordinates of the operands, with the 'z'
+    /// coordinate being 0.
     public func cross(with other: Vector2) -> CGFloat
     {
-        return X * other.X - Y * other.Y
+        return CGFloat(theVector.x * other.theVector.x - theVector.y * other.theVector.y)
     }
 }
 
@@ -181,7 +185,15 @@ public func max(_ a: Vector2, _ b: Vector2) -> Vector2
 /// Rotates a given vector by an angle in radians
 public func rotateVector(_ vec: Vector2, angleInRadians: CGFloat) -> Vector2
 {
-    return rotateVector(vec, angleInRadians: Double(angleInRadians))
+    if(angleInRadians.truncatingRemainder(dividingBy: (CGFloat(M_PI) * 2)) == 0)
+    {
+        return vec
+    }
+    
+    let c = cos(angleInRadians)
+    let s = sin(angleInRadians)
+    
+    return Vector2((c * vec.x) - (s * vec.y), (c * vec.y) + (s * vec.x))
 }
 
 public func rotateVector(_ vec: Vector2, angleInRadians: Double) -> Vector2
@@ -194,8 +206,8 @@ public func rotateVector(_ vec: Vector2, angleInRadians: Double) -> Vector2
     let c = CGFloat(cos(angleInRadians))
     let s = CGFloat(sin(angleInRadians))
     
-    let newX: CGFloat = (c * vec.X) - (s * vec.Y)
-    let newY: CGFloat = (c * vec.Y) + (s * vec.X)
+    let newX: CGFloat = (c * vec.x) - (s * vec.y)
+    let newY: CGFloat = (c * vec.y) + (s * vec.x)
     
     return Vector2(newX, newY)
 }
@@ -209,7 +221,7 @@ public func vectorsAreCCW(_ A: Vector2, B: Vector2) -> Bool
 /// Averages a list of vectors into one normalized Vector2 point
 public func averageVectors<T: Collection>(_ vectors: T) -> Vector2 where T.Iterator.Element == Vector2, T.IndexDistance == Int
 {
-    return vectors.reduce(Vector2.Zero, +) / CGFloat(vectors.count)
+    return vectors.reduce(Vector2.zero, +) / CGFloat(vectors.count)
 }
 
 ////////
@@ -230,34 +242,6 @@ public func ==(lhs: Vector2, rhs: Vector2) -> Bool
 public prefix func -(lhs: Vector2) -> Vector2
 {
     return Vector2(-lhs.theVector)
-}
-
-public prefix func ++(x: inout Vector2) -> Vector2
-{
-    x += 1
-    return x
-}
-
-public postfix func ++(x: inout Vector2) -> Vector2
-{
-    defer {
-        x += 1
-    }
-    return x
-}
-
-public prefix func --(x: inout Vector2) -> Vector2
-{
-    x -= 1
-    return x
-}
-
-public postfix func --(x: inout Vector2) -> Vector2
-{
-    defer {
-        x -= 1
-    }
-    return x
 }
 
 // DOT operator
@@ -298,7 +282,7 @@ public func /(lhs: Vector2, rhs: Vector2) -> Vector2
 
 public func %(lhs: Vector2, rhs: Vector2) -> Vector2
 {
-    return Vector2(lhs.X.truncatingRemainder(dividingBy: rhs.X), lhs.Y.truncatingRemainder(dividingBy: rhs.Y))
+    return Vector2(lhs.x.truncatingRemainder(dividingBy: rhs.x), lhs.y.truncatingRemainder(dividingBy: rhs.y))
 }
 
 // CGFloat interaction
@@ -324,22 +308,12 @@ public func /(lhs: Vector2, rhs: CGFloat) -> Vector2
 
 public func %(lhs: Vector2, rhs: CGFloat) -> Vector2
 {
-    return Vector2(lhs.X.truncatingRemainder(dividingBy: rhs), lhs.Y.truncatingRemainder(dividingBy: rhs))
-}
-
-private func funcOnVectors(_ lhs: Vector2, _ rhs: Vector2, _ f: (CGFloat, CGFloat) -> CGFloat) -> Vector2
-{
-    return Vector2(f(lhs.X, rhs.X), f(lhs.Y, rhs.Y))
-}
-
-private func funcOnVectors(_ lhs: Vector2, _ rhs: CGFloat, _ f: (CGFloat, CGFloat) -> CGFloat) -> Vector2
-{
-    return Vector2(f(lhs.X, rhs), f(lhs.Y, rhs))
+    return Vector2(lhs.x.truncatingRemainder(dividingBy: rhs), lhs.y.truncatingRemainder(dividingBy: rhs))
 }
 
 private func funcOnVectors(_ lhs: Vector2, _ rhs: Vector2, _ f: (CGFloat, CGFloat) -> Bool) -> Bool
 {
-    return f(lhs.X, rhs.X) && f(lhs.Y, rhs.Y)
+    return f(lhs.x, rhs.x) && f(lhs.y, rhs.y)
 }
 
 ////
@@ -382,7 +356,7 @@ public func /=(lhs: inout Vector2, rhs: CGFloat)
 
 public func round(_ x: Vector2) -> Vector2
 {
-    return Vector2(round(x.X), round(x.Y))
+    return Vector2(round(x.x), round(x.y))
 }
 
 public func ceil(_ x: Vector2) -> Vector2

@@ -16,7 +16,7 @@ class PhysicsMathTest: XCTestCase
         let vec1 = Vector2(0, 1)
         let vecPerp = vec1.perpendicular()
         
-        XCTAssert(vecPerp.X == -vec1.Y && vecPerp.Y == vec1.X, "Pass")
+        XCTAssert(vecPerp.x == -vec1.y && vecPerp.y == vec1.x, "Pass")
     }
     
     func testVector2Dist()

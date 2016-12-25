@@ -25,12 +25,12 @@ open class ShapeJointLink: JointLinkType
     open let linkType = LinkType.shape
     
     /// The offset to apply to the position of this shape joint, in body coordinates
-    open var offset = Vector2.Zero
+    open var offset = Vector2.zero
     
     /// Gets the position, in world coordinates, at which this joint links with the underlying body
     open var position: Vector2
     {
-        var center = Vector2.Zero
+        var center = Vector2.zero
         
         for p in _pointMasses
         {
@@ -46,9 +46,9 @@ open class ShapeJointLink: JointLinkType
     /// Offset position, calculated based on the owning body's angle
     fileprivate var offsetPosition: Vector2
     {
-        if(offset == Vector2.Zero)
+        if(offset == Vector2.zero)
         {
-            return Vector2.Zero
+            return Vector2.zero
         }
         
         return rotateVector(offset, angleInRadians: body.derivedAngle)
@@ -57,7 +57,7 @@ open class ShapeJointLink: JointLinkType
     /// Gets the velocity of the object this joint links to
     open var velocity: Vector2
     {
-        var totalVel = Vector2.Zero
+        var totalVel = Vector2.zero
         
         for p in _pointMasses
         {
@@ -129,7 +129,7 @@ open class ShapeJointLink: JointLinkType
             let baseNorm = body.baseShape.localVertices[i].normalized()
             let curNorm  = (pm.position - body.derivedPos).normalized()
             
-            var thisAngle = atan2(baseNorm.X * curNorm.Y - baseNorm.Y * curNorm.X, baseNorm • curNorm)
+            var thisAngle = atan2(baseNorm.x * curNorm.y - baseNorm.y * curNorm.x, baseNorm • curNorm)
             
             if (i == 0)
             {

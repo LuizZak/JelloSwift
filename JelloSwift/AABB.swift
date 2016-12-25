@@ -15,23 +15,23 @@ public struct AABB
     public var validity = PointValidity.invalid
     
     /// Minimum and maximum points for this bounding box
-    public var minimum = Vector2.Zero
-    public var maximum = Vector2.Zero
+    public var minimum = Vector2.zero
+    public var maximum = Vector2.zero
     
     /// Gets the X position of this AABB
-    public var x: CGFloat { return minimum.X }
+    public var x: CGFloat { return minimum.x }
     /// Gets the Y position of this AABB
-    public var y: CGFloat { return minimum.Y }
+    public var y: CGFloat { return minimum.y }
     
     /// Gets the width of this AABB
-    public var width: CGFloat { return maximum.X - minimum.X }
+    public var width: CGFloat { return maximum.x - minimum.x }
     /// Gets the height of this AABB
-    public var height: CGFloat { return maximum.Y - minimum.Y }
+    public var height: CGFloat { return maximum.y - minimum.y }
     
     /// Gets the middle X position of this AABB
-    public var midX: CGFloat { return ((minimum + maximum) / 2).X }
+    public var midX: CGFloat { return ((minimum + maximum) / 2).x }
     /// Gets the middle Y position of this AABB
-    public var midY: CGFloat { return ((minimum + maximum) / 2).Y }
+    public var midY: CGFloat { return ((minimum + maximum) / 2).y }
     
     // This guy has to be lower case otherwise sourcekit crashes
     /// Gets a CGRect that represents the boundaries of this AABB object
@@ -44,7 +44,7 @@ public struct AABB
     
     public init(min: Vector2, max: Vector2)
     {
-        validity = PointValidity.valid
+        validity = .valid
       
         minimum = min
         maximum = max
@@ -52,26 +52,22 @@ public struct AABB
     
     public init(points: [Vector2])
     {
-        validity = PointValidity.invalid
         expandToInclude(points)
     }
     
     public mutating func clear()
     {
-        minimum = Vector2.Zero
-        maximum = Vector2.Zero
-        
-        validity = PointValidity.invalid
+        validity = .invalid
     }
     
     public mutating func expandToInclude(_ point: Vector2)
     {
-        if(validity == PointValidity.invalid)
+        if(validity == .invalid)
         {
             minimum = point
             maximum = point
             
-            validity = PointValidity.valid
+            validity = .valid
         }
         else
         {
@@ -87,12 +83,12 @@ public struct AABB
             return
         }
         
-        if(validity == PointValidity.invalid)
+        if(validity == .invalid)
         {
             minimum = points[0]
             maximum = points[0]
             
-            validity = PointValidity.valid
+            validity = .valid
         }
         
         for p in points
@@ -104,14 +100,14 @@ public struct AABB
     
     public func contains(_ point: Vector2) -> Bool
     {
-        if(validity == PointValidity.invalid)
+        if(validity == .invalid)
         {
             return false
         }
         
-        if(point.X >= minimum.X && point.Y >= minimum.Y)
+        if(point.x >= minimum.x && point.y >= minimum.y)
         {
-            if(point.X <= maximum.X && point.Y <= maximum.Y)
+            if(point.x <= maximum.x && point.y <= maximum.y)
             {
                 return true
             }
@@ -128,16 +124,16 @@ public struct AABB
         }
         
         // X overlap check.
-        if((minimum.X <= box.maximum.X) && (maximum.X >= box.minimum.X))
+        if((minimum.x <= box.maximum.x) && (maximum.x >= box.minimum.x))
         {
             // Y overlap check
-            if((minimum.Y <= box.maximum.Y) && (maximum.Y >= box.minimum.Y))
+            if((minimum.y <= box.maximum.y) && (maximum.y >= box.minimum.y))
             {
-                return true;
+                return true
             }
         }
         
-        return false;
+        return false
     }
 }
 

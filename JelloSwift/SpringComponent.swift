@@ -145,7 +145,7 @@ public final class SpringComponent: BodyComponent
             }
             else
             {
-                force = calculateSpringForce(p.position, velA: p.velocity, posB: body.globalShape[i], velB: Vector2.Zero, distance: 0.0, springK: shapeSpringK, springD: shapeSpringDamp)
+                force = calculateSpringForce(p.position, velA: p.velocity, posB: body.globalShape[i], velB: Vector2.zero, distance: 0.0, springK: shapeSpringK, springD: shapeSpringDamp)
             }
             
             p.force += force

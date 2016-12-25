@@ -19,18 +19,18 @@ class ClosedShapeTests: XCTestCase
         shape.begin()
         shape.addVertex(Vector2(0, 0))
         shape.addVertex(Vector2(1, 0))
-        shape.addVertex(Vector2.One)
+        shape.addVertex(Vector2.unit)
         shape.addVertex(Vector2(0, 1))
         shape.finish(true)
         
         // Create the transformed shape with no modifications
-        var transformed = shape.transformVertices(Vector2.Zero, angleInRadians: 0, localScale: Vector2.One)
+        var transformed = shape.transformVertices(Vector2.zero, angleInRadians: 0, localScale: Vector2.unit)
         
         // Assert that both shapes are equal
-//        XCTAssertEqual(shape.localVertices[0] + Vector2.One, transformed[0], "The transformed shape is incorrect!")
-//        XCTAssertEqual(shape.localVertices[1] + Vector2.One, transformed[1], "The transformed shape is incorrect!")
-//        XCTAssertEqual(shape.localVertices[2] + Vector2.One, transformed[2], "The transformed shape is incorrect!")
-//        XCTAssertEqual(shape.localVertices[3] + Vector2.One, transformed[3], "The transformed shape is incorrect!")
+//        XCTAssertEqual(shape.localVertices[0] + Vector2.unit, transformed[0], "The transformed shape is incorrect!")
+//        XCTAssertEqual(shape.localVertices[1] + Vector2.unit, transformed[1], "The transformed shape is incorrect!")
+//        XCTAssertEqual(shape.localVertices[2] + Vector2.unit, transformed[2], "The transformed shape is incorrect!")
+//        XCTAssertEqual(shape.localVertices[3] + Vector2.unit, transformed[3], "The transformed shape is incorrect!")
     }
     
     func testOffsetTransformVertices()
@@ -41,18 +41,18 @@ class ClosedShapeTests: XCTestCase
         shape.begin()
         shape.addVertex(Vector2(0, 0))
         shape.addVertex(Vector2(1, 0))
-        shape.addVertex(Vector2.One)
+        shape.addVertex(Vector2.unit)
         shape.addVertex(Vector2(0, 1))
         shape.finish(true)
         
         // Create the transformed shape with no modifications
-        var transformed = shape.transformVertices(Vector2.One, angleInRadians: 0, localScale: Vector2.One)
+        var transformed = shape.transformVertices(Vector2.unit, angleInRadians: 0, localScale: Vector2.unit)
         
         // Assert that both shapes are equal
-        XCTAssertEqual(shape.localVertices[0] + Vector2.One, transformed[0], "The transformed shape is incorrect!")
-        XCTAssertEqual(shape.localVertices[1] + Vector2.One, transformed[1], "The transformed shape is incorrect!")
-        XCTAssertEqual(shape.localVertices[2] + Vector2.One, transformed[2], "The transformed shape is incorrect!")
-        XCTAssertEqual(shape.localVertices[3] + Vector2.One, transformed[3], "The transformed shape is incorrect!")
+        XCTAssertEqual(shape.localVertices[0] + Vector2.unit, transformed[0], "The transformed shape is incorrect!")
+        XCTAssertEqual(shape.localVertices[1] + Vector2.unit, transformed[1], "The transformed shape is incorrect!")
+        XCTAssertEqual(shape.localVertices[2] + Vector2.unit, transformed[2], "The transformed shape is incorrect!")
+        XCTAssertEqual(shape.localVertices[3] + Vector2.unit, transformed[3], "The transformed shape is incorrect!")
     }
     
     func testRotateTransformVertices()
@@ -63,12 +63,12 @@ class ClosedShapeTests: XCTestCase
         shape.begin()
         shape.addVertex(Vector2(0, 0))
         shape.addVertex(Vector2(1, 0))
-        shape.addVertex(Vector2.One)
+        shape.addVertex(Vector2.unit)
         shape.addVertex(Vector2(0, 1))
         shape.finish(true)
         
         // Create the transformed shape with no modifications
-        var transformed = shape.transformVertices(Vector2.One, angleInRadians: PI, localScale: Vector2.One)
+        var transformed = shape.transformVertices(Vector2.unit, angleInRadians: PI, localScale: Vector2.unit)
         
         // Assert that both shapes are equal
         for i in 0..<shape.localVertices.count

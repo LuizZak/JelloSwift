@@ -18,13 +18,13 @@ public final class PointMass
     public var mass: CGFloat = 1
     
     /// The global position of the point, in world coordinates
-    public var position = Vector2.Zero
+    public var position = Vector2.zero
     /// The global velocity of the point mass
-    public var velocity = Vector2.Zero
+    public var velocity = Vector2.zero
     /// The global force of the point mass
-    public var force = Vector2.Zero
+    public var force = Vector2.zero
     
-    public init(mass: CGFloat = 0, position: Vector2 = Vector2.Zero)
+    public init(mass: CGFloat = 0, position: Vector2 = Vector2.zero)
     {
         self.mass = mass
         self.position = position
@@ -44,7 +44,7 @@ public final class PointMass
             position += velocity * elapsed
         }
         
-        force = Vector2.Zero
+        force = Vector2.zero
     }
     
     // Applies the given force vector to this point mass
@@ -57,12 +57,12 @@ public final class PointMass
     /// Averages a list of point mass positions into one normalized Vector2 point
     public static func averagePosition<T: Collection>(_ vectors: T) -> Vector2 where T.Iterator.Element == PointMass, T.IndexDistance == Int
     {
-        return vectors.reduce(Vector2.Zero) { $0 + $1.position } / CGFloat(vectors.count)
+        return vectors.reduce(Vector2.zero) { $0 + $1.position } / CGFloat(vectors.count)
     }
     
     /// Averages a list of point mass velocities into one normalized Vector2 point
     public static func averageVelocity<T: Collection>(_ vectors: T) -> Vector2 where T.Iterator.Element == PointMass, T.IndexDistance == Int
     {
-        return vectors.reduce(Vector2.Zero) { $0 + $1.velocity } / CGFloat(vectors.count)
+        return vectors.reduce(Vector2.zero) { $0 + $1.velocity } / CGFloat(vectors.count)
     }
 }

@@ -184,10 +184,10 @@ extension UIColor {
     }
     
     static func fromARGB(_ argb: Int32) -> UIColor {
-        let blue = argb & 0xff;
-        let green = argb >> 8 & 0xff;
-        let red = argb >> 16 & 0xff;
-        let alpha = argb >> 24 & 0xff;
+        let blue = argb & 0xff
+        let green = argb >> 8 & 0xff
+        let red = argb >> 16 & 0xff
+        let alpha = argb >> 24 & 0xff
         
         return UIColor(red: CGFloat(red) / 255.0, green: CGFloat(green) / 255.0, blue: CGFloat(blue) / 255.0, alpha: CGFloat(alpha) / 255.0)
     }
