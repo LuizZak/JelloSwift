@@ -21,7 +21,7 @@ class PointMassTests: XCTestCase
         p.integrate(1.0)
         
         XCTAssertEqual(p.velocity, Vector2(3, 6) / 0.2, "The velocity did not accumulate as expected!")
-        XCTAssertEqual(p.force, Vector2.Zero, "After integrating a point mass, the force should reset to 0!")
+        XCTAssertEqual(p.force, Vector2.zero, "After integrating a point mass, the force should reset to 0!")
         
         XCTAssertEqual(p.position, Vector2(3, 6) / 0.2,
             "The position of the point mass should be modified on the same integration the velocity is modified!")

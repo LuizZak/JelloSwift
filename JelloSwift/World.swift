@@ -19,8 +19,8 @@ public final class World
     
     // PRIVATE VARIABLES
     fileprivate var worldLimits = AABB()
-    fileprivate var worldSize = Vector2.Zero
-    fileprivate var worldGridStep = Vector2.Zero
+    fileprivate var worldSize = Vector2.zero
+    fileprivate var worldGridStep = Vector2.zero
     
     public var penetrationThreshold: CGFloat = 0
     public var penetrationCount = 0
@@ -398,8 +398,8 @@ public final class World
                 let b1 = j
                 let b2 = (j + 1) % (bBpCount)
                 
-                var normal = Vector2.Zero
-                var hitPt = Vector2.Zero
+                var normal = Vector2.zero
+                var hitPt = Vector2.zero
                 var edgeD: CGFloat = 0
                 
                 // test against this edge.
@@ -590,27 +590,27 @@ public final class World
         
         let rev_Divider = worldGridStep / CGFloat(1.0)
         
-        let minVec = max(Vector2.Zero, min(Vector2(32, 32), (box.minimum - worldGridStep) * rev_Divider))
-        let maxVec = max(Vector2.Zero, min(Vector2(32, 32), (box.maximum - worldGridStep) * rev_Divider))
+        let minVec = max(Vector2.zero, min(Vector2(32, 32), (box.minimum - worldGridStep) * rev_Divider))
+        let maxVec = max(Vector2.zero, min(Vector2(32, 32), (box.maximum - worldGridStep) * rev_Divider))
         
-        assert(minVec.X >= 0 && minVec.X <= 32 && minVec.Y >= 0 && minVec.Y <= 32)
-        assert(maxVec.X >= 0 && maxVec.X <= 32 && maxVec.Y >= 0 && maxVec.Y <= 32)
+        assert(minVec.x >= 0 && minVec.x <= 32 && minVec.y >= 0 && minVec.y <= 32)
+        assert(maxVec.x >= 0 && maxVec.x <= 32 && maxVec.y >= 0 && maxVec.y <= 32)
         
         body.bitmaskX = 0
         body.bitmaskY = 0
         
         // In case the body is contained within an invalid bound, disable collision completely
-        if(minVec.X.isNaN || minVec.Y.isNaN || maxVec.X.isNaN || maxVec.Y.isNaN)
+        if(minVec.x.isNaN || minVec.y.isNaN || maxVec.x.isNaN || maxVec.y.isNaN)
         {
             return
         }
         
-        for i in Int(minVec.X)...Int(maxVec.X)
+        for i in Int(minVec.x)...Int(maxVec.x)
         {
             body.bitmaskX +& i
         }
         
-        for i in Int(minVec.Y)...Int(maxVec.Y)
+        for i in Int(minVec.y)...Int(maxVec.y)
         {
             body.bitmaskY +& i
         }

@@ -25,7 +25,7 @@ public func polygonArea<T: BidirectionalCollection>(_ points: T) -> CGFloat wher
     {
         for p in points
         {
-            area += (v2.X + p.X) * (v2.Y - p.Y)
+            area += (v2.x + p.x) * (v2.y - p.y)
             v2 = p
         }
     }
@@ -43,7 +43,7 @@ public func polygonArea<T: Collection>(_ points: T) -> CGFloat where T.Iterator.
 /// Returns a tuple containing information about the hit detection, or nil, if the lines don't intersect
 public func lineIntersect(_ ptA: Vector2, ptB: Vector2, ptC: Vector2, ptD: Vector2) ->  (hitPt: Vector2, Ua: CGFloat, Ub: CGFloat)?
 {
-    let denom = ((ptD.Y - ptC.Y) * (ptB.X - ptA.X)) - ((ptD.X - ptC.X) * (ptB.Y - ptA.Y))
+    let denom = ((ptD.y - ptC.y) * (ptB.x - ptA.x)) - ((ptD.x - ptC.x) * (ptB.y - ptA.y))
     
     // if denom == 0, lines are parallel - being a bit generous on this one..
     if (abs(denom) < 0.000000001)
@@ -51,8 +51,8 @@ public func lineIntersect(_ ptA: Vector2, ptB: Vector2, ptC: Vector2, ptD: Vecto
         return nil
     }
     
-    let UaTop = ((ptD.X - ptC.X) * (ptA.Y - ptC.Y)) - ((ptD.Y - ptC.Y) * (ptA.X - ptC.X))
-    let UbTop = ((ptB.X - ptA.X) * (ptA.Y - ptC.Y)) - ((ptB.Y - ptA.Y) * (ptA.X - ptC.X))
+    let UaTop = ((ptD.x - ptC.x) * (ptA.y - ptC.y)) - ((ptD.y - ptC.y) * (ptA.x - ptC.x))
+    let UbTop = ((ptB.x - ptA.x) * (ptA.y - ptC.y)) - ((ptB.y - ptA.y) * (ptA.x - ptC.x))
     
     let Ua = UaTop / denom
     let Ub = UbTop / denom
@@ -75,7 +75,7 @@ public func calculateSpringForce(_ posA: Vector2, velA: Vector2, posB: Vector2, 
     
     if (dist <= 0.0000005)
     {
-        return Vector2.Zero
+        return Vector2.zero
     }
     
     let BtoA = (posA - posB) / dist

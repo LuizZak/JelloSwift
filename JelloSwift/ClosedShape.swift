@@ -57,13 +57,13 @@ public struct ClosedShape: ExpressibleByArrayLiteral
     /// Transforms all vertices by the given angle and scale locally
     public mutating func transformOwn(_ angleInRadians: CGFloat, localScale: Vector2)
     {
-        localVertices = localVertices.map { transform(vertex: $0, worldPos: Vector2.Zero, angleInRadians: angleInRadians, localScale: localScale) }
+        localVertices = localVertices.map { transform(vertex: $0, worldPos: Vector2.zero, angleInRadians: angleInRadians, localScale: localScale) }
     }
     
     /// Gets a new list of vertices, transformed by the given position, angle, and scale.
     /// transformation is applied in the following order:  scale -> rotation -> position.
     
-    public func transformVertices(_ worldPos: Vector2, angleInRadians: CGFloat, localScale: Vector2 = Vector2.One) -> [Vector2]
+    public func transformVertices(_ worldPos: Vector2, angleInRadians: CGFloat, localScale: Vector2 = Vector2.one) -> [Vector2]
     {
         return localVertices.map { transform(vertex: $0, worldPos: worldPos, angleInRadians: angleInRadians, localScale: localScale) }
     }
@@ -71,7 +71,7 @@ public struct ClosedShape: ExpressibleByArrayLiteral
     /// Transforms the points on this closed shape into the given array of points.
     /// Transformation is applied in the following order:  scale -> rotation -> position.
     /// - note: The target array of points must have the **same** count of vertices as this closed shape.
-    public func transformVertices(_ target: inout [Vector2], worldPos: Vector2, angleInRadians: CGFloat, localScale: Vector2 = Vector2.One)
+    public func transformVertices(_ target: inout [Vector2], worldPos: Vector2, angleInRadians: CGFloat, localScale: Vector2 = Vector2.one)
     {
         for i in 0..<(min(target.count, localVertices.count))
         {

@@ -41,13 +41,13 @@ public final class Body: Equatable
     public var collectCollisions = false
     
     /// The scale for this body's shape
-    public var scale = Vector2.One
+    public var scale = Vector2.one
     
     /// The derived center position of this body - in world coordinates
-    public fileprivate(set) var derivedPos = Vector2.Zero
+    public fileprivate(set) var derivedPos = Vector2.zero
     
     /// The derived velocity of this body - in world coordinates. The derivation assumes the mean of the velocity of all the point masses
-    public fileprivate(set) var derivedVel = Vector2.Zero
+    public fileprivate(set) var derivedVel = Vector2.zero
     
     /// The velocity damping to apply to the body. Values closer to 0 deaccelerate faster, values closer to 1 deaccelerate slower.
     /// 1 never deaccelerates. Values outside the range [0, 1] inclusive may introduce instability
@@ -110,12 +110,12 @@ public final class Body: Equatable
     /// The Y-axis bitmask for the body - used for collision filtering
     public var bitmaskY: Bitmask = 0
     
-    public init(world: World?, shape: ClosedShape, pointMasses: [CGFloat] = [1], position: Vector2 = Vector2.Zero, angle: CGFloat = 0, scale: Vector2 = Vector2.One, kinematic: Bool = false, components: [BodyComponentCreator] = [])
+    public init(world: World?, shape: ClosedShape, pointMasses: [CGFloat] = [1], position: Vector2 = Vector2.zero, angle: CGFloat = 0, scale: Vector2 = Vector2.one, kinematic: Bool = false, components: [BodyComponentCreator] = [])
     {
         aabb = AABB()
         derivedPos = position
         derivedAngle = angle
-        derivedVel = Vector2.Zero
+        derivedVel = Vector2.zero
         derivedOmega = 0
         lastAngle = derivedAngle
         self.scale = scale
@@ -220,7 +220,7 @@ public final class Body: Equatable
         
         if(pointNormals.count != c)
         {
-            pointNormals = .init(repeating: Vector2.Zero, count: c)
+            pointNormals = .init(repeating: Vector2.zero, count: c)
         }
         
         guard var prev = edges.last else { return }
@@ -291,7 +291,7 @@ public final class Body: Equatable
         
         pointMasses = []
         edges = []
-        globalShape = [Vector2](repeating: Vector2.Zero, count: shape.localVertices.count)
+        globalShape = [Vector2](repeating: Vector2.zero, count: shape.localVertices.count)
         
         baseShape.transformVertices(&globalShape, worldPos: derivedPos, angleInRadians: derivedAngle, localScale: scale)
         
@@ -395,7 +395,7 @@ public final class Body: Equatable
                 let baseNorm = baseShape[i].normalized()
                 let curNorm  = (pm.position - meanPos).normalized()
                 
-                var thisAngle = atan2(baseNorm.X * curNorm.Y - baseNorm.Y * curNorm.X, baseNorm • curNorm)
+                var thisAngle = atan2(baseNorm.x * curNorm.y - baseNorm.y * curNorm.x, baseNorm • curNorm)
                 
                 if (i == 0)
                 {
@@ -562,9 +562,9 @@ public final class Body: Equatable
         // this way we may end up reducing the total ammount of edges to test against.
         // This basic assumption may not hold for every body, but for most bodies (specially round),
         // this may hold true most of the time.
-        if(pt.X < aabb.midX)
+        if(pt.x < aabb.midX)
         {
-            endPt = Vector2(aabb.minimum.X - 0.1, pt.Y)
+            endPt = Vector2(aabb.minimum.x - 0.1, pt.y)
             
             for e in edges
             {
@@ -574,19 +574,19 @@ public final class Body: Equatable
                 // perform check now...
                 
                 // The edge lies completely to the right of our imaginary line
-                if(edgeSt.X > pt.X && edgeEnd.X > pt.X)
+                if(edgeSt.x > pt.x && edgeEnd.x > pt.x)
                 {
                     continue
                 }
                 
                 // Check if the edge crosses the imaginary horizontal line from top to bottom or bottom to top
-                if (((edgeSt.Y <= pt.Y) && (edgeEnd.Y > pt.Y)) || ((edgeSt.Y > pt.Y) && (edgeEnd.Y <= pt.Y)))
+                if (((edgeSt.y <= pt.y) && (edgeEnd.y > pt.y)) || ((edgeSt.y > pt.y) && (edgeEnd.y <= pt.y)))
                 {
                     // this line crosses the test line at some point... does it do so within our test range?
-                    let slope = (edgeEnd.X - edgeSt.X) / (edgeEnd.Y - edgeSt.Y)
-                    let hitX = edgeSt.X + ((pt.Y - edgeSt.Y) * slope)
+                    let slope = (edgeEnd.x - edgeSt.x) / (edgeEnd.y - edgeSt.y)
+                    let hitX = edgeSt.x + ((pt.y - edgeSt.y) * slope)
                     
-                    if ((hitX <= pt.X) && (hitX >= endPt.X))
+                    if ((hitX <= pt.x) && (hitX >= endPt.x))
                     {
                         inside = !inside
                     }
@@ -595,7 +595,7 @@ public final class Body: Equatable
         }
         else
         {
-            endPt = Vector2(aabb.maximum.X + 0.1, pt.Y)
+            endPt = Vector2(aabb.maximum.x + 0.1, pt.y)
             
             for e in edges
             {
@@ -605,19 +605,19 @@ public final class Body: Equatable
                 // perform check now...
                 
                 // The edge lies completely to the left of our imaginary line
-                if(edgeSt.X < pt.X && edgeEnd.X < pt.X)
+                if(edgeSt.x < pt.x && edgeEnd.x < pt.x)
                 {
                     continue
                 }
                 
                 // Check if the edge crosses the imaginary horizontal line from top to bottom or bottom to top
-                if (((edgeSt.Y <= pt.Y) && (edgeEnd.Y > pt.Y)) || ((edgeSt.Y > pt.Y) && (edgeEnd.Y <= pt.Y)))
+                if (((edgeSt.y <= pt.y) && (edgeEnd.y > pt.y)) || ((edgeSt.y > pt.y) && (edgeEnd.y <= pt.y)))
                 {
                     // this line crosses the test line at some point... does it do so within our test range?
-                    let slope = (edgeEnd.X - edgeSt.X) / (edgeEnd.Y - edgeSt.Y)
-                    let hitX = edgeSt.X + ((pt.Y - edgeSt.Y) * slope)
+                    let slope = (edgeEnd.x - edgeSt.x) / (edgeEnd.y - edgeSt.y)
+                    let hitX = edgeSt.x + ((pt.y - edgeSt.y) * slope)
                     
-                    if ((hitX >= pt.X) && (hitX <= endPt.X))
+                    if ((hitX >= pt.x) && (hitX <= endPt.x))
                     {
                         inside = !inside
                     }
@@ -662,8 +662,8 @@ public final class Body: Equatable
         }
         
         // Test each edge against the line
-        var p1 = Vector2.Zero
-        var p2 = Vector2.Zero
+        var p1 = Vector2.zero
+        var p2 = Vector2.zero
         var col = false
         
         farPoint = end
@@ -778,8 +778,8 @@ public final class Body: Equatable
         let c = pointMasses.count
         for i in 0..<c
         {
-            var tempHit = Vector2.Zero
-            var tempNorm = Vector2.Zero
+            var tempHit = Vector2.zero
+            var tempNorm = Vector2.zero
             var tempEdgeD: CGFloat = 0
             
             let dist = getClosestPointOnEdgeSquared(pt, i, &tempHit, &tempNorm, &tempEdgeD)
@@ -825,7 +825,7 @@ public final class Body: Equatable
         var found = false
         var closestP1 = pointMasses[0]
         var closestP2 = closestP1
-        var closestV = Vector2.Zero
+        var closestV = Vector2.zero
         var closestAdotB: CGFloat = 0
         var closestD = CGFloat.infinity
         

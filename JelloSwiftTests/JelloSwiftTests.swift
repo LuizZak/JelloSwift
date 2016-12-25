@@ -25,7 +25,7 @@ class JelloSwiftTests: XCTestCase
     
     func testAABB()
     {
-        var aabb1 = AABB(min: Vector2.Zero, max: Vector2(10, 10))
+        var aabb1 = AABB(min: Vector2.zero, max: Vector2(10, 10))
         var aabb2 = AABB(min: Vector2(-1, -1), max: Vector2(0, 0))
         var vec = Vector2(0, 0)
         
