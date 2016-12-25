@@ -370,16 +370,18 @@ public final class Body: Equatable
             return
         }
         
+        let currentDerivedPosition = PointMass.averagePosition(pointMasses)
+        
         if(!isPined)
         {
             // Find the geometric center and average velocity
-            derivedPos = averageVectors(vertices)
-            derivedVel = averageVectors(pointMasses.map { $0.velocity })
+            derivedPos = currentDerivedPosition
+            derivedVel = PointMass.averageVelocity(pointMasses)
         }
             
         if(freeRotate)
         {
-            let meanPos = isPined ? averageVectors(vertices) : derivedPos
+            let meanPos = isPined ? currentDerivedPosition : derivedPos
             
             // find the average angle of all of the masses.
             var angle: CGFloat = 0
@@ -393,7 +395,7 @@ public final class Body: Equatable
                 let baseNorm = baseShape[i].normalized()
                 let curNorm  = (pm.position - meanPos).normalized()
                 
-                var thisAngle = atan2(baseNorm.X * curNorm.Y - baseNorm.Y * curNorm.X, baseNorm =* curNorm)
+                var thisAngle = atan2(baseNorm.X * curNorm.Y - baseNorm.Y * curNorm.X, baseNorm • curNorm)
                 
                 if (i == 0)
                 {
@@ -690,7 +692,7 @@ public final class Body: Equatable
         normal = edge.normal
         
         // calculate the distance!
-        let x = toP =* edge.difference
+        let x = toP • edge.difference
         
         if (x <= 0.0)
         {
@@ -713,7 +715,7 @@ public final class Body: Equatable
         else
         {
             // point lies somewhere on the line segment.
-            let pd = (toP =* edge.normal)
+            let pd = (toP • edge.normal)
             dist = pd * pd
             
             hitPt = ptA + (edge.difference * x)
@@ -818,7 +820,7 @@ public final class Body: Equatable
             
             var d = (pm.position - pm2.position).normalized()
             
-            var adotb = (pm.position - pt) =* d
+            var adotb = (pm.position - pt) • d
             
             adotb = adotb < 0 ? 0 : (adotb > len ? len : adotb)
             
@@ -886,7 +888,7 @@ public final class Body: Equatable
             return
         }
         
-        let torqueF = (derivedPos - pt) =* force.perpendicular()
+        let torqueF = (derivedPos - pt) • force.perpendicular()
         
         for point in pointMasses
         {

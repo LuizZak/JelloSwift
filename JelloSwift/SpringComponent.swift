@@ -37,15 +37,14 @@ public final class SpringComponent: BodyComponent
     
     /// Adds an internal spring to this body
     @discardableResult
-    public func addInternalSpring(_ body: Body, pointA: Int, pointB: Int, springK: CGFloat, damping: CGFloat, dist: CGFloat = -1) -> InternalSpring
+    public func addInternalSpring(_ body: Body, pointA: Int, pointB: Int, springK: CGFloat, damping: CGFloat, dist: CGFloat? = nil) -> InternalSpring
     {
-        var dist = dist
-        if(dist < 0)
-        {
-            dist = body.pointMasses[pointA].position.distanceTo(body.pointMasses[pointB].position)
-        }
+        let pointA = body.pointMasses[pointA]
+        let pointB = body.pointMasses[pointB]
         
-        let s = InternalSpring(body.pointMasses[pointA], body.pointMasses[pointB], dist, springK, damping)
+        let dist = dist ?? pointA.position.distanceTo(pointB.position)
+        
+        let s = InternalSpring(pointA, pointB, dist, springK, damping)
         
         springs += s
         

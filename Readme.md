@@ -15,3 +15,7 @@ The project comes with a demo scene for the iPad, so just fire up and drag the s
 #### License
 
 The project is licensed under The MIT License like the original project, and may be used both in personal and comercial projects, as long as defined by the license.
+
+#### Requirements
+
+To compile this project, you require Xcode 8.0 w/ Swift 3 installed.

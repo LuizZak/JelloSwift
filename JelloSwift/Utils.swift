@@ -217,6 +217,8 @@ func flattenColors(_ backColor: UIColor, withColor foreColor: UIColor) -> UIColo
     
     let alpha = backAlphaFloat + foreAlphaFloat - backAlphaFloat * foreAlphaNormalized
     
-    return UIColor(red: min(1, (foreR * foreAlphaFloat + backR * backColorMultiplier) / alpha), green: min(1, (foreG * foreAlphaFloat + backG * backColorMultiplier) / alpha), blue: min(1, (foreB * foreAlphaFloat + backB * backColorMultiplier) / alpha), alpha: alpha)
-    
+    return UIColor(red: min(1, (foreR * foreAlphaFloat + backR * backColorMultiplier) / alpha),
+                   green: min(1, (foreG * foreAlphaFloat + backG * backColorMultiplier) / alpha),
+                   blue: min(1, (foreB * foreAlphaFloat + backB * backColorMultiplier) / alpha),
+                   alpha: alpha)
 }

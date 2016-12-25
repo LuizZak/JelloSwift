@@ -34,6 +34,8 @@ class DemoViewController: UIViewController
     {
         super.viewDidLoad()
         
+        self.view.backgroundColor = UIColor(white: 0.7, alpha: 1)
+        
         let demo = DemoView(frame: view.frame)
         view.addSubview(demo)
     }
@@ -53,6 +55,7 @@ class DemoView: UIView, CollisionObserver
     
     var updateLabelStopwatch = Stopwatch(startTime: 0)
     var renderLabelStopwatch = Stopwatch(startTime: 0)
+    var intervals: [CFAbsoluteTime] = []
     
     let updateInterval = 0.5
     
@@ -66,6 +69,10 @@ class DemoView: UIView, CollisionObserver
     
     var physicsTimeLabel: UILabel
     var renderTimeLabel: UILabel
+    
+    /// A semaphore for accessing the world object.
+    /// Used to dispatch update loop in a different thread, and synchronize on rendering
+    var worldSemaphore: DispatchSemaphore = DispatchSemaphore(value: 1)
     
     /// Whether to perform a detailed render of the scene. Detailed rendering
     /// renders, along with the body shape, the body's normals, global shape and axis
@@ -94,7 +101,6 @@ class DemoView: UIView, CollisionObserver
         renderingScale = Vector2(renderingScale.X, -renderingScale.Y)
         
         isOpaque = false
-        backgroundColor = UIColor(white: 0.7, alpha: 1)
         
         world.collisionObserver = self
     }
@@ -109,6 +115,13 @@ class DemoView: UIView, CollisionObserver
         super.init(coder: aDecoder)
         
         initLabels()
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        physicsTimeLabel.frame = CGRect(x: 20, y: 20, width: self.bounds.width - 40, height: 20)
+        renderTimeLabel.frame = CGRect(x: 20, y: 37, width: self.bounds.width - 40, height: 20)
     }
     
     func initLabels()
@@ -182,6 +195,8 @@ class DemoView: UIView, CollisionObserver
         platform.isStatic = true
     }
     
+    // MARK: - Touch
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?)
     {
         /* Called when a touch begins */
@@ -236,55 +251,18 @@ class DemoView: UIView, CollisionObserver
         draggingPoint = nil
     }
     
+    // MARK: - Drawing
+    
     // Only override drawRect: if you perform custom drawing.
     // An empty implementation adversely affects performance during animation.
     override func draw(_ rect: CGRect)
     {
         // Drawing code
         autoreleasepool {
+            worldSemaphore.wait()
             render()
+            worldSemaphore.signal()
         }
-    }
-    
-    func update()
-    {
-        let sw = Stopwatch()
-        
-        updateWithTimeSinceLastUpdate(timer.timestamp)
-        
-        if(updateLabelStopwatch.duration > updateInterval)
-        {
-            updateLabelStopwatch.reset()
-            
-            let time = round(sw.stop() * 1000 * 20) / 20
-            let fps = 1000 / time
-            
-            physicsTimeLabel.text = String(format: "Physics update time: %0.2lfms (%0.0lffps)", time, fps)
-        }
-    }
-    
-    func updateWithTimeSinceLastUpdate(_ timeSinceLast: CFTimeInterval)
-    {
-        /* Called before each frame is rendered */
-        updateDrag()
-        
-        // Update the physics world
-        for _ in 0..<5 {
-            self.world.update(1.0 / 200)
-        }
-    }
-    
-    // Updates the dragging functionality
-    func updateDrag()
-    {
-        // Dragging point
-        guard let p = draggingPoint , inputMode == InputMode.dragBody else {
-            return
-        }
-        
-        let dragForce = calculateSpringForce(p.position, velA: p.velocity, posB: fingerLocation, velB: Vector2.Zero, distance: 0, springK: 700, springD: 20)
-        
-        p.applyForce(dragForce)
     }
     
     func render()
@@ -315,7 +293,7 @@ class DemoView: UIView, CollisionObserver
             }
         }
         
-        collisions.removeAll()
+        collisions.removeAll(keepingCapacity: true)
         
         polyDrawer.renderOnContext(context)
         polyDrawer.reset()
@@ -331,14 +309,71 @@ class DemoView: UIView, CollisionObserver
         }
     }
     
+    // MARK: - Update Loop (CADisplayLink)
+    
     func gameLoop()
     {
-        DispatchQueue.main.async {
+        DispatchQueue.global().async {
+            self.worldSemaphore.wait()
             self.update()
+            self.worldSemaphore.signal()
         }
         setNeedsDisplay()
     }
     
+    func update()
+    {
+        let sw = Stopwatch()
+        
+        updateWithTimeSinceLastUpdate(timer.timestamp)
+        
+        let time = sw.stop() * 1000
+        
+        intervals += time
+        if(intervals.count > 200) {
+            intervals = Array(intervals.dropFirst(intervals.count - 200))
+        }
+        
+        if(updateLabelStopwatch.duration > updateInterval)
+        {
+            updateLabelStopwatch.reset()
+            
+            let timeMilli = time
+            let timeMilliRounded = round(timeMilli * 100) / 100
+            let fps = 1000 / timeMilliRounded
+            
+            let avgMilli = intervals.reduce(0, +) / CFAbsoluteTime(intervals.count)
+            let avgMilliRounded = round(avgMilli * 100) / 100
+            
+            DispatchQueue.main.async {
+                self.physicsTimeLabel.text = String(format: "Physics update time: %0.2lfms (%0.0lffps) Avg time (last \(self.intervals.count) frames): %0.2lfms", timeMilliRounded, fps, avgMilliRounded)
+            }
+        }
+    }
+    
+    func updateWithTimeSinceLastUpdate(_ timeSinceLast: CFTimeInterval)
+    {
+        /* Called before each frame is rendered */
+        updateDrag()
+        
+        // Update the physics world
+        for _ in 0..<5 {
+            self.world.update(1.0 / 200)
+        }
+    }
+    
+    // Updates the dragging functionality
+    func updateDrag()
+    {
+        // Dragging point
+        guard let p = draggingPoint , inputMode == InputMode.dragBody else {
+            return
+        }
+        
+        let dragForce = calculateSpringForce(p.position, velA: p.velocity, posB: fingerLocation, velB: Vector2.Zero, distance: 0, springK: 700, springD: 20)
+        
+        p.applyForce(dragForce)
+    }
     
     func bodiesDidCollide(_ info: BodyCollisionInformation)
     {
@@ -346,7 +381,7 @@ class DemoView: UIView, CollisionObserver
     }
     
     
-    // MARK: - Rendering
+    // MARK: - Rendering Utils
     
     /// Renders the dragging shape line
     func drawDrag(_ context: CGContext)
@@ -467,8 +502,8 @@ class DemoView: UIView, CollisionObserver
         // The two first arguments are the indexes of the point masses to link, the next two are the spring constants,
         // and the last one is the distance the spring will try to mantain the two point masses at.
         // Specifying the distance as -1 sets it as the current distance between the specified point masses
-        springComp?.addInternalSpring(body, pointA: 0, pointB: 2, springK: 100, damping: 10, dist: -1)
-        springComp?.addInternalSpring(body, pointA: 1, pointB: 3, springK: 100, damping: 10, dist: -1)
+        springComp?.addInternalSpring(body, pointA: 0, pointB: 2, springK: 100, damping: 10, dist: nil)
+        springComp?.addInternalSpring(body, pointA: 1, pointB: 3, springK: 100, damping: 10, dist: nil)
         
         return body
     }

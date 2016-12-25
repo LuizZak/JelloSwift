@@ -18,9 +18,9 @@ public func ==(lhs: BodyJoint, rhs: BodyJoint) -> Bool
 open class BodyJoint: Equatable
 {
     /// Gets the first link that contins informationa bout the first body linked by this joint
-    internal let _bodyLink1: JointLinkType
+    final let bodyLink1: JointLinkType
     /// Gets the second link that contins informationa bout the first body linked by this joint
-    internal let _bodyLink2: JointLinkType
+    final let bodyLink2: JointLinkType
     
     /// Whether to allow collisions between the two objects joined by this BodyJoint.
     /// Defaults to false
@@ -31,11 +31,6 @@ open class BodyJoint: Equatable
     /// Note that collisions between bodies are still governed by .allowCollisions even if the joint is disabled
     open var enabled = true
     
-    /// Gets the first link that contins informationa bout the first body linked by this joint
-    open var bodyLink1: JointLinkType { return _bodyLink1 }
-    /// Gets the second link that contins informationa bout the first body linked by this joint
-    open var bodyLink2: JointLinkType { return _bodyLink2 }
-    
     /// Gets or sets the rest distance for this joint
     open var restDistance: CGFloat
     /// Gets or sets the maximum resting distance for this joint.
@@ -44,13 +39,13 @@ open class BodyJoint: Equatable
     /// This value is automatically initialized to be the same as restDistance
     open var maxRestDistance:CGFloat
     
-    public init(world: World, link1: JointLinkType, link2: JointLinkType, distance: CGFloat = -1)
+    public init(world: World, link1: JointLinkType, link2: JointLinkType, distance: CGFloat? = nil)
     {
-        _bodyLink1 = link1
-        _bodyLink2 = link2
+        bodyLink1 = link1
+        bodyLink2 = link2
         
         // Automatic distance calculation
-        restDistance = distance >= 0 ? distance : link1.position.distanceTo(link2.position)
+        restDistance = distance ?? link1.position.distanceTo(link2.position)
         maxRestDistance = restDistance
     }
     

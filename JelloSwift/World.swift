@@ -179,10 +179,9 @@ public final class World
     }
     
     /// Finds the closest PointMass in the world to a given point
-    public func getClosestPointMass(_ pt: Vector2) -> (Body?, PointMass?)
+    public func getClosestPointMass(_ pt: Vector2) -> (Body, PointMass)?
     {
-        var retBody: Body? = nil
-        var retPoint: PointMass? = nil
+        var ret: (Body, PointMass)? = nil
         
         var closestD = CGFloat.greatestFiniteMagnitude
         
@@ -194,12 +193,11 @@ public final class World
             if(dist < closestD)
             {
                 closestD = dist
-                retBody = body
-                retPoint = pm
+                ret = (body, pm)
             }
         }
         
-        return (retBody, retPoint)
+        return ret
     }
     
     /// Given a global, get a body (if any) that contains this point.
@@ -293,7 +291,10 @@ public final class World
         }
         
         // Update the joints
-        joints.forEach { $0.resolve(elapsed) }
+        for joint in joints
+        {
+            joint.resolve(elapsed)
+        }
         
         let c = bodies.count
         for (i, body1) in bodies.enumerated()
@@ -353,12 +354,18 @@ public final class World
         // Notify collisions that will happen
         if let observer = collisionObserver
         {
-            collisionList.forEach { observer.bodiesDidCollide($0) }
+            for collision in collisionList
+            {
+                observer.bodiesDidCollide(collision)
+            }
         }
         
         handleCollisions()
         
-        bodies.forEach { $0.dampenVelocity(elapsed) }
+        for body in bodies
+        {
+            body.dampenVelocity(elapsed)
+        }
     }
     
     /// Checks collision between two bodies, and store the collision information if they do
@@ -399,7 +406,7 @@ public final class World
                 let dist = bB.getClosestPointOnEdgeSquared(pt, j, &hitPt, &normal, &edgeD)
                 
                 // only perform the check if the normal for this edge is facing AWAY from the point normal.
-                let dot = ptNorm =* normal
+                let dot = ptNorm • normal
                 
                 if (dot <= 0.0)
                 {
@@ -483,7 +490,7 @@ public final class World
             let bVel = (B1.velocity + B2.velocity) / 2
             
             let relVel = A.velocity - bVel
-            let relDot = relVel =* info.normal
+            let relDot = relVel • info.normal
             
             let material = materialPairs[bodyA.material][bodyB.material]
             
@@ -550,12 +557,12 @@ public final class World
                 let jDenom: CGFloat = AinvMass + BinvMass
                 let elas: CGFloat = 1 + material.elasticity
                 
-                let j: CGFloat = -((relVel * elas) =* info.normal) / jDenom
+                let j: CGFloat = -((relVel * elas) • info.normal) / jDenom
                 
                 let tangent: Vector2 = info.normal.perpendicular()
                 
                 let friction: CGFloat = material.friction
-                let f: CGFloat = (relVel =* tangent) * friction / jDenom
+                let f: CGFloat = (relVel • tangent) * friction / jDenom
                 
                 if(!A.mass.isInfinite)
                 {
@@ -573,7 +580,7 @@ public final class World
             }
         }
         
-        collisionList = []
+        collisionList.removeAll(keepingCapacity: true)
     }
     
     /// Update bodies' bitmask for early collision filtering
