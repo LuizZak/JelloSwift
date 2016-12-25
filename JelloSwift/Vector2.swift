@@ -236,34 +236,6 @@ public prefix func -(lhs: Vector2) -> Vector2
     return Vector2(-lhs.theVector)
 }
 
-public prefix func ++(x: inout Vector2) -> Vector2
-{
-    x += 1
-    return x
-}
-
-public postfix func ++(x: inout Vector2) -> Vector2
-{
-    defer {
-        x += 1
-    }
-    return x
-}
-
-public prefix func --(x: inout Vector2) -> Vector2
-{
-    x -= 1
-    return x
-}
-
-public postfix func --(x: inout Vector2) -> Vector2
-{
-    defer {
-        x -= 1
-    }
-    return x
-}
-
 // DOT operator
 /// Calculates the dot product between two provided coordinates
 public func •(lhs: Vector2, rhs: Vector2) -> CGFloat
