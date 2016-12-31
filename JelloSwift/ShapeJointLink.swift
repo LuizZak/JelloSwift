@@ -51,7 +51,7 @@ open class ShapeJointLink: JointLinkType
             return Vector2.zero
         }
         
-        return rotateVector(offset, angleInRadians: body.derivedAngle)
+        return offset.rotated(by: body.derivedAngle)
     }
     
     /// Gets the velocity of the object this joint links to
@@ -126,7 +126,7 @@ open class ShapeJointLink: JointLinkType
         {
             let pm = body.pointMasses[i]
             
-            let baseNorm = body.baseShape.localVertices[i].normalized()
+            let baseNorm = body.baseShape[i].normalized()
             let curNorm  = (pm.position - body.derivedPos).normalized()
             
             var thisAngle = atan2(baseNorm.x * curNorm.y - baseNorm.y * curNorm.x, baseNorm • curNorm)

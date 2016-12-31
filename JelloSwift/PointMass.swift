@@ -55,14 +55,14 @@ public final class PointMass
     
     
     /// Averages a list of point mass positions into one normalized Vector2 point
-    public static func averagePosition<T: Collection>(_ vectors: T) -> Vector2 where T.Iterator.Element == PointMass, T.IndexDistance == Int
+    public static func averagePosition<T: Collection>(_ pointMasses: T) -> Vector2 where T.Iterator.Element == PointMass, T.IndexDistance == Int
     {
-        return vectors.reduce(Vector2.zero) { $0 + $1.position } / CGFloat(vectors.count)
+        return pointMasses.reduce(Vector2.zero) { $0 + $1.position } / CGFloat(pointMasses.count)
     }
     
     /// Averages a list of point mass velocities into one normalized Vector2 point
-    public static func averageVelocity<T: Collection>(_ vectors: T) -> Vector2 where T.Iterator.Element == PointMass, T.IndexDistance == Int
+    public static func averageVelocity<T: Collection>(_ pointMasses: T) -> Vector2 where T.Iterator.Element == PointMass, T.IndexDistance == Int
     {
-        return vectors.reduce(Vector2.zero) { $0 + $1.velocity } / CGFloat(vectors.count)
+        return pointMasses.reduce(Vector2.zero) { $0 + $1.velocity } / CGFloat(pointMasses.count)
     }
 }

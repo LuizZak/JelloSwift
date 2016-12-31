@@ -452,8 +452,8 @@ class DemoView: UIView, CollisionObserver
         polyDrawer.queuePoly(points, fillColor: 0xADFFFFFF, strokeColor: 0xFF000000)
         
         // Draw the body axis
-        let axisUp    = [body.derivedPos, body.derivedPos + Vector2(0, 0.6).rotate(body.derivedAngle)]
-        let axisRight = [body.derivedPos, body.derivedPos + Vector2(0.6, 0).rotate(body.derivedAngle)]
+        let axisUp    = [body.derivedPos, body.derivedPos + Vector2(0, 0.6).rotated(by: body.derivedAngle)]
+        let axisRight = [body.derivedPos, body.derivedPos + Vector2(0.6, 0).rotated(by: body.derivedAngle)]
         
         let axisUpCg = axisUp.map { toScreenCoords($0).cgPoint }
         let axisRightCg = axisRight.map { toScreenCoords($0).cgPoint }
@@ -634,8 +634,8 @@ class DemoView: UIView, CollisionObserver
         
         let carBody = Body(world: world, shape: carShape, pointMasses: [0.7], position: pos + bodyOffset, components: [SpringComponentCreator(shapeMatchingOn: true, edgeSpringK: 300, edgeSpringDamp: 30, shapeSpringK: 600, shapeSpringDamp: 30), GravityComponentCreator()])
         
-        let leftWheel  = createBouncyBall(carBody.derivedPos + rotateVector(Vector2(-1.1, -0.5) - bodyOffset, angleInRadians: carBody.derivedAngle), pinned: false, kinematic: false, radius: 0.5, mass: 0.5)
-        let rightWheel = createBouncyBall(carBody.derivedPos + rotateVector(Vector2( 1.1, -0.5) - bodyOffset, angleInRadians: carBody.derivedAngle), pinned: false, kinematic: false, radius: 0.5, mass: 0.5)
+        let leftWheel  = createBouncyBall(carBody.derivedPos + Vector2.rotate(Vector2(-1.1, -0.5) - bodyOffset, by: carBody.derivedAngle), pinned: false, kinematic: false, radius: 0.5, mass: 0.5)
+        let rightWheel = createBouncyBall(carBody.derivedPos + Vector2.rotate(Vector2( 1.1, -0.5) - bodyOffset, by: carBody.derivedAngle), pinned: false, kinematic: false, radius: 0.5, mass: 0.5)
         
         // Create the left wheel constraint
         let ljWheel = BodyJointLink(body: leftWheel)

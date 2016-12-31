@@ -48,7 +48,7 @@ public struct ClosedShape: ExpressibleByArrayLiteral
         if(recenter)
         {
             // Find the average location of all the vertices
-            let center = averageVectors(localVertices)
+            let center = localVertices.averageVector()
             
             localVertices = localVertices.map { $0 - center }
         }
@@ -62,7 +62,6 @@ public struct ClosedShape: ExpressibleByArrayLiteral
     
     /// Gets a new list of vertices, transformed by the given position, angle, and scale.
     /// transformation is applied in the following order:  scale -> rotation -> position.
-    
     public func transformVertices(_ worldPos: Vector2, angleInRadians: CGFloat, localScale: Vector2 = Vector2.unit) -> [Vector2]
     {
         return localVertices.map { transform(vertex: $0, worldPos: worldPos, angleInRadians: angleInRadians, localScale: localScale) }
@@ -73,7 +72,7 @@ public struct ClosedShape: ExpressibleByArrayLiteral
     /// - note: The target array of points must have the **same** count of vertices as this closed shape.
     public func transformVertices(_ target: inout [Vector2], worldPos: Vector2, angleInRadians: CGFloat, localScale: Vector2 = Vector2.unit)
     {
-        for i in 0..<(min(target.count, localVertices.count))
+        for i in 0..<target.count
         {
             target[i] = transform(vertex: localVertices[i], worldPos: worldPos, angleInRadians: angleInRadians, localScale: localScale)
         }
@@ -81,6 +80,6 @@ public struct ClosedShape: ExpressibleByArrayLiteral
     
     private func transform(vertex: Vector2, worldPos: Vector2, angleInRadians: CGFloat, localScale: Vector2) -> Vector2
     {
-        return rotateVector(vertex * localScale, angleInRadians: angleInRadians) + worldPos
+        return Vector2.rotate(vertex * localScale, by: angleInRadians) + worldPos
     }
 }

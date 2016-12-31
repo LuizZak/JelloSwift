@@ -164,9 +164,162 @@ extension Vector2
 
 extension Vector2
 {
-    func rotate(_ angleInRadians: CGFloat) -> Vector2
+    ////
+    // Comparision operators
+    ////
+    static public func ==(lhs: Vector2, rhs: Vector2) -> Bool
     {
-        return rotateVector(self, angleInRadians: Double(angleInRadians))
+        return lhs.theVector.x == rhs.theVector.x && lhs.theVector.y == rhs.theVector.y
+    }
+    
+    // Unary operators
+    static public prefix func -(lhs: Vector2) -> Vector2
+    {
+        return Vector2(-lhs.theVector)
+    }
+    
+    // DOT operator
+    /// Calculates the dot product between two provided coordinates
+    static public func •(lhs: Vector2, rhs: Vector2) -> CGFloat
+    {
+        return lhs.dot(with: rhs)
+    }
+    
+    // CROSS operator
+    static public func =/(lhs: Vector2, rhs: Vector2) -> CGFloat
+    {
+        return lhs.cross(with: rhs)
+    }
+    
+    ////
+    // Basic arithmetic operators
+    ////
+    static public func +(lhs: Vector2, rhs: Vector2) -> Vector2
+    {
+        return Vector2(lhs.theVector + rhs.theVector)
+    }
+    
+    static public func -(lhs: Vector2, rhs: Vector2) -> Vector2
+    {
+        return Vector2(lhs.theVector - rhs.theVector)
+    }
+    
+    static public func *(lhs: Vector2, rhs: Vector2) -> Vector2
+    {
+        return Vector2(lhs.theVector * rhs.theVector)
+    }
+    
+    static public func /(lhs: Vector2, rhs: Vector2) -> Vector2
+    {
+        return Vector2(lhs.theVector / rhs.theVector)
+    }
+    
+    static public func %(lhs: Vector2, rhs: Vector2) -> Vector2
+    {
+        return Vector2(lhs.x.truncatingRemainder(dividingBy: rhs.x), lhs.y.truncatingRemainder(dividingBy: rhs.y))
+    }
+    
+    // CGFloat interaction
+    static public func +(lhs: Vector2, rhs: CGFloat) -> Vector2
+    {
+        return Vector2(lhs.theVector + Vector2.NativeVectorType(rhs.native))
+    }
+    
+    static public func -(lhs: Vector2, rhs: CGFloat) -> Vector2
+    {
+        return Vector2(lhs.theVector - Vector2.NativeVectorType(rhs.native))
+    }
+    
+    static public func *(lhs: Vector2, rhs: CGFloat) -> Vector2
+    {
+        return Vector2(lhs.theVector * Vector2.NativeVectorType(rhs.native))
+    }
+    
+    static public func /(lhs: Vector2, rhs: CGFloat) -> Vector2
+    {
+        return Vector2(lhs.theVector / Vector2.NativeVectorType(rhs.native))
+    }
+    
+    static public func %(lhs: Vector2, rhs: CGFloat) -> Vector2
+    {
+        return Vector2(lhs.x.truncatingRemainder(dividingBy: rhs), lhs.y.truncatingRemainder(dividingBy: rhs))
+    }
+    
+    ////
+    // Compound assignment operators
+    ////
+    static public func +=(lhs: inout Vector2, rhs: Vector2)
+    {
+        lhs.theVector += rhs.theVector
+    }
+    static public func -=(lhs: inout Vector2, rhs: Vector2)
+    {
+        lhs.theVector -= rhs.theVector
+    }
+    static public func *=(lhs: inout Vector2, rhs: Vector2)
+    {
+        lhs.theVector *= rhs.theVector
+    }
+    static public func /=(lhs: inout Vector2, rhs: Vector2)
+    {
+        lhs.theVector /= rhs.theVector
+    }
+    
+    // CGFloat interaction
+    static public func +=(lhs: inout Vector2, rhs: CGFloat)
+    {
+        lhs = lhs + rhs
+    }
+    static public func -=(lhs: inout Vector2, rhs: CGFloat)
+    {
+        lhs = lhs - rhs
+    }
+    static public func *=(lhs: inout Vector2, rhs: CGFloat)
+    {
+        lhs = lhs * rhs
+    }
+    static public func /=(lhs: inout Vector2, rhs: CGFloat)
+    {
+        lhs = lhs / rhs
+    }
+}
+
+extension Vector2
+{
+    /// Returns a rotated version of this vector, rotated around by a given angle in radians
+    func rotated(by angleInRadians: CGFloat) -> Vector2
+    {
+        return Vector2.rotate(self, by: angleInRadians)
+    }
+    
+    /// Rotates this vector around by a given angle in radians
+    mutating func rotate(by angleInRadians: CGFloat) -> Vector2
+    {
+        self = rotated(by: angleInRadians)
+        return self
+    }
+    
+    /// Rotates a given vector by an angle in radians
+    static public func rotate(_ vec: Vector2, by angleInRadians: CGFloat) -> Vector2
+    {
+        if(angleInRadians.truncatingRemainder(dividingBy: (CGFloat(M_PI) * 2)) == 0)
+        {
+            return vec
+        }
+        
+        let c = cos(angleInRadians)
+        let s = sin(angleInRadians)
+        
+        return Vector2((c * vec.x) - (s * vec.y), (c * vec.y) + (s * vec.x))
+    }
+}
+
+extension Collection where Iterator.Element == Vector2, IndexDistance == Int
+{
+    /// Averages this collection of vectors into one Vector2 point
+    public func averageVector() -> Vector2
+    {
+        return reduce(Vector2.zero, +) / CGFloat(count)
     }
 }
 
@@ -182,46 +335,10 @@ public func max(_ a: Vector2, _ b: Vector2) -> Vector2
     return Vector2(max(a.theVector, b.theVector))
 }
 
-/// Rotates a given vector by an angle in radians
-public func rotateVector(_ vec: Vector2, angleInRadians: CGFloat) -> Vector2
-{
-    if(angleInRadians.truncatingRemainder(dividingBy: (CGFloat(M_PI) * 2)) == 0)
-    {
-        return vec
-    }
-    
-    let c = cos(angleInRadians)
-    let s = sin(angleInRadians)
-    
-    return Vector2((c * vec.x) - (s * vec.y), (c * vec.y) + (s * vec.x))
-}
-
-public func rotateVector(_ vec: Vector2, angleInRadians: Double) -> Vector2
-{
-    if(angleInRadians.truncatingRemainder(dividingBy: (M_PI * 2)) == 0)
-    {
-        return vec
-    }
-    
-    let c = CGFloat(cos(angleInRadians))
-    let s = CGFloat(sin(angleInRadians))
-    
-    let newX: CGFloat = (c * vec.x) - (s * vec.y)
-    let newY: CGFloat = (c * vec.y) + (s * vec.x)
-    
-    return Vector2(newX, newY)
-}
-
 /// Returns whether rotating from A to B is counter-clockwise
 public func vectorsAreCCW(_ A: Vector2, B: Vector2) -> Bool
 {
     return (B • A.perpendicular()) >= 0.0
-}
-
-/// Averages a list of vectors into one normalized Vector2 point
-public func averageVectors<T: Collection>(_ vectors: T) -> Vector2 where T.Iterator.Element == Vector2, T.IndexDistance == Int
-{
-    return vectors.reduce(Vector2.zero, +) / CGFloat(vectors.count)
 }
 
 ////////
@@ -229,130 +346,6 @@ public func averageVectors<T: Collection>(_ vectors: T) -> Vector2 where T.Itera
 ////////
 infix operator • : MultiplicationPrecedence
 infix operator =/ : MultiplicationPrecedence
-
-////
-// Comparision operators
-////
-public func ==(lhs: Vector2, rhs: Vector2) -> Bool
-{
-    return funcOnVectors(lhs, rhs, ==)
-}
-
-// Unary operators
-public prefix func -(lhs: Vector2) -> Vector2
-{
-    return Vector2(-lhs.theVector)
-}
-
-// DOT operator
-/// Calculates the dot product between two provided coordinates
-public func •(lhs: Vector2, rhs: Vector2) -> CGFloat
-{
-    return lhs.dot(with: rhs)
-}
-
-// CROSS operator
-public func =/(lhs: Vector2, rhs: Vector2) -> CGFloat
-{
-    return lhs.cross(with: rhs)
-}
-
-////
-// Basic arithmetic operators
-////
-public func +(lhs: Vector2, rhs: Vector2) -> Vector2
-{
-    return Vector2(lhs.theVector + rhs.theVector)
-}
-
-public func -(lhs: Vector2, rhs: Vector2) -> Vector2
-{
-    return Vector2(lhs.theVector - rhs.theVector)
-}
-
-public func *(lhs: Vector2, rhs: Vector2) -> Vector2
-{
-    return Vector2(lhs.theVector * rhs.theVector)
-}
-
-public func /(lhs: Vector2, rhs: Vector2) -> Vector2
-{
-    return Vector2(lhs.theVector / rhs.theVector)
-}
-
-public func %(lhs: Vector2, rhs: Vector2) -> Vector2
-{
-    return Vector2(lhs.x.truncatingRemainder(dividingBy: rhs.x), lhs.y.truncatingRemainder(dividingBy: rhs.y))
-}
-
-// CGFloat interaction
-public func +(lhs: Vector2, rhs: CGFloat) -> Vector2
-{
-    return Vector2(lhs.theVector + Vector2.NativeVectorType(rhs.native))
-}
-
-public func -(lhs: Vector2, rhs: CGFloat) -> Vector2
-{
-    return Vector2(lhs.theVector - Vector2.NativeVectorType(rhs.native))
-}
-
-public func *(lhs: Vector2, rhs: CGFloat) -> Vector2
-{
-    return Vector2(lhs.theVector * Vector2.NativeVectorType(rhs.native))
-}
-
-public func /(lhs: Vector2, rhs: CGFloat) -> Vector2
-{
-    return Vector2(lhs.theVector / Vector2.NativeVectorType(rhs.native))
-}
-
-public func %(lhs: Vector2, rhs: CGFloat) -> Vector2
-{
-    return Vector2(lhs.x.truncatingRemainder(dividingBy: rhs), lhs.y.truncatingRemainder(dividingBy: rhs))
-}
-
-private func funcOnVectors(_ lhs: Vector2, _ rhs: Vector2, _ f: (CGFloat, CGFloat) -> Bool) -> Bool
-{
-    return f(lhs.x, rhs.x) && f(lhs.y, rhs.y)
-}
-
-////
-// Compound assignment operators
-////
-public func +=(lhs: inout Vector2, rhs: Vector2)
-{
-    lhs.theVector += rhs.theVector
-}
-public func -=(lhs: inout Vector2, rhs: Vector2)
-{
-    lhs.theVector -= rhs.theVector
-}
-public func *=(lhs: inout Vector2, rhs: Vector2)
-{
-    lhs.theVector *= rhs.theVector
-}
-public func /=(lhs: inout Vector2, rhs: Vector2)
-{
-    lhs.theVector /= rhs.theVector
-}
-
-// CGFloat interaction
-public func +=(lhs: inout Vector2, rhs: CGFloat)
-{
-    lhs = lhs + rhs
-}
-public func -=(lhs: inout Vector2, rhs: CGFloat)
-{
-    lhs = lhs - rhs
-}
-public func *=(lhs: inout Vector2, rhs: CGFloat)
-{
-    lhs = lhs * rhs
-}
-public func /=(lhs: inout Vector2, rhs: CGFloat)
-{
-    lhs = lhs / rhs
-}
 
 public func round(_ x: Vector2) -> Vector2
 {
