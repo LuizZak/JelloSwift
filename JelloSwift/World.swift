@@ -330,7 +330,7 @@ public final class World
                     continue
                 }
                 
-                // Joints relationship: if on body is joined to another by a joint, check the joint's rule for collision
+                // Joints relationship: if one body is joined to another by a joint, check the joint's rule for collision
                 for j in body1.joints
                 {
                     if(j.bodyLink1.body == body1 && j.bodyLink2.body == body2 ||
@@ -588,10 +588,8 @@ public final class World
     {
         let box = body.aabb
         
-        let rev_Divider = worldGridStep / CGFloat(1.0)
-        
-        let minVec = max(Vector2.zero, min(Vector2(32, 32), (box.minimum - worldGridStep) * rev_Divider))
-        let maxVec = max(Vector2.zero, min(Vector2(32, 32), (box.maximum - worldGridStep) * rev_Divider))
+        let minVec = max(Vector2.zero, min(Vector2(32, 32), (box.minimum - worldLimits.minimum) / worldGridStep))
+        let maxVec = max(Vector2.zero, min(Vector2(32, 32), (box.maximum - worldLimits.minimum) / worldGridStep))
         
         assert(minVec.x >= 0 && minVec.x <= 32 && minVec.y >= 0 && minVec.y <= 32)
         assert(maxVec.x >= 0 && maxVec.x <= 32 && maxVec.y >= 0 && maxVec.y <= 32)
