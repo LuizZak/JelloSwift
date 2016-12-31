@@ -605,12 +605,12 @@ public final class World
         
         for i in Int(minVec.x)...Int(maxVec.x)
         {
-            body.bitmaskX +& i
+            body.bitmaskX.setBitOn(atIndex: i)
         }
         
         for i in Int(minVec.y)...Int(maxVec.y)
         {
-            body.bitmaskY +& i
+            body.bitmaskY.setBitOn(atIndex: i)
         }
     }
 }

@@ -10,19 +10,19 @@ import CoreGraphics
 
 public typealias Bitmask = UInt
 
-infix operator +& : AdditionPrecedence
-infix operator -& : AdditionPrecedence
-
-@discardableResult
-public func +&(lhs: inout Bitmask, rhs: Int) -> Bitmask
+extension Bitmask
 {
-    lhs |= 1 << UInt(rhs > 0 ? rhs - 1 : 0)
-    return lhs
-}
-
-@discardableResult
-public func -&(lhs: inout Bitmask, rhs: Int) -> Bitmask
-{
-    lhs &= ~(1 << UInt(rhs > 0 ? rhs - 1 : 0))
-    return lhs
+    @discardableResult
+    mutating func setBitOn(atIndex index: Int) -> UInt
+    {
+        self |= 1 << UInt(index > 0 ? index - 1 : 0)
+        return self
+    }
+    
+    @discardableResult
+    mutating func setBitOff(atIndex index: Int) -> UInt
+    {
+        self &= ~(1 << UInt(index > 0 ? index - 1 : 0))
+        return self
+    }
 }
