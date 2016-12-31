@@ -284,20 +284,17 @@ public final class Body: Equatable
     {
         baseShape = shape
         
-        if(baseShape.localVertices.count == pointMasses.count)
-        {
-            return
-        }
-        
-        pointMasses = []
-        edges = []
         globalShape = [Vector2](repeating: Vector2.zero, count: shape.localVertices.count)
         
         baseShape.transformVertices(&globalShape, worldPos: derivedPos, angleInRadians: derivedAngle, localScale: scale)
         
-        for i in 0..<baseShape.localVertices.count
+        if(baseShape.localVertices.count != pointMasses.count)
         {
-            pointMasses += PointMass(mass: 0.0, position: globalShape[i])
+            pointMasses = []
+            for i in 0..<baseShape.localVertices.count
+            {
+                pointMasses += PointMass(mass: 0.0, position: globalShape[i])
+            }
         }
         
         components.forEach { $0.prepare(self) }
