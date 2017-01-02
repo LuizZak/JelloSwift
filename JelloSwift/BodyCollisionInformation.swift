@@ -11,10 +11,10 @@ import CoreGraphics
 // Encapsulates information about a collision between two soft bodies
 public struct BodyCollisionInformation: Equatable
 {
-    public weak var bodyA: Body?
+    public var bodyA: Body
     public var bodyApm: Int = -1
     
-    public weak var bodyB: Body?
+    public var bodyB: Body
     public var bodyBpmA: Int = -1
     public var bodyBpmB: Int = -1
     

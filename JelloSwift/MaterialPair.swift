@@ -18,7 +18,7 @@ public struct MaterialPair
     // The relative friction between the two bodies
     public var friction: CGFloat = 1.0
     // A function to call and utilize as a collision filter when figuring out whether the two bodies should collide
-    public var collisionFilter: (Body, Int, Body, Int, Int, Vector2, CGFloat) -> (Bool)
+    public var collisionFilter: (_ info: BodyCollisionInformation, _ normalVelocity: CGFloat) -> (Bool)
     
     public init()
     {
@@ -30,7 +30,7 @@ public struct MaterialPair
 }
 
 // The default collision filter. Always returns true, so all collisions passed through it are approved
-public func defaultCollisionFilter(_ bodyA: Body, bodyApm: Int, bodyB: Body, bodyBpm1: Int, bodyBpm2: Int, hitPt: Vector2, normalVel: CGFloat) -> Bool
+public func defaultCollisionFilter(_ info: BodyCollisionInformation, normalVelocity: CGFloat) -> Bool
 {
     return true
 }

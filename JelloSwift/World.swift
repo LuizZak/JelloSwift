@@ -132,7 +132,7 @@ public final class World
     }
     
     /// Sets a user function to call when 2 bodies of the given materials collide.
-    public func setMaterialPairFilterCallback(_ a: Int, b: Int, filter: @escaping (Body, Int, Body, Int, Int, Vector2, CGFloat) -> (Bool))
+    public func setMaterialPairFilterCallback(_ a: Int, b: Int, filter: @escaping (BodyCollisionInformation, CGFloat) -> (Bool))
     {
         if ((a >= 0) && (a < materialCount) && (b >= 0) && (b < materialCount))
         {
@@ -478,9 +478,8 @@ public final class World
     {
         for info in collisionList
         {
-            guard let bodyA = info.bodyA, let bodyB = info.bodyB else {
-                continue
-            }
+            let bodyA = info.bodyA
+            let bodyB = info.bodyB
             
             let A = bodyA.pointMasses[info.bodyApm]
             let B1 = bodyB.pointMasses[info.bodyBpmA]
@@ -494,7 +493,7 @@ public final class World
             
             let material = materialPairs[bodyA.material][bodyB.material]
             
-            if(!material.collisionFilter(bodyA, info.bodyApm, bodyB, info.bodyBpmA, info.bodyBpmB, info.hitPt, relDot))
+            if(!material.collisionFilter(info, relDot))
             {
                 continue
             }
