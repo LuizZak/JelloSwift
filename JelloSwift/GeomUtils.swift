@@ -12,31 +12,20 @@ import CoreGraphics
 public let PI = CGFloat(M_PI)
 
 /// Returns an approximation of the area of the polygon defined by a given set of vertices
-public func polygonArea<T: BidirectionalCollection>(_ points: T) -> CGFloat where T.Iterator.Element == Vector2, T.Index: Comparable
+public func polygonArea<T: BidirectionalCollection>(_ points: T) -> CGFloat where T.Iterator.Element: VectorExpressible
 {
-    if(points.count < 3)
-    {
-        return 0
-    }
-    
     var area: CGFloat = 0
     
     if var v2 = points.last
     {
         for p in points
         {
-            area += (v2.x + p.x) * (v2.y - p.y)
+            area += (v2.vector.x + p.vector.x) * (v2.vector.y - p.vector.y)
             v2 = p
         }
     }
     
     return area / 2
-}
-
-/// Returns an approximation of the area of the polygon defined by a given set of point masses
-public func polygonArea<T: Collection>(_ points: T) -> CGFloat where T.Iterator.Element == PointMass
-{
-    return polygonArea(points.map { $0.position })
 }
 
 /// Checks if 2 line segments intersect. (line AB collides with line CD)

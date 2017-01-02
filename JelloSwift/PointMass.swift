@@ -9,7 +9,7 @@
 import CoreGraphics
 
 // Specifies a point mass that composes a body
-public final class PointMass
+public final class PointMass: VectorExpressible
 {
     /// The mass of this point mass.
     /// Leave this value always >0 to maintain consistency on the simulation, unless
@@ -23,6 +23,8 @@ public final class PointMass
     public var velocity = Vector2.zero
     /// The global force of the point mass
     public var force = Vector2.zero
+    
+    public var vector: Vector2 { return position }
     
     public init(mass: CGFloat = 0, position: Vector2 = Vector2.zero)
     {
