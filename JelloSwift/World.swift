@@ -13,9 +13,9 @@ import CoreGraphics
 public final class World
 {
     /// The bodies contained within this world
-    public var bodies: ContiguousArray<Body> = []
+    public private(set) var bodies: ContiguousArray<Body> = []
     /// The joints contained within this world
-    public var joints: ContiguousArray<BodyJoint> = []
+    public private(set) var joints: ContiguousArray<BodyJoint> = []
     
     // PRIVATE VARIABLES
     fileprivate var worldLimits = AABB()
@@ -40,6 +40,11 @@ public final class World
         self.clear()
     }
     
+    deinit
+    {
+        self.clear()
+    }
+    
     /// Clears the world's contents and readies it to be loaded again
     public func clear()
     {
@@ -49,7 +54,18 @@ public final class World
             b.pointMassCollisions.removeAll(keepingCapacity: true)
         }
         
+        // Remove all joints - this is needed to avoid retain cycles
+        for joint in joints
+        {
+            removeJoint(joint)
+        }
+        
         // Reset bodies
+        for body in bodies
+        {
+            body.joints = []
+        }
+        
         bodies = []
         collisionList = []
         
