@@ -322,12 +322,19 @@ extension Vector2
     }
 }
 
-extension Collection where Iterator.Element == Vector2, IndexDistance == Int
+extension Collection where Iterator.Element: VectorExpressible, IndexDistance == Int
 {
     /// Averages this collection of vectors into one Vector2 point
     public func averageVector() -> Vector2
     {
-        return reduce(Vector2.zero, +) / CGFloat(count)
+        var average = Vector2.zero
+        
+        for vec in self
+        {
+            average += vec.vector
+        }
+        
+        return average / CGFloat(count)
     }
 }
 
