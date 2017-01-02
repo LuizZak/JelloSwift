@@ -58,7 +58,7 @@ public func lineIntersect(_ ptA: Vector2, ptB: Vector2, ptC: Vector2, ptD: Vecto
 }
 
 // Calculates a spring force, given position, velocity, spring constant, and damping factor
-public func calculateSpringForce(_ posA: Vector2, velA: Vector2, posB: Vector2, velB: Vector2, distance: CGFloat, springK: CGFloat, springD: CGFloat) -> Vector2
+public func calculateSpringForce(posA: Vector2, velA: Vector2, posB: Vector2, velB: Vector2, distance: CGFloat, springK: CGFloat, springD: CGFloat) -> Vector2
 {
     var dist = posA.distanceTo(posB)
     

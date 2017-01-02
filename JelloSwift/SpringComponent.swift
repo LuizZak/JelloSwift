@@ -122,7 +122,7 @@ public final class SpringComponent: BodyComponent
             let p1 = s.pointMassA
             let p2 = s.pointMassB
             
-            let force = calculateSpringForce(p1.position, velA: p1.velocity, posB: p2.position, velB: p2.velocity, distance: s.distance, springK: s.springK, springD: s.springD)
+            let force = calculateSpringForce(posA: p1.position, velA: p1.velocity, posB: p2.position, velB: p2.velocity, distance: s.distance, springK: s.springK, springD: s.springD)
             
             p1.force += force
             p2.force -= force
@@ -139,14 +139,13 @@ public final class SpringComponent: BodyComponent
         {
             let force: Vector2
             
-            if(!body.isKinematic)
-            {
-                force = calculateSpringForce(p.position, velA: p.velocity, posB: body.globalShape[i], velB: p.velocity, distance: 0.0, springK: shapeSpringK, springD: shapeSpringDamp)
-            }
-            else
-            {
-                force = calculateSpringForce(p.position, velA: p.velocity, posB: body.globalShape[i], velB: Vector2.zero, distance: 0.0, springK: shapeSpringK, springD: shapeSpringDamp)
-            }
+            let velB = body.isKinematic ? Vector2.zero : p.velocity
+            
+            force = calculateSpringForce(posA: p.position, velA: p.velocity,
+                                         posB: body.globalShape[i], velB: velB,
+                                         distance: 0.0,
+                                         springK: shapeSpringK,
+                                         springD: shapeSpringDamp)
             
             p.force += force
         }

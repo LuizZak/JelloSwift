@@ -50,7 +50,7 @@ open class SpringBodyJoint : BodyJoint
         
         let targetDist = max(restDistance, min(maxRestDistance, dist))
         
-        let force = calculateSpringForce(pos1, velA: bodyLink1.velocity, posB: pos2, velB: bodyLink2.velocity, distance: targetDist, springK: springK, springD: springD)
+        let force = calculateSpringForce(posA: pos1, velA: bodyLink1.velocity, posB: pos2, velB: bodyLink2.velocity, distance: targetDist, springK: springK, springD: springD)
         
         if(!bodyLink1.isStatic && !bodyLink2.isStatic)
         {
