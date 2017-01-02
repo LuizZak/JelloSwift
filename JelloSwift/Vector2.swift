@@ -9,8 +9,15 @@
 import CoreGraphics
 import simd
 
+/// Specifies an object that can be expressed as a pair of x-y coordinates
+public protocol VectorExpressible
+{
+    /// Gets a vector representation of this object
+    var vector: Vector2 { get }
+}
+
 /// Represents a 2D vector
-public struct Vector2: Equatable, CustomStringConvertible
+public struct Vector2: VectorExpressible, Equatable, CustomStringConvertible
 {
     /// A zeroed-value Vector2
     public static let zero = Vector2(0, 0)
@@ -43,6 +50,8 @@ public struct Vector2: Equatable, CustomStringConvertible
             theVector.y = newValue.native
         }
     }
+    
+    public var vector: Vector2 { return self }
     
     public var description: String { return "{ \(self.x) : \(self.y) }" }
     
@@ -117,7 +126,6 @@ public struct Vector2: Equatable, CustomStringConvertible
     public mutating func perpendicularThis() -> Vector2
     {
         self = perpendicular()
-        
         return self
     }
     
