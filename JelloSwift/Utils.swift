@@ -8,11 +8,6 @@
 
 import UIKit
 
-enum SequenceError: Error
-{
-    case elementNotFound
-}
-
 public func +=<T, U: RangeReplaceableCollection>(lhs: inout U, rhs: T) where U.Iterator.Element == T
 {
     lhs.append(rhs)
@@ -25,39 +20,15 @@ public func -=<T: Equatable, U: RangeReplaceableCollection>(lhs: inout U, rhs: T
 
 extension Sequence
 {
-    typealias T = Self.Iterator.Element
-    
-    /// Runs a block statement for every item on this sequence
-    func forEach(_ doThis: () -> ())
-    {
-        for _ in self
-        {
-            doThis()
-        }
-    }
+    typealias Element = Self.Iterator.Element
     
     // MARK: Helper collection searching methods
     
-    /// Returns the first item in the sequence that when passed through `compute` returns true.
-    /// Returns nil if no item was found
-    func firstOrDefault(_ compute: (T) -> Bool) -> T?
-    {
-        for item in self
-        {
-            if(compute(item))
-            {
-                return item
-            }
-        }
-        
-        return nil
-    }
-    
     /// Returns the last item in the sequence that when passed through `compute` returns true.
     /// Returns nil if no item was found
-    func lastOrDefault(_ compute: (T) -> Bool) -> T?
+    func last(where compute: (Element) -> Bool) -> Element?
     {
-        var last: T?
+        var last: Element?
         for item in self
         {
             if(compute(item))
@@ -69,33 +40,11 @@ extension Sequence
         return last
     }
     
-    /// Returns the first item in the sequence that when passed through `compute` returns true.
-    /// Throws a `SequenceError.ElementNotFound` error if no element is found
-    func first(_ compute: (T) -> Bool) throws -> T
-    {
-        if let first = firstOrDefault(compute) {
-            return first
-        }
-        
-        throw SequenceError.elementNotFound
-    }
-    
-    /// Returns the last item in the sequence that when passed through `compute` returns true.
-    /// Throws a `SequenceError.ElementNotFound` error if no element is found
-    func last(_ compute: (T) -> Bool) throws -> T
-    {
-        if let last = lastOrDefault(compute) {
-            return last
-        }
-        
-        throw SequenceError.elementNotFound
-    }
-    
     // MARK: Helper collection checking methods
     
     /// Returns true if any of the elements in this sequence return true when passed through `compute`.
     /// Succeeds fast on the first item that returns true
-    func any(_ compute: (T) -> Bool) -> Bool
+    func any(where compute: (Element) -> Bool) -> Bool
     {
         for item in self
         {
@@ -110,7 +59,7 @@ extension Sequence
     
     /// Returns true if all of the elements in this sequence return true when passed through `compute`.
     /// Fails fast on the first item that returns false
-    func all(_ compute: (T) -> Bool) -> Bool
+    func all(where compute: (Element) -> Bool) -> Bool
     {
         for item in self
         {
@@ -129,15 +78,15 @@ extension RangeReplaceableCollection where Iterator.Element: Equatable
     /// Removes a given element from this collection, using the element's equality check to determine the first match to remove
     mutating func remove(_ object: Self.Iterator.Element)
     {
-        var index = self.startIndex
+        var index = startIndex
         
-        while(index != self.endIndex)
+        while(index != endIndex)
         {
             index = self.index(after: index)
             
             if(self[index] == object)
             {
-                self.remove(at: index)
+                remove(at: index)
                 return
             }
         }
@@ -146,18 +95,18 @@ extension RangeReplaceableCollection where Iterator.Element: Equatable
 
 extension RangeReplaceableCollection
 {
-    /// Removes a given element from this collection, using the provided equality check to determine deletion matches
-    mutating func remove(object: Self.Iterator.Element, compare: (Self.Iterator.Element) throws -> Bool) rethrows
+    /// Removes the first element that fulfills a given condition closure
+    mutating func remove(compare: (Self.Iterator.Element) throws -> Bool) rethrows
     {
-        var index = self.startIndex
+        var index = startIndex
         
-        while(index != self.endIndex)
+        while(index != endIndex)
         {
             index = self.index(after: index)
             
             if(try compare(self[index]))
             {
-                self.remove(at: index)
+                remove(at: index)
                 return
             }
         }

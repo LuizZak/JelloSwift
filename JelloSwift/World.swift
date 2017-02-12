@@ -195,7 +195,7 @@ public final class World
     }
     
     /// Finds the closest PointMass in the world to a given point
-    public func getClosestPointMass(_ pt: Vector2) -> (Body, PointMass)?
+    public func closestPointMass(to pt: Vector2) -> (Body, PointMass)?
     {
         var ret: (Body, PointMass)? = nil
         
@@ -203,8 +203,7 @@ public final class World
         
         for body in bodies
         {
-            var dist:CGFloat = 0
-            let pm = body.getClosestPointMass(pt, &dist)
+            let (pm, dist) = body.closestPointMass(to: pt)
             
             if(dist < closestD)
             {
@@ -218,20 +217,20 @@ public final class World
     
     /// Given a global, get a body (if any) that contains this point.
     /// Useful for picking objects with a cursor, etc.
-    public func getBodyContaining(_ pt: Vector2, bit: Bitmask) -> Body?
+    public func body(under pt: Vector2, bit: Bitmask) -> Body?
     {
-        return bodies.firstOrDefault { body in ((bit == 0 || (body.bitmask & bit) != 0) && body.contains(pt)) }
+        return bodies.first { body in ((bit == 0 || (body.bitmask & bit) != 0) && body.contains(pt)) }
     }
     
     /// Given a global point, get all bodies (if any) that contain this point.
     /// Useful for picking objects with a cursor, etc.
-    public func getBodiesContaining(_ pt: Vector2, bit: Bitmask) -> [Body]
+    public func bodies(under pt: Vector2, bit: Bitmask) -> [Body]
     {
         return bodies.filter { (($0.bitmask & bit) != 0 || bit == 0) && $0.contains(pt) }
     }
     
     /// Returns a vector of bodies intersecting with the given line
-    public func getBodiesIntersecting(_ start: Vector2, end: Vector2, bit: Bitmask) -> [Body]
+    public func bodiesIntersecting(lineFrom start: Vector2, to end: Vector2, bit: Bitmask) -> [Body]
     {
         return bodies.filter { (($0.bitmask & bit) != 0 || bit == 0) && $0.intersectsLine(start, end) }
     }
@@ -248,7 +247,7 @@ public final class World
      *
      * :return: An optional tuple containing the farthest point reached by the ray, and a Body value specifying the body that was closest to the ray, if it hit any body, or nil if it hit nothing.
      */
-    public func rayCast(_ start: Vector2, end: Vector2, bit: Bitmask = 0, ignoreList:[Body] = []) -> (retPt: Vector2, body: Body)?
+    public func rayCast(from start: Vector2, to end: Vector2, bit: Bitmask = 0, ignoreList:[Body] = []) -> (retPt: Vector2, body: Body)?
     {
         var aabb:AABB! = nil
         var lastBody:Body? = nil
@@ -259,7 +258,7 @@ public final class World
         {
             if((bit == 0 || (body.bitmask & bit) != 0) && !ignoreList.contains(body))
             {
-                if(body.raycast(start: start, end: end, farPoint: &retPt, rayAABB: &aabb))
+                if(body.raycast(from: start, to: end, farPoint: &retPt, rayAABB: &aabb))
                 {
                     lastBody = body
                 }
@@ -419,7 +418,7 @@ public final class World
                 var edgeD: CGFloat = 0
                 
                 // test against this edge.
-                let dist = bB.getClosestPointOnEdgeSquared(pt, j, &hitPt, &normal, &edgeD)
+                let dist = bB.closestPointSquared(to: pt, onEdge: j, &hitPt, &normal, &edgeD)
                 
                 // only perform the check if the normal for this edge is facing AWAY from the point normal.
                 let dot = ptNorm • normal

@@ -27,8 +27,8 @@ class PhysicsMathTest: XCTestCase
         var dx: CGFloat = 4 - 14
         var dy: CGFloat = 8 - 13
         
-        var dis = vec1.distanceTo(vec2)
-        var dissq = vec1.distanceToSquared(vec2)
+        var dis = vec1.distance(to: vec2)
+        var dissq = vec1.distanceSquared(to: vec2)
         var sss = sqrt((dx * dx) + (dy * dy))
         XCTAssert(dis == sss, "Pass")
         XCTAssert(dissq == (dx * dx) + (dy * dy), "Pass")

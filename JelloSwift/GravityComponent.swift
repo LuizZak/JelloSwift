@@ -14,19 +14,19 @@ public final class GravityComponent: BodyComponent
     /// The gravity vector to apply to the body
     public var gravity = Vector2(0, -9.8)
     
-    override public func accumulateExternalForces(_ body: Body)
+    override public func accumulateExternalForces(on body: Body)
     {
-        super.accumulateExternalForces(body)
+        super.accumulateExternalForces(on: body)
         
         body.pointMasses.forEach { $0.applyForce(gravity * $0.mass) }
     }
     
     /// Changes the gravity of the bodies on a given world object
-    public static func setGravityOnWorld(_ world: World, newGravity: Vector2)
+    public static func setGravity(on world: World, to vector: Vector2)
     {
         for b in world.bodies
         {
-            b.getComponentType(GravityComponent.self)?.gravity = newGravity
+            b.getComponentType(GravityComponent.self)?.gravity = vector
         }
     }
 }

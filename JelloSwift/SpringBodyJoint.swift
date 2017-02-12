@@ -41,7 +41,7 @@ open class SpringBodyJoint : BodyJoint
         let pos1 = bodyLink1.position
         let pos2 = bodyLink2.position
         
-        let dist = pos1.distanceTo(pos2)
+        let dist = pos1.distance(to: pos2)
         // Affordable distance
         if(dist < maxRestDistance && dist > restDistance)
         {

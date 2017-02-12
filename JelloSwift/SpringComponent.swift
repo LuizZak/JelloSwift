@@ -42,7 +42,7 @@ public final class SpringComponent: BodyComponent
         let pointA = body.pointMasses[pointA]
         let pointB = body.pointMasses[pointB]
         
-        let dist = dist ?? pointA.position.distanceTo(pointB.position)
+        let dist = dist ?? pointA.position.distance(to: pointB.position)
         
         let s = InternalSpring(pointA, pointB, dist, springK, damping)
         
@@ -57,11 +57,11 @@ public final class SpringComponent: BodyComponent
     {
         springs = []
         
-        _buildDefaultSprings(body)
+        buildDefaultSprings(body)
     }
     
     /// Builds the default edge internal springs for this spring body
-    public func _buildDefaultSprings(_ body: Body)
+    public func buildDefaultSprings(_ body: Body)
     {
         for i in 0..<body.pointMasses.count
         {
@@ -113,9 +113,9 @@ public final class SpringComponent: BodyComponent
         return springs[body.pointMasses.count + springID].springD
     }
     
-    override public func accumulateInternalForces(_ body: Body)
+    override public func accumulateInternalForces(in body: Body)
     {
-        super.accumulateInternalForces(body)
+        super.accumulateInternalForces(in: body)
         
         for s in springs
         {
@@ -200,7 +200,7 @@ open class SpringComponentCreator : BodyComponentCreator
         comp.setEdgeSpringConstants(body, edgeSpringK: edgeSpringK, edgeSpringDamp)
         comp.setShapeMatchingConstants(shapeSpringK, shapeSpringDamp)
         
-        innerSprings.forEach { element in
+        for element in innerSprings {
             comp.addInternalSpring(body, pointA: element.indexA, pointB: element.indexB, springK: element.springK, damping: element.springD, dist: element.dist)
         }
     }

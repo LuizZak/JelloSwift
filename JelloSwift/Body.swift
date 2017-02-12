@@ -132,7 +132,7 @@ public final class Body: Equatable
             points = .init(repeating: pointMasses[0], count: self.pointMasses.count)
         }
         
-        setMassFromList(points)
+        setMass(fromList: points)
         
         updateAABB(0, forceUpdate: true)
         
@@ -266,11 +266,11 @@ public final class Body: Equatable
         
         for point in pointMasses
         {
-            aabb.expandToInclude(point.position)
+            aabb.expand(toInclude: point.position)
             
             if(!isStatic)
             {
-                aabb.expandToInclude(point.position + point.velocity * elapsed)
+                aabb.expand(toInclude: point.position + point.velocity * elapsed)
             }
         }
     }
@@ -317,7 +317,7 @@ public final class Body: Equatable
     }
     
     /// Sets the mass for all the point masses from a list of masses
-    public func setMassFromList(_ masses: [CGFloat])
+    public func setMass(fromList masses: [CGFloat])
     {
         isStatic = true
         
@@ -444,7 +444,7 @@ public final class Body: Equatable
     {
         for component in components
         {
-            component.accumulateInternalForces(self)
+            component.accumulateInternalForces(in: self)
         }
     }
     
@@ -454,7 +454,7 @@ public final class Body: Equatable
     {
         for component in components
         {
-            component.accumulateExternalForces(self)
+            component.accumulateExternalForces(on: self)
         }
     }
     
@@ -645,7 +645,7 @@ public final class Body: Equatable
     }
     
     /// Returns whether the given ray collides with this Body, changing the resulting collision vector before returning
-    public func raycast(start: Vector2, end: Vector2, farPoint: inout Vector2, rayAABB: inout AABB!) -> Bool
+    public func raycast(from start: Vector2, to end: Vector2, farPoint: inout Vector2, rayAABB: inout AABB!) -> Bool
     {
         // Create and test against a temporary line AABB
         if (rayAABB == nil)
@@ -690,7 +690,7 @@ public final class Body: Equatable
      * - parameter edgeD: The ratio of the edge where the point was grabbed, [0-1] inclusive
      * - returns: The squared distance to the closest edge found
     */
-    public func getClosestPointOnEdgeSquared(_ pt: Vector2, _ edgeNum: Int, _ hitPt: inout Vector2, _ normal: inout Vector2, _ edgeD: inout CGFloat) -> CGFloat
+    public func closestPointSquared(to pt: Vector2, onEdge edgeNum: Int, _ hitPt: inout Vector2, _ normal: inout Vector2, _ edgeD: inout CGFloat) -> CGFloat
     {
         var dist: CGFloat = 0
         
@@ -710,7 +710,7 @@ public final class Body: Equatable
         if (x <= 0.0)
         {
             // x is outside the line segment, distance is from pt to ptA.
-            dist = pt.distanceToSquared(ptA)
+            dist = pt.distanceSquared(to: ptA)
             
             hitPt = ptA
             
@@ -719,7 +719,7 @@ public final class Body: Equatable
         else if (x >= edge.length)
         {
             // x is outside of the line segment, distance is from pt to ptB.
-            dist = pt.distanceToSquared(ptB)
+            dist = pt.distanceSquared(to: ptB)
             
             hitPt = ptB
             
@@ -748,9 +748,9 @@ public final class Body: Equatable
      * - parameter edgeD: The ratio of the edge where the point was grabbed, [0-1] inclusive
      * - returns: The distance to the closest edge found
     */
-    public func getClosestPointOnEdge(_ pt: Vector2, _ edgeNum: Int, _ hitPt: inout Vector2, _ normal: inout Vector2, _ edgeD: inout CGFloat) -> CGFloat
+    public func closestPoint(to pt: Vector2, onEdge edgeNum: Int, _ hitPt: inout Vector2, _ normal: inout Vector2, _ edgeD: inout CGFloat) -> CGFloat
     {
-        return sqrt(getClosestPointOnEdgeSquared(pt, edgeNum, &hitPt, &normal, &edgeD))
+        return sqrt(closestPointSquared(to: pt, onEdge: edgeNum, &hitPt, &normal, &edgeD))
     }
     
     /**
@@ -764,7 +764,7 @@ public final class Body: Equatable
      * - parameter edgeD: The ratio of the edge where the point was grabbed, [0-1] inclusive
      * - returns: The distance to the closest edge found
     */
-    public func getClosestPoint(_ pt: Vector2, _ hitPt: inout Vector2, _ normal: inout Vector2, _ pointA: inout Int, _ pointB: inout Int, _ edgeD: inout CGFloat) -> CGFloat
+    public func closestPoint(to pt: Vector2, _ hitPt: inout Vector2, _ normal: inout Vector2, _ pointA: inout Int, _ pointB: inout Int, _ edgeD: inout CGFloat) -> CGFloat
     {
         pointA = -1
         pointB = -1
@@ -779,7 +779,7 @@ public final class Body: Equatable
             var tempNorm = Vector2.zero
             var tempEdgeD: CGFloat = 0
             
-            let dist = getClosestPointOnEdgeSquared(pt, i, &tempHit, &tempNorm, &tempEdgeD)
+            let dist = closestPointSquared(to: pt, onEdge: i, &tempHit, &tempNorm, &tempEdgeD)
             
             if(dist < closestD)
             {
@@ -812,7 +812,7 @@ public final class Body: Equatable
      *  PointMass: The first point mass on the edge
      *  PointMass: The second point mass on the edge
      */
-    public func getClosestEdge(_ pt: Vector2, _ tolerance: CGFloat = CGFloat.infinity) -> (edgePosition: Vector2, edgeRatio: CGFloat, edgePoint1: PointMass, edgePoint2: PointMass)?
+    public func closestEdge(to pt: Vector2, withTolerance tolerance: CGFloat = CGFloat.infinity) -> (edgePosition: Vector2, edgeRatio: CGFloat, edgePoint1: PointMass, edgePoint2: PointMass)?
     {
         if(pointMasses.count == 0)
         {
@@ -829,7 +829,7 @@ public final class Body: Equatable
         for (i, pm) in pointMasses.enumerated()
         {
             let pm2 = pointMasses[(i + 1) % pointMasses.count]
-            let len = (pm.position - pm2.position).magnitude()
+            let len = (pm.position - pm2.position).magnitude
             
             var d = (pm.position - pm2.position).normalized()
             
@@ -843,7 +843,7 @@ public final class Body: Equatable
             let dis = pt - (pm.position - d)
             
             // Test the distances
-            let curD = dis.magnitude()
+            let curD = dis.magnitude
             
             if(curD < closestD && curD < tolerance)
             {
@@ -865,14 +865,14 @@ public final class Body: Equatable
     }
     
     /// Find the closest PointMass index in this body, given a global point
-    public func getClosestPointMass(_ pos: Vector2, _ dist: inout CGFloat) -> PointMass
+    public func closestPointMass(to pos: Vector2) -> (point: PointMass, distance: CGFloat)
     {
         var closestSQD = CGFloat.greatestFiniteMagnitude
         var closest = -1
         
         for (i, point) in pointMasses.enumerated()
         {
-            let thisD = pos.distanceToSquared(point.position)
+            let thisD = pos.distanceSquared(to: point.position)
             
             if(thisD < closestSQD)
             {
@@ -881,9 +881,7 @@ public final class Body: Equatable
             }
         }
         
-        dist = sqrt(closestSQD)
-        
-        return pointMasses[closest]
+        return (pointMasses[closest], sqrt(closestSQD))
     }
     
     /**

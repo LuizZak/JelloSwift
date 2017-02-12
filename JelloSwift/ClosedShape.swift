@@ -43,7 +43,7 @@ public struct ClosedShape: ExpressibleByArrayLiteral
     }
     
     /// Finishes constructing this closed shape, and convert them to local space (by default)
-    public mutating func finish(_ recenter: Bool = true)
+    public mutating func finish(recentering recenter: Bool = true)
     {
         if(recenter)
         {

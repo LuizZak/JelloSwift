@@ -45,7 +45,7 @@ public struct BodyEdge
         
         normal = difference.perpendicular()
         
-        length = start.distanceTo(end)
+        length = start.distance(to: end)
         lengthSquared = length * length
     }
 }

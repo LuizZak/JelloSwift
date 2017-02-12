@@ -758,10 +758,10 @@
 				INFOPLIST_FILE = JelloSwift/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				OTHER_SWIFT_FLAGS = "\"-Xfrontend\" \"-debug-time-function-bodies\"";
+				OTHER_SWIFT_FLAGS = "\"-Xfrontend\" \"-debug-time-function-bodies\" -Onone";
 				PRODUCT_BUNDLE_IDENTIFIER = com.luizfernandosilva.JelloSwift;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

@@ -25,14 +25,14 @@ open class BodyComponent
     
     // This function should add all internal forces to the Force member variable of each PointMass in the body.
     // These should be forces that try to maintain the shape of the body.
-    open func accumulateInternalForces(_ body: Body)
+    open func accumulateInternalForces(in body: Body)
     {
         
     }
     
     // This function should add all external forces to the Force member variable of each PointMass in the body.
     // These are external forces acting on the PointMasses, such as gravity, etc.
-    open func accumulateExternalForces(_ body: Body)
+    open func accumulateExternalForces(on body: Body)
     {
         
     }

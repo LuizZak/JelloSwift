@@ -45,7 +45,7 @@ open class BodyJoint: Equatable
         bodyLink2 = link2
         
         // Automatic distance calculation
-        restDistance = distance ?? link1.position.distanceTo(link2.position)
+        restDistance = distance ?? link1.position.distance(to: link2.position)
         maxRestDistance = restDistance
     }
     

@@ -52,7 +52,7 @@ public struct AABB
     
     public init(points: [Vector2])
     {
-        expandToInclude(points)
+        expand(toInclude: points)
     }
     
     public mutating func clear()
@@ -60,7 +60,7 @@ public struct AABB
         validity = .invalid
     }
     
-    public mutating func expandToInclude(_ point: Vector2)
+    public mutating func expand(toInclude point: Vector2)
     {
         if(validity == .invalid)
         {
@@ -76,7 +76,7 @@ public struct AABB
         }
     }
     
-    public mutating func expandToInclude(_ points: [Vector2])
+    public mutating func expand(toInclude points: [Vector2])
     {
         if(points.count == 0)
         {

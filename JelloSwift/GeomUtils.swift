@@ -12,7 +12,7 @@ import CoreGraphics
 public let PI = CGFloat(M_PI)
 
 /// Returns an approximation of the area of the polygon defined by a given set of vertices
-public func polygonArea<T: BidirectionalCollection>(_ points: T) -> CGFloat where T.Iterator.Element: VectorExpressible
+public func polygonArea<T: BidirectionalCollection>(_ points: T) -> CGFloat where T.Iterator.Element: VectorRepresentable
 {
     var area: CGFloat = 0
     
@@ -60,7 +60,7 @@ public func lineIntersect(_ ptA: Vector2, ptB: Vector2, ptC: Vector2, ptD: Vecto
 // Calculates a spring force, given position, velocity, spring constant, and damping factor
 public func calculateSpringForce(posA: Vector2, velA: Vector2, posB: Vector2, velB: Vector2, distance: CGFloat, springK: CGFloat, springD: CGFloat) -> Vector2
 {
-    var dist = posA.distanceTo(posB)
+    var dist = posA.distance(to: posB)
     
     if (dist <= 0.0000005)
     {

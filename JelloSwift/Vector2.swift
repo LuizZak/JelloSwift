@@ -10,14 +10,14 @@ import CoreGraphics
 import simd
 
 /// Specifies an object that can be expressed as a pair of x-y coordinates
-public protocol VectorExpressible
+public protocol VectorRepresentable
 {
     /// Gets a vector representation of this object
     var vector: Vector2 { get }
 }
 
 /// Represents a 2D vector
-public struct Vector2: VectorExpressible, Equatable, CustomStringConvertible
+public struct Vector2: VectorRepresentable, Equatable, CustomStringConvertible
 {
     /// A zeroed-value Vector2
     public static let zero = Vector2(0, 0)
@@ -49,6 +49,24 @@ public struct Vector2: VectorExpressible, Equatable, CustomStringConvertible
         set {
             theVector.y = newValue.native
         }
+    }
+    
+    /// Returns the angle in radians of this Vector2
+    public var angle : CGFloat
+    {
+        return atan2(y, x)
+    }
+    
+    /// Returns the squared length of this Vector2
+    public var length : CGFloat
+    {
+        return CGFloat(length_squared(theVector))
+    }
+    
+    /// Returns the magnitude (or square root of the squared length) of this Vector2
+    public var magnitude : CGFloat
+    {
+        return CGFloat(simd.length(theVector))
     }
     
     public var vector: Vector2 { return self }
@@ -91,39 +109,21 @@ public struct Vector2: VectorExpressible, Equatable, CustomStringConvertible
         theVector = NativeVectorType(point.x.native, point.y.native)
     }
     
-    /// Returns the angle in radians of this Vector2
-    public func angle() -> CGFloat
-    {
-        return atan2(y, x)
-    }
-    
-    /// Returns the squared length of this Vector2
-    public func length() -> CGFloat
-    {
-        return CGFloat(length_squared(theVector))
-    }
-    
-    /// Returns the magnitude (or square root of the squared length) of this Vector2
-    public func magnitude() -> CGFloat
-    {
-        return CGFloat(simd.length(theVector))
-    }
-    
     /// Returns the distance between this Vector2 and another Vector2
-    public func distanceTo(_ vec: Vector2) -> CGFloat
+    public func distance(to vec: Vector2) -> CGFloat
     {
-        return CGFloat(distance(self.theVector, vec.theVector))
+        return CGFloat(simd.distance(self.theVector, vec.theVector))
     }
     
     /// Returns the distance squared between this Vector2 and another Vector2
-    public func distanceToSquared(_ vec: Vector2) -> CGFloat
+    public func distanceSquared(to vec: Vector2) -> CGFloat
     {
         return CGFloat(distance_squared(self.theVector, vec.theVector))
     }
     
     /// Makes this Vector2 perpendicular to its current position.
     /// This alters the vector instance
-    public mutating func perpendicularThis() -> Vector2
+    public mutating func perpendicularize() -> Vector2
     {
         self = perpendicular()
         return self
@@ -137,17 +137,16 @@ public struct Vector2: VectorExpressible, Equatable, CustomStringConvertible
     
     // Normalizes this Vector2 instance.
     // This alters the current vector instance
-    public mutating func normalizeThis() -> Vector2
+    public mutating func normalize() -> Vector2
     {
         self = normalized()
-        
         return self
     }
     
     /// Returns a normalized version of this Vector2
     public func normalized() -> Vector2
     {
-        return Vector2(normalize(theVector))
+        return Vector2(simd.normalize(theVector))
     }
 }
 
@@ -314,6 +313,10 @@ extension Vector2
         {
             return vec
         }
+        if(angleInRadians.truncatingRemainder(dividingBy: (CGFloat(M_PI) * 2)) == CGFloat(M_PI))
+        {
+            return vec.perpendicular().perpendicular()
+        }
         
         let c = cos(angleInRadians)
         let s = sin(angleInRadians)
@@ -322,7 +325,7 @@ extension Vector2
     }
 }
 
-extension Collection where Iterator.Element: VectorExpressible, IndexDistance == Int
+extension Collection where Iterator.Element: VectorRepresentable, IndexDistance == Int
 {
     /// Averages this collection of vectors into one Vector2 point
     public func averageVector() -> Vector2

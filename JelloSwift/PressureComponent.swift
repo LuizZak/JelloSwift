@@ -20,9 +20,9 @@ public final class PressureComponent: BodyComponent
         
     }
     
-    override public func accumulateInternalForces(_ body: Body)
+    override public func accumulateInternalForces(in body: Body)
     {
-        super.accumulateInternalForces(body)
+        super.accumulateInternalForces(in: body)
         
         volume = 0
         

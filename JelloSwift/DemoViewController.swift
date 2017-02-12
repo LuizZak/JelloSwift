@@ -225,7 +225,7 @@ class DemoView: UIView, CollisionObserver
             {
                 for p in body.pointMasses
                 {
-                    let dist = p.position.distanceTo(fingerLocation)
+                    let dist = p.position.distance(to: fingerLocation)
                     if(closest == nil || dist < closestD)
                     {
                         closest = p
@@ -628,7 +628,7 @@ class DemoView: UIView, CollisionObserver
         
         // Scale down
         carShape.transformOwn(0, localScale: Vector2(0.65, 0.65))
-        carShape.finish(true)
+        carShape.finish(recentering: true)
         
         let bodyOffset = Vector2(0, 0.4)
         
