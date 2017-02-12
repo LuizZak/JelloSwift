@@ -645,39 +645,26 @@ public final class Body: Equatable
     }
     
     /// Returns whether the given ray collides with this Body, changing the resulting collision vector before returning
-    public func raycast(from start: Vector2, to end: Vector2, farPoint: inout Vector2, rayAABB: inout AABB!) -> Bool
+    public func raycast(from start: Vector2, to end: Vector2) -> Vector2?
     {
-        // Create and test against a temporary line AABB
-        if (rayAABB == nil)
-        {
-            rayAABB = AABB(points: [start, end])
-        }
-        
-        if(!aabb.intersects(rayAABB))
-        {
-            return false
-        }
-        
         // Test each edge against the line
         var p1 = Vector2.zero
         var p2 = Vector2.zero
-        var col = false
         
-        farPoint = end
+        var farPoint: Vector2?
         
         for e in edges
         {
             p1 = e.start
             p2 = e.end
             
-            if let (p, _, _) = lineIntersect(lineA: (start, end), lineB: (p1, p2))
+            if let (p, _, _) = lineIntersect(lineA: (start, farPoint ?? end), lineB: (p1, p2))
             {
                 farPoint = p
-                col = true
             }
         }
         
-        return col
+        return farPoint
     }
     
     /**

@@ -11,6 +11,9 @@ import CoreGraphics
 /// Represents an axis-aligned bounding box, utilized to figure out the AABB of soft-bodies
 public struct AABB
 {
+    /// Returns an empty, invalid AABB
+    static let empty = AABB()
+    
     /// The validity of this AABB
     public var validity = PointValidity.invalid
     

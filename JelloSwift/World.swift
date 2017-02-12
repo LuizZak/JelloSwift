@@ -240,37 +240,37 @@ public final class World
      * 
      * - parameter start: The start point to cast the ray from, in world coordinates
      * - parameter end: The end point to end the ray cast at, in world coordinates
-     * - parameter bit: An optional collision bitmask that filters the bodies to collide using a bitwise AND (|) operation.
+     * - parameter bitmask: An optional collision bitmask that filters the bodies to collide using a bitwise AND (|) operation.
      *             If the value specified is 0, collision filtering is ignored and all bodies are considered for collision
-     * - parameter ignoreList: A custom list of bodies that will be ignored during collision checking. Provide an empty list
+     * - parameter ignoring: A custom list of bodies that will be ignored during collision checking. Provide an empty list
      *                    to consider all bodies in the world
      *
      * :return: An optional tuple containing the farthest point reached by the ray, and a Body value specifying the body that was closest to the ray, if it hit any body, or nil if it hit nothing.
      */
-    public func rayCast(from start: Vector2, to end: Vector2, bit: Bitmask = 0, ignoreList:[Body] = []) -> (retPt: Vector2, body: Body)?
+    public func rayCast(from start: Vector2, to end: Vector2, bitmask: Bitmask = 0, ignoring ignoreList: [Body] = []) -> (retPt: Vector2, body: Body)?
     {
-        var aabb:AABB! = nil
-        var lastBody:Body? = nil
-        
-        var retPt: Vector2 = end
+        var aabb = AABB(points: [start, end])
+        var result: (Vector2, Body)?
         
         for body in bodies
         {
-            if((bit == 0 || (body.bitmask & bit) != 0) && !ignoreList.contains(body))
+            if((bitmask == 0 || (body.bitmask & bitmask) != 0) && !ignoreList.contains(body))
             {
-                if(body.raycast(from: start, to: end, farPoint: &retPt, rayAABB: &aabb))
+                if(!body.aabb.intersects(aabb))
                 {
-                    lastBody = body
+                    continue
+                }
+                
+                if let ret = body.raycast(from: start, to: end)
+                {
+                    result = (ret, body)
+                    
+                    aabb = AABB(points: [start, ret])
                 }
             }
         }
         
-        if let body = lastBody
-        {
-            return (retPt, body)
-        }
-        
-        return nil
+        return result
     }
     
     /**
