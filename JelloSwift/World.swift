@@ -232,7 +232,7 @@ public final class World
     /// Returns a vector of bodies intersecting with the given line.
     public func bodiesIntersecting(lineFrom start: Vector2, to end: Vector2, bitmask: Bitmask = 0) -> [Body]
     {
-        return bodies.filter { (bitmask == 0 || ($0.bitmask & bitmask) != 0) && $0.intersectsLine(start, end) }
+        return bodies.filter { (bitmask == 0 || ($0.bitmask & bitmask) != 0) && $0.intersectsLine(from: start, to: end) }
     }
     
     /**

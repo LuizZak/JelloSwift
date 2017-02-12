@@ -626,7 +626,7 @@ public final class Body: Equatable
     }
     
     /// Returns whether the given line consisting of two points intersects this body
-    public func intersectsLine(_ start: Vector2, _ end: Vector2) -> Bool
+    public func intersectsLine(from start: Vector2, to end: Vector2) -> Bool
     {
         // Test whether one or both the points of the line are inside the body
         if(contains(start) || contains(end))

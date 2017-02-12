@@ -28,7 +28,7 @@ public func polygonArea<T: BidirectionalCollection>(_ points: T) -> CGFloat wher
     return area / 2
 }
 
-/// Checks if 2 line segments intersect. (line AB collides with line CD)
+/// Checks if 2 line segments intersect. (line A collides with line B)
 /// Returns a tuple containing information about the hit detection, or nil, if the lines don't intersect
 public func lineIntersect(lineA: (start: Vector2, end: Vector2), lineB: (start: Vector2, end: Vector2)) ->  (hitPt: Vector2, Ua: CGFloat, Ub: CGFloat)?
 {
