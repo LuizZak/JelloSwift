@@ -147,7 +147,7 @@ public final class Body: Equatable
     
     /// Adds a body component to this body
     @discardableResult
-    public func addComponentType<T: BodyComponent>(_ componentType: T.Type) -> T
+    public func addComponent<T: BodyComponent>(ofType componentType: T.Type) -> T
     {
         let instance = componentType.init(body: self)
         
@@ -160,7 +160,7 @@ public final class Body: Equatable
     
     /// Gets a component on this body that matches the given component type.
     /// If no matching components are found, nil is returned instead
-    public func getComponentType<T: BodyComponent>(_ componentType: T.Type) -> T?
+    public func component<T: BodyComponent>(ofType componentType: T.Type) -> T?
     {
         for comp in components
         {
@@ -174,7 +174,7 @@ public final class Body: Equatable
     }
     
     /// Removes a component from this body
-    public func removeComponentType<T: BodyComponent>(_ componentType: T.Type)
+    public func removeComponent<T: BodyComponent>(ofType componentType: T.Type)
     {
         for (i, comp) in components.enumerated()
         {

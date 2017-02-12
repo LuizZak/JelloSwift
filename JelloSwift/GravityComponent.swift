@@ -29,7 +29,7 @@ public final class GravityComponent: BodyComponent
     {
         for b in world.bodies
         {
-            b.getComponentType(GravityComponent.self)?.gravity = vector
+            b.component(ofType: GravityComponent.self)?.gravity = vector
         }
     }
 }
@@ -50,6 +50,6 @@ open class GravityComponentCreator: BodyComponentCreator
     
     open override func prepareBodyAfterComponent(_ body: Body)
     {
-        body.getComponentType(GravityComponent.self)?.gravity = vector
+        body.component(ofType: GravityComponent.self)?.gravity = vector
     }
 }

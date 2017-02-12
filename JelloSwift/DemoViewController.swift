@@ -152,8 +152,8 @@ class DemoView: UIView, CollisionObserver
         // Create a few pinned bodies
         let pb1 = createBouncyBall(toWorldCoords(Vector2(size.width * 0.2, size.height / 2)), pinned: true, radius: 3)
         let pb2 = createBouncyBall(toWorldCoords(Vector2(size.width * 0.8, size.height / 2)), pinned: true, radius: 3)
-        pb1.getComponentType(SpringComponent.self)?.setShapeMatchingConstants(200, 10)
-        pb2.getComponentType(SpringComponent.self)?.setShapeMatchingConstants(200, 10)
+        pb1.component(ofType: SpringComponent.self)?.setShapeMatchingConstants(200, 10)
+        pb2.component(ofType: SpringComponent.self)?.setShapeMatchingConstants(200, 10)
         
         // Create some free boxes around the level
         createBox(toWorldCoords(Vector2(size.width / 2, size.height / 3)), size: Vector2.unit)
@@ -424,7 +424,7 @@ class DemoView: UIView, CollisionObserver
         }
         
         // Draw normals, for pressure bodies
-        if body.getComponentType(PressureComponent.self) != nil
+        if body.component(ofType: PressureComponent.self) != nil
         {
             for (i, normal) in body.pointNormals.enumerated()
             {
@@ -497,7 +497,7 @@ class DemoView: UIView, CollisionObserver
         body.isPined = pinned
         
         // In order to have the box behave correctly, we need to add some internal springs to the body
-        let springComp = body.getComponentType(SpringComponent.self)
+        let springComp = body.component(ofType: SpringComponent.self)
         
         // The two first arguments are the indexes of the point masses to link, the next two are the spring constants,
         // and the last one is the distance the spring will try to mantain the two point masses at.

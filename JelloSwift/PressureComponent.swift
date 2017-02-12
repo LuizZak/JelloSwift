@@ -65,6 +65,6 @@ open class PressureComponentCreator : BodyComponentCreator
     
     open override func prepareBodyAfterComponent(_ body: Body)
     {
-        body.getComponentType(PressureComponent.self)?.gasAmmount = gasAmmount
+        body.component(ofType: PressureComponent.self)?.gasAmmount = gasAmmount
     }
 }

@@ -191,7 +191,7 @@ open class SpringComponentCreator : BodyComponentCreator
     
     open override func prepareBodyAfterComponent(_ body: Body)
     {
-        guard let comp = body.getComponentType(SpringComponent.self) else {
+        guard let comp = body.component(ofType: SpringComponent.self) else {
             return
         }
         

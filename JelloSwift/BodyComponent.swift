@@ -45,7 +45,7 @@ open class BodyComponentCreator
     
     open func attach(to body: Body)
     {
-        body.addComponentType(bodyComponentClass)
+        body.addComponent(ofType: bodyComponentClass)
         
         prepareBodyAfterComponent(body)
     }
