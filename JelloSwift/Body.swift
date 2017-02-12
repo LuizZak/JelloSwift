@@ -641,7 +641,7 @@ public final class Body: Equatable
         }
         
         // Test each edge against the line
-        return edges.any { e in lineIntersect(start, ptB: end, ptC: e.start, ptD: e.end) != nil }
+        return edges.any { e in lineIntersect(lineA: (start, end), lineB: (e.start, e.end)) != nil }
     }
     
     /// Returns whether the given ray collides with this Body, changing the resulting collision vector before returning
@@ -670,7 +670,7 @@ public final class Body: Equatable
             p1 = e.start
             p2 = e.end
             
-            if let (p, _, _) = lineIntersect(start, ptB: end, ptC: p1, ptD: p2)
+            if let (p, _, _) = lineIntersect(lineA: (start, end), lineB: (p1, p2))
             {
                 farPoint = p
                 col = true

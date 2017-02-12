@@ -30,9 +30,9 @@ public func polygonArea<T: BidirectionalCollection>(_ points: T) -> CGFloat wher
 
 /// Checks if 2 line segments intersect. (line AB collides with line CD)
 /// Returns a tuple containing information about the hit detection, or nil, if the lines don't intersect
-public func lineIntersect(_ ptA: Vector2, ptB: Vector2, ptC: Vector2, ptD: Vector2) ->  (hitPt: Vector2, Ua: CGFloat, Ub: CGFloat)?
+public func lineIntersect(lineA: (start: Vector2, end: Vector2), lineB: (start: Vector2, end: Vector2)) ->  (hitPt: Vector2, Ua: CGFloat, Ub: CGFloat)?
 {
-    let denom = ((ptD.y - ptC.y) * (ptB.x - ptA.x)) - ((ptD.x - ptC.x) * (ptB.y - ptA.y))
+    let denom = ((lineB.end.y - lineB.start.y) * (lineA.end.x - lineA.start.x)) - ((lineB.end.x - lineB.start.x) * (lineA.end.y - lineA.start.y))
     
     // if denom == 0, lines are parallel - being a bit generous on this one..
     if (abs(denom) < 0.000000001)
@@ -40,8 +40,8 @@ public func lineIntersect(_ ptA: Vector2, ptB: Vector2, ptC: Vector2, ptD: Vecto
         return nil
     }
     
-    let UaTop = ((ptD.x - ptC.x) * (ptA.y - ptC.y)) - ((ptD.y - ptC.y) * (ptA.x - ptC.x))
-    let UbTop = ((ptB.x - ptA.x) * (ptA.y - ptC.y)) - ((ptB.y - ptA.y) * (ptA.x - ptC.x))
+    let UaTop = ((lineB.end.x - lineB.start.x) * (lineA.start.y - lineB.start.y)) - ((lineB.end.y - lineB.start.y) * (lineA.start.x - lineB.start.x))
+    let UbTop = ((lineA.end.x - lineA.start.x) * (lineA.start.y - lineB.start.y)) - ((lineA.end.y - lineA.start.y) * (lineA.start.x - lineB.start.x))
     
     let Ua = UaTop / denom
     let Ub = UbTop / denom
@@ -49,7 +49,7 @@ public func lineIntersect(_ ptA: Vector2, ptB: Vector2, ptC: Vector2, ptD: Vecto
     if ((Ua >= 0) && (Ua <= 1) && (Ub >= 0) && (Ub <= 1))
     {
         // these lines intersect!
-        let hitPt = ptA + ((ptB - ptA) * Ua)
+        let hitPt = lineA.start + ((lineA.end - lineA.start) * Ua)
         
         return (hitPt, Ua, Ub)
     }
