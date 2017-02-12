@@ -367,13 +367,13 @@ public final class Body: Equatable
             return
         }
         
-        let currentDerivedPosition = PointMass.averagePosition(pointMasses)
+        let currentDerivedPosition = PointMass.averagePosition(of: pointMasses)
         
         if(!isPined)
         {
             // Find the geometric center and average velocity
             derivedPos = currentDerivedPosition
-            derivedVel = PointMass.averageVelocity(pointMasses)
+            derivedVel = PointMass.averageVelocity(of: pointMasses)
         }
             
         if(freeRotate)
