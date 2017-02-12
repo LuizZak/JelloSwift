@@ -215,24 +215,24 @@ public final class World
         return ret
     }
     
-    /// Given a global, get a body (if any) that contains this point.
+    /// Given a global point, returns a body (if any) that contains this point.
     /// Useful for picking objects with a cursor, etc.
-    public func body(under pt: Vector2, bit: Bitmask) -> Body?
+    public func body(under pt: Vector2, bitmask: Bitmask = 0) -> Body?
     {
-        return bodies.first { body in ((bit == 0 || (body.bitmask & bit) != 0) && body.contains(pt)) }
+        return bodies.first { ((bitmask == 0 || ($0.bitmask & bitmask) != 0) && $0.contains(pt)) }
     }
     
-    /// Given a global point, get all bodies (if any) that contain this point.
+    /// Given a global point, returns all bodies that contain this point.
     /// Useful for picking objects with a cursor, etc.
-    public func bodies(under pt: Vector2, bit: Bitmask) -> [Body]
+    public func bodies(under pt: Vector2, bitmask: Bitmask = 0) -> [Body]
     {
-        return bodies.filter { (($0.bitmask & bit) != 0 || bit == 0) && $0.contains(pt) }
+        return bodies.filter { (bitmask == 0 || ($0.bitmask & bitmask) != 0) && $0.contains(pt) }
     }
     
-    /// Returns a vector of bodies intersecting with the given line
-    public func bodiesIntersecting(lineFrom start: Vector2, to end: Vector2, bit: Bitmask) -> [Body]
+    /// Returns a vector of bodies intersecting with the given line.
+    public func bodiesIntersecting(lineFrom start: Vector2, to end: Vector2, bitmask: Bitmask = 0) -> [Body]
     {
-        return bodies.filter { (($0.bitmask & bit) != 0 || bit == 0) && $0.intersectsLine(start, end) }
+        return bodies.filter { (bitmask == 0 || ($0.bitmask & bitmask) != 0) && $0.intersectsLine(start, end) }
     }
     
     /**
@@ -413,12 +413,8 @@ public final class World
                 let b1 = j
                 let b2 = (j + 1) % (bBpCount)
                 
-                var normal = Vector2.zero
-                var hitPt = Vector2.zero
-                var edgeD: CGFloat = 0
-                
                 // test against this edge.
-                let dist = bB.closestPointSquared(to: pt, onEdge: j, &hitPt, &normal, &edgeD)
+                let (hitPt, normal, edgeD, dist) = bB.closestPointSquared(to: pt, onEdge: j)
                 
                 // only perform the check if the normal for this edge is facing AWAY from the point normal.
                 let dot = ptNorm • normal

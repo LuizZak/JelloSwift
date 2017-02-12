@@ -685,13 +685,18 @@ public final class Body: Equatable
      *
      * - parameter pt: The point to get the closest edge of, in world coordinates
      * - parameter edgeNum: The index of the edge to search
-     * - parameter normal: A unit vector containing information about the normal of the edge found
-     * - parameter hitPt: The closest point in the edge to the global point provided
-     * - parameter edgeD: The ratio of the edge where the point was grabbed, [0-1] inclusive
-     * - returns: The squared distance to the closest edge found
-    */
-    public func closestPointSquared(to pt: Vector2, onEdge edgeNum: Int, _ hitPt: inout Vector2, _ normal: inout Vector2, _ edgeD: inout CGFloat) -> CGFloat
+     * - returns: A tuple containing the results of the test, with fields:
+     *            **hitPoint**: The closest point in the edge to the global point provided
+     *            **normal**: A unit vector containing information about the normal of the edge found
+     *            **edgeD**: The ratio of the edge where the point was grabbed, [0-1] inclusive
+     *            **distance**: The squared distance to the closest edge found
+     */
+    public func closestPointSquared(to pt: Vector2, onEdge edgeNum: Int) -> (hitPoint: Vector2, normal: Vector2, edgeD: CGFloat, distance: CGFloat)
     {
+        var hitPt: Vector2 = .zero
+        var normal: Vector2 = .zero
+        var edgeD: CGFloat = 0
+        
         var dist: CGFloat = 0
         
         let edge = edges[edgeNum]
@@ -735,7 +740,7 @@ public final class Body: Equatable
             edgeD = x / edge.length
         }
         
-        return dist
+        return (hitPt, normal, edgeD, dist)
     }
     
     /**
@@ -743,43 +748,46 @@ public final class Body: Equatable
      *
      * - parameter pt: The point to get the closest edge of, in world coordinates
      * - parameter edgeNum: The index of the edge to search
-     * - parameter normal: A unit vector containing information about the normal of the edge found
-     * - parameter hitPt: The closest point in the edge to the global point provided
-     * - parameter edgeD: The ratio of the edge where the point was grabbed, [0-1] inclusive
-     * - returns: The distance to the closest edge found
+     * - returns: A tuple containing the results of the test, with fields:
+     *            **hitPoint**: The closest point in the edge to the global point provided
+     *            **normal**: A unit vector containing information about the normal of the edge found
+     *            **edgeD**: The ratio of the edge where the point was grabbed, [0-1] inclusive
+     *            **distance**: The distance to the closest edge found
     */
-    public func closestPoint(to pt: Vector2, onEdge edgeNum: Int, _ hitPt: inout Vector2, _ normal: inout Vector2, _ edgeD: inout CGFloat) -> CGFloat
+    public func closestPoint(to pt: Vector2, onEdge edgeNum: Int) -> (hitPoint: Vector2, normal: Vector2, edgeD: CGFloat, distance: CGFloat)
     {
-        return sqrt(closestPointSquared(to: pt, onEdge: edgeNum, &hitPt, &normal, &edgeD))
+        let result = closestPointSquared(to: pt, onEdge: edgeNum)
+        
+        return (result.hitPoint, result.normal, result.edgeD, sqrt(result.distance))
     }
     
     /**
      * Given a global point, finds the point on this body that is closest to the given global point, and if it's an edge, information about the edge it resides on
      *
      * - parameter pt: The point to get the closest edge of, in world coordinates
-     * - parameter hitPt: The closest point to the pointmass or edge that was found
-     * - parameter normal: A unit vector containing information about the normal of the edge found
-     * - parameter pointA: The index of the first point of the closest edge found
-     * - parameter pointB: The index of the second point of the closest edge found
-     * - parameter edgeD: The ratio of the edge where the point was grabbed, [0-1] inclusive
      * - returns: The distance to the closest edge found
+     * - returns: A tuple containing the results of the test, with fields:
+     *            **hitPoint**: The closest point in the edge to the global point provided
+     *            **normal**: A unit vector containing information about the normal of the edge found
+     *            **pointA**: The index of the first point of the edge
+     *            **pointB**: The index of the second point of the edge
+     *            **edgeD**: The ratio of the edge where the point was grabbed, [0-1] inclusive
+     *            **distance**: The distance to the closest edge found
     */
-    public func closestPoint(to pt: Vector2, _ hitPt: inout Vector2, _ normal: inout Vector2, _ pointA: inout Int, _ pointB: inout Int, _ edgeD: inout CGFloat) -> CGFloat
+    public func closestPoint(to pt: Vector2) -> (hitPoint: Vector2, normal: Vector2, pointA: Int, pointB: Int, edgeD: CGFloat, distance: CGFloat)
     {
-        pointA = -1
-        pointB = -1
-        edgeD = 0
+        var pointA = -1
+        var pointB = -1
+        var edgeD: CGFloat = 0
+        var normal: Vector2 = .zero
+        var hitPt: Vector2 = .zero
         
         var closestD = CGFloat.infinity
         
         let c = pointMasses.count
         for i in 0..<c
         {
-            var tempHit = Vector2.zero
-            var tempNorm = Vector2.zero
-            var tempEdgeD: CGFloat = 0
-            
-            let dist = closestPointSquared(to: pt, onEdge: i, &tempHit, &tempNorm, &tempEdgeD)
+            let (tempHit, tempNorm, tempEdgeD, dist) = closestPointSquared(to: pt, onEdge: i)
             
             if(dist < closestD)
             {
@@ -793,7 +801,7 @@ public final class Body: Equatable
             }
         }
         
-        return sqrt(closestD)
+        return (hitPt, normal, pointA, pointB, edgeD, sqrt(closestD))
     }
     
     
