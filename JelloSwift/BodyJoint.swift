@@ -84,7 +84,7 @@ public protocol JointLinkType
     /// Appies a given force to the subject of this joint link
     ///
     /// - parameter force: A force to apply to the subjects of this joint link
-    func applyForce(_ force: Vector2)
+    func applyForce(of force: Vector2)
 }
 
 /// The type of joint link of a BodyJointLink class
