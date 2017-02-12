@@ -628,12 +628,6 @@ public final class Body: Equatable
     /// Returns whether the given line consisting of two points intersects this body
     public func intersectsLine(from start: Vector2, to end: Vector2) -> Bool
     {
-        // Test whether one or both the points of the line are inside the body
-        if(contains(start) || contains(end))
-        {
-            return true
-        }
-        
         // Create and test against a temporary line AABB
         if(!aabb.intersects(AABB(points: [start, end])))
         {
@@ -641,7 +635,15 @@ public final class Body: Equatable
         }
         
         // Test each edge against the line
-        return edges.any { e in lineIntersect(lineA: (start, end), lineB: (e.start, e.end)) != nil }
+        for edge in edges
+        {
+            if(lineIntersect(lineA: (start, end), lineB: (edge.start, edge.end)) != nil)
+            {
+                return true
+            }
+        }
+        
+        return false
     }
     
     /// Returns whether the given ray collides with this Body, changing the resulting collision vector before returning
