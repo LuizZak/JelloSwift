@@ -33,7 +33,7 @@ public final class PressureComponent: BodyComponent
             return
         }
         
-        volume = max(0.5, polygonArea(body.pointMasses))
+        volume = max(0.5, polygonArea(of: body.pointMasses))
         
         // now loop through, adding forces!
         let invVolume = 1 / volume
