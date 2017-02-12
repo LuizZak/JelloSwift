@@ -39,7 +39,7 @@ open class BodyJoint: Equatable
     /// This value is automatically initialized to be the same as restDistance
     open var maxRestDistance:CGFloat
     
-    public init(world: World, link1: JointLinkType, link2: JointLinkType, distance: CGFloat? = nil)
+    public init(on world: World, link1: JointLinkType, link2: JointLinkType, distance: CGFloat? = nil)
     {
         bodyLink1 = link1
         bodyLink2 = link2

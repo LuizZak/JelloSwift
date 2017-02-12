@@ -82,8 +82,8 @@ public final class SpringComponent: BodyComponent
         // we know that the first n springs in the list are the edge springs.
         for i in 0..<body.pointMasses.count
         {
-            springs[i].springK = edgeSpringK
-            springs[i].springD = edgeSpringDamp
+            springs[i].coefficient = edgeSpringK
+            springs[i].damping = edgeSpringDamp
         }
     }
     
@@ -95,22 +95,22 @@ public final class SpringComponent: BodyComponent
         // index is for all internal springs, AFTER the default internal springs.
         let index = body.pointMasses.count + springID
         
-        springs[index].springK = springK
-        springs[index].springD = springDamp
+        springs[index].coefficient = springK
+        springs[index].damping = springDamp
     }
     
     /// Gets the spring constant of a spring at the specified index.
     /// This ignores the default edge springs, so the index is always + body.pointMasses.count
-    public func getSpringK(_ body: Body, springID: Int) -> CGFloat
+    public func springCoefficient(forSpringIndex springID: Int, in body: Body) -> CGFloat
     {
-        return springs[body.pointMasses.count + springID].springK
+        return springs[body.pointMasses.count + springID].coefficient
     }
     
     /// Gets the spring dampness of a spring at the specified index
     /// This ignores the default edge springs, so the index is always + body.pointMasses.count
-    public func getSpringD(_ body: Body, springID: Int) -> CGFloat
+    public func springDamping(forSpringIndex springID: Int, in body: Body) -> CGFloat
     {
-        return springs[body.pointMasses.count + springID].springD
+        return springs[body.pointMasses.count + springID].damping
     }
     
     override public func accumulateInternalForces(in body: Body)
@@ -122,7 +122,7 @@ public final class SpringComponent: BodyComponent
             let p1 = s.pointMassA
             let p2 = s.pointMassB
             
-            let force = calculateSpringForce(posA: p1.position, velA: p1.velocity, posB: p2.position, velB: p2.velocity, distance: s.distance, springK: s.springK, springD: s.springD)
+            let force = calculateSpringForce(posA: p1.position, velA: p1.velocity, posB: p2.position, velB: p2.velocity, distance: s.distance, springK: s.coefficient, springD: s.damping)
             
             p1.force += force
             p2.force -= force
@@ -201,7 +201,7 @@ open class SpringComponentCreator : BodyComponentCreator
         comp.setShapeMatchingConstants(shapeSpringK, shapeSpringDamp)
         
         for element in innerSprings {
-            comp.addInternalSpring(body, pointA: element.indexA, pointB: element.indexB, springK: element.springK, damping: element.springD, dist: element.dist)
+            comp.addInternalSpring(body, pointA: element.indexA, pointB: element.indexB, springK: element.coefficient, damping: element.damping, dist: element.dist)
         }
     }
 }
@@ -212,18 +212,18 @@ public struct SpringComponentInnerSpring
     public var indexA = 0
     public var indexB = 0
     
-    public var springK: CGFloat = 0
-    public var springD: CGFloat = 0
+    public var coefficient: CGFloat = 0
+    public var damping: CGFloat = 0
     
     public var dist: CGFloat = 0
     
-    public init(a: Int, b: Int, springK: CGFloat, springD: CGFloat, dist: CGFloat = -1)
+    public init(a: Int, b: Int, coefficient: CGFloat, damping: CGFloat, dist: CGFloat = -1)
     {
         indexA = a
         indexB = b
         
-        self.springK = springK
-        self.springD = springD
+        self.coefficient = coefficient
+        self.damping = damping
         
         self.dist = dist
     }

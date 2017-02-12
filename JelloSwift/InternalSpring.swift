@@ -15,15 +15,15 @@ public struct InternalSpring
     public let pointMassB: PointMass
     
     public var distance: CGFloat = 0
-    public var springK: CGFloat = 0
-    public var springD: CGFloat = 0
+    public var coefficient: CGFloat = 0
+    public var damping: CGFloat = 0
     
     public init(_ pmA: PointMass, _ pmB: PointMass, _ distance: CGFloat = 0, _ springK: CGFloat, _ springD: CGFloat)
     {
         pointMassA = pmA
         pointMassB = pmB
         self.distance = distance
-        self.springK = springK
-        self.springD = springD
+        coefficient = springK
+        damping = springD
     }
 }

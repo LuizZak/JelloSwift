@@ -553,7 +553,7 @@ class DemoView: UIView, CollisionObserver
         let l1 = BodyJointLink(body: b1)
         let l2 = BodyJointLink(body: b2)
         
-        world.addJoint(SpringBodyJoint(world: world, link1: l1, link2: l2, springK: 100, springD: 20))
+        world.addJoint(SpringBodyJoint(on: world, link1: l1, link2: l2, coefficient: 100, damping: 20))
     }
     
     /// Creates a pinned box with a ball attached to one of its edges
@@ -566,7 +566,7 @@ class DemoView: UIView, CollisionObserver
         let l1 = BodyJointLink(body: b1)
         let l2 = EdgeJointLink(body: b2, edgeIndex: 2, edgeRatio: 0.5)
         
-        world.addJoint(SpringBodyJoint(world: world, link1: l1, link2: l2, springK: 100, springD: 20))
+        world.addJoint(SpringBodyJoint(on: world, link1: l1, link2: l2, coefficient: 100, damping: 20))
     }
     
     /// Creates a pinned box with two balls attached to one of its edges
@@ -585,8 +585,8 @@ class DemoView: UIView, CollisionObserver
         let l4 = EdgeJointLink(body: b1, edgeIndex: 2, edgeRatio: 0.2)
         
         // Create the joints
-        let joint1 = SpringBodyJoint(world: world, link1: l1, link2: l2, springK: 10, springD: 2)
-        let joint2 = SpringBodyJoint(world: world, link1: l3, link2: l4, springK: 40, springD: 5)
+        let joint1 = SpringBodyJoint(on: world, link1: l1, link2: l2, coefficient: 10, damping: 2)
+        let joint2 = SpringBodyJoint(on: world, link1: l3, link2: l4, coefficient: 40, damping: 5)
         
         // Enable collision between the bodies
         joint1.allowCollisions = true
@@ -642,14 +642,14 @@ class DemoView: UIView, CollisionObserver
         let ljCar = ShapeJointLink(body: carBody, pointMassIndexes: [19, 0, 1, 2, 3, 4])
         ljCar.offset = Vector2(0, -0.6)
         
-        let leftJoint = SpringBodyJoint(world: world, link1: ljWheel, link2: ljCar, springK: 100, springD: 15, distance: 0)
+        let leftJoint = SpringBodyJoint(on: world, link1: ljWheel, link2: ljCar, coefficient: 100, damping: 15, distance: 0)
         leftJoint.allowCollisions = true
         
         let rjWheel = BodyJointLink(body: rightWheel)
         let rjCar = ShapeJointLink(body: carBody, pointMassIndexes: [13, 14, 15, 16, 17, 18])
         rjCar.offset = Vector2(0, -0.6)
         
-        let rightJoint = SpringBodyJoint(world: world, link1: rjWheel, link2: rjCar, springK: 100, springD: 15, distance: 0)
+        let rightJoint = SpringBodyJoint(on: world, link1: rjWheel, link2: rjCar, coefficient: 100, damping: 15, distance: 0)
         rightJoint.allowCollisions = true
         
         world.addJoint(leftJoint)

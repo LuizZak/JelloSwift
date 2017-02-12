@@ -13,17 +13,17 @@ import CoreGraphics
 open class SpringBodyJoint : BodyJoint
 {
     /// The spring coefficient for this spring body joint
-    var springK: CGFloat
-    /// The spring dampness for this spring body joint
-    var springD: CGFloat
+    var springCoefficient: CGFloat
+    /// The spring damping for this spring body joint
+    var springDamping: CGFloat
     
     /// Inits a new spring body joint witht he specified parameters. Leave the distance as -1 to calculate the distance automatically from the current distance of the two provided joint links
-    public init(world: World, link1: JointLinkType, link2: JointLinkType, springK: CGFloat, springD: CGFloat, distance: CGFloat? = nil)
+    public init(on world: World, link1: JointLinkType, link2: JointLinkType, coefficient: CGFloat, damping: CGFloat, distance: CGFloat? = nil)
     {
-        self.springK = springK
-        self.springD = springD
+        self.springCoefficient = coefficient
+        self.springDamping = damping
         
-        super.init(world: world, link1: link1, link2: link2, distance: distance)
+        super.init(on: world, link1: link1, link2: link2, distance: distance)
     }
     
     /**
@@ -50,7 +50,7 @@ open class SpringBodyJoint : BodyJoint
         
         let targetDist = max(restDistance, min(maxRestDistance, dist))
         
-        let force = calculateSpringForce(posA: pos1, velA: bodyLink1.velocity, posB: pos2, velB: bodyLink2.velocity, distance: targetDist, springK: springK, springD: springD)
+        let force = calculateSpringForce(posA: pos1, velA: bodyLink1.velocity, posB: pos2, velB: bodyLink2.velocity, distance: targetDist, springK: springCoefficient, springD: springDamping)
         
         if(!bodyLink1.isStatic && !bodyLink2.isStatic)
         {
