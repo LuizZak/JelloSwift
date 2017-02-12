@@ -18,7 +18,10 @@ public final class GravityComponent: BodyComponent
     {
         super.accumulateExternalForces(on: body)
         
-        body.pointMasses.forEach { $0.applyForce(gravity * $0.mass) }
+        for point in body.pointMasses
+        {
+            point.applyForce(of: gravity * point.mass)
+        }
     }
     
     /// Changes the gravity of the bodies on a given world object

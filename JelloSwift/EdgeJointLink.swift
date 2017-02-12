@@ -67,7 +67,7 @@ open class EdgeJointLink: JointLinkType
     /// - parameter force: A force to apply to the subjects of this joint link
     open func applyForce(_ force: Vector2)
     {
-        _pointMass1.applyForce(force * (1 - edgeRatio))
-        _pointMass2.applyForce(force * (edgeRatio))
+        _pointMass1.applyForce(of: force * (1 - edgeRatio))
+        _pointMass2.applyForce(of: force * (edgeRatio))
     }
 }

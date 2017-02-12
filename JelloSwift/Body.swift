@@ -487,7 +487,7 @@ public final class Body: Equatable
     }
     
     /// Applies a rotational clockwise torque of a given force on this body
-    public func applyTorque(_ force: CGFloat)
+    public func applyTorque(of force: CGFloat)
     {
         if(isStatic)
         {
@@ -499,7 +499,7 @@ public final class Body: Equatable
         {
             let diff = (pm.position - derivedPos).normalized().perpendicular()
             
-            pm.applyForce(diff * force)
+            pm.applyForce(of: diff * force)
         }
     }
     

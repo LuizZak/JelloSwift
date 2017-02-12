@@ -372,7 +372,7 @@ class DemoView: UIView, CollisionObserver
         
         let dragForce = calculateSpringForce(posA: p.position, velA: p.velocity, posB: fingerLocation, velB: Vector2.zero, distance: 0, springK: 700, springD: 20)
         
-        p.applyForce(dragForce)
+        p.applyForce(of: dragForce)
     }
     
     func bodiesDidCollide(_ info: BodyCollisionInformation)

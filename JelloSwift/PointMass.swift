@@ -50,7 +50,7 @@ public final class PointMass: VectorRepresentable
     }
     
     // Applies the given force vector to this point mass
-    public func applyForce(_ force: Vector2)
+    public func applyForce(of force: Vector2)
     {
         self.force += force
     }

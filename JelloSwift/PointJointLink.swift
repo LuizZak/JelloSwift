@@ -59,6 +59,6 @@ open class PointJointLink: JointLinkType
     /// - parameter force: A force to apply to the subjects of this joint link
     open func applyForce(_ force: Vector2)
     {
-        _pointMass.applyForce(force)
+        _pointMass.applyForce(of: force)
     }
 }
