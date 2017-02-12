@@ -43,7 +43,7 @@ open class BodyComponentCreator
 {
     open var bodyComponentClass: BodyComponent.Type = BodyComponent.self
     
-    open func attachToBody(_ body: Body)
+    open func attach(to body: Body)
     {
         body.addComponentType(bodyComponentClass)
         

@@ -142,7 +142,7 @@ public final class Body: Equatable
         }
         
         // Add the components now
-        components.forEach { $0.attachToBody(self) }
+        components.forEach { $0.attach(to: self) }
     }
     
     /// Adds a body component to this body

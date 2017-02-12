@@ -58,17 +58,17 @@ open class SpringBodyJoint : BodyJoint
             let mass2 = bodyLink2.mass
             let massSum = mass1 + mass2
             
-            bodyLink1.applyForce( force * (massSum / mass1))
-            bodyLink2.applyForce(-force * (massSum / mass2))
+            bodyLink1.applyForce(of:  force * (massSum / mass1))
+            bodyLink2.applyForce(of: -force * (massSum / mass2))
         }
         // Static bodies:
         else if(!bodyLink1.isStatic && bodyLink2.isStatic)
         {
-            bodyLink1.applyForce(force)
+            bodyLink1.applyForce(of: force)
         }
         else if(!bodyLink2.isStatic && bodyLink1.isStatic)
         {
-            bodyLink2.applyForce(-force)
+            bodyLink2.applyForce(of: -force)
         }
     }
 }
