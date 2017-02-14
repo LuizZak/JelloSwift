@@ -9,8 +9,7 @@
 import CoreGraphics
 
 // Represents an internal spring inside a soft body object, and keeps points close together
-public struct InternalSpring
-{
+public struct InternalSpring {
     public let pointMassA: PointMass
     public let pointMassB: PointMass
     
@@ -18,8 +17,7 @@ public struct InternalSpring
     public var coefficient: CGFloat = 0
     public var damping: CGFloat = 0
     
-    public init(_ pmA: PointMass, _ pmB: PointMass, _ distance: CGFloat = 0, _ springK: CGFloat, _ springD: CGFloat)
-    {
+    public init(_ pmA: PointMass, _ pmB: PointMass, _ distance: CGFloat = 0, _ springK: CGFloat, _ springD: CGFloat) {
         pointMassA = pmA
         pointMassB = pmB
         self.distance = distance

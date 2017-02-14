@@ -10,18 +10,15 @@ import Foundation
 
 public typealias Bitmask = UInt
 
-extension Bitmask
-{
+extension Bitmask {
     @discardableResult
-    public mutating func setBitOn(atIndex index: Int) -> UInt
-    {
+    public mutating func setBitOn(atIndex index: Int) -> UInt {
         self |= 1 << UInt(index > 0 ? index - 1 : 0)
         return self
     }
     
     @discardableResult
-    public mutating func setBitOff(atIndex index: Int) -> UInt
-    {
+    public mutating func setBitOff(atIndex index: Int) -> UInt {
         self &= ~(1 << UInt(index > 0 ? index - 1 : 0))
         return self
     }

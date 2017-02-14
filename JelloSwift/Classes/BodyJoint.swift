@@ -9,14 +9,12 @@
 import Foundation
 import CoreGraphics
 
-public func ==(lhs: BodyJoint, rhs: BodyJoint) -> Bool
-{
+public func ==(lhs: BodyJoint, rhs: BodyJoint) -> Bool {
     return lhs === rhs
 }
 
 /// Base class for joints which unites two separate bodies
-open class BodyJoint: Equatable
-{
+open class BodyJoint: Equatable {
     /// Gets the first link that contins informationa bout the first body linked by this joint
     public final let bodyLink1: JointLinkType
     /// Gets the second link that contins informationa bout the first body linked by this joint
@@ -39,8 +37,7 @@ open class BodyJoint: Equatable
     /// This value is automatically initialized to be the same as restDistance
     open var maxRestDistance:CGFloat
     
-    public init(on world: World, link1: JointLinkType, link2: JointLinkType, distance: CGFloat? = nil)
-    {
+    public init(on world: World, link1: JointLinkType, link2: JointLinkType, distance: CGFloat? = nil) {
         bodyLink1 = link1
         bodyLink2 = link2
         
@@ -54,15 +51,13 @@ open class BodyJoint: Equatable
      *
      * - parameter dt: The delta time to update the resolve on
      */
-    open func resolve(_ dt: CGFloat)
-    {
+    open func resolve(_ dt: CGFloat) {
         
     }
 }
 
 /// Protocol to be implemented by objects that specify the way a joint links with a body
-public protocol JointLinkType
-{
+public protocol JointLinkType {
     /// Gets the body that this joint link is linked to
     var body: Body { get }
     
@@ -88,8 +83,7 @@ public protocol JointLinkType
 }
 
 /// The type of joint link of a BodyJointLink class
-public enum LinkType
-{
+public enum LinkType {
     /// Specifies that the joint links at the whole body, relative to the center
     case body
     /// Specifies that the joint links at a body's point

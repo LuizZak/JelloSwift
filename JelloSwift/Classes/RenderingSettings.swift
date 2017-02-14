@@ -15,38 +15,32 @@ public var renderingScale = Vector2(25.8, 25.8)
 public var renderingOffset = Vector2(300, -50)
 
 /// Transforms the given point on stage coordinates into World coordinates by using the rendering settings
-public func toWorldCoords(_ point: Vector2) -> Vector2
-{
+public func toWorldCoords(_ point: Vector2) -> Vector2 {
     return (point - renderingOffset) / renderingScale
 }
 
 /// Transforms the given point on World coordinates into Screen coordinates by using the rendering settings
-public func toScreenCoords(_ point: Vector2) -> Vector2
-{
+public func toScreenCoords(_ point: Vector2) -> Vector2 {
     return point * renderingScale + renderingOffset
 }
 
 /// Transforms a given AABB from world coordinates to screen coordinates
-public func toScreenSpace(_ aabb: AABB) -> AABB
-{
+public func toScreenSpace(_ aabb: AABB) -> AABB {
     return AABB(min: toScreenCoords(aabb.minimum), max: toScreenCoords(aabb.maximum))
 }
 
 /// Transforms a given AABB from screen coordinates to world coordinates
-public func toWorldSpace(_ aabb: AABB) -> AABB
-{
+public func toWorldSpace(_ aabb: AABB) -> AABB {
     return AABB(min: toWorldCoords(aabb.minimum), max: toWorldCoords(aabb.maximum))
 }
 
-public func setCamera(_ position: Vector2, scale: Vector2)
-{
+public func setCamera(_ position: Vector2, scale: Vector2) {
     renderingOffset = position
     renderingScale = scale
 }
 
 /// Sets the camera position and scale from scalar values
-public func setCamera(_ positionX: CGFloat, positionY: CGFloat, scaleX: CGFloat, scaleY: CGFloat)
-{
+public func setCamera(_ positionX: CGFloat, positionY: CGFloat, scaleX: CGFloat, scaleY: CGFloat) {
     renderingOffset.x = positionX
     renderingOffset.y = positionY
     

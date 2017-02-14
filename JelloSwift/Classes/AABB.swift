@@ -9,8 +9,7 @@
 import CoreGraphics
 
 /// Represents an axis-aligned bounding box, utilized to figure out the AABB of soft-bodies
-public struct AABB
-{
+public struct AABB {
     /// Returns an empty, invalid AABB
     static let empty = AABB()
     
@@ -40,78 +39,62 @@ public struct AABB
     /// Gets a CGRect that represents the boundaries of this AABB object
     public var cgRect: CGRect { return CGRect(x: x, y: y, width: width, height: height) }
     
-    public init()
-    {
+    public init() {
         
     }
     
-    public init(min: Vector2, max: Vector2)
-    {
+    public init(min: Vector2, max: Vector2) {
         validity = .valid
       
         minimum = min
         maximum = max
     }
     
-    public init(points: [Vector2])
-    {
+    public init(points: [Vector2]) {
         expand(toInclude: points)
     }
     
-    public mutating func clear()
-    {
+    public mutating func clear() {
         validity = .invalid
     }
     
-    public mutating func expand(toInclude point: Vector2)
-    {
-        if(validity == .invalid)
-        {
+    public mutating func expand(toInclude point: Vector2) {
+        if(validity == .invalid) {
             minimum = point
             maximum = point
             
             validity = .valid
-        }
-        else
-        {
+        } else {
             minimum = min(minimum, point)
             maximum = max(maximum, point)
         }
     }
     
-    public mutating func expand(toInclude points: [Vector2])
-    {
-        if(points.count == 0)
-        {
+    public mutating func expand(toInclude points: [Vector2]) {
+        if(points.count == 0) {
             return
         }
         
-        if(validity == .invalid)
-        {
+        if(validity == .invalid) {
             minimum = points[0]
             maximum = points[0]
             
             validity = .valid
         }
         
-        for p in points
-        {
+        for p in points {
             minimum = min(minimum, p)
             maximum = max(maximum, p)
         }
     }
     
-    public func contains(_ point: Vector2) -> Bool
-    {
-        if(validity == .invalid)
-        {
+    public func contains(_ point: Vector2) -> Bool {
+        if(validity == .invalid) {
             return false
         }
         
-        if(point.x >= minimum.x && point.y >= minimum.y)
-        {
-            if(point.x <= maximum.x && point.y <= maximum.y)
-            {
+        if(point.x >= minimum.x && point.y >= minimum.y) {
+            if(point.x <= maximum.x && point.y <= maximum.y) {
                 return true
             }
         }
@@ -119,19 +102,15 @@ public struct AABB
         return false
     }
     
-    public func intersects(_ box: AABB) -> Bool
-    {
-        if(validity == .invalid || box.validity == .invalid)
-        {
+    public func intersects(_ box: AABB) -> Bool {
+        if(validity == .invalid || box.validity == .invalid) {
             return false
         }
         
         // X overlap check.
-        if((minimum.x <= box.maximum.x) && (maximum.x >= box.minimum.x))
-        {
+        if((minimum.x <= box.maximum.x) && (maximum.x >= box.minimum.x)) {
             // Y overlap check
-            if((minimum.y <= box.maximum.y) && (maximum.y >= box.minimum.y))
-            {
+            if((minimum.y <= box.maximum.y) && (maximum.y >= box.minimum.y)) {
                 return true
             }
         }
@@ -141,8 +120,7 @@ public struct AABB
 }
 
 // Specifies the point validity for a whole AABB
-public enum PointValidity
-{
+public enum PointValidity {
     case valid
     case invalid
 }

@@ -9,8 +9,7 @@
 import CoreGraphics
 
 // Encapsulates information about a collision between two soft bodies
-public struct BodyCollisionInformation: Equatable
-{
+public struct BodyCollisionInformation: Equatable {
     public var bodyA: Body
     public var bodyApm: Int = -1
     
@@ -23,8 +22,7 @@ public struct BodyCollisionInformation: Equatable
     public var normal = Vector2.zero
     public var penetration: CGFloat = 0
     
-    public init(bodyA: Body, bodyApm: Int, bodyB: Body)
-    {
+    public init(bodyA: Body, bodyApm: Int, bodyB: Body) {
         self.bodyA = bodyA
         self.bodyApm = bodyApm
         self.bodyB = bodyB
@@ -32,8 +30,7 @@ public struct BodyCollisionInformation: Equatable
         bodyBpmB = -1
     }
     
-    public init(bodyA: Body, bodyApm: Int, bodyB: Body, bodyBpmA: Int, bodyBpmB: Int)
-    {
+    public init(bodyA: Body, bodyApm: Int, bodyB: Body, bodyBpmA: Int, bodyBpmB: Int) {
         self.bodyA = bodyA
         self.bodyApm = bodyApm
         self.bodyB = bodyB
@@ -42,7 +39,6 @@ public struct BodyCollisionInformation: Equatable
     }
 }
 
-public func ==(lhs: BodyCollisionInformation, rhs: BodyCollisionInformation) -> Bool
-{
+public func ==(lhs: BodyCollisionInformation, rhs: BodyCollisionInformation) -> Bool {
     return lhs.bodyA == rhs.bodyA && lhs.bodyApm == rhs.bodyApm && lhs.bodyB == rhs.bodyB && lhs.bodyBpmA == rhs.bodyBpmA && lhs.bodyBpmB == rhs.bodyBpmB && lhs.edgeD == rhs.edgeD && lhs.hitPt == rhs.hitPt && lhs.normal == rhs.normal && lhs.penetration == rhs.penetration
 }

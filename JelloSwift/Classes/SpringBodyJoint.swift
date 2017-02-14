@@ -10,16 +10,14 @@ import Foundation
 import CoreGraphics
 
 /// Represents a joint that links two joint links with spring forces
-open class SpringBodyJoint : BodyJoint
-{
+open class SpringBodyJoint : BodyJoint {
     /// The spring coefficient for this spring body joint
     var springCoefficient: CGFloat
     /// The spring damping for this spring body joint
     var springDamping: CGFloat
     
     /// Inits a new spring body joint witht he specified parameters. Leave the distance as -1 to calculate the distance automatically from the current distance of the two provided joint links
-    public init(on world: World, link1: JointLinkType, link2: JointLinkType, coefficient: CGFloat, damping: CGFloat, distance: CGFloat? = nil)
-    {
+    public init(on world: World, link1: JointLinkType, link2: JointLinkType, coefficient: CGFloat, damping: CGFloat, distance: CGFloat? = nil) {
         self.springCoefficient = coefficient
         self.springDamping = damping
         
@@ -31,10 +29,8 @@ open class SpringBodyJoint : BodyJoint
      *
      * - parameter dt: The delta time to update the resolve on
     */
-    open override func resolve(_ dt: CGFloat)
-    {
-        if(!enabled)
-        {
+    open override func resolve(_ dt: CGFloat) {
+        if(!enabled) {
             return
         }
         
@@ -43,8 +39,7 @@ open class SpringBodyJoint : BodyJoint
         
         let dist = pos1.distance(to: pos2)
         // Affordable distance
-        if(dist < maxRestDistance && dist > restDistance)
-        {
+        if(dist < maxRestDistance && dist > restDistance) {
             return
         }
         
@@ -52,22 +47,16 @@ open class SpringBodyJoint : BodyJoint
         
         let force = calculateSpringForce(posA: pos1, velA: bodyLink1.velocity, posB: pos2, velB: bodyLink2.velocity, distance: targetDist, springK: springCoefficient, springD: springDamping)
         
-        if(!bodyLink1.isStatic && !bodyLink2.isStatic)
-        {
+        if(!bodyLink1.isStatic && !bodyLink2.isStatic) {
             let mass1 = bodyLink1.mass
             let mass2 = bodyLink2.mass
             let massSum = mass1 + mass2
             
             bodyLink1.applyForce(of:  force * (massSum / mass1))
             bodyLink2.applyForce(of: -force * (massSum / mass2))
-        }
-        // Static bodies:
-        else if(!bodyLink1.isStatic && bodyLink2.isStatic)
-        {
+        } else if(!bodyLink1.isStatic && bodyLink2.isStatic) { // Static bodies:
             bodyLink1.applyForce(of: force)
-        }
-        else if(!bodyLink2.isStatic && bodyLink1.isStatic)
-        {
+        } else if(!bodyLink2.isStatic && bodyLink1.isStatic) {
             bodyLink2.applyForce(of: -force)
         }
     }

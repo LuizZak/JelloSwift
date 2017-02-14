@@ -9,8 +9,7 @@
 import CoreGraphics
 
 /// Contains information about the edge of a body
-public struct BodyEdge
-{
+public struct BodyEdge {
     /// The index of the edge on the body
     public var edgeIndex = 0
     
@@ -30,13 +29,11 @@ public struct BodyEdge
     /// The edge's length, squared
     public var lengthSquared: CGFloat = 0
     
-    public init()
-    {
+    public init() {
         
     }
     
-    public init(edgeIndex: Int, start: Vector2, end: Vector2)
-    {
+    public init(edgeIndex: Int, start: Vector2, end: Vector2) {
         self.edgeIndex = edgeIndex
         self.start = start
         self.end = end

@@ -9,8 +9,7 @@
 import CoreGraphics
 
 // Specifies a point mass that composes a body
-public final class PointMass: VectorRepresentable
-{
+public final class PointMass: VectorRepresentable {
     /// The mass of this point mass.
     /// Leave this value always >0 to maintain consistency on the simulation, unless
     /// the point is supposed to be fixed.
@@ -26,8 +25,7 @@ public final class PointMass: VectorRepresentable
     
     public var vector: Vector2 { return position }
     
-    public init(mass: CGFloat = 0, position: Vector2 = Vector2.zero)
-    {
+    public init(mass: CGFloat = 0, position: Vector2 = Vector2.zero) {
         self.mass = mass
         self.position = position
     }
@@ -35,10 +33,8 @@ public final class PointMass: VectorRepresentable
     /// Integrates a single physics simulation step for this point mass
     ///
     /// - parameter elapsed: The elapsed time to integrate by, usually in seconds
-    public func integrate(_ elapsed: CGFloat)
-    {
-        if (mass != CGFloat.infinity)
-        {
+    public func integrate(_ elapsed: CGFloat) {
+        if (mass != CGFloat.infinity) {
             let elapMass = elapsed / mass
             
             velocity += force * elapMass
@@ -50,21 +46,18 @@ public final class PointMass: VectorRepresentable
     }
     
     // Applies the given force vector to this point mass
-    public func applyForce(of force: Vector2)
-    {
+    public func applyForce(of force: Vector2) {
         self.force += force
     }
     
     
     /// Averages a list of point mass positions into one normalized Vector2 point
-    public static func averagePosition<T: Collection>(of pointMasses: T) -> Vector2 where T.Iterator.Element == PointMass, T.IndexDistance == Int
-    {
+    public static func averagePosition<T: Collection>(of pointMasses: T) -> Vector2 where T.Iterator.Element == PointMass, T.IndexDistance == Int {
         return pointMasses.averageVector()
     }
     
     /// Averages a list of point mass velocities into one normalized Vector2 point
-    public static func averageVelocity<T: Collection>(of pointMasses: T) -> Vector2 where T.Iterator.Element == PointMass, T.IndexDistance == Int
-    {
+    public static func averageVelocity<T: Collection>(of pointMasses: T) -> Vector2 where T.Iterator.Element == PointMass, T.IndexDistance == Int {
         return pointMasses.reduce(Vector2.zero) { $0 + $1.velocity } / CGFloat(pointMasses.count)
     }
 }

@@ -7,49 +7,41 @@
 //
 
 // Represents a component that can be added to a body to change it's physical characteristics
-open class BodyComponent
-{
+open class BodyComponent {
     // Initializes a new instance of the BodyComponent class
-    public required init(body: Body)
-    {
+    public required init(body: Body) {
         
     }
     
     // Makes the body component prepare itself after it has been added to a body
-    open func prepare(_ body: Body)
-    {
+    open func prepare(_ body: Body) {
         
     }
     
     // This function should add all internal forces to the Force member variable of each PointMass in the body.
     // These should be forces that try to maintain the shape of the body.
-    open func accumulateInternalForces(in body: Body)
-    {
+    open func accumulateInternalForces(in body: Body) {
         
     }
     
     // This function should add all external forces to the Force member variable of each PointMass in the body.
     // These are external forces acting on the PointMasses, such as gravity, etc.
-    open func accumulateExternalForces(on body: Body)
-    {
+    open func accumulateExternalForces(on body: Body) {
         
     }
 }
 
 // Used to create body components into the body
-open class BodyComponentCreator
-{
+open class BodyComponentCreator {
     open var bodyComponentClass: BodyComponent.Type = BodyComponent.self
     
-    open func attach(to body: Body)
-    {
+    open func attach(to body: Body) {
         body.addComponent(ofType: bodyComponentClass)
         
         prepareBodyAfterComponent(body)
     }
     
-    open func prepareBodyAfterComponent(_ body: Body)
-    {
+    open func prepareBodyAfterComponent(_ body: Body) {
         
     }
 }

@@ -9,27 +9,23 @@
 import CoreGraphics
 
 // Represents a Pressure component that can be added to a body to include gas pressure as an internal force
-public final class PressureComponent: BodyComponent
-{
+public final class PressureComponent: BodyComponent {
     // PRIVATE VARIABLES
     public var volume: CGFloat = 0
     public var gasAmmount: CGFloat = 0
     
-    override public func prepare(_ body: Body)
-    {
+    override public func prepare(_ body: Body) {
         
     }
     
-    override public func accumulateInternalForces(in body: Body)
-    {
+    override public func accumulateInternalForces(in body: Body) {
         super.accumulateInternalForces(in: body)
         
         volume = 0
         
         let c = body.pointMasses.count
         
-        if(c < 1)
-        {
+        if(c < 1) {
             return
         }
         
@@ -38,8 +34,7 @@ public final class PressureComponent: BodyComponent
         // now loop through, adding forces!
         let invVolume = 1 / volume
         
-        for (i, e) in body.edges.enumerated()
-        {
+        for (i, e) in body.edges.enumerated() {
             let j = (i + 1) % c
             let pressureV = (invVolume * e.length * gasAmmount)
             
@@ -50,12 +45,10 @@ public final class PressureComponent: BodyComponent
 }
 
 // Creator for the Spring component
-open class PressureComponentCreator : BodyComponentCreator
-{
+open class PressureComponentCreator : BodyComponentCreator {
     open var gasAmmount: CGFloat
     
-    public required init(gasAmmount: CGFloat = 0)
-    {
+    public required init(gasAmmount: CGFloat = 0) {
         self.gasAmmount = gasAmmount
         
         super.init()
@@ -63,8 +56,7 @@ open class PressureComponentCreator : BodyComponentCreator
         bodyComponentClass = PressureComponent.self
     }
     
-    open override func prepareBodyAfterComponent(_ body: Body)
-    {
+    open override func prepareBodyAfterComponent(_ body: Body) {
         body.component(ofType: PressureComponent.self)?.gasAmmount = gasAmmount
     }
 }
