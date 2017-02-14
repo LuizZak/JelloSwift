@@ -7,26 +7,6 @@
 //
 
 import UIKit
-fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l < r
-  case (nil, _?):
-    return true
-  default:
-    return false
-  }
-}
-
-fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l > r
-  default:
-    return rhs < lhs
-  }
-}
-
 
 class DemoViewController: UIViewController
 {
@@ -298,7 +278,7 @@ class DemoView: UIView, CollisionObserver
         polyDrawer.renderOnContext(context)
         polyDrawer.reset()
         
-        if(renderLabelStopwatch.duration > updateInterval)
+        if let duration = renderLabelStopwatch.duration, duration > updateInterval
         {
             renderLabelStopwatch.reset()
             
@@ -334,7 +314,7 @@ class DemoView: UIView, CollisionObserver
             intervals = Array(intervals.dropFirst(intervals.count - 200))
         }
         
-        if(updateLabelStopwatch.duration > updateInterval)
+        if let duration = updateLabelStopwatch.duration, duration > updateInterval
         {
             updateLabelStopwatch.reset()
             
