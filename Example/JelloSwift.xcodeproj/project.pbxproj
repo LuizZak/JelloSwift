@@ -13,10 +13,15 @@
 		607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 607FACD91AFB9204008FA782 /* Main.storyboard */; };
 		607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDC1AFB9204008FA782 /* Images.xcassets */; };
 		607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDE1AFB9204008FA782 /* LaunchScreen.xib */; };
-		607FACEC1AFB9204008FA782 /* Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACEB1AFB9204008FA782 /* Tests.swift */; };
 		A0CD1AE31E535C6C00D41938 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0CD1AE21E535C6C00D41938 /* Utils.swift */; };
 		A0CD1AE51E535C7800D41938 /* PolyDrawer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0CD1AE41E535C7800D41938 /* PolyDrawer.swift */; };
 		A0CD1AE71E535CC100D41938 /* DemoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0CD1AE61E535CC100D41938 /* DemoView.swift */; };
+		A0CD1AEE1E5363B600D41938 /* AABBTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0CD1AE81E5363B600D41938 /* AABBTests.swift */; };
+		A0CD1AEF1E5363B600D41938 /* ClosedShapeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0CD1AE91E5363B600D41938 /* ClosedShapeTests.swift */; };
+		A0CD1AF01E5363B600D41938 /* GeomUtilsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0CD1AEA1E5363B600D41938 /* GeomUtilsTests.swift */; };
+		A0CD1AF11E5363B600D41938 /* JelloSwiftTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0CD1AEB1E5363B600D41938 /* JelloSwiftTests.swift */; };
+		A0CD1AF21E5363B600D41938 /* PhysicsMathTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0CD1AEC1E5363B600D41938 /* PhysicsMathTest.swift */; };
+		A0CD1AF31E5363B600D41938 /* PointMassTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0CD1AED1E5363B600D41938 /* PointMassTests.swift */; };
 		A7C37D23456E7F34437FF336 /* Pods_JelloSwift_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C3674CED751C29896E47584 /* Pods_JelloSwift_Tests.framework */; };
 /* End PBXBuildFile section */
 
@@ -44,11 +49,16 @@
 		607FACDF1AFB9204008FA782 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		607FACE51AFB9204008FA782 /* JelloSwift_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JelloSwift_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACEA1AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		607FACEB1AFB9204008FA782 /* Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests.swift; sourceTree = "<group>"; };
 		9A7119EFEF38E227BE06C6F0 /* Pods-JelloSwift_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JelloSwift_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-JelloSwift_Example/Pods-JelloSwift_Example.release.xcconfig"; sourceTree = "<group>"; };
 		A0CD1AE21E535C6C00D41938 /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		A0CD1AE41E535C7800D41938 /* PolyDrawer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PolyDrawer.swift; sourceTree = "<group>"; };
 		A0CD1AE61E535CC100D41938 /* DemoView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DemoView.swift; sourceTree = "<group>"; };
+		A0CD1AE81E5363B600D41938 /* AABBTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AABBTests.swift; sourceTree = "<group>"; };
+		A0CD1AE91E5363B600D41938 /* ClosedShapeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClosedShapeTests.swift; sourceTree = "<group>"; };
+		A0CD1AEA1E5363B600D41938 /* GeomUtilsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeomUtilsTests.swift; sourceTree = "<group>"; };
+		A0CD1AEB1E5363B600D41938 /* JelloSwiftTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JelloSwiftTests.swift; sourceTree = "<group>"; };
+		A0CD1AEC1E5363B600D41938 /* PhysicsMathTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhysicsMathTest.swift; sourceTree = "<group>"; };
+		A0CD1AED1E5363B600D41938 /* PointMassTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PointMassTests.swift; sourceTree = "<group>"; };
 		A319CC9058C830A23DE465BD /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		B6733245AB58FC5F0C76AEAA /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		C8F76D0DBAF70A14FF4BD932 /* Pods-JelloSwift_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JelloSwift_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-JelloSwift_Tests/Pods-JelloSwift_Tests.release.xcconfig"; sourceTree = "<group>"; };
@@ -133,7 +143,12 @@
 		607FACE81AFB9204008FA782 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				607FACEB1AFB9204008FA782 /* Tests.swift */,
+				A0CD1AE81E5363B600D41938 /* AABBTests.swift */,
+				A0CD1AE91E5363B600D41938 /* ClosedShapeTests.swift */,
+				A0CD1AEA1E5363B600D41938 /* GeomUtilsTests.swift */,
+				A0CD1AEB1E5363B600D41938 /* JelloSwiftTests.swift */,
+				A0CD1AEC1E5363B600D41938 /* PhysicsMathTest.swift */,
+				A0CD1AED1E5363B600D41938 /* PointMassTests.swift */,
 				607FACE91AFB9204008FA782 /* Supporting Files */,
 			);
 			path = Tests;
@@ -390,7 +405,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				607FACEC1AFB9204008FA782 /* Tests.swift in Sources */,
+				A0CD1AEF1E5363B600D41938 /* ClosedShapeTests.swift in Sources */,
+				A0CD1AF11E5363B600D41938 /* JelloSwiftTests.swift in Sources */,
+				A0CD1AEE1E5363B600D41938 /* AABBTests.swift in Sources */,
+				A0CD1AF01E5363B600D41938 /* GeomUtilsTests.swift in Sources */,
+				A0CD1AF21E5363B600D41938 /* PhysicsMathTest.swift in Sources */,
+				A0CD1AF31E5363B600D41938 /* PointMassTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
