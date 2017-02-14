@@ -1,0 +1,6 @@
+framework module Pods_JelloSwift_Example {
+  umbrella header "Pods-JelloSwift_Example-umbrella.h"
+
+  export *
+  module * { export * }
+}

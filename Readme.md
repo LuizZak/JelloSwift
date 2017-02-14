@@ -1,5 +1,9 @@
-JelloSwift
-==========
+# JelloSwift
+
+[![CI Status](http://img.shields.io/travis/LuizZak/JelloSwift.svg?style=flat)](https://travis-ci.org/LuizZak/JelloSwift)
+[![Version](https://img.shields.io/cocoapods/v/JelloSwift.svg?style=flat)](http://cocoapods.org/pods/JelloSwift)
+[![License](https://img.shields.io/cocoapods/l/JelloSwift.svg?style=flat)](http://cocoapods.org/pods/JelloSwift)
+[![Platform](https://img.shields.io/cocoapods/p/JelloSwift.svg?style=flat)](http://cocoapods.org/pods/JelloSwift)
 
 Soft-body physics dynamics library written in Swift
 ----------
@@ -12,10 +16,27 @@ This port more closely resembles the AS3 version of the engine, [JelloAS3](http:
 
 The project comes with a demo scene for the iPad, so just fire up and drag the soft bodies around!
 
-#### License
+## Example
 
-The project is licensed under The MIT License like the original project, and may be used both in personal and comercial projects, as long as defined by the license.
+To run the example project, clone the repo, and run `pod install` from the Example directory first.
 
-#### Requirements
+## Requirements
 
 To compile this project, you require Xcode 8.0 w/ Swift 3 installed.
+
+## Installation
+
+JelloSwift is available through [CocoaPods](http://cocoapods.org). To install
+it, simply add the following line to your Podfile:
+
+```ruby
+pod "JelloSwift"
+```
+
+## Author
+
+LuizZak, luizinho_mack@yahoo.com.br
+
+## License
+
+JelloSwift is available under the MIT license. See the LICENSE file for more info.

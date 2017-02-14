@@ -1,0 +1,16 @@
+PODS:
+  - JelloSwift (0.2.0)
+
+DEPENDENCIES:
+  - JelloSwift (from `../`)
+
+EXTERNAL SOURCES:
+  JelloSwift:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  JelloSwift: 037d301ef4e5d614d55964e25518c4ab9b452329
+
+PODFILE CHECKSUM: b14b74b51c644eb6cb3082ff705c0fac551b5aff
+
+COCOAPODS: 1.1.1
