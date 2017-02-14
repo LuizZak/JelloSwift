@@ -436,15 +436,9 @@ class DemoView: UIView, CollisionObserver
     func createBox(_ pos: Vector2, size: Vector2, pinned: Bool = false, kinematic: Bool = false, isStatic: Bool = false, angle: CGFloat = 0, mass: CGFloat = 0.5) -> Body
     {
         // Create the closed shape for the box's physics body
-        var shape = ClosedShape()
-        shape.begin()
-        shape.addVertex(Vector2(-size.x,  size.y))
-        shape.addVertex(Vector2( size.x,  size.y))
-        shape.addVertex(Vector2( size.x, -size.y))
-        shape.addVertex(Vector2(-size.x, -size.y))
-        shape.finish()
+        var shape = ClosedShape.rectangle(ofSize: size)
         
-        shape.transformOwn(angle, localScale: Vector2.unit)
+        shape.transformOwnBy(rotatingBy: angle)
         
         var comps = [BodyComponentCreator]()
         
@@ -478,15 +472,9 @@ class DemoView: UIView, CollisionObserver
     func createBouncyBall(_ pos: Vector2, pinned: Bool = false, kinematic: Bool = false, radius: CGFloat = 1, mass: CGFloat = 0.5, def: Int = 12) -> Body
     {
         // Create the closed shape for the ball's physics body
-        var shape = ClosedShape()
-        shape.begin()
-        for i in 0..<def
-        {
-            let n = PI * 2 * (CGFloat(i) / CGFloat(def))
-            shape.addVertex(Vector2(cos(-n) * radius, sin(-n) * radius))
-        }
-        shape.transformOwn(0, localScale: Vector2(0.3, 0.3))
-        shape.finish()
+        let shape = ClosedShape
+                        .circle(ofRadius: radius, pointCount: def)
+                        .transformedBy(scalingBy: Vector2(0.3, 0.3))
         
         var comps = [BodyComponentCreator]()
         
@@ -592,7 +580,7 @@ class DemoView: UIView, CollisionObserver
         carShape.addVertex(x: -0.5865141450377307, y: -0.9404120779458979)
         
         // Scale down
-        carShape.transformOwn(0, localScale: Vector2(0.65, 0.65))
+        carShape.transformOwnBy(scalingBy: Vector2(0.65, 0.65))
         carShape.finish(recentering: true)
         
         let bodyOffset = Vector2(0, 0.4)

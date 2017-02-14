@@ -47,7 +47,7 @@ class ClosedShapeTests: XCTestCase
         shape.finish(recentering: true)
         
         // Create the transformed shape with no modifications
-        var transformed = shape.transformVertices(Vector2.unit, angleInRadians: 0, localScale: Vector2.unit)
+        var transformed = shape.transformedBy(translatingBy: Vector2.unit, rotatingBy: 0, scalingBy: Vector2.unit)
         
         // Assert that both shapes are equal
         XCTAssertEqual(shape.localVertices[0] + Vector2.unit, transformed[0], "The transformed shape is incorrect!")

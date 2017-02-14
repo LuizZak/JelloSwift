@@ -31,7 +31,7 @@ public func lineIntersect(lineA: (start: Vector2, end: Vector2), lineB: (start: 
     let denom = ((lineB.end.y - lineB.start.y) * (lineA.end.x - lineA.start.x)) - ((lineB.end.x - lineB.start.x) * (lineA.end.y - lineA.start.y))
     
     // if denom == 0, lines are parallel - being a bit generous on this one..
-    if (abs(denom) < 0.000000001) {
+    if (abs(denom) < CGFloat.leastNonzeroMagnitude) {
         return nil
     }
     
