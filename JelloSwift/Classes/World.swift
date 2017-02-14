@@ -349,6 +349,15 @@ public final class World {
             
             let ptNorm = bA.pointNormals[i]
             
+            // FIXME: This may happen when Body.updateNormals() finds two edges with the same .difference magnitude
+            // resulting in Vector.zero.perpendicular().normalized(), which normalized, results in NaN values in the
+            // vector. Figure out how to deal with that, and also check other places it may happen in the future.
+            // If not checked against, it may result in incorrect calculations bellow, resulting in out-of-bound
+            // errors in handleCollision() as it tries to index non-initialized bodyBpmA and bodtBpmB values of -1.
+            if(ptNorm.x.isNaN || ptNorm.y.isNaN) { // Invalid point
+                continue
+            }
+            
             // this point is inside the other body.  now check if the edges on either side intersect with and edges on bodyB.
             var closestAway = CGFloat.infinity
             var closestSame = CGFloat.infinity
@@ -396,6 +405,8 @@ public final class World {
             
             // we've checked all edges on BodyB.  add the collision info to the stack.
             if (found && (closestAway > penetrationThreshold) && (closestSame < closestAway)) {
+                assert(infoSame.bodyBpmA > -1 && infoSame.bodyBpmB > -1)
+                
                 if(bA.collectCollisions) {
                     bA.pointMassCollisions.append(infoSame)
                 }
@@ -407,6 +418,8 @@ public final class World {
                 infoSame.penetration = sqrt(infoSame.penetration)
                 collisionList.append(infoSame)
             } else {
+                assert(infoAway.bodyBpmA > -1 && infoAway.bodyBpmB > -1)
+                
                 if(bA.collectCollisions) {
                     bA.pointMassCollisions.append(infoAway)
                 }
