@@ -362,7 +362,7 @@ public func vectorsAreCCW(_ A: Vector2, B: Vector2) -> Bool
 ////////
 //// Define the operations to be performed on the Vector2
 ////////
-infix operator • : MultiplicationPrecedence
+infix operator • : MultiplicationPrecedence  // This character is available as 'Option-8' combination on Mac keyboards
 infix operator =/ : MultiplicationPrecedence
 
 public func round(_ x: Vector2) -> Vector2

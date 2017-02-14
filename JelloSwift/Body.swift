@@ -23,7 +23,7 @@ public final class Body: Equatable
     internal var pointNormals: [Vector2] = []
     
     /// List of body joints this body participates in
-    public internal(set) var joints: [BodyJoint] = []
+    public internal(set) var joints: ContiguousArray<BodyJoint> = []
     
     /// The base shape for the body
     public var baseShape = ClosedShape()
@@ -798,16 +798,16 @@ public final class Body: Equatable
      * Returns the closest point to the given position on an edge of the body's shape
      * The position must be in world coordinates
      * The tolerance is the distance to the edge that will be ignored if larget than that
-     * Returns nil if no edge found (no points on the shape), or an array of the parameters that can be used to track down the shape's edge
+     * Returns nil if no edge found (no points on the shape), or a tuple of the parameters that can be used to track down the shape's edge
      *
      * - parameter pt: The point to get the closest edge of, in world coordinates
      * - parameter tolerance: A tolerance distance for the edges detected - any edge farther than this distance is ignored
      * - returns: A tuple containing information about the edge, if it was found, or nil if none was found.
      *  Contents of the tuple:
-     *  Vector2: The edge's closest position to the point provided
-     *  CGFloat: The ratio of the edge where the point was grabbed, [0-1] inclusive
-     *  PointMass: The first point mass on the edge
-     *  PointMass: The second point mass on the edge
+     *  **edgePosition**: The edge's closest position to the point provided
+     *  **edgeRatio**: The ratio of the edge where the point was grabbed, [0-1] inclusive
+     *  **edgePoint1**: The first point mass on the edge
+     *  **edgePoint2**: The second point mass on the edge
      */
     public func closestEdge(to pt: Vector2, withTolerance tolerance: CGFloat = CGFloat.infinity) -> (edgePosition: Vector2, edgeRatio: CGFloat, edgePoint1: PointMass, edgePoint2: PointMass)?
     {
@@ -830,11 +830,9 @@ public final class Body: Equatable
             
             var d = (pm.position - pm2.position).normalized()
             
-            var adotb = (pm.position - pt) • d
+            let adotb = ((pm.position - pt) • d).clamped(minimum: 0, maximum: len)
             
-            adotb = adotb < 0 ? 0 : (adotb > len ? len : adotb)
-            
-            // Apply the dot product to the normalized vector
+            // Apply the dot product to the normalized vector - this projects the point on top of the edge
             d *= adotb
             
             let dis = pt - (pm.position - d)

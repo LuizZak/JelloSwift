@@ -219,7 +219,15 @@ public final class World
     /// Useful for picking objects with a cursor, etc.
     public func body(under pt: Vector2, bitmask: Bitmask = 0) -> Body?
     {
-        return bodies.first { ((bitmask == 0 || ($0.bitmask & bitmask) != 0) && $0.contains(pt)) }
+        for body in bodies
+        {
+            if((bitmask == 0 || (body.bitmask & bitmask) != 0) && body.contains(pt))
+            {
+                return body
+            }
+        }
+        
+        return nil
     }
     
     /// Given a global point, returns all bodies that contain this point.

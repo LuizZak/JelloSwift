@@ -18,6 +18,18 @@ public func -=<T: Equatable, U: RangeReplaceableCollection>(lhs: inout U, rhs: T
     lhs.remove(rhs)
 }
 
+public func clamp<T: Comparable>(_ value: T, minimum: T, maximum: T) -> T {
+    return value < minimum ? minimum
+        : value > maximum ? maximum : value
+}
+
+extension Comparable
+{
+    func clamped(minimum: Self, maximum: Self) -> Self {
+        return clamp(self, minimum: minimum, maximum: maximum)
+    }
+}
+
 extension Sequence
 {
     typealias Element = Self.Iterator.Element
