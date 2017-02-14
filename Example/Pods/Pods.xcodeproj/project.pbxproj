@@ -7,40 +7,40 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0CC5F34B858B0510D691E178C7E7A04B /* BodyJointLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6A91D40FA2254895ADF1FF434A0B775 /* BodyJointLink.swift */; };
-		1F57BD54033A02A06F8638F0557F9786 /* ClosedShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92C28C7D97B0B0F43834DC80C1A4F086 /* ClosedShape.swift */; };
+		02B3C7CB2B1134829064D4A0A002EBFC /* World.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C7365DC0C82BE04B78A8FB463A2DFCD /* World.swift */; };
+		0B68937AEEA1F13889F5F841752FBAFD /* RenderingSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A36A427B0BEBEE868D960B32BB88E62B /* RenderingSettings.swift */; };
+		18074E2EAF68D1D72EBC7E02BD808B35 /* Bitmask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D94585ED6598E2FFA98BD3FFAD98A07 /* Bitmask.swift */; };
+		1A85FE4D3F2E139C19F88F850EBC565F /* BodyComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91C77BBD438FFEBE4A657F345873DBE /* BodyComponent.swift */; };
+		1E3A8E3FC75A1BE074C007C95189A080 /* PointMass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68144833F760DDC0F8B13ED9F48E1188 /* PointMass.swift */; };
 		2081E424BF45924998B7480F169DD1A0 /* Pods-JelloSwift_Example-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = DCEB2395A1CC6F4D0769E848C22FCA8F /* Pods-JelloSwift_Example-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		213C7A7E79CAC71D75414804BB52EDF6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBB3DE36805AF21409EC968A9691732F /* Foundation.framework */; };
-		23099D6A57D8A32C299ABC90CAF5F013 /* PointJointLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = C21DADF49B8191BD2539A16E76BD3C62 /* PointJointLink.swift */; };
-		34F4BD1875DFC40AFF76C8A2E8724255 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBB3DE36805AF21409EC968A9691732F /* Foundation.framework */; };
+		2B43FC0441F03D41471ED1BC9A58B49C /* GeomUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27C78477B5D857474E91411F969F4B5F /* GeomUtils.swift */; };
+		30B8B52092E0DDC9AA49A979A64CD5D4 /* Vector2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71613DD109419CDDE4F4798917D64267 /* Vector2.swift */; };
+		31442C6B0F9748FC19710B60217B668F /* BodyJointLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F0C81511EDEFBDD07621A2BD4B978A6 /* BodyJointLink.swift */; };
+		33F97966755E3E74167C0A87FE075F11 /* JelloSwift-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E21E8F215E2EABFC9A4B81CAA43D465 /* JelloSwift-dummy.m */; };
 		382D63B09B29839A2EF3ED48D072CAA8 /* Pods-JelloSwift_Tests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = CB375AE943B394CD7C74CABE7E9DBC4F /* Pods-JelloSwift_Tests-dummy.m */; };
-		395A0BBB6B5886DDED70146C0EF271B6 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A435D5E26C5BD4C29545BA45DB1C438F /* Utils.swift */; };
-		3C871AEDC46654227FCEB52319FE6AAE /* Bitmask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 012492AA0A8E42EE419CA4340ECA783F /* Bitmask.swift */; };
+		3E78C0CC596E1718F4F21EAC7AA39A67 /* AABB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19F9032B666474F91079B9FA060ACC94 /* AABB.swift */; };
 		4411A51699F24E2D0740FC65B5571CE7 /* Pods-JelloSwift_Example-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D301B522C31D5DF27D88082DC9D0D26 /* Pods-JelloSwift_Example-dummy.m */; };
-		4CE34218298E377D936FFA5C4473727C /* GeomUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = E84963B7F85DD2F0D18A04BEEB7BD035 /* GeomUtils.swift */; };
-		594F7439281326CF281DB489F7905E9B /* MaterialPair.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E907AF304AA4514AF6679478BDB2508 /* MaterialPair.swift */; };
-		5AE50C1050A272379EBF95295DC27028 /* PressureComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 156F8214D5102746BAF168B304D6D914 /* PressureComponent.swift */; };
-		5CA0147D480B0BE5D828EFEBD78959C4 /* BodyEdge.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC92CE827FC78B2ED4C3383C795915E0 /* BodyEdge.swift */; };
-		63B0F14EBDE3212697BAB572A38AA0A5 /* JelloSwift-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E21E8F215E2EABFC9A4B81CAA43D465 /* JelloSwift-dummy.m */; };
-		696335691009FE4772AC76AAE65CF1EF /* World.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99848E2A31D091A78B96B14E1E6DA3C0 /* World.swift */; };
-		6A06CB17343ECBD4D6E3FA6ABEC1893A /* Body.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC2CD9D82D276E3411B0C712D3F2F979 /* Body.swift */; };
-		6E15B4882960E73176BCEF9CDDBCDB95 /* BodyCollisionInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D2D6701787D282429C29FB8BF86623F /* BodyCollisionInformation.swift */; };
-		8301A072DB77EA075F7CB21C6F26FCEE /* AABB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F69EE90DCFFA1CA1EC9B4A34BF60E58 /* AABB.swift */; };
-		83E7916064ADD5AA7140EEFBD5D0334A /* SpringBodyJoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = F71032E8BBB53DCE2FA73EAC82DF6842 /* SpringBodyJoint.swift */; };
-		91D5AAEBC43C952A5164B089B4E51819 /* ShapeJointLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07746F081BBDB5BCB1FF690BB9DF3318 /* ShapeJointLink.swift */; };
-		921B301F8D2D8B3D7B84D337B82B3E0D /* EdgeJointLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 149E0F01D38FB6EC5B1B782E6947C77C /* EdgeJointLink.swift */; };
-		AD4B745AD9C515E8DBEE0A1B9F65E96B /* InternalSpring.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D133F7629324203C6C0CF41CF021F57 /* InternalSpring.swift */; };
-		B1C2819389557F5BD4BC43BEB6A5CC79 /* RenderingSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3BC6D356F0591A4C1BCFA10A4CC4A38 /* RenderingSettings.swift */; };
+		5FC1FAA3766B5793AC4C69A515CA4240 /* SpringBodyJoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2CEEE20A0CAC37F0704F28245EB81B1 /* SpringBodyJoint.swift */; };
+		6034B03CF85AB7404F43F0A7E223D0D6 /* ShapeJointLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 894F4436B295E211D69286220F4582C9 /* ShapeJointLink.swift */; };
+		68905818D9FEB320B8964D0CAFC8EDCB /* MaterialPair.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B239EBA0F3872C18250613EA7F4D852 /* MaterialPair.swift */; };
+		6FEB05E837F63BD8C53420B5D3A695B0 /* Body.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0E007FF4F00B4302EA0800A7FDE454 /* Body.swift */; };
+		708748D742B60509947C0739D6A5FA58 /* PressureComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7548E09204690C5E77588404420BB443 /* PressureComponent.swift */; };
+		72EDBBEA840C56D03322E1CA06FA57D9 /* ClosedShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48C82422C4EECEEBE054B50F4293CC97 /* ClosedShape.swift */; };
+		76E9C52DF66B1434809DF54298182A84 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D7C82231F04E804795ED23E9CFA8CBE /* Utils.swift */; };
+		8FBB633212F4A6512BC8E0E7D49D6E75 /* BodyJoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B55FAD6F4A4A8B069A3A16DF3D6D8B5 /* BodyJoint.swift */; };
+		95D4EE55214806B8590FC995927E48E8 /* CollisionObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D2E0E7F5400DCBA6EC478DE277CFD98 /* CollisionObserver.swift */; };
+		A064EDE866FABEC7305A96E8693D0589 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBB3DE36805AF21409EC968A9691732F /* Foundation.framework */; };
+		A6DA902192B841D551DC03C187053B2B /* JelloSwift-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = F957BC6D9F3917D6751DCED9A917FD42 /* JelloSwift-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		AD5FA99F8F593C7A12A71254EEED0963 /* InternalSpring.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C1202732E18FD4CD1AC3C36B99B5B12 /* InternalSpring.swift */; };
 		B32068DD2011BC14D1C1FFF769AF0994 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBB3DE36805AF21409EC968A9691732F /* Foundation.framework */; };
-		B8448B35A9464B746CD539A84ACDBACC /* GravityComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34AFE4794612B15BFF77EF6E2D524CA1 /* GravityComponent.swift */; };
-		BD21967FAE5789DA4D73441892977935 /* SpringComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A39A7EE6C8E2E3C088F45AC6A5EAA4E /* SpringComponent.swift */; };
-		C04687951C7FDE38F225DDF91D7B97DD /* PointMass.swift in Sources */ = {isa = PBXBuildFile; fileRef = F039FB898B3DF26A7A4838873E4B351F /* PointMass.swift */; };
-		C5C08C26AA160B27D13D0F0980430ACF /* BodyJoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9923435956F2EBC87029E0246F9BBA68 /* BodyJoint.swift */; };
-		D5AA1FC0805AFA5D796C1AC2D60D839C /* Vector2.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0F27006BB22B29A64FCEFA984838F86 /* Vector2.swift */; };
-		EE95B60FA430C781A62FF5207D5748E5 /* BodyComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D8D3567890553FD9BE16A9912BAD824 /* BodyComponent.swift */; };
+		B55E6BCA7F95C5072BA2890C349C1B08 /* GravityComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74680C89D88E3777113B0E56F9951509 /* GravityComponent.swift */; };
+		CEF15EFB6D1E804B367C2881AC966876 /* EdgeJointLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A3A326A1A9BC984F83467B19CAB8381 /* EdgeJointLink.swift */; };
+		CF4F58DA46E6ABA0C5B055F6DC110748 /* SpringComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BAECE6565A493603B3FC82B733F7B4C /* SpringComponent.swift */; };
+		D3921EF69414723B479A1CD6D037445A /* BodyCollisionInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 865FA5E1F05A9D44255872DC3A780A6A /* BodyCollisionInformation.swift */; };
+		E07765873862DC76D9964E7440C7E3D3 /* PointJointLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0C346AAB565007190ACE4CF0C21DAC /* PointJointLink.swift */; };
 		F3B34616CF8309252118FA4A6DAB4707 /* Pods-JelloSwift_Tests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 9A9A33441BD21744B62B238F2AD30A6B /* Pods-JelloSwift_Tests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FA56E34773EDEA90BC3736A0E7C99F62 /* JelloSwift-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = F957BC6D9F3917D6751DCED9A917FD42 /* JelloSwift-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FC67704CA03A25519BDF8ADB26D71381 /* CollisionObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2EAF6AF5B82FE10D266978CB805903E /* CollisionObserver.swift */; };
+		F759F74035AB2BD8BF876E1D8D8386A2 /* BodyEdge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F6B2F4AA0C88DE0D8D715E84B01269 /* BodyEdge.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,68 +48,68 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 95CDA577273673C80F12FFEA71263D5A;
+			remoteGlobalIDString = 664286279CCA21F55B4A627A6E2A83A2;
 			remoteInfo = JelloSwift;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		012492AA0A8E42EE419CA4340ECA783F /* Bitmask.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Bitmask.swift; sourceTree = "<group>"; };
-		07746F081BBDB5BCB1FF690BB9DF3318 /* ShapeJointLink.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ShapeJointLink.swift; sourceTree = "<group>"; };
 		0866A5A9023801C47D5F74D4C1094EB0 /* JelloSwift-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "JelloSwift-prefix.pch"; sourceTree = "<group>"; };
-		149E0F01D38FB6EC5B1B782E6947C77C /* EdgeJointLink.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = EdgeJointLink.swift; sourceTree = "<group>"; };
-		156F8214D5102746BAF168B304D6D914 /* PressureComponent.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PressureComponent.swift; sourceTree = "<group>"; };
+		19F9032B666474F91079B9FA060ACC94 /* AABB.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AABB.swift; sourceTree = "<group>"; };
 		1D0BA0B47B16E3FD5E4396C64C49C4AE /* Pods-JelloSwift_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-JelloSwift_Example.debug.xcconfig"; sourceTree = "<group>"; };
+		1D7C82231F04E804795ED23E9CFA8CBE /* Utils.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		1E21E8F215E2EABFC9A4B81CAA43D465 /* JelloSwift-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "JelloSwift-dummy.m"; sourceTree = "<group>"; };
 		1E5FAE62B0FF8DB3EA86298FCB1F0BFD /* Pods-JelloSwift_Example-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-JelloSwift_Example-acknowledgements.plist"; sourceTree = "<group>"; };
-		2D2D6701787D282429C29FB8BF86623F /* BodyCollisionInformation.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BodyCollisionInformation.swift; sourceTree = "<group>"; };
+		27C78477B5D857474E91411F969F4B5F /* GeomUtils.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = GeomUtils.swift; sourceTree = "<group>"; };
 		3083FA5C6B8C052833B69474839E419F /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3215F9D4345FE148341FB137D89C6BA0 /* Pods-JelloSwift_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-JelloSwift_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		329EB18E08B56C6AE2F64B64EA5438BB /* Pods-JelloSwift_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-JelloSwift_Example.release.xcconfig"; sourceTree = "<group>"; };
-		34AFE4794612B15BFF77EF6E2D524CA1 /* GravityComponent.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = GravityComponent.swift; sourceTree = "<group>"; };
 		3A5706A9BB650C5EA8D423837982CD77 /* Pods-JelloSwift_Tests-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-JelloSwift_Tests-resources.sh"; sourceTree = "<group>"; };
-		3E907AF304AA4514AF6679478BDB2508 /* MaterialPair.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MaterialPair.swift; sourceTree = "<group>"; };
 		441D24F62C3071E35CB529C58303602D /* JelloSwift.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = JelloSwift.xcconfig; sourceTree = "<group>"; };
+		48C82422C4EECEEBE054B50F4293CC97 /* ClosedShape.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ClosedShape.swift; sourceTree = "<group>"; };
+		4C7365DC0C82BE04B78A8FB463A2DFCD /* World.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = World.swift; sourceTree = "<group>"; };
+		4D2E0E7F5400DCBA6EC478DE277CFD98 /* CollisionObserver.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CollisionObserver.swift; sourceTree = "<group>"; };
+		4D94585ED6598E2FFA98BD3FFAD98A07 /* Bitmask.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Bitmask.swift; sourceTree = "<group>"; };
+		4F0C81511EDEFBDD07621A2BD4B978A6 /* BodyJointLink.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BodyJointLink.swift; sourceTree = "<group>"; };
+		57F6B2F4AA0C88DE0D8D715E84B01269 /* BodyEdge.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BodyEdge.swift; sourceTree = "<group>"; };
+		5A3A326A1A9BC984F83467B19CAB8381 /* EdgeJointLink.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = EdgeJointLink.swift; sourceTree = "<group>"; };
+		68144833F760DDC0F8B13ED9F48E1188 /* PointMass.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PointMass.swift; sourceTree = "<group>"; };
+		6B239EBA0F3872C18250613EA7F4D852 /* MaterialPair.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MaterialPair.swift; sourceTree = "<group>"; };
+		6BAECE6565A493603B3FC82B733F7B4C /* SpringComponent.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SpringComponent.swift; sourceTree = "<group>"; };
 		6D301B522C31D5DF27D88082DC9D0D26 /* Pods-JelloSwift_Example-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-JelloSwift_Example-dummy.m"; sourceTree = "<group>"; };
-		7A39A7EE6C8E2E3C088F45AC6A5EAA4E /* SpringComponent.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SpringComponent.swift; sourceTree = "<group>"; };
+		71613DD109419CDDE4F4798917D64267 /* Vector2.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Vector2.swift; sourceTree = "<group>"; };
+		74680C89D88E3777113B0E56F9951509 /* GravityComponent.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = GravityComponent.swift; sourceTree = "<group>"; };
+		7548E09204690C5E77588404420BB443 /* PressureComponent.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PressureComponent.swift; sourceTree = "<group>"; };
 		832D3F103A70D13453C528FD6C2D4F4C /* Pods-JelloSwift_Tests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-JelloSwift_Tests-acknowledgements.plist"; sourceTree = "<group>"; };
-		89445C7E536184AE93F665CEC48F816E /* Pods_JelloSwift_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_JelloSwift_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		8D133F7629324203C6C0CF41CF021F57 /* InternalSpring.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = InternalSpring.swift; sourceTree = "<group>"; };
-		8D8D3567890553FD9BE16A9912BAD824 /* BodyComponent.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BodyComponent.swift; sourceTree = "<group>"; };
-		92C28C7D97B0B0F43834DC80C1A4F086 /* ClosedShape.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ClosedShape.swift; sourceTree = "<group>"; };
-		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		865FA5E1F05A9D44255872DC3A780A6A /* BodyCollisionInformation.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BodyCollisionInformation.swift; sourceTree = "<group>"; };
+		89445C7E536184AE93F665CEC48F816E /* Pods_JelloSwift_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_JelloSwift_Tests.framework; path = "Pods-JelloSwift_Tests.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		894F4436B295E211D69286220F4582C9 /* ShapeJointLink.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ShapeJointLink.swift; sourceTree = "<group>"; };
+		8C1202732E18FD4CD1AC3C36B99B5B12 /* InternalSpring.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = InternalSpring.swift; sourceTree = "<group>"; };
+		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		9584B0DFEB348EB67A4E939509AFBB1A /* Pods-JelloSwift_Example-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-JelloSwift_Example-acknowledgements.markdown"; sourceTree = "<group>"; };
 		95D140BA4FC7C11AFA7588E4181FBE0A /* Pods-JelloSwift_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-JelloSwift_Tests.release.xcconfig"; sourceTree = "<group>"; };
-		9923435956F2EBC87029E0246F9BBA68 /* BodyJoint.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BodyJoint.swift; sourceTree = "<group>"; };
-		99848E2A31D091A78B96B14E1E6DA3C0 /* World.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = World.swift; sourceTree = "<group>"; };
 		9A9A33441BD21744B62B238F2AD30A6B /* Pods-JelloSwift_Tests-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-JelloSwift_Tests-umbrella.h"; sourceTree = "<group>"; };
-		9F69EE90DCFFA1CA1EC9B4A34BF60E58 /* AABB.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AABB.swift; sourceTree = "<group>"; };
+		9B55FAD6F4A4A8B069A3A16DF3D6D8B5 /* BodyJoint.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BodyJoint.swift; sourceTree = "<group>"; };
 		A27A32E70661D6261CC680F4D227334D /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A36A427B0BEBEE868D960B32BB88E62B /* RenderingSettings.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = RenderingSettings.swift; sourceTree = "<group>"; };
 		A3B9297510D87C7F5E0279E9A12D8B5F /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		A435D5E26C5BD4C29545BA45DB1C438F /* Utils.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		AEBC7F4E7A034E883F7FC98127F38DB0 /* Pods-JelloSwift_Tests-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-JelloSwift_Tests-frameworks.sh"; sourceTree = "<group>"; };
-		BC92CE827FC78B2ED4C3383C795915E0 /* BodyEdge.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BodyEdge.swift; sourceTree = "<group>"; };
-		C21DADF49B8191BD2539A16E76BD3C62 /* PointJointLink.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PointJointLink.swift; sourceTree = "<group>"; };
-		C6A91D40FA2254895ADF1FF434A0B775 /* BodyJointLink.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BodyJointLink.swift; sourceTree = "<group>"; };
-		C6C3730716F7FAF53146904DFA2A1252 /* Pods_JelloSwift_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_JelloSwift_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B2CEEE20A0CAC37F0704F28245EB81B1 /* SpringBodyJoint.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SpringBodyJoint.swift; sourceTree = "<group>"; };
+		C6C3730716F7FAF53146904DFA2A1252 /* Pods_JelloSwift_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_JelloSwift_Example.framework; path = "Pods-JelloSwift_Example.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C91C77BBD438FFEBE4A657F345873DBE /* BodyComponent.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BodyComponent.swift; sourceTree = "<group>"; };
 		CB375AE943B394CD7C74CABE7E9DBC4F /* Pods-JelloSwift_Tests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-JelloSwift_Tests-dummy.m"; sourceTree = "<group>"; };
 		CBB3DE36805AF21409EC968A9691732F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
-		CD3F9911CDEAB577B52F5C4310E9F1A3 /* Pods-JelloSwift_Tests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = "Pods-JelloSwift_Tests.modulemap"; sourceTree = "<group>"; };
+		CD3F9911CDEAB577B52F5C4310E9F1A3 /* Pods-JelloSwift_Tests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = "Pods-JelloSwift_Tests.modulemap"; sourceTree = "<group>"; };
 		CDADBD18C94B58CF8678234C5392E05B /* Pods-JelloSwift_Example-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-JelloSwift_Example-frameworks.sh"; sourceTree = "<group>"; };
-		D0CB66BC8846CF8CB11C333414E22367 /* JelloSwift.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = JelloSwift.modulemap; sourceTree = "<group>"; };
-		D0F27006BB22B29A64FCEFA984838F86 /* Vector2.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Vector2.swift; sourceTree = "<group>"; };
+		D0CB66BC8846CF8CB11C333414E22367 /* JelloSwift.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = JelloSwift.modulemap; sourceTree = "<group>"; };
 		D20BDA0F880A2004CADA10869FBEC9EB /* Pods-JelloSwift_Example-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-JelloSwift_Example-resources.sh"; sourceTree = "<group>"; };
-		D3BC6D356F0591A4C1BCFA10A4CC4A38 /* RenderingSettings.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = RenderingSettings.swift; sourceTree = "<group>"; };
-		D4A09545C28BB07FBF8555DA6161A8F7 /* Pods-JelloSwift_Example.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = "Pods-JelloSwift_Example.modulemap"; sourceTree = "<group>"; };
-		DC2CD9D82D276E3411B0C712D3F2F979 /* Body.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Body.swift; sourceTree = "<group>"; };
+		D4A09545C28BB07FBF8555DA6161A8F7 /* Pods-JelloSwift_Example.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = "Pods-JelloSwift_Example.modulemap"; sourceTree = "<group>"; };
 		DC64412A2C034BDEDC5AE63BE0C70E42 /* Pods-JelloSwift_Tests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-JelloSwift_Tests-acknowledgements.markdown"; sourceTree = "<group>"; };
 		DCEB2395A1CC6F4D0769E848C22FCA8F /* Pods-JelloSwift_Example-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-JelloSwift_Example-umbrella.h"; sourceTree = "<group>"; };
-		E84963B7F85DD2F0D18A04BEEB7BD035 /* GeomUtils.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = GeomUtils.swift; sourceTree = "<group>"; };
-		F039FB898B3DF26A7A4838873E4B351F /* PointMass.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PointMass.swift; sourceTree = "<group>"; };
-		F2EAF6AF5B82FE10D266978CB805903E /* CollisionObserver.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CollisionObserver.swift; sourceTree = "<group>"; };
-		F71032E8BBB53DCE2FA73EAC82DF6842 /* SpringBodyJoint.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SpringBodyJoint.swift; sourceTree = "<group>"; };
+		EB0C346AAB565007190ACE4CF0C21DAC /* PointJointLink.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PointJointLink.swift; sourceTree = "<group>"; };
+		EC0E007FF4F00B4302EA0800A7FDE454 /* Body.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Body.swift; sourceTree = "<group>"; };
 		F957BC6D9F3917D6751DCED9A917FD42 /* JelloSwift-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "JelloSwift-umbrella.h"; sourceTree = "<group>"; };
-		FED39F0840F195AE1AFE29A361117851 /* JelloSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = JelloSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FED39F0840F195AE1AFE29A361117851 /* JelloSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = JelloSwift.framework; path = JelloSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -121,19 +121,19 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		35C02BD3218511864BC0240D4110577D /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				34F4BD1875DFC40AFF76C8A2E8724255 /* Foundation.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		D9B967941A8D7ED7DDADAE9AD79AB97F /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				B32068DD2011BC14D1C1FFF769AF0994 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F45165604CFD770EC0C1767AF1BF66BF /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A064EDE866FABEC7305A96E8693D0589 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -143,19 +143,11 @@
 		0B46A4313C3C7157872C783B4663CE3D /* JelloSwift */ = {
 			isa = PBXGroup;
 			children = (
-				21D8E282A458B1276B307BDE0F1C7580 /* JelloSwift */,
+				4A869D0D1E63AA7E74DEC244ADFBA224 /* JelloSwift */,
 				6554D2FCA580BCDADE3AFDC91DE35368 /* Support Files */,
 			);
 			name = JelloSwift;
 			path = ../..;
-			sourceTree = "<group>";
-		};
-		21D8E282A458B1276B307BDE0F1C7580 /* JelloSwift */ = {
-			isa = PBXGroup;
-			children = (
-				9113A587E737C83192C89B751C9AA3E0 /* Classes */,
-			);
-			path = JelloSwift;
 			sourceTree = "<group>";
 		};
 		4749C914B848846B0220E22A6405D5B4 /* Development Pods */ = {
@@ -164,6 +156,15 @@
 				0B46A4313C3C7157872C783B4663CE3D /* JelloSwift */,
 			);
 			name = "Development Pods";
+			sourceTree = "<group>";
+		};
+		4A869D0D1E63AA7E74DEC244ADFBA224 /* JelloSwift */ = {
+			isa = PBXGroup;
+			children = (
+				8130129C1A0C74AA3784A38586A58EBF /* Classes */,
+			);
+			name = JelloSwift;
+			path = JelloSwift;
 			sourceTree = "<group>";
 		};
 		6554D2FCA580BCDADE3AFDC91DE35368 /* Support Files */ = {
@@ -199,6 +200,39 @@
 			);
 			sourceTree = "<group>";
 		};
+		8130129C1A0C74AA3784A38586A58EBF /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				19F9032B666474F91079B9FA060ACC94 /* AABB.swift */,
+				4D94585ED6598E2FFA98BD3FFAD98A07 /* Bitmask.swift */,
+				EC0E007FF4F00B4302EA0800A7FDE454 /* Body.swift */,
+				865FA5E1F05A9D44255872DC3A780A6A /* BodyCollisionInformation.swift */,
+				C91C77BBD438FFEBE4A657F345873DBE /* BodyComponent.swift */,
+				57F6B2F4AA0C88DE0D8D715E84B01269 /* BodyEdge.swift */,
+				9B55FAD6F4A4A8B069A3A16DF3D6D8B5 /* BodyJoint.swift */,
+				4F0C81511EDEFBDD07621A2BD4B978A6 /* BodyJointLink.swift */,
+				48C82422C4EECEEBE054B50F4293CC97 /* ClosedShape.swift */,
+				4D2E0E7F5400DCBA6EC478DE277CFD98 /* CollisionObserver.swift */,
+				5A3A326A1A9BC984F83467B19CAB8381 /* EdgeJointLink.swift */,
+				27C78477B5D857474E91411F969F4B5F /* GeomUtils.swift */,
+				74680C89D88E3777113B0E56F9951509 /* GravityComponent.swift */,
+				8C1202732E18FD4CD1AC3C36B99B5B12 /* InternalSpring.swift */,
+				6B239EBA0F3872C18250613EA7F4D852 /* MaterialPair.swift */,
+				EB0C346AAB565007190ACE4CF0C21DAC /* PointJointLink.swift */,
+				68144833F760DDC0F8B13ED9F48E1188 /* PointMass.swift */,
+				7548E09204690C5E77588404420BB443 /* PressureComponent.swift */,
+				A36A427B0BEBEE868D960B32BB88E62B /* RenderingSettings.swift */,
+				894F4436B295E211D69286220F4582C9 /* ShapeJointLink.swift */,
+				B2CEEE20A0CAC37F0704F28245EB81B1 /* SpringBodyJoint.swift */,
+				6BAECE6565A493603B3FC82B733F7B4C /* SpringComponent.swift */,
+				1D7C82231F04E804795ED23E9CFA8CBE /* Utils.swift */,
+				71613DD109419CDDE4F4798917D64267 /* Vector2.swift */,
+				4C7365DC0C82BE04B78A8FB463A2DFCD /* World.swift */,
+			);
+			name = Classes;
+			path = Classes;
+			sourceTree = "<group>";
+		};
 		8520D2E5546E3F00DB86C3E0A7C56AC3 /* Targets Support Files */ = {
 			isa = PBXGroup;
 			children = (
@@ -206,38 +240,6 @@
 				EAA786853392EC6F8C278906E0C13BAB /* Pods-JelloSwift_Tests */,
 			);
 			name = "Targets Support Files";
-			sourceTree = "<group>";
-		};
-		9113A587E737C83192C89B751C9AA3E0 /* Classes */ = {
-			isa = PBXGroup;
-			children = (
-				9F69EE90DCFFA1CA1EC9B4A34BF60E58 /* AABB.swift */,
-				012492AA0A8E42EE419CA4340ECA783F /* Bitmask.swift */,
-				DC2CD9D82D276E3411B0C712D3F2F979 /* Body.swift */,
-				2D2D6701787D282429C29FB8BF86623F /* BodyCollisionInformation.swift */,
-				8D8D3567890553FD9BE16A9912BAD824 /* BodyComponent.swift */,
-				BC92CE827FC78B2ED4C3383C795915E0 /* BodyEdge.swift */,
-				9923435956F2EBC87029E0246F9BBA68 /* BodyJoint.swift */,
-				C6A91D40FA2254895ADF1FF434A0B775 /* BodyJointLink.swift */,
-				92C28C7D97B0B0F43834DC80C1A4F086 /* ClosedShape.swift */,
-				F2EAF6AF5B82FE10D266978CB805903E /* CollisionObserver.swift */,
-				149E0F01D38FB6EC5B1B782E6947C77C /* EdgeJointLink.swift */,
-				E84963B7F85DD2F0D18A04BEEB7BD035 /* GeomUtils.swift */,
-				34AFE4794612B15BFF77EF6E2D524CA1 /* GravityComponent.swift */,
-				8D133F7629324203C6C0CF41CF021F57 /* InternalSpring.swift */,
-				3E907AF304AA4514AF6679478BDB2508 /* MaterialPair.swift */,
-				C21DADF49B8191BD2539A16E76BD3C62 /* PointJointLink.swift */,
-				F039FB898B3DF26A7A4838873E4B351F /* PointMass.swift */,
-				156F8214D5102746BAF168B304D6D914 /* PressureComponent.swift */,
-				D3BC6D356F0591A4C1BCFA10A4CC4A38 /* RenderingSettings.swift */,
-				07746F081BBDB5BCB1FF690BB9DF3318 /* ShapeJointLink.swift */,
-				F71032E8BBB53DCE2FA73EAC82DF6842 /* SpringBodyJoint.swift */,
-				7A39A7EE6C8E2E3C088F45AC6A5EAA4E /* SpringComponent.swift */,
-				A435D5E26C5BD4C29545BA45DB1C438F /* Utils.swift */,
-				D0F27006BB22B29A64FCEFA984838F86 /* Vector2.swift */,
-				99848E2A31D091A78B96B14E1E6DA3C0 /* World.swift */,
-			);
-			path = Classes;
 			sourceTree = "<group>";
 		};
 		BC3CA7F9E30CC8F7E2DD044DD34432FC /* Frameworks */ = {
@@ -305,11 +307,11 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		61B308F3537C3E9A74F0D3DB5DE3A5A0 /* Headers */ = {
+		63607089F5C5DBE212DAEA6324E2CE3E /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FA56E34773EDEA90BC3736A0E7C99F62 /* JelloSwift-umbrella.h in Headers */,
+				A6DA902192B841D551DC03C187053B2B /* JelloSwift-umbrella.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -342,13 +344,13 @@
 			productReference = C6C3730716F7FAF53146904DFA2A1252 /* Pods_JelloSwift_Example.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		95CDA577273673C80F12FFEA71263D5A /* JelloSwift */ = {
+		664286279CCA21F55B4A627A6E2A83A2 /* JelloSwift */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 0192E719A7AA8BAFEEFBFD1584D636A0 /* Build configuration list for PBXNativeTarget "JelloSwift" */;
+			buildConfigurationList = C51D033997D79C4529F2426B1FC2F7E6 /* Build configuration list for PBXNativeTarget "JelloSwift" */;
 			buildPhases = (
-				2A076FE2A69AB68A75197B18C7F28F4B /* Sources */,
-				35C02BD3218511864BC0240D4110577D /* Frameworks */,
-				61B308F3537C3E9A74F0D3DB5DE3A5A0 /* Headers */,
+				0DCBDD97A01C8C66CEFE7E09D84D43BC /* Sources */,
+				F45165604CFD770EC0C1767AF1BF66BF /* Frameworks */,
+				63607089F5C5DBE212DAEA6324E2CE3E /* Headers */,
 			);
 			buildRules = (
 			);
@@ -397,7 +399,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				95CDA577273673C80F12FFEA71263D5A /* JelloSwift */,
+				664286279CCA21F55B4A627A6E2A83A2 /* JelloSwift */,
 				503A73115D4F3B53D2ADC2DDD5A2D1AB /* Pods-JelloSwift_Example */,
 				E433D907F6DA60A62030CF98A16EB950 /* Pods-JelloSwift_Tests */,
 			);
@@ -405,36 +407,36 @@
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
-		2A076FE2A69AB68A75197B18C7F28F4B /* Sources */ = {
+		0DCBDD97A01C8C66CEFE7E09D84D43BC /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8301A072DB77EA075F7CB21C6F26FCEE /* AABB.swift in Sources */,
-				3C871AEDC46654227FCEB52319FE6AAE /* Bitmask.swift in Sources */,
-				6A06CB17343ECBD4D6E3FA6ABEC1893A /* Body.swift in Sources */,
-				6E15B4882960E73176BCEF9CDDBCDB95 /* BodyCollisionInformation.swift in Sources */,
-				EE95B60FA430C781A62FF5207D5748E5 /* BodyComponent.swift in Sources */,
-				5CA0147D480B0BE5D828EFEBD78959C4 /* BodyEdge.swift in Sources */,
-				C5C08C26AA160B27D13D0F0980430ACF /* BodyJoint.swift in Sources */,
-				0CC5F34B858B0510D691E178C7E7A04B /* BodyJointLink.swift in Sources */,
-				1F57BD54033A02A06F8638F0557F9786 /* ClosedShape.swift in Sources */,
-				FC67704CA03A25519BDF8ADB26D71381 /* CollisionObserver.swift in Sources */,
-				921B301F8D2D8B3D7B84D337B82B3E0D /* EdgeJointLink.swift in Sources */,
-				4CE34218298E377D936FFA5C4473727C /* GeomUtils.swift in Sources */,
-				B8448B35A9464B746CD539A84ACDBACC /* GravityComponent.swift in Sources */,
-				AD4B745AD9C515E8DBEE0A1B9F65E96B /* InternalSpring.swift in Sources */,
-				63B0F14EBDE3212697BAB572A38AA0A5 /* JelloSwift-dummy.m in Sources */,
-				594F7439281326CF281DB489F7905E9B /* MaterialPair.swift in Sources */,
-				23099D6A57D8A32C299ABC90CAF5F013 /* PointJointLink.swift in Sources */,
-				C04687951C7FDE38F225DDF91D7B97DD /* PointMass.swift in Sources */,
-				5AE50C1050A272379EBF95295DC27028 /* PressureComponent.swift in Sources */,
-				B1C2819389557F5BD4BC43BEB6A5CC79 /* RenderingSettings.swift in Sources */,
-				91D5AAEBC43C952A5164B089B4E51819 /* ShapeJointLink.swift in Sources */,
-				83E7916064ADD5AA7140EEFBD5D0334A /* SpringBodyJoint.swift in Sources */,
-				BD21967FAE5789DA4D73441892977935 /* SpringComponent.swift in Sources */,
-				395A0BBB6B5886DDED70146C0EF271B6 /* Utils.swift in Sources */,
-				D5AA1FC0805AFA5D796C1AC2D60D839C /* Vector2.swift in Sources */,
-				696335691009FE4772AC76AAE65CF1EF /* World.swift in Sources */,
+				3E78C0CC596E1718F4F21EAC7AA39A67 /* AABB.swift in Sources */,
+				18074E2EAF68D1D72EBC7E02BD808B35 /* Bitmask.swift in Sources */,
+				6FEB05E837F63BD8C53420B5D3A695B0 /* Body.swift in Sources */,
+				D3921EF69414723B479A1CD6D037445A /* BodyCollisionInformation.swift in Sources */,
+				1A85FE4D3F2E139C19F88F850EBC565F /* BodyComponent.swift in Sources */,
+				F759F74035AB2BD8BF876E1D8D8386A2 /* BodyEdge.swift in Sources */,
+				8FBB633212F4A6512BC8E0E7D49D6E75 /* BodyJoint.swift in Sources */,
+				31442C6B0F9748FC19710B60217B668F /* BodyJointLink.swift in Sources */,
+				72EDBBEA840C56D03322E1CA06FA57D9 /* ClosedShape.swift in Sources */,
+				95D4EE55214806B8590FC995927E48E8 /* CollisionObserver.swift in Sources */,
+				CEF15EFB6D1E804B367C2881AC966876 /* EdgeJointLink.swift in Sources */,
+				2B43FC0441F03D41471ED1BC9A58B49C /* GeomUtils.swift in Sources */,
+				B55E6BCA7F95C5072BA2890C349C1B08 /* GravityComponent.swift in Sources */,
+				AD5FA99F8F593C7A12A71254EEED0963 /* InternalSpring.swift in Sources */,
+				33F97966755E3E74167C0A87FE075F11 /* JelloSwift-dummy.m in Sources */,
+				68905818D9FEB320B8964D0CAFC8EDCB /* MaterialPair.swift in Sources */,
+				E07765873862DC76D9964E7440C7E3D3 /* PointJointLink.swift in Sources */,
+				1E3A8E3FC75A1BE074C007C95189A080 /* PointMass.swift in Sources */,
+				708748D742B60509947C0739D6A5FA58 /* PressureComponent.swift in Sources */,
+				0B68937AEEA1F13889F5F841752FBAFD /* RenderingSettings.swift in Sources */,
+				6034B03CF85AB7404F43F0A7E223D0D6 /* ShapeJointLink.swift in Sources */,
+				5FC1FAA3766B5793AC4C69A515CA4240 /* SpringBodyJoint.swift in Sources */,
+				CF4F58DA46E6ABA0C5B055F6DC110748 /* SpringComponent.swift in Sources */,
+				76E9C52DF66B1434809DF54298182A84 /* Utils.swift in Sources */,
+				30B8B52092E0DDC9AA49A979A64CD5D4 /* Vector2.swift in Sources */,
+				02B3C7CB2B1134829064D4A0A002EBFC /* World.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -460,7 +462,7 @@
 		1B945E0EEA0BDA900D36FAACF96E89EA /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = JelloSwift;
-			target = 95CDA577273673C80F12FFEA71263D5A /* JelloSwift */;
+			target = 664286279CCA21F55B4A627A6E2A83A2 /* JelloSwift */;
 			targetProxy = 05C127DAF898349F624A62B91FAEC394 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -495,39 +497,6 @@
 				PRODUCT_NAME = Pods_JelloSwift_Tests;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Debug;
-		};
-		413B0C63049B4E91B64CDEB23DC3B3E3 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 441D24F62C3071E35CB529C58303602D /* JelloSwift.xcconfig */;
-			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_PREFIX_HEADER = "Target Support Files/JelloSwift/JelloSwift-prefix.pch";
-				INFOPLIST_FILE = "Target Support Files/JelloSwift/Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MODULEMAP_FILE = "Target Support Files/JelloSwift/JelloSwift.modulemap";
-				MTL_ENABLE_DEBUG_INFO = YES;
-				PRODUCT_NAME = JelloSwift;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -645,7 +614,7 @@
 			};
 			name = Release;
 		};
-		93DE4EBB08EAC7F394396299488AB170 /* Release */ = {
+		91635CF7D44E3D97C155751E54517A5D /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 441D24F62C3071E35CB529C58303602D /* JelloSwift.xcconfig */;
 			buildSettings = {
@@ -756,18 +725,42 @@
 			};
 			name = Release;
 		};
+		F9B3DF456993C2A34AAB52593966CC98 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 441D24F62C3071E35CB529C58303602D /* JelloSwift.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/JelloSwift/JelloSwift-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/JelloSwift/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/JelloSwift/JelloSwift.modulemap";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_NAME = JelloSwift;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		0192E719A7AA8BAFEEFBFD1584D636A0 /* Build configuration list for PBXNativeTarget "JelloSwift" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				413B0C63049B4E91B64CDEB23DC3B3E3 /* Debug */,
-				93DE4EBB08EAC7F394396299488AB170 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		2D8E8EC45A3A1A1D94AE762CB5028504 /* Build configuration list for PBXProject "Pods" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -782,6 +775,15 @@
 			buildConfigurations = (
 				78C5CE8032ED8E1424E992BC9D344F88 /* Debug */,
 				DC6E64053B52C24731009AD3C8642737 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C51D033997D79C4529F2426B1FC2F7E6 /* Build configuration list for PBXNativeTarget "JelloSwift" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F9B3DF456993C2A34AAB52593966CC98 /* Debug */,
+				91635CF7D44E3D97C155751E54517A5D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

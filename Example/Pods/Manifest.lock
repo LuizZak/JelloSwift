@@ -1,5 +1,5 @@
 PODS:
-  - JelloSwift (0.1.0)
+  - JelloSwift (0.3.0)
 
 DEPENDENCIES:
   - JelloSwift (from `../`)
@@ -9,7 +9,7 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  JelloSwift: 2b10fefe5d285e86fdb59d25722153c6fe495081
+  JelloSwift: 4874a15c286e9dbd8fd7b7556634799fb35fbc00
 
 PODFILE CHECKSUM: b14b74b51c644eb6cb3082ff705c0fac551b5aff
 
