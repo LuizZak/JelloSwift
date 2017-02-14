@@ -82,10 +82,10 @@
 		7548E09204690C5E77588404420BB443 /* PressureComponent.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PressureComponent.swift; sourceTree = "<group>"; };
 		832D3F103A70D13453C528FD6C2D4F4C /* Pods-JelloSwift_Tests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-JelloSwift_Tests-acknowledgements.plist"; sourceTree = "<group>"; };
 		865FA5E1F05A9D44255872DC3A780A6A /* BodyCollisionInformation.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BodyCollisionInformation.swift; sourceTree = "<group>"; };
-		89445C7E536184AE93F665CEC48F816E /* Pods_JelloSwift_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_JelloSwift_Tests.framework; path = "Pods-JelloSwift_Tests.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		89445C7E536184AE93F665CEC48F816E /* Pods_JelloSwift_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_JelloSwift_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		894F4436B295E211D69286220F4582C9 /* ShapeJointLink.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ShapeJointLink.swift; sourceTree = "<group>"; };
 		8C1202732E18FD4CD1AC3C36B99B5B12 /* InternalSpring.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = InternalSpring.swift; sourceTree = "<group>"; };
-		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		9584B0DFEB348EB67A4E939509AFBB1A /* Pods-JelloSwift_Example-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-JelloSwift_Example-acknowledgements.markdown"; sourceTree = "<group>"; };
 		95D140BA4FC7C11AFA7588E4181FBE0A /* Pods-JelloSwift_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-JelloSwift_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		9A9A33441BD21744B62B238F2AD30A6B /* Pods-JelloSwift_Tests-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-JelloSwift_Tests-umbrella.h"; sourceTree = "<group>"; };
@@ -95,21 +95,21 @@
 		A3B9297510D87C7F5E0279E9A12D8B5F /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AEBC7F4E7A034E883F7FC98127F38DB0 /* Pods-JelloSwift_Tests-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-JelloSwift_Tests-frameworks.sh"; sourceTree = "<group>"; };
 		B2CEEE20A0CAC37F0704F28245EB81B1 /* SpringBodyJoint.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SpringBodyJoint.swift; sourceTree = "<group>"; };
-		C6C3730716F7FAF53146904DFA2A1252 /* Pods_JelloSwift_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_JelloSwift_Example.framework; path = "Pods-JelloSwift_Example.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C6C3730716F7FAF53146904DFA2A1252 /* Pods_JelloSwift_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_JelloSwift_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C91C77BBD438FFEBE4A657F345873DBE /* BodyComponent.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BodyComponent.swift; sourceTree = "<group>"; };
 		CB375AE943B394CD7C74CABE7E9DBC4F /* Pods-JelloSwift_Tests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-JelloSwift_Tests-dummy.m"; sourceTree = "<group>"; };
 		CBB3DE36805AF21409EC968A9691732F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
-		CD3F9911CDEAB577B52F5C4310E9F1A3 /* Pods-JelloSwift_Tests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = "Pods-JelloSwift_Tests.modulemap"; sourceTree = "<group>"; };
+		CD3F9911CDEAB577B52F5C4310E9F1A3 /* Pods-JelloSwift_Tests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = "Pods-JelloSwift_Tests.modulemap"; sourceTree = "<group>"; };
 		CDADBD18C94B58CF8678234C5392E05B /* Pods-JelloSwift_Example-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-JelloSwift_Example-frameworks.sh"; sourceTree = "<group>"; };
-		D0CB66BC8846CF8CB11C333414E22367 /* JelloSwift.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = JelloSwift.modulemap; sourceTree = "<group>"; };
+		D0CB66BC8846CF8CB11C333414E22367 /* JelloSwift.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = JelloSwift.modulemap; sourceTree = "<group>"; };
 		D20BDA0F880A2004CADA10869FBEC9EB /* Pods-JelloSwift_Example-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-JelloSwift_Example-resources.sh"; sourceTree = "<group>"; };
-		D4A09545C28BB07FBF8555DA6161A8F7 /* Pods-JelloSwift_Example.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = "Pods-JelloSwift_Example.modulemap"; sourceTree = "<group>"; };
+		D4A09545C28BB07FBF8555DA6161A8F7 /* Pods-JelloSwift_Example.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = "Pods-JelloSwift_Example.modulemap"; sourceTree = "<group>"; };
 		DC64412A2C034BDEDC5AE63BE0C70E42 /* Pods-JelloSwift_Tests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-JelloSwift_Tests-acknowledgements.markdown"; sourceTree = "<group>"; };
 		DCEB2395A1CC6F4D0769E848C22FCA8F /* Pods-JelloSwift_Example-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-JelloSwift_Example-umbrella.h"; sourceTree = "<group>"; };
 		EB0C346AAB565007190ACE4CF0C21DAC /* PointJointLink.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PointJointLink.swift; sourceTree = "<group>"; };
 		EC0E007FF4F00B4302EA0800A7FDE454 /* Body.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Body.swift; sourceTree = "<group>"; };
 		F957BC6D9F3917D6751DCED9A917FD42 /* JelloSwift-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "JelloSwift-umbrella.h"; sourceTree = "<group>"; };
-		FED39F0840F195AE1AFE29A361117851 /* JelloSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = JelloSwift.framework; path = JelloSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FED39F0840F195AE1AFE29A361117851 /* JelloSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = JelloSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -163,7 +163,6 @@
 			children = (
 				8130129C1A0C74AA3784A38586A58EBF /* Classes */,
 			);
-			name = JelloSwift;
 			path = JelloSwift;
 			sourceTree = "<group>";
 		};
@@ -229,7 +228,6 @@
 				71613DD109419CDDE4F4798917D64267 /* Vector2.swift */,
 				4C7365DC0C82BE04B78A8FB463A2DFCD /* World.swift */,
 			);
-			name = Classes;
 			path = Classes;
 			sourceTree = "<group>";
 		};
@@ -639,6 +637,7 @@
 				PRODUCT_NAME = JelloSwift;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";

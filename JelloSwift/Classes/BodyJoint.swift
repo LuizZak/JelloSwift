@@ -30,20 +30,16 @@ open class BodyJoint: Equatable {
     open var enabled = true
     
     /// Gets or sets the rest distance for this joint
-    open var restDistance: CGFloat
-    /// Gets or sets the maximum resting distance for this joint.
-    /// In case the maximum resting distance is different than the resting distance, the spring only applies
-    /// forces if the distance between the links is dist > restDistance && dist < maxRestDistance.
-    /// This value is automatically initialized to be the same as restDistance
-    open var maxRestDistance:CGFloat
+    /// In case the rest distance represents a ranged distance (RestDistance.ranged), the joint only applies
+    /// forces if the distance between the links is dist > restDistance.min && dist < restDistance.max
+    open var restDistance: RestDistance
     
-    public init(on world: World, link1: JointLinkType, link2: JointLinkType, distance: CGFloat? = nil) {
+    public init(on world: World, link1: JointLinkType, link2: JointLinkType, distance: RestDistance? = nil) {
         bodyLink1 = link1
         bodyLink2 = link2
         
         // Automatic distance calculation
-        restDistance = distance ?? link1.position.distance(to: link2.position)
-        maxRestDistance = restDistance
+        restDistance = distance ?? .fixed(link1.position.distance(to: link2.position))
     }
     
     /**
@@ -54,6 +50,74 @@ open class BodyJoint: Equatable {
     open func resolve(_ dt: CGFloat) {
         
     }
+    
+    /// Specifies a rest distance for a body joint.
+    /// Distances can either by fixed by a distance, or ranged
+    /// so the body joint only applies within a specified range
+    public enum RestDistance: ExpressibleByFloatLiteral {
+        
+        /// Fixed distance
+        case fixed(CGFloat)
+        
+        /// Distance is ranged between a minimum and maximum value
+        case ranged(min: CGFloat, max: CGFloat)
+        
+        /// Returns the minimum distance for this rest distance.
+        /// If the current value is .fixed, this method always returns the rest
+        /// distance it represents, if .ranged, it returns its min value
+        public var minimumDistance: CGFloat {
+            switch(self) {
+            case .fixed(let value),
+                 .ranged(let value, _):
+                return value
+            }
+        }
+        
+        /// Returns the maximum distance for this rest distance.
+        /// If the current value is .fixed, this method always returns the rest
+        /// distance it represents, if .ranged, it returns its max value
+        public var maximumDistance: CGFloat {
+            switch(self) {
+            case .fixed(let value),
+                 .ranged(_, let value):
+                return value
+            }
+        }
+        
+        public init(floatLiteral value: Double) {
+            self = .fixed(CGFloat(value))
+        }
+        
+        /// Returns whether a given range is within the range of this rest distance.
+        /// If the current value is .fixed, this does an exact equality operation,
+        /// if .ranged, it performs `value > min && value < max`
+        public func inRange(value: CGFloat) -> Bool {
+            switch(self) {
+            case .fixed(let d):
+                return value == d
+            case .ranged(let min, let max):
+                return value > min && value < max
+            }
+        }
+        
+        /// Clamps a given value to be within the range of this rest distance.
+        /// If the current value is .fixed, this method always returns the rest
+        /// distance it represents, if .ranged, it performs
+        /// `max(minValue, min(maxValue, value))`
+        public func clamp(value: CGFloat) -> CGFloat {
+            switch(self) {
+            case .fixed(let d):
+                return d
+            case .ranged(let min, let max):
+                return Swift.max(min, Swift.min(max, value))
+            }
+        }
+    }
+}
+
+/// Helper operator for creating a body's rest distance
+public func ...(lhs: CGFloat, rhs: CGFloat) -> BodyJoint.RestDistance {
+    return .ranged(min: lhs, max: rhs)
 }
 
 /// Protocol to be implemented by objects that specify the way a joint links with a body

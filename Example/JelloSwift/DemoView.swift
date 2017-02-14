@@ -417,11 +417,11 @@ class DemoView: UIView, CollisionObserver
         polyDrawer.queuePoly(points, fillColor: 0xADFFFFFF, strokeColor: 0xFF000000)
         
         // Draw the body axis
-        let axisUp    = [body.derivedPos, body.derivedPos + Vector2(0, 0.6).rotated(by: body.derivedAngle)]
-        let axisRight = [body.derivedPos, body.derivedPos + Vector2(0.6, 0).rotated(by: body.derivedAngle)]
+        let axisUp    = [body.derivedPos, body.derivedPos + Vector2(0, 0.6).rotated(by: body.derivedAngle)].map(toScreenCoords)
+        let axisRight = [body.derivedPos, body.derivedPos + Vector2(0.6, 0).rotated(by: body.derivedAngle)].map(toScreenCoords)
         
-        let axisUpCg = axisUp.map { toScreenCoords($0).cgPoint }
-        let axisRightCg = axisRight.map { toScreenCoords($0).cgPoint }
+        let axisUpCg = axisUp.map { $0.cgPoint }
+        let axisRightCg = axisRight.map { $0.cgPoint }
         
         // Rep Up vector
         polyDrawer.queuePoly(axisUpCg, fillColor: 0xFFFFFFFF, strokeColor: 0xFFED0000, lineWidth: 1)
@@ -436,9 +436,9 @@ class DemoView: UIView, CollisionObserver
     func createBox(_ pos: Vector2, size: Vector2, pinned: Bool = false, kinematic: Bool = false, isStatic: Bool = false, angle: CGFloat = 0, mass: CGFloat = 0.5) -> Body
     {
         // Create the closed shape for the box's physics body
-        var shape = ClosedShape.rectangle(ofSize: size)
-        
-        shape.transformOwnBy(rotatingBy: angle)
+        let shape = ClosedShape
+                        .rectangle(ofSize: size)
+                        .transformedBy(rotatingBy: angle)
         
         var comps = [BodyComponentCreator]()
         
@@ -541,6 +541,8 @@ class DemoView: UIView, CollisionObserver
         let joint1 = SpringBodyJoint(on: world, link1: l1, link2: l2, coefficient: 10, damping: 2)
         let joint2 = SpringBodyJoint(on: world, link1: l3, link2: l4, coefficient: 40, damping: 5)
         
+        joint2.restDistance = joint2.restDistance.minimumDistance...joint2.restDistance.minimumDistance + 2
+        
         // Enable collision between the bodies
         joint1.allowCollisions = true
         joint2.allowCollisions = true
@@ -595,14 +597,14 @@ class DemoView: UIView, CollisionObserver
         let ljCar = ShapeJointLink(body: carBody, pointMassIndexes: [19, 0, 1, 2, 3, 4])
         ljCar.offset = Vector2(0, -0.6)
         
-        let leftJoint = SpringBodyJoint(on: world, link1: ljWheel, link2: ljCar, coefficient: 100, damping: 15, distance: 0)
+        let leftJoint = SpringBodyJoint(on: world, link1: ljWheel, link2: ljCar, coefficient: 100, damping: 15, distance: 0.0)
         leftJoint.allowCollisions = true
         
         let rjWheel = BodyJointLink(body: rightWheel)
         let rjCar = ShapeJointLink(body: carBody, pointMassIndexes: [13, 14, 15, 16, 17, 18])
         rjCar.offset = Vector2(0, -0.6)
         
-        let rightJoint = SpringBodyJoint(on: world, link1: rjWheel, link2: rjCar, coefficient: 100, damping: 15, distance: 0)
+        let rightJoint = SpringBodyJoint(on: world, link1: rjWheel, link2: rjCar, coefficient: 100, damping: 15, distance: 0.0)
         rightJoint.allowCollisions = true
         
         world.addJoint(leftJoint)

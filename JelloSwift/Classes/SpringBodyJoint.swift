@@ -17,7 +17,7 @@ open class SpringBodyJoint : BodyJoint {
     var springDamping: CGFloat
     
     /// Inits a new spring body joint witht he specified parameters. Leave the distance as -1 to calculate the distance automatically from the current distance of the two provided joint links
-    public init(on world: World, link1: JointLinkType, link2: JointLinkType, coefficient: CGFloat, damping: CGFloat, distance: CGFloat? = nil) {
+    public init(on world: World, link1: JointLinkType, link2: JointLinkType, coefficient: CGFloat, damping: CGFloat, distance: RestDistance? = nil) {
         self.springCoefficient = coefficient
         self.springDamping = damping
         
@@ -39,11 +39,11 @@ open class SpringBodyJoint : BodyJoint {
         
         let dist = pos1.distance(to: pos2)
         // Affordable distance
-        if(dist < maxRestDistance && dist > restDistance) {
+        if(restDistance.inRange(value: dist)) {
             return
         }
         
-        let targetDist = max(restDistance, min(maxRestDistance, dist))
+        let targetDist = restDistance.clamp(value: dist)
         
         let force = calculateSpringForce(posA: pos1, velA: bodyLink1.velocity, posB: pos2, velB: bodyLink2.velocity, distance: targetDist, springK: springCoefficient, springD: springDamping)
         
