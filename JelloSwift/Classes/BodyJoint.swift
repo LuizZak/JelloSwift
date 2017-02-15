@@ -34,6 +34,10 @@ open class BodyJoint: Equatable {
     /// forces if the distance between the links is dist > restDistance.min && dist < restDistance.max
     open var restDistance: RestDistance
     
+    /// Initializes a body joint on a given world, linking the two given links.
+    /// Optionally provides the distance.
+    /// In case the distance was not provided, it will be automatically calculated based off of the position of each
+    /// link.
     public init(on world: World, link1: JointLinkType, link2: JointLinkType, distance: RestDistance? = nil) {
         bodyLink1 = link1
         bodyLink2 = link2
@@ -54,7 +58,7 @@ open class BodyJoint: Equatable {
     /// Specifies a rest distance for a body joint.
     /// Distances can either by fixed by a distance, or ranged
     /// so the body joint only applies within a specified range
-    public enum RestDistance: ExpressibleByFloatLiteral {
+    public enum RestDistance: ExpressibleByFloatLiteral, ExpressibleByIntegerLiteral {
         
         /// Fixed distance
         case fixed(CGFloat)
@@ -82,6 +86,10 @@ open class BodyJoint: Equatable {
                  .ranged(_, let value):
                 return value
             }
+        }
+        
+        public init(integerLiteral value: Int) {
+            self = .fixed(CGFloat(value))
         }
         
         public init(floatLiteral value: Double) {
@@ -122,6 +130,7 @@ public func ...(lhs: CGFloat, rhs: CGFloat) -> BodyJoint.RestDistance {
 
 /// Protocol to be implemented by objects that specify the way a joint links with a body
 public protocol JointLinkType {
+    
     /// Gets the body that this joint link is linked to
     var body: Body { get }
     

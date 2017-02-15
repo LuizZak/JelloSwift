@@ -60,10 +60,10 @@ public final class Body: Equatable {
     
     // Both these properties are in radians:
     
-    /// The derived rotation of the body
+    /// The derived rotation of the body, in radians
     public fileprivate(set) var derivedAngle: CGFloat = 0
     
-    /// Omega (ω) is the relative angular speed of the body
+    /// Omega (ω) is the relative angular speed of the body, in radians/s
     public fileprivate(set) var derivedOmega: CGFloat = 0
     
     // Utilize to calculate the omega for the body
@@ -74,7 +74,9 @@ public final class Body: Equatable {
         return pointMasses.map { $0.position }
     }
     
-    /// The bounding box for this body
+    /// The axis-aligned bounding box for this body's point masses.
+    /// Will be slighly expanded to include the velocity of the points, in case this body is kinematic,
+    /// so it won't always match exactly the position of the point masses.
     public var aabb = AABB()
     
     /// The index of the material in the world material array to use for this body
@@ -84,10 +86,13 @@ public final class Body: Equatable {
     public var isStatic = false
     
     /// Whether this body is kinematic - kinematic bodies do not rotate or move their base shape, so they
-    /// always appear to not move, like a static body, but can be squished and moved, like a dynamic body
+    /// always appear to not move, like a static body, but can be squished and moved, like a dynamic body.
+    /// This effectively sticks their globalShape to always be around the current derived position (see
+    /// `setPositionAngle`).
     public var isKinematic = false
     
-    /// Whether this body is pinned - pinned bodies rotate around their axis, but try to remain in place, like a kinematic body
+    /// Whether this body is pinned - pinned bodies rotate around their axis, but try to remain in place,
+    /// like a kinematic body.
     public var isPined = false
     
     /// Whether the body is able to rotate while moving
@@ -222,10 +227,6 @@ public final class Body: Equatable {
         let nextP = pointMasses[(edgeIndex + 1) % pointMasses.count]
         
         edges[edgeIndex] = BodyEdge(edgeIndex: edgeIndex, start: curP.position, end: nextP.position)
-    }
-    
-    public func getEdge(_ edgeIndex: Int) -> BodyEdge {
-        return edges[edgeIndex]
     }
     
     /// Updates the AABB for this body, including padding for velocity given a timestep.

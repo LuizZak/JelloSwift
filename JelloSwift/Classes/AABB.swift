@@ -13,21 +13,28 @@ public struct AABB {
     /// Returns an empty, invalid AABB
     static let empty = AABB()
     
-    /// The validity of this AABB
+    /// The validity of this AABB.
+    /// AABBs that have a .invalid validity set cannot be used until they are expanded
+    /// via calls to `AABB.expand(toInclude:)` methods bellow.
     public var validity = PointValidity.invalid
     
-    /// Minimum and maximum points for this bounding box
-    public var minimum = Vector2.zero
-    public var maximum = Vector2.zero
+    /// Maximum points for this bounding box
+    fileprivate(set) public var minimum = Vector2.zero
+    
+    /// Maximum point for this bounding box
+    fileprivate(set) public var maximum = Vector2.zero
     
     /// Gets the X position of this AABB
     public var x: CGFloat { return minimum.x }
     /// Gets the Y position of this AABB
     public var y: CGFloat { return minimum.y }
     
-    /// Gets the width of this AABB
+    /// Gets the width of this AABB.
+    /// This is the same as `maximum.x - minimum.x`
     public var width: CGFloat { return maximum.x - minimum.x }
+    
     /// Gets the height of this AABB
+    /// This is the same as `maximum.y - minimum.y`
     public var height: CGFloat { return maximum.y - minimum.y }
     
     /// Gets the middle X position of this AABB
@@ -35,14 +42,17 @@ public struct AABB {
     /// Gets the middle Y position of this AABB
     public var midY: CGFloat { return ((minimum + maximum) / 2).y }
     
-    // This guy has to be lower case otherwise sourcekit crashes
     /// Gets a CGRect that represents the boundaries of this AABB object
     public var cgRect: CGRect { return CGRect(x: x, y: y, width: width, height: height) }
     
+    /// Initializes an empty, invalid AABB instance
     public init() {
         
     }
     
+    /// Initializes a valid AABB instance out of the given minimum and maximum coordinates.
+    /// The coordinates are not checked for ordering, and will be directly assigned to `minimum`
+    /// and `maximum` properties.
     public init(min: Vector2, max: Vector2) {
         validity = .valid
       
@@ -50,14 +60,21 @@ public struct AABB {
         maximum = max
     }
     
+    /// Initializes a valid AABB out of a set of points, expanding to the smallest bounding box
+    /// capable of fitting each point.
     public init(points: [Vector2]) {
         expand(toInclude: points)
     }
     
+    /// Invalidates this AABB
     public mutating func clear() {
         validity = .invalid
     }
     
+    /// Expands the bounding box of this AABB to include the given point. If the AABB
+    /// is invalid, it sets the `minimum` and `maximum` coordinates to the point, if
+    /// not, it fits the point, expanding the bounding box to fit the point, if
+    /// necessary.
     public mutating func expand(toInclude point: Vector2) {
         if(validity == .invalid) {
             minimum = point
@@ -70,6 +87,9 @@ public struct AABB {
         }
     }
     
+    /// Expands the bounding box of this AABB to include the given point set of points.
+    /// Same as calling `expand(toInclude:Vector2)` over each point.
+    /// If the array is empty, nothing is done.
     public mutating func expand(toInclude points: [Vector2]) {
         if(points.count == 0) {
             return
@@ -88,6 +108,10 @@ public struct AABB {
         }
     }
     
+    /// Returns whether a given point is contained within this bounding box.
+    /// The check is inclusive, so the edges of the bounding box are considered
+    /// to contain the point as well.
+    /// Returns false, if this AABB is invalid.
     public func contains(_ point: Vector2) -> Bool {
         if(validity == .invalid) {
             return false
@@ -102,6 +126,10 @@ public struct AABB {
         return false
     }
     
+    /// Returns whether this AABB intersects the given AABB instance.
+    /// This check is inclusive, so the edges of the bounding box are considered
+    /// to intersect the other bounding box's edges as well.
+    /// If either this, or the other bounding box are invalid, false is returned.
     public func intersects(_ box: AABB) -> Bool {
         if(validity == .invalid || box.validity == .invalid) {
             return false
@@ -119,7 +147,9 @@ public struct AABB {
     }
 }
 
-// Specifies the point validity for a whole AABB
+/// Specifies the point validity for a whole AABB.
+/// AABBs of PointValidity.invalid type should not be considered
+/// valid during checks of containment.
 public enum PointValidity {
     case valid
     case invalid

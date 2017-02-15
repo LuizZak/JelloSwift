@@ -8,12 +8,12 @@
 
 import CoreGraphics
 
-// Specifies a point mass that composes a body
+/// Specifies a point mass that composes a body
 public final class PointMass: VectorRepresentable {
     /// The mass of this point mass.
-    /// Leave this value always >0 to maintain consistency on the simulation, unless
+    /// Leave this value always `> 0` to maintain consistency on the simulation, unless
     /// the point is supposed to be fixed.
-    /// Values < 0.2 usually cause inconsistency and instability in the simulation
+    /// Values `< 0.2` usually cause inconsistency and instability in the simulation
     public var mass: CGFloat = 1
     
     /// The global position of the point, in world coordinates
@@ -23,6 +23,7 @@ public final class PointMass: VectorRepresentable {
     /// The global force of the point mass
     public var force = Vector2.zero
     
+    /// For VectorRepresentable conformance - returns `self.position`
     public var vector: Vector2 { return position }
     
     public init(mass: CGFloat = 0, position: Vector2 = Vector2.zero) {
