@@ -4,7 +4,7 @@ target 'JelloSwift_Example' do
   pod 'JelloSwift', :path => '../'
 
   target 'JelloSwift_Tests' do
-    inherit! :search_paths
+    inherit! :complete
 
     
   end

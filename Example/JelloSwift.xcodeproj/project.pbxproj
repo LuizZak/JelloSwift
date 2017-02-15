@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0D9F2ACCB7A833EE329C97EC /* Pods_JelloSwift_Example_JelloSwift_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8450031F73AA21EE70E1545D /* Pods_JelloSwift_Example_JelloSwift_Tests.framework */; };
 		43164F373699445C5A3B77C8 /* Pods_JelloSwift_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2462A80FA34D0A96435BEFCF /* Pods_JelloSwift_Example.framework */; };
 		607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD51AFB9204008FA782 /* AppDelegate.swift */; };
 		607FACD81AFB9204008FA782 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD71AFB9204008FA782 /* ViewController.swift */; };
@@ -49,6 +50,8 @@
 		607FACDF1AFB9204008FA782 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		607FACE51AFB9204008FA782 /* JelloSwift_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JelloSwift_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACEA1AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7B52A8EEE140BC9CD780C7F1 /* Pods-JelloSwift_Example-JelloSwift_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JelloSwift_Example-JelloSwift_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-JelloSwift_Example-JelloSwift_Tests/Pods-JelloSwift_Example-JelloSwift_Tests.release.xcconfig"; sourceTree = "<group>"; };
+		8450031F73AA21EE70E1545D /* Pods_JelloSwift_Example_JelloSwift_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_JelloSwift_Example_JelloSwift_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9A7119EFEF38E227BE06C6F0 /* Pods-JelloSwift_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JelloSwift_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-JelloSwift_Example/Pods-JelloSwift_Example.release.xcconfig"; sourceTree = "<group>"; };
 		A0CD1AE21E535C6C00D41938 /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		A0CD1AE41E535C7800D41938 /* PolyDrawer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PolyDrawer.swift; sourceTree = "<group>"; };
@@ -62,6 +65,7 @@
 		A319CC9058C830A23DE465BD /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		B6733245AB58FC5F0C76AEAA /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		C8F76D0DBAF70A14FF4BD932 /* Pods-JelloSwift_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JelloSwift_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-JelloSwift_Tests/Pods-JelloSwift_Tests.release.xcconfig"; sourceTree = "<group>"; };
+		EFEDEDF691EF826695E8A272 /* Pods-JelloSwift_Example-JelloSwift_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JelloSwift_Example-JelloSwift_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-JelloSwift_Example-JelloSwift_Tests/Pods-JelloSwift_Example-JelloSwift_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		F17A0939E6376A12C7BF40BA /* Pods-JelloSwift_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JelloSwift_Example.debug.xcconfig"; path = "Pods/Target Support Files/Pods-JelloSwift_Example/Pods-JelloSwift_Example.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -79,6 +83,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A7C37D23456E7F34437FF336 /* Pods_JelloSwift_Tests.framework in Frameworks */,
+				0D9F2ACCB7A833EE329C97EC /* Pods_JelloSwift_Example_JelloSwift_Tests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -90,6 +95,7 @@
 			children = (
 				2462A80FA34D0A96435BEFCF /* Pods_JelloSwift_Example.framework */,
 				3C3674CED751C29896E47584 /* Pods_JelloSwift_Tests.framework */,
+				8450031F73AA21EE70E1545D /* Pods_JelloSwift_Example_JelloSwift_Tests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -179,6 +185,8 @@
 				9A7119EFEF38E227BE06C6F0 /* Pods-JelloSwift_Example.release.xcconfig */,
 				23F0F490F6D083F6DE778E0A /* Pods-JelloSwift_Tests.debug.xcconfig */,
 				C8F76D0DBAF70A14FF4BD932 /* Pods-JelloSwift_Tests.release.xcconfig */,
+				EFEDEDF691EF826695E8A272 /* Pods-JelloSwift_Example-JelloSwift_Tests.debug.xcconfig */,
+				7B52A8EEE140BC9CD780C7F1 /* Pods-JelloSwift_Example-JelloSwift_Tests.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -353,7 +361,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-JelloSwift_Tests/Pods-JelloSwift_Tests-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-JelloSwift_Example-JelloSwift_Tests/Pods-JelloSwift_Example-JelloSwift_Tests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		9A9D3ADC1C814FADF4262A57 /* [CP] Copy Pods Resources */ = {
@@ -383,7 +391,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-JelloSwift_Tests/Pods-JelloSwift_Tests-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-JelloSwift_Example-JelloSwift_Tests/Pods-JelloSwift_Example-JelloSwift_Tests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -565,7 +573,7 @@
 		};
 		607FACF31AFB9204008FA782 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 23F0F490F6D083F6DE778E0A /* Pods-JelloSwift_Tests.debug.xcconfig */;
+			baseConfigurationReference = EFEDEDF691EF826695E8A272 /* Pods-JelloSwift_Example-JelloSwift_Tests.debug.xcconfig */;
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
@@ -585,7 +593,7 @@
 		};
 		607FACF41AFB9204008FA782 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C8F76D0DBAF70A14FF4BD932 /* Pods-JelloSwift_Tests.release.xcconfig */;
+			baseConfigurationReference = 7B52A8EEE140BC9CD780C7F1 /* Pods-JelloSwift_Example-JelloSwift_Tests.release.xcconfig */;
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
