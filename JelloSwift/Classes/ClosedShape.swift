@@ -58,8 +58,8 @@ public struct ClosedShape: ExpressibleByArrayLiteral {
         }
     }
     
-    /// Returns a closed shape that is this closed shape, with points recenterec
-    /// around the centroid (geometric center) of the points.
+    /// Returns a closed shape that is this closed shape, with the closed shape's centroid
+    /// (geometric center) laying on (0, 0).
     public func centered() -> ClosedShape {
         // Find the average location of all the vertices
         let center = localVertices.averageVector()
@@ -67,8 +67,8 @@ public struct ClosedShape: ExpressibleByArrayLiteral {
         return ClosedShape(points: localVertices.map { $0 - center })
     }
     
-    /// Recenters the points of this closed shape so they lay on the centroid
-    /// (geometric center) of the points
+    /// Recenters the points of this closed shape so its centroid (geometric center) lays
+    /// on (0, 0).
     public mutating func recenter() {
         self = centered()
     }

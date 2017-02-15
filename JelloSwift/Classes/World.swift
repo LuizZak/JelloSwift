@@ -219,7 +219,7 @@ public final class World {
      * - parameter ignoring: A custom list of bodies that will be ignored during collision checking. Provide an empty list
      *                    to consider all bodies in the world
      *
-     * :return: An optional tuple containing the farthest point reached by the ray, and a Body value specifying the body that was closest to the ray, if it hit any body, or nil if it hit nothing.
+     * - return: An optional tuple containing the farthest point reached by the ray, and a Body value specifying the body that was closest to the ray, if it hit any body, or nil if it hit nothing.
      */
     public func rayCast(from start: Vector2, to end: Vector2, bitmask: Bitmask = 0, ignoring ignoreList: [Body] = []) -> (retPt: Vector2, body: Body)? {
         var aabb = AABB(points: [start, end])
@@ -243,7 +243,8 @@ public final class World {
     }
     
     /**
-     * Updates the world by a specific timestep
+     * Updates the world by a specific timestep.
+     * This method performs body point mass force/velocity/position simulation, and collision detection & resolving.
      *
      * - parameter elapsed: The elapsed time to update by, usually in seconds
      */
