@@ -7,13 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0D9F2ACCB7A833EE329C97EC /* Pods_JelloSwift_Example_JelloSwift_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8450031F73AA21EE70E1545D /* Pods_JelloSwift_Example_JelloSwift_Tests.framework */; };
 		43164F373699445C5A3B77C8 /* Pods_JelloSwift_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2462A80FA34D0A96435BEFCF /* Pods_JelloSwift_Example.framework */; };
 		607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD51AFB9204008FA782 /* AppDelegate.swift */; };
 		607FACD81AFB9204008FA782 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD71AFB9204008FA782 /* ViewController.swift */; };
 		607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 607FACD91AFB9204008FA782 /* Main.storyboard */; };
 		607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDC1AFB9204008FA782 /* Images.xcassets */; };
 		607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDE1AFB9204008FA782 /* LaunchScreen.xib */; };
+		761582D658283FA30C017437 /* Pods_JelloSwift_Example_JelloSwift_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8450031F73AA21EE70E1545D /* Pods_JelloSwift_Example_JelloSwift_Tests.framework */; };
 		A0CD1AE31E535C6C00D41938 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0CD1AE21E535C6C00D41938 /* Utils.swift */; };
 		A0CD1AE51E535C7800D41938 /* PolyDrawer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0CD1AE41E535C7800D41938 /* PolyDrawer.swift */; };
 		A0CD1AE71E535CC100D41938 /* DemoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0CD1AE61E535CC100D41938 /* DemoView.swift */; };
@@ -23,7 +23,6 @@
 		A0CD1AF11E5363B600D41938 /* JelloSwiftTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0CD1AEB1E5363B600D41938 /* JelloSwiftTests.swift */; };
 		A0CD1AF21E5363B600D41938 /* PhysicsMathTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0CD1AEC1E5363B600D41938 /* PhysicsMathTest.swift */; };
 		A0CD1AF31E5363B600D41938 /* PointMassTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0CD1AED1E5363B600D41938 /* PointMassTests.swift */; };
-		A7C37D23456E7F34437FF336 /* Pods_JelloSwift_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C3674CED751C29896E47584 /* Pods_JelloSwift_Tests.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -82,8 +81,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A7C37D23456E7F34437FF336 /* Pods_JelloSwift_Tests.framework in Frameworks */,
-				0D9F2ACCB7A833EE329C97EC /* Pods_JelloSwift_Example_JelloSwift_Tests.framework in Frameworks */,
+				761582D658283FA30C017437 /* Pods_JelloSwift_Example_JelloSwift_Tests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
