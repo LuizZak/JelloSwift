@@ -14,6 +14,7 @@
 		607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDC1AFB9204008FA782 /* Images.xcassets */; };
 		607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDE1AFB9204008FA782 /* LaunchScreen.xib */; };
 		761582D658283FA30C017437 /* Pods_JelloSwift_Example_JelloSwift_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8450031F73AA21EE70E1545D /* Pods_JelloSwift_Example_JelloSwift_Tests.framework */; };
+		A0B033001E547D00002AD0BF /* CHANGELOG.md in Sources */ = {isa = PBXBuildFile; fileRef = A0B032FF1E547D00002AD0BF /* CHANGELOG.md */; };
 		A0CD1AE31E535C6C00D41938 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0CD1AE21E535C6C00D41938 /* Utils.swift */; };
 		A0CD1AE51E535C7800D41938 /* PolyDrawer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0CD1AE41E535C7800D41938 /* PolyDrawer.swift */; };
 		A0CD1AE71E535CC100D41938 /* DemoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0CD1AE61E535CC100D41938 /* DemoView.swift */; };
@@ -52,6 +53,7 @@
 		7B52A8EEE140BC9CD780C7F1 /* Pods-JelloSwift_Example-JelloSwift_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JelloSwift_Example-JelloSwift_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-JelloSwift_Example-JelloSwift_Tests/Pods-JelloSwift_Example-JelloSwift_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		8450031F73AA21EE70E1545D /* Pods_JelloSwift_Example_JelloSwift_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_JelloSwift_Example_JelloSwift_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9A7119EFEF38E227BE06C6F0 /* Pods-JelloSwift_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JelloSwift_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-JelloSwift_Example/Pods-JelloSwift_Example.release.xcconfig"; sourceTree = "<group>"; };
+		A0B032FF1E547D00002AD0BF /* CHANGELOG.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = CHANGELOG.md; path = ../CHANGELOG.md; sourceTree = "<group>"; };
 		A0CD1AE21E535C6C00D41938 /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		A0CD1AE41E535C7800D41938 /* PolyDrawer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PolyDrawer.swift; sourceTree = "<group>"; };
 		A0CD1AE61E535CC100D41938 /* DemoView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DemoView.swift; sourceTree = "<group>"; };
@@ -172,6 +174,7 @@
 				068C800B8E4651F712E7E3C9 /* JelloSwift.podspec */,
 				B6733245AB58FC5F0C76AEAA /* README.md */,
 				A319CC9058C830A23DE465BD /* LICENSE */,
+				A0B032FF1E547D00002AD0BF /* CHANGELOG.md */,
 			);
 			name = "Podspec Metadata";
 			sourceTree = "<group>";
@@ -400,6 +403,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A0CD1AE51E535C7800D41938 /* PolyDrawer.swift in Sources */,
+				A0B033001E547D00002AD0BF /* CHANGELOG.md in Sources */,
 				607FACD81AFB9204008FA782 /* ViewController.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
 				A0CD1AE71E535CC100D41938 /* DemoView.swift in Sources */,
