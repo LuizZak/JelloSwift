@@ -10,6 +10,7 @@ import CoreGraphics
 
 // Represents an internal spring inside a soft body object, and keeps points close together
 public struct InternalSpring {
+    
     public let pointMassA: PointMass
     public let pointMassB: PointMass
     

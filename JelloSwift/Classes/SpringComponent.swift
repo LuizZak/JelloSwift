@@ -10,13 +10,15 @@ import CoreGraphics
 
 /// Represents a Spring component that can be added to a body to include spring-based physics in the body's point masses
 public final class SpringComponent: BodyComponent {
+    
     /// Gets the count of springs on this spring component
     public var springCount: Int { return springs.count }
     
     /// The list of internal springs for the body
     fileprivate var springs: [InternalSpring] = []
+    
     /// Whether the shape matching is on - turning on shape matching will make the soft body try to mantain its original
-    /// shape as specified by its baseShape
+    /// shape as specified by its `baseShape` property
     fileprivate var shapeMatchingOn = true
     
     /// The spring constant for the edges of the spring body
@@ -189,12 +191,19 @@ open class SpringComponentCreator : BodyComponentCreator {
 
 /// Specifies a template for an inner spring
 public struct SpringComponentInnerSpring {
+    
+    /// Index of the first point mass of the spring, in the `pointMasses` property of the target body
     public var indexA = 0
+    /// Index of the second point mass of the spring, in the `pointMasses` property of the target body
     public var indexB = 0
     
+    /// The spring coefficient for this spring
     public var coefficient: CGFloat = 0
+    /// Damping coefficient for this spring
     public var damping: CGFloat = 0
     
+    /// The rest distance for this spring, as in, the distance this spring will try to mantain between
+    /// the two point masses.
     public var dist: CGFloat = 0
     
     public init(a: Int, b: Int, coefficient: CGFloat, damping: CGFloat, dist: CGFloat = -1) {

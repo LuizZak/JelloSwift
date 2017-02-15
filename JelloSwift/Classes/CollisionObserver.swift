@@ -16,4 +16,19 @@ public protocol CollisionObserver: class {
      - parameter info: The information for the collision
      */
     func bodiesDidCollide(_ info: BodyCollisionInformation)
+    
+    /// Called to notify that the given body collision information has exceeded a minimum specified penetration threshold.
+    /// When this happens, the collision is ignored and dropped from the resolve list, and this delegate notifier is called.
+    func bodyCollision(_ info: BodyCollisionInformation, didExceedPenetrationThreshold penetrationThreshold: CGFloat)
+}
+
+public extension CollisionObserver {
+    
+    public func bodiesDidCollide(_ info: BodyCollisionInformation) {
+        
+    }
+    
+    public func bodyCollision(_ info: BodyCollisionInformation, didExceedPenetrationThreshold penetrationThreshold: CGFloat) {
+        
+    }
 }

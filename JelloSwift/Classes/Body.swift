@@ -282,21 +282,23 @@ public final class Body: Equatable {
     }
     
     /// Sets the mass for a single PointMass individually
-    public func setMassIndividual(_ index: Int, mass: CGFloat) {
+    public func setMassForPointMass(atIndex index: Int, mass: CGFloat) {
         pointMasses[index].mass = mass
+        
+        isStatic = pointMasses.any { $0.mass.isInfinite } // Re-evaluate whether body is static
     }
     
-    /// Sets the mass for all the point masses from a list of masses
+    /// Sets the mass for all the point masses from a list of masses.
+    /// In case the array count is bigger than the point mass count, it
+    /// only sets up to the count of masses in the array, if larger, it
+    /// sets the matching masses for all point masses, and ignores the
+    /// rest of the array
     public func setMass(fromList masses: [CGFloat]) {
-        isStatic = true
-        
-        for i in 0..<min(masses.count, pointMasses.count) {
-            if(!masses[i].isInfinite) {
-                isStatic = false
-            }
-            
-            pointMasses[i].mass = masses[i]
+        for (mass, pointMass) in zip(masses, pointMasses) {
+            pointMass.mass = mass
         }
+        
+        isStatic = pointMasses.any { $0.mass.isInfinite } // Re-evaluate whether body is static
     }
     
     /// Sets the position and angle of the body manually.
@@ -406,6 +408,7 @@ public final class Body: Equatable {
     }
     
     /// Integrates the point masses for this Body.
+    /// Ignored, if body is static.
     public func integrate(_ elapsed: CGFloat) {
         if(isStatic) {
             return
@@ -416,7 +419,8 @@ public final class Body: Equatable {
         }
     }
     
-    /// Applies the velocity damping to the point masses
+    /// Applies the velocity damping to the point masses.
+    /// Ignored, if body is static.
     public func dampenVelocity(_ elapsed: CGFloat) {
         if(isStatic) {
             return
@@ -427,7 +431,8 @@ public final class Body: Equatable {
         }
     }
     
-    /// Applies a rotational clockwise torque of a given force on this body
+    /// Applies a rotational clockwise torque of a given force on this body.
+    /// Ignored, if body is static.
     public func applyTorque(of force: CGFloat) {
         if(isStatic) {
             return
@@ -441,7 +446,8 @@ public final class Body: Equatable {
         }
     }
     
-    /// Sets the angular velocity for this body
+    /// Sets the angular velocity for this body.
+    /// Ignored, if body is static.
     public func setAngularVelocity(_ vel: CGFloat) {
         if(isStatic) {
             return
@@ -775,13 +781,14 @@ public final class Body: Equatable {
     
     /**
      * Applies a global force to all the point masses in this body at the specified point, in world coordinates.
-     * Applying a force with any position off-center of the body (different than derivedPos) will result in an additional torque
-     * being applied to the body
+     * Applying a force with any position off-center of the body (different than `derivedPos`) will result in an additional torque
+     * being applied to the body, making it spin.
+     * Ignored, if body is static.
      *
      * - parameter pt: The point to apply the force, in world coordinates. Specify .derivedPos to apply a force at the exact center of the body
      * - parameter force: The force to apply to the point masses in this body
     */
-    public func addGlobalForce(_ pt: Vector2, _ force: Vector2) {
+    public func applyForce(_ force: Vector2, atGlobalPoint pt: Vector2) {
         if(isStatic) {
             return
         }
@@ -797,6 +804,7 @@ public final class Body: Equatable {
     
     /**
      * Adds a velocity vector to all the point masses in this body
+     * Ignored, if body is static.
      *
      * - parameter velocity: The velocity to add to all the point masses in this body
      */
@@ -810,7 +818,7 @@ public final class Body: Equatable {
         }
     }
     
-    /// Resets the collision information of the body
+    /// Resets the pointMassCollisions array of the body, keeping capacity in the process.
     public func resetCollisionInfo() {
         pointMassCollisions.removeAll(keepingCapacity: true)
     }

@@ -17,8 +17,10 @@ public protocol VectorRepresentable {
 
 /// Represents a 2D vector
 public struct Vector2: VectorRepresentable, Equatable, CustomStringConvertible {
+    
     /// A zeroed-value Vector2
     public static let zero = Vector2(0, 0)
+    
     /// An unit-valued Vector2
     public static let unit = Vector2(1, 1)
     
@@ -30,8 +32,10 @@ public struct Vector2: VectorRepresentable, Equatable, CustomStringConvertible {
     typealias NativeVectorType = float2
     #endif
     
+    /// The underlying SIMD vector type
     var theVector: NativeVectorType
     
+    /// The CGFloat representation of this vector's x axis
     public var x: CGFloat {
         get {
             return CGFloat(theVector.x)
@@ -40,6 +44,8 @@ public struct Vector2: VectorRepresentable, Equatable, CustomStringConvertible {
             theVector.x = newValue.native
         }
     }
+    
+    /// The CGFloat representation of this vector's y axis
     public var y: CGFloat {
         get {
             return CGFloat(theVector.y)
@@ -64,10 +70,13 @@ public struct Vector2: VectorRepresentable, Equatable, CustomStringConvertible {
         return CGFloat(simd.length(theVector))
     }
     
+    /// For conformance to VectorRepresentable - always returns self
     public var vector: Vector2 { return self }
     
+    /// Textual representation of this vector's coordinates
     public var description: String { return "{ \(self.x) : \(self.y) }" }
     
+    /// Utility property for getting a CGPoint that matches this vector's coordinates
     public var cgPoint: CGPoint { return CGPoint(x: x, y: y) }
     
     init(_ vector: NativeVectorType) {
@@ -163,12 +172,15 @@ extension Vector2 {
     }
     
     // DOT operator
-    /// Calculates the dot product between two provided coordinates
+    /// Calculates the dot product between two provided coordinates.
+    /// See `Vector2.dot`
     static public func •(lhs: Vector2, rhs: Vector2) -> CGFloat {
         return lhs.dot(with: rhs)
     }
     
     // CROSS operator
+    /// Calculates the dot product between two provided coordinates
+    /// See `Vector2.cross`
     static public func =/(lhs: Vector2, rhs: Vector2) -> CGFloat {
         return lhs.cross(with: rhs)
     }

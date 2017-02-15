@@ -345,6 +345,9 @@ class DemoView: UIView, CollisionObserver
         collisions.append(info)
     }
     
+    func bodyCollision(_ info: BodyCollisionInformation, didExceedPenetrationThreshold penetrationThreshold: CGFloat) {
+        NSLog("penetration above Penetration Threshold!!  penetration = \(info.penetration), threshold = \(penetrationThreshold), difference = \(info.penetration-penetrationThreshold)")
+    }
     
     // MARK: - Rendering Utils
     

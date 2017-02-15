@@ -35,7 +35,7 @@ public final class PointMass: VectorRepresentable {
     ///
     /// - parameter elapsed: The elapsed time to integrate by, usually in seconds
     public func integrate(_ elapsed: CGFloat) {
-        if (mass != CGFloat.infinity) {
+        if (mass.isFinite) {
             let elapMass = elapsed / mass
             
             velocity += force * elapMass
@@ -50,7 +50,6 @@ public final class PointMass: VectorRepresentable {
     public func applyForce(of force: Vector2) {
         self.force += force
     }
-    
     
     /// Averages a list of point mass positions into one normalized Vector2 point
     public static func averagePosition<T: Collection>(of pointMasses: T) -> Vector2 where T.Iterator.Element == PointMass, T.IndexDistance == Int {

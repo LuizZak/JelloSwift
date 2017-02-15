@@ -8,12 +8,15 @@
 
 import Foundation
 
+/// Clamps a value so it's always `>= minimum` and `<= maximum`
 public func clamp<T: Comparable>(_ value: T, minimum: T, maximum: T) -> T {
     return value < minimum ? minimum
         : value > maximum ? maximum : value
 }
 
 extension Comparable {
+    
+    /// Clamps a value so it's always `>= minimum` and `<= maximum`
     func clamped(minimum: Self, maximum: Self) -> Self {
         return clamp(self, minimum: minimum, maximum: maximum)
     }

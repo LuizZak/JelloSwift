@@ -21,8 +21,10 @@ public final class World {
     fileprivate var worldSize = Vector2.zero
     fileprivate var worldGridStep = Vector2.zero
     
-    public var penetrationThreshold: CGFloat = 0
-    public var penetrationCount = 0
+    /// The threshold at which penetrations are ignored, since they are far too deep to be resolved
+    /// without applying unreasonable forces that will destabilize the simulation.
+    /// Usually 0.3 is a good default.
+    public var penetrationThreshold: CGFloat = 0.3
     
     // material chart.
     public var materialPairs: [[MaterialPair]] = []
@@ -72,8 +74,6 @@ public final class World {
         let max = Vector2( 20.0,  20.0)
         
         setWorldLimits(min, max)
-    
-        penetrationThreshold = 0.3
     }
     
     /// WORLD SIZE
@@ -248,8 +248,6 @@ public final class World {
      * - parameter elapsed: The elapsed time to update by, usually in seconds
      */
     public func update(_ elapsed: CGFloat) {
-        penetrationCount = 0
-        
         // Update the bodies
         for body in bodies {
             body.derivePositionAndAngle(elapsed)
@@ -456,10 +454,9 @@ public final class World {
                 continue
             }
             
+            // Check exceeding point-mass penetration - we ignore the collision, then.
             if(info.penetration > penetrationThreshold) {
-                NSLog("penetration above Penetration Threshold!!  penetration = \(info.penetration), threshold = \(penetrationThreshold), difference = \(info.penetration-penetrationThreshold)")
-                
-                penetrationCount += 1
+                self.collisionObserver?.bodyCollision(info, didExceedPenetrationThreshold: penetrationThreshold)
                 continue
             }
             
@@ -486,18 +483,19 @@ public final class World {
                 Bmove = info.penetration * (A.mass / massSum)
             }
             
-            if(!A.mass.isInfinite) {
+            if(A.mass.isFinite) {
                 A.position += info.normal * Amove
             }
             
-            if(!B1.mass.isInfinite) {
+            if(B1.mass.isFinite) {
                 B1.position -= info.normal * (Bmove * b1inf)
             }
-            if(!B2.mass.isInfinite) {
+            if(B2.mass.isFinite) {
                 B2.position -= info.normal * (Bmove * b2inf)
             }
             
-            if(relDot <= 0.0001 && (!A.mass.isInfinite || !b2MassSum.isInfinite)) {
+            // TODO: Re-evaluate this block to clarify names, or check if they are term-of-art in physics
+            if(relDot <= 0.0001 && (A.mass.isFinite || b2MassSum.isFinite)) {
                 let AinvMass: CGFloat = A.mass.isInfinite ? 0 : 1.0 / A.mass
                 let BinvMass: CGFloat = b2MassSum.isInfinite ? 0 : 1.0 / b2MassSum
                 
@@ -511,11 +509,11 @@ public final class World {
                 let friction: CGFloat = material.friction
                 let f: CGFloat = (relVel • tangent) * friction / jDenom
                 
-                if(!A.mass.isInfinite) {
+                if(A.mass.isFinite) {
                     A.velocity += (info.normal * (j / A.mass)) - (tangent * (f / A.mass))
                 }
                 
-                if(!b2MassSum.isInfinite) {
+                if(b2MassSum.isFinite) {
                     let jComp = info.normal * j / b2MassSum
                     let fComp = tangent * (f * b2MassSum)
                     

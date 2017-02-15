@@ -14,6 +14,7 @@ open class SpringBodyJoint : BodyJoint {
     
     /// The spring coefficient for this spring body joint
     var springCoefficient: CGFloat
+    
     /// The spring damping for this spring body joint
     var springDamping: CGFloat
     

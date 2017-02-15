@@ -64,13 +64,19 @@ open class ShapeJointLink: JointLinkType {
     
     /// Gets the total mass of the subject of this joint link
     open var mass: CGFloat {
-        return _pointMasses.reduce(0, { $0 + $1.mass })
+        var sum: CGFloat = 0
+        
+        for p in _pointMasses {
+            sum += p.mass
+        }
+        
+        return sum
     }
     
     /// Gets a value specifying whether the object referenced by this JointLinkType is static
     open var isStatic: Bool {
         for p in _pointMasses {
-            if(!p.mass.isInfinite) {
+            if(p.mass.isFinite) {
                 return false
             }
         }
