@@ -14,7 +14,7 @@ open class BodyJointLink: JointLinkType {
     // Like the PointJointLink, this is a very straightforward implementation, delegating most of the methods to the underlying body object
     
     /// Gets the body that this joint link is linked to
-    open fileprivate(set) var body: Body
+    open fileprivate(set) unowned var body: Body
     
     /// Gets the type of joint this joint link represents
     open let linkType = LinkType.body

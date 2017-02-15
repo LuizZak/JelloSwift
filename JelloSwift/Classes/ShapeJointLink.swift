@@ -18,7 +18,7 @@ open class ShapeJointLink: JointLinkType {
     fileprivate let _indices: [Int]
     
     /// Gets the body that this joint link is linked to
-    open fileprivate(set) var body: Body
+    open fileprivate(set) unowned var body: Body
     
     /// Gets the type of joint this joint link represents
     open let linkType = LinkType.shape

@@ -11,6 +11,7 @@ import CoreGraphics
 
 /// Represents a joint that links two joint links with spring forces
 open class SpringBodyJoint : BodyJoint {
+    
     /// The spring coefficient for this spring body joint
     var springCoefficient: CGFloat
     /// The spring damping for this spring body joint

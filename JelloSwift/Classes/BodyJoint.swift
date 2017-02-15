@@ -15,6 +15,7 @@ public func ==(lhs: BodyJoint, rhs: BodyJoint) -> Bool {
 
 /// Base class for joints which unites two separate bodies
 open class BodyJoint: Equatable {
+    
     /// Gets the first link that contins informationa bout the first body linked by this joint
     public final let bodyLink1: JointLinkType
     /// Gets the second link that contins informationa bout the first body linked by this joint
@@ -132,7 +133,7 @@ public func ...(lhs: CGFloat, rhs: CGFloat) -> BodyJoint.RestDistance {
 public protocol JointLinkType {
     
     /// Gets the body that this joint link is linked to
-    var body: Body { get }
+    unowned var body: Body { get }
     
     /// Gets the type of joint this joint link represents
     var linkType: LinkType { get }
