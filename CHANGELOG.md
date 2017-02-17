@@ -2,7 +2,9 @@
 
 #### Develop trunk changelog:
 
-- Trunk is clean!
+- Adding support for Vector2 affine transformations using simd to allow speeding up operations.
+- Now the optimized build builds with -Owholemodule.
+- Added `ClosedShape.create` static method.
 
 ## Stable Releases
 ---
