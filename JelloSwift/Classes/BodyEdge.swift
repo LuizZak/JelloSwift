@@ -14,6 +14,14 @@ public struct BodyEdge {
     /// The index of the edge on the body
     public var edgeIndex = 0
     
+    /// Index of the start point mass of this edge on the body's `pointMasses`
+    /// array
+    public var startPointIndex: Int
+    
+    /// Index of the end point mass of this edge on the body's `pointMasses`
+    /// array
+    public var endPointIndex: Int
+    
     /// The start position of the edge
     public var start = Vector2.zero
     
@@ -33,14 +41,17 @@ public struct BodyEdge {
     public var lengthSquared: CGFloat = 0
     
     public init() {
-        
+        startPointIndex = 0
+        endPointIndex = 0
     }
     
     /// Initializes an edge with a given index, and start and end vectors.
     /// The `difference`, `normal`, `length` and `lengthSquared` properties are
     /// automatically initialized out of these values.
-    public init(edgeIndex: Int, start: Vector2, end: Vector2) {
+    public init(edgeIndex: Int, startPointIndex: Int, endPointIndex: Int, start: Vector2, end: Vector2) {
         self.edgeIndex = edgeIndex
+        self.startPointIndex = startPointIndex
+        self.endPointIndex = endPointIndex
         self.start = start
         self.end = end
         

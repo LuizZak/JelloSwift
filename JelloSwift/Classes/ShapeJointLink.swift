@@ -103,7 +103,7 @@ open class ShapeJointLink: JointLinkType {
         for p in _pointMasses {
             let tempR = (p.position - position + offsetPosition).perpendicular()
             
-            p.force += force + tempR * torqueF
+            p.applyForce(of: force + tempR * torqueF)
         }
     }
     

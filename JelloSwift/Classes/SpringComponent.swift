@@ -133,8 +133,8 @@ public final class SpringComponent: BodyComponent {
                                              springK: s.coefficient,
                                              springD: s.damping)
             
-            p1.force += force
-            p2.force -= force
+            p1.applyForce(of: force)
+            p2.applyForce(of: -force)
         }
         
         if(shapeMatchingOn && shapeSpringK > 0) {
@@ -153,18 +153,18 @@ public final class SpringComponent: BodyComponent {
         
         body.baseShape.transformVertices(&body.globalShape, matrix: matrix)
         
-        for (i, p) in body.pointMasses.enumerated() {
+        for (global, p) in zip(body.globalShape, body.pointMasses) {
             let force: Vector2
             
             let velB = body.isKinematic ? Vector2.zero : p.velocity
             
             force = calculateSpringForce(posA: p.position, velA: p.velocity,
-                                         posB: body.globalShape[i], velB: velB,
+                                         posB: global, velB: velB,
                                          distance: 0.0,
                                          springK: shapeSpringK,
                                          springD: shapeSpringDamp)
             
-            p.force += force
+            p.applyForce(of: force)
         }
     }
 }

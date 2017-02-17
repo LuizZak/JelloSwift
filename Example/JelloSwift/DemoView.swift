@@ -408,10 +408,10 @@ class DemoView: UIView, CollisionObserver
         polyDrawer.queuePoly(body.globalShape.map { toScreenCoords($0).cgPoint }, fillColor: 0x33FFFFFF, strokeColor: 0xFF777777, lineWidth: 1)
         
         // Draw lines going from the body's outer points to the global shape indices
-        for (i, p) in points.enumerated()
+        for (globalShape, p) in zip(body.globalShape, points)
         {
             let start = p
-            let end = toScreenCoords(body.globalShape[i]).cgPoint
+            let end = toScreenCoords(globalShape).cgPoint
             
             polyDrawer.queuePoly([start, end], fillColor: 0, strokeColor: 0xFF449944, lineWidth: 1)
         }

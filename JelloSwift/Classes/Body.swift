@@ -211,9 +211,11 @@ public final class Body: Equatable {
         
         // Update edges
         for (i, curP) in pointMasses.enumerated() {
-            let nextP = pointMasses[(i + 1) % c]
+            let j = (i + 1) % c
+            let nextP = pointMasses[j]
             
-            edges[i] = BodyEdge(edgeIndex: i, start: curP.position,
+            edges[i] = BodyEdge(edgeIndex: i, startPointIndex: i,
+                                endPointIndex: j, start: curP.position,
                                 end: nextP.position)
         }
     }
@@ -240,10 +242,14 @@ public final class Body: Equatable {
     
     /// Updates a single edge in this body
     public func updateEdge(_ edgeIndex: Int) {
+        let j = (edgeIndex + 1) % pointMasses.count
+        
         let curP = pointMasses[edgeIndex]
         let nextP = pointMasses[(edgeIndex + 1) % pointMasses.count]
         
-        edges[edgeIndex] = BodyEdge(edgeIndex: edgeIndex, start: curP.position,
+        edges[edgeIndex] = BodyEdge(edgeIndex: edgeIndex,
+                                    startPointIndex: edgeIndex,
+                                    endPointIndex: j, start: curP.position,
                                     end: nextP.position)
     }
     
@@ -335,11 +341,12 @@ public final class Body: Equatable {
     /// Setting the position and angle resets the current shape to the original
     /// base shape of the object
     public func setPositionAngle(_ pos: Vector2, angle: CGFloat, scale: Vector2) {
-        baseShape.transformVertices(&globalShape, worldPos: pos,
-                                    angleInRadians: angle, localScale: scale)
+        let matrix = Vector2.matrix(scalingBy: scale, rotatingBy: angle, translatingBy: pos)
         
-        for (i, pm) in pointMasses.enumerated() {
-            pm.position = globalShape[i]
+        baseShape.transformVertices(&globalShape, matrix: matrix)
+        
+        for (global, pm) in zip(globalShape, pointMasses) {
+            pm.position = global
         }
         
         updateEdges()
@@ -416,7 +423,7 @@ public final class Body: Equatable {
     
         derivedAngle = angle
         
-        // now calculate the derived Omega, based on change in angle over 
+        // now calculate the derived Omega, based on change in angle over
         // time.
         var angleChange = (derivedAngle - lastAngle)
     
@@ -801,21 +808,19 @@ public final class Body: Equatable {
         var found = false
         var closestP1 = pointMasses[0]
         var closestP2 = closestP1
-        var closestV = Vector2.zero
-        var closestAdotB: CGFloat = 0
+        var edgePosition = Vector2.zero
+        var edgeRatio: CGFloat = 0
         var closestD = CGFloat.infinity
         
-        for (i, pm) in pointMasses.enumerated() {
-            let pm2 = pointMasses[(i + 1) % pointMasses.count]
-            let len = (pm.position - pm2.position).magnitude
+        for edge in edges {
+            let pm = pointMasses[edge.startPointIndex]
+            let pm2 = pointMasses[edge.endPointIndex]
             
-            var d = (pm.position - pm2.position).normalized()
-            
-            let adotb = ((pm.position - pt) • d).clamped(minimum: 0, maximum: len)
+            let adotb = ((pm.position - pt) • edge.difference).clamped(minimum: 0, maximum: edge.length)
             
             // Apply the dot product to the normalized vector - this projects
             // the point on top of the edge
-            d *= adotb
+            let d = edge.difference * adotb
             
             let dis = pt - (pm.position - d)
             
@@ -826,34 +831,35 @@ public final class Body: Equatable {
                 found = true
                 closestP1 = pm
                 closestP2 = pm2
-                closestV = pm.position - d
-                closestAdotB = adotb / len
+                edgePosition = pm.position - d
+                edgeRatio = adotb / edge.length
                 closestD = curD
             }
         }
         
         if(found) {
-            return (closestV, closestAdotB, closestP1, closestP2)
+            return (edgePosition, edgeRatio, closestP1, closestP2)
         }
         
         return nil
     }
     
     /// Find the closest PointMass index in this body, given a global point
+    /// - note: **Pre condition:** There is at least one point mass in this body
     public func closestPointMass(to pos: Vector2) -> (point: PointMass, distance: CGFloat) {
         var closestSQD = CGFloat.greatestFiniteMagnitude
-        var closest = -1
+        var closest: PointMass!
         
-        for (i, point) in pointMasses.enumerated() {
+        for point in pointMasses {
             let thisD = pos.distanceSquared(to: point.position)
             
             if(thisD < closestSQD) {
                 closestSQD = thisD
-                closest = i
+                closest = point
             }
         }
         
-        return (pointMasses[closest], sqrt(closestSQD))
+        return (closest, sqrt(closestSQD))
     }
     
     /**
@@ -878,7 +884,7 @@ public final class Body: Equatable {
         for point in pointMasses {
             let tempR = (point.position - pt).perpendicular()
             
-            point.force += force + tempR * torqueF
+            point.applyForce(of: force + tempR * torqueF)
         }
     }
     
