@@ -285,8 +285,11 @@ public final class Body: Equatable {
         globalShape = [Vector2](repeating: Vector2.zero,
                                 count: shape.localVertices.count)
         
-        baseShape.transformVertices(&globalShape, worldPos: derivedPos,
-                                    angleInRadians: derivedAngle, localScale: scale)
+        let matrix = Vector2.matrix(scalingBy: scale,
+                                    rotatingBy: derivedAngle,
+                                    translatingBy: derivedPos)
+        
+        baseShape.transformVertices(&globalShape, matrix: matrix)
         
         if(baseShape.localVertices.count != pointMasses.count) {
             pointMasses = []
