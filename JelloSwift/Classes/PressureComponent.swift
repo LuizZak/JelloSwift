@@ -58,6 +58,10 @@ public final class PressureComponent: BodyComponent {
 
 // Creator for the Spring component
 open class PressureComponentCreator : BodyComponentCreator {
+    
+    /// The gass pressure coefficient for the pressure component.
+    /// Higher values result in higher resistance to compression and higher
+    /// expansion.
     open var gasAmmount: CGFloat
     
     public required init(gasAmmount: CGFloat = 0) {

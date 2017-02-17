@@ -25,11 +25,25 @@ public struct Vector2: VectorRepresentable, Equatable, CustomStringConvertible {
     public static let unit = Vector2(1, 1)
     
     #if arch(x86_64) || arch(arm64)
-    ///Used to match `CGFloat`'s native type
-    typealias NativeVectorType = double2
+    /// Used to match `CGFloat`'s native type
+    public typealias NativeVectorType = double2
+    
+    /// The 3x2 matrix type that can be used to apply transformations by
+    /// multiplying on this Vector2
+    public typealias NativeMatrixType = double3x3
+    
+    /// This is used during affine transformation
+    typealias HomogenousVectorType = double3
     #else
     ///Used to match `CGFloat`'s native type
-    typealias NativeVectorType = float2
+    public typealias NativeVectorType = float2
+    
+    /// The 3x3 matrix type that can be used to apply transformations by
+    /// multiplying on this Vector2
+    public typealias NativeMatrixType = float3x3
+    
+    /// This is used during affine transformation
+    typealias HomogenousVectorType = float3
     #endif
     
     /// The underlying SIMD vector type
@@ -103,6 +117,10 @@ public struct Vector2: VectorRepresentable, Equatable, CustomStringConvertible {
         theVector = NativeVectorType(x.native, y.native)
     }
     
+    public init(_ x: Float, _ y: Float) {
+        theVector = NativeVectorType(CGFloat.NativeType(x), CGFloat.NativeType(y))
+    }
+    
     public init(_ x: Double, _ y: Double) {
         theVector = NativeVectorType(CGFloat.NativeType(x), CGFloat.NativeType(y))
     }
@@ -167,6 +185,7 @@ extension Vector2 {
     }
 }
 
+// MARK: Operators
 extension Vector2 {
     ////
     // Comparision operators
@@ -271,6 +290,94 @@ extension Vector2 {
     }
 }
 
+// MARK: Matrix-transformation
+extension Vector2 {
+    
+    /// Creates a matrix that when multiplied with a Vector2 object applies the
+    /// given set of transformations.
+    ///
+    /// If all default values are set, an identity matrix is created, which does
+    /// not alter a Vector2's coordinates once applied.
+    ///
+    /// The order of operations are: scaling -> rotation -> translation
+    static public func matrix(scalingBy scale: Vector2 = Vector2.unit,
+                              rotatingBy angle: CGFloat = 0,
+                              translatingBy translate: Vector2 = Vector2.zero) -> Vector2.NativeMatrixType {
+        
+        var matrix = Vector2.NativeMatrixType(1)
+        
+        // Prepare matrices
+        
+        // Translating:
+        //
+        // | 0  0  dx |
+        // | 0  0  dy |
+        // | 0  0  1  |
+        //
+        
+        // Scaling:
+        //
+        // | sx 0  0 |
+        // | 0  sy 0 |
+        // | 0  0  1 |
+        //
+        
+        // Rotation:
+        //
+        // | cos(a)  sin(a)  0 |
+        // | -sin(a) cos(a)  0 |
+        // |   0       0     1 |
+        
+        if(scale != .unit) {
+            let scaleMatrix =
+                Vector2.NativeMatrixType([
+                    Vector2.HomogenousVectorType(scale.theVector.x, 0, 0),
+                    Vector2.HomogenousVectorType(0, scale.theVector.y, 0),
+                    Vector2.HomogenousVectorType(0, 0, 1)
+                ])
+            
+            matrix *= scaleMatrix
+        }
+        
+        if(angle != 0) {
+            let c = CGFloat.NativeType(cos(-angle))
+            let s = CGFloat.NativeType(sin(-angle))
+            
+            let rotationMatrix =
+                Vector2.NativeMatrixType([
+                    Vector2.HomogenousVectorType(c, s, 0),
+                    Vector2.HomogenousVectorType(-s, c, 0),
+                    Vector2.HomogenousVectorType(0, 0, 1)
+                ])
+            
+            matrix *= rotationMatrix
+        }
+        
+        if(translate != .zero) {
+            let translateMatrix =
+                Vector2.NativeMatrixType([
+                    Vector2.HomogenousVectorType(1, 0, translate.theVector.x),
+                    Vector2.HomogenousVectorType(0, 1, translate.theVector.y),
+                    Vector2.HomogenousVectorType(0, 0, 1)
+                ])
+            
+            matrix *= translateMatrix
+        }
+        
+        return matrix
+    }
+    
+    // Matrix multiplication
+    static public func *(lhs: Vector2, rhs: Vector2.NativeMatrixType) -> Vector2 {
+        let homog = Vector2.HomogenousVectorType(lhs.theVector.x, lhs.theVector.y, 1)
+        
+        let transformed = homog * rhs
+        
+        return Vector2(transformed.x, transformed.y)
+    }
+}
+
+// MARK: Rotation
 extension Vector2 {
     /// Returns a rotated version of this vector, rotated around by a given 
     /// angle in radians
@@ -290,12 +397,12 @@ extension Vector2 {
         // Check if we have a 0º or 180º rotation - these we can figure out
         // using conditionals to speedup common paths.
         let remainder =
-            angleInRadians.truncatingRemainder(dividingBy: (PI * 2))
+            angleInRadians.truncatingRemainder(dividingBy: .pi * 2)
         
         if(remainder == 0) {
             return vec
         }
-        if(remainder == PI) {
+        if(remainder == .pi) {
             return -vec
         }
         

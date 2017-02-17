@@ -50,7 +50,7 @@ class ClosedShapeTests: XCTestCase
         }
         
         // Create the transformed shape with no modifications
-        let transformed = shape.transformedBy(translatingBy: Vector2.zero, rotatingBy: PI, scalingBy: Vector2.unit)
+        let transformed = shape.transformedBy(translatingBy: Vector2.zero, rotatingBy: .pi, scalingBy: Vector2.unit)
         
         // Since we rotated a box 90º, the edges are the same, but offset by 1.
         for i in 0..<expected.localVertices.count

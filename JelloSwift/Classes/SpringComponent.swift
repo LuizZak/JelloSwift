@@ -137,14 +137,21 @@ public final class SpringComponent: BodyComponent {
             p2.force -= force
         }
         
-        if(!shapeMatchingOn || shapeSpringK == 0) {
-            return
+        if(shapeMatchingOn && shapeSpringK > 0) {
+            applyShapeMatching(on: body)
         }
+    }
+    
+    /// Applies shape-matching on the given body.
+    /// Shape-matching applies spring forces to each point masses on the
+    /// direction of the body's original global shape
+    fileprivate func applyShapeMatching(on body: Body) {
         
-        body.baseShape.transformVertices(&body.globalShape,
-                                         worldPos: body.derivedPos,
-                                         angleInRadians: body.derivedAngle,
-                                         localScale: body.scale)
+        let matrix = Vector2.matrix(scalingBy: body.scale,
+                                    rotatingBy: body.derivedAngle,
+                                    translatingBy: body.derivedPos)
+        
+        body.baseShape.transformVertices(&body.globalShape, matrix: matrix)
         
         for (i, p) in body.pointMasses.enumerated() {
             let force: Vector2

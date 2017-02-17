@@ -8,9 +8,6 @@
 
 import CoreGraphics
 
-/// CGFloat version of the PI constant
-public let PI = CGFloat(M_PI)
-
 /// Returns an approximation of the area of the polygon defined by a given set
 /// of vertices
 public func polygonArea<T: BidirectionalCollection>(of points: T) -> CGFloat where T.Iterator.Element: VectorRepresentable {

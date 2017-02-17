@@ -20,7 +20,7 @@ public struct InternalSpring {
     /// It's contained in the same body as `pointMassA`.
     public let pointMassB: PointMass
     
-    /// Rest distance of the spring, or the distance the spring tries to 
+    /// Rest distance of the spring, or the distance the spring tries to
     /// maintain
     public var distance: CGFloat = 0
     

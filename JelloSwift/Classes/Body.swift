@@ -397,11 +397,11 @@ public final class Body: Equatable {
                 let diff = (thisAngle - originalAngle)
                 let thisSign = (thisAngle >= 0.0) ? 1 : -1
                 
-                if (abs(diff) > PI && (thisSign != originalSign)) {
+                if (abs(diff) > .pi && (thisSign != originalSign)) {
                     if(thisSign == -1) {
-                        thisAngle = PI + (PI + thisAngle)
+                        thisAngle = .pi + (.pi + thisAngle)
                     } else {
-                        thisAngle = (PI - thisAngle) - PI
+                        thisAngle = (.pi - thisAngle) - .pi
                     }
                 }
             }
@@ -417,11 +417,11 @@ public final class Body: Equatable {
         // time.
         var angleChange = (derivedAngle - lastAngle)
     
-        if ((angleChange < 0 ? -angleChange : angleChange) >= PI) {
+        if ((angleChange < 0 ? -angleChange : angleChange) >= .pi) {
             if (angleChange < 0) {
-                angleChange = angleChange + (PI * 2)
+                angleChange = angleChange + (.pi * 2)
             } else {
-                angleChange = angleChange - (PI * 2)
+                angleChange = angleChange - (.pi * 2)
             }
         }
     

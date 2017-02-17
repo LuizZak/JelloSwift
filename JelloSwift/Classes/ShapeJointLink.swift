@@ -133,11 +133,11 @@ open class ShapeJointLink: JointLinkType {
                 let diff = (thisAngle - originalAngle)
                 let thisSign = (thisAngle >= 0.0) ? 1 : -1
                 
-                if (abs(diff) > PI && (thisSign != originalSign)) {
+                if (abs(diff) > .pi && (thisSign != originalSign)) {
                     if(thisSign == -1) {
-                        thisAngle = PI + (PI + thisAngle)
+                        thisAngle = .pi + (.pi + thisAngle)
                     } else {
-                        thisAngle = (PI - thisAngle) - PI
+                        thisAngle = (.pi - thisAngle) - .pi
                     }
                 }
             }

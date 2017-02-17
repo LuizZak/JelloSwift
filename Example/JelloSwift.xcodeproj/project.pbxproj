@@ -14,6 +14,7 @@
 		607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDC1AFB9204008FA782 /* Images.xcassets */; };
 		607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDE1AFB9204008FA782 /* LaunchScreen.xib */; };
 		761582D658283FA30C017437 /* Pods_JelloSwift_Example_JelloSwift_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8450031F73AA21EE70E1545D /* Pods_JelloSwift_Example_JelloSwift_Tests.framework */; };
+		A05EE0D91E578637007978E6 /* Vector2Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05EE0D81E578637007978E6 /* Vector2Tests.swift */; };
 		A0CD1AE31E535C6C00D41938 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0CD1AE21E535C6C00D41938 /* Utils.swift */; };
 		A0CD1AE51E535C7800D41938 /* PolyDrawer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0CD1AE41E535C7800D41938 /* PolyDrawer.swift */; };
 		A0CD1AE71E535CC100D41938 /* DemoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0CD1AE61E535CC100D41938 /* DemoView.swift */; };
@@ -52,6 +53,7 @@
 		7B52A8EEE140BC9CD780C7F1 /* Pods-JelloSwift_Example-JelloSwift_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JelloSwift_Example-JelloSwift_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-JelloSwift_Example-JelloSwift_Tests/Pods-JelloSwift_Example-JelloSwift_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		8450031F73AA21EE70E1545D /* Pods_JelloSwift_Example_JelloSwift_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_JelloSwift_Example_JelloSwift_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9A7119EFEF38E227BE06C6F0 /* Pods-JelloSwift_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JelloSwift_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-JelloSwift_Example/Pods-JelloSwift_Example.release.xcconfig"; sourceTree = "<group>"; };
+		A05EE0D81E578637007978E6 /* Vector2Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Vector2Tests.swift; sourceTree = "<group>"; };
 		A0B032FF1E547D00002AD0BF /* CHANGELOG.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = CHANGELOG.md; path = ../CHANGELOG.md; sourceTree = "<group>"; };
 		A0CD1AE21E535C6C00D41938 /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		A0CD1AE41E535C7800D41938 /* PolyDrawer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PolyDrawer.swift; sourceTree = "<group>"; };
@@ -154,6 +156,7 @@
 				A0CD1AEB1E5363B600D41938 /* JelloSwiftTests.swift */,
 				A0CD1AEC1E5363B600D41938 /* PhysicsMathTest.swift */,
 				A0CD1AED1E5363B600D41938 /* PointMassTests.swift */,
+				A05EE0D81E578637007978E6 /* Vector2Tests.swift */,
 				607FACE91AFB9204008FA782 /* Supporting Files */,
 			);
 			path = Tests;
@@ -418,6 +421,7 @@
 				A0CD1AEE1E5363B600D41938 /* AABBTests.swift in Sources */,
 				A0CD1AF01E5363B600D41938 /* GeomUtilsTests.swift in Sources */,
 				A0CD1AF21E5363B600D41938 /* PhysicsMathTest.swift in Sources */,
+				A05EE0D91E578637007978E6 /* Vector2Tests.swift in Sources */,
 				A0CD1AF31E5363B600D41938 /* PointMassTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

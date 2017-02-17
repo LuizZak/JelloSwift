@@ -86,7 +86,9 @@ public struct ClosedShape: ExpressibleByArrayLiteral {
 /// MARK: - Shape transformations
 extension ClosedShape {
     
-    /// Transforms all vertices by the given angle and scale locally
+    /// Transforms all vertices of this closed shape by the given angle and
+    /// scale locally.
+    /// Transformation is applied in the following order: scale -> rotation.
     public mutating func transformOwnBy(rotatingBy angleInRadians: CGFloat = 0,
                                         scalingBy scale: Vector2 = .unit) {
         let points = localVertices.map {
@@ -97,9 +99,19 @@ extension ClosedShape {
         localVertices = points
     }
     
+    /// Gets a new closed shape by taking each point of this closed shape and
+    /// multiplying them by the given 2x2 matrix.
+    public func transformedBy(multiplyingWith matrix: Vector2.NativeMatrixType) -> ClosedShape {
+        let points = localVertices.map {
+            $0 * matrix
+        }
+        
+        return ClosedShape(points: points)
+    }
+    
     /// Gets a new closed shape from this shape transformed by the given
     /// position, angle, and scale.
-    /// Transformation is applied in the following order:  scale -> rotation ->
+    /// Transformation is applied in the following order: scale -> rotation ->
     /// position.
     public func transformedBy(translatingBy worldPos: Vector2 = .zero,
                               rotatingBy angleInRadians: CGFloat = 0,
@@ -113,9 +125,9 @@ extension ClosedShape {
         return ClosedShape(points: points)
     }
     
-    /// Transforms the points on this closed shape into the given array of
-    /// points.
-    /// Transformation is applied in the following order:  scale -> rotation ->
+    /// Transforms the points on this closed shape, applying the result into a
+    /// given array of points.
+    /// Transformation is applied in the following order: scale -> rotation ->
     /// position.
     /// - note: The target array of points must have the **same** count of
     ///     vertices as this closed shape.
@@ -129,11 +141,24 @@ extension ClosedShape {
         }
     }
     
+    /// Transforms the points on this closed shape using a given transformation
+    /// matrix, applying the result into a given array of points.
+    /// - note: The target array of points must have the **same** count of
+    ///     vertices as this closed shape.
+    public func transformVertices(_ target: inout [Vector2],
+                                  matrix: Vector2.NativeMatrixType) {
+        for i in 0..<target.count {
+            target[i] = localVertices[i] * matrix
+        }
+    }
+    
     private func transform(vertex: Vector2, worldPos: Vector2,
                            angleInRadians: CGFloat, localScale: Vector2) -> Vector2 {
         return Vector2.rotate(vertex * localScale, by: angleInRadians) + worldPos
     }
 }
+
+
 
 /// MARK: - Shape creation methods
 extension ClosedShape {
@@ -145,7 +170,7 @@ extension ClosedShape {
         return .create { shape in
             for i in 0..<pointCount
             {
-                let n = PI * 2 * (CGFloat(i) / CGFloat(pointCount))
+                let n = .pi * 2 * (CGFloat(i) / CGFloat(pointCount))
                 shape.addVertex(Vector2(cos(-n) * radius, sin(-n) * radius))
             }
         }
