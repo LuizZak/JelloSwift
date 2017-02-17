@@ -14,7 +14,6 @@
 		607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDC1AFB9204008FA782 /* Images.xcassets */; };
 		607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDE1AFB9204008FA782 /* LaunchScreen.xib */; };
 		761582D658283FA30C017437 /* Pods_JelloSwift_Example_JelloSwift_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8450031F73AA21EE70E1545D /* Pods_JelloSwift_Example_JelloSwift_Tests.framework */; };
-		A0B033001E547D00002AD0BF /* CHANGELOG.md in Sources */ = {isa = PBXBuildFile; fileRef = A0B032FF1E547D00002AD0BF /* CHANGELOG.md */; };
 		A0CD1AE31E535C6C00D41938 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0CD1AE21E535C6C00D41938 /* Utils.swift */; };
 		A0CD1AE51E535C7800D41938 /* PolyDrawer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0CD1AE41E535C7800D41938 /* PolyDrawer.swift */; };
 		A0CD1AE71E535CC100D41938 /* DemoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0CD1AE61E535CC100D41938 /* DemoView.swift */; };
@@ -403,7 +402,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				A0CD1AE51E535C7800D41938 /* PolyDrawer.swift in Sources */,
-				A0B033001E547D00002AD0BF /* CHANGELOG.md in Sources */,
 				607FACD81AFB9204008FA782 /* ViewController.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
 				A0CD1AE71E535CC100D41938 /* DemoView.swift in Sources */,
@@ -577,6 +575,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = EFEDEDF691EF826695E8A272 /* Pods-JelloSwift_Example-JelloSwift_Tests.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -597,6 +596,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7B52A8EEE140BC9CD780C7F1 /* Pods-JelloSwift_Example-JelloSwift_Tests.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
