@@ -60,7 +60,9 @@ public final class Body: Equatable {
     fileprivate var components: ContiguousArray<BodyComponent> = []
     
     /// Gets the ammount of components in this body
-    public var componentCount: Int { return components.count }
+    public var componentCount: Int {
+        return components.count
+    }
     
     
     // Both these properties are in radians:

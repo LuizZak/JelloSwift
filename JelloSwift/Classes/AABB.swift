@@ -26,25 +26,39 @@ public struct AABB {
     fileprivate(set) public var maximum = Vector2.zero
     
     /// Gets the X position of this AABB
-    public var x: CGFloat { return minimum.x }
+    public var x: CGFloat {
+        return minimum.x
+    }
     /// Gets the Y position of this AABB
-    public var y: CGFloat { return minimum.y }
+    public var y: CGFloat {
+        return minimum.y
+    }
     
     /// Gets the width of this AABB.
     /// This is the same as `maximum.x - minimum.x`
-    public var width: CGFloat { return maximum.x - minimum.x }
+    public var width: CGFloat {
+        return maximum.x - minimum.x
+    }
     
     /// Gets the height of this AABB
     /// This is the same as `maximum.y - minimum.y`
-    public var height: CGFloat { return maximum.y - minimum.y }
+    public var height: CGFloat {
+        return maximum.y - minimum.y
+    }
     
     /// Gets the middle X position of this AABB
-    public var midX: CGFloat { return ((minimum + maximum) / 2).x }
+    public var midX: CGFloat {
+        return (minimum.x + maximum.x) / 2
+    }
     /// Gets the middle Y position of this AABB
-    public var midY: CGFloat { return ((minimum + maximum) / 2).y }
+    public var midY: CGFloat {
+        return (minimum.y + maximum.y) / 2
+    }
     
     /// Gets a CGRect that represents the boundaries of this AABB object
-    public var cgRect: CGRect { return CGRect(x: x, y: y, width: width, height: height) }
+    public var cgRect: CGRect {
+        return CGRect(x: x, y: y, width: width, height: height)
+    }
     
     /// Initializes an empty, invalid AABB instance
     public init() {
@@ -132,7 +146,8 @@ public struct AABB {
     /// Returns whether this AABB intersects the given AABB instance.
     /// This check is inclusive, so the edges of the bounding box are considered
     /// to intersect the other bounding box's edges as well.
-    /// If either this, or the other bounding box are invalid, false is returned.
+    /// If either this, or the other bounding box are invalid, false is 
+    /// returned.
     public func intersects(_ box: AABB) -> Bool {
         if(validity == .invalid || box.validity == .invalid) {
             return false

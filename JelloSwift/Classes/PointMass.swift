@@ -25,7 +25,9 @@ public final class PointMass: VectorRepresentable {
     public var force = Vector2.zero
     
     /// For VectorRepresentable conformance - returns `self.position`
-    public var vector: Vector2 { return position }
+    public var vector: Vector2 {
+        return position
+    }
     
     public init(mass: CGFloat = 0, position: Vector2 = Vector2.zero) {
         self.mass = mass

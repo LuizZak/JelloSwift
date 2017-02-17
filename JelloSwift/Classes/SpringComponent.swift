@@ -13,7 +13,9 @@ import CoreGraphics
 public final class SpringComponent: BodyComponent {
     
     /// Gets the count of springs on this spring component
-    public var springCount: Int { return springs.count }
+    public var springCount: Int {
+        return springs.count
+    }
     
     /// The list of internal springs for the body
     fileprivate var springs: [InternalSpring] = []

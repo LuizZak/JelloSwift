@@ -44,8 +44,7 @@ open class BodyJoint: Equatable {
     /// Optionally provides the distance.
     /// In case the distance was not provided, it will be automatically
     /// calculated based off of the position of each link.
-    public init(on world: World, link1: JointLinkType, link2: JointLinkType,
-                distance: RestDistance? = nil) {
+    public init(on world: World, link1: JointLinkType, link2: JointLinkType, distance: RestDistance? = nil) {
         bodyLink1 = link1
         bodyLink2 = link2
         

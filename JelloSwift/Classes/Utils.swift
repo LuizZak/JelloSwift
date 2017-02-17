@@ -23,7 +23,7 @@ extension Comparable {
 }
 
 extension Sequence {
-    typealias Element = Self.Iterator.Element
+    fileprivate typealias Element = Iterator.Element
     
     // MARK: Helper collection searching methods
     
@@ -73,7 +73,7 @@ extension Sequence {
 extension RangeReplaceableCollection where Iterator.Element: Equatable {
     /// Removes a given element from this collection, using the element's
     /// equality check to determine the first match to remove
-    mutating func remove(_ object: Self.Iterator.Element) {
+    mutating func remove(_ object: Iterator.Element) {
         var index = startIndex
         
         while(index != endIndex) {
@@ -89,13 +89,13 @@ extension RangeReplaceableCollection where Iterator.Element: Equatable {
 
 extension RangeReplaceableCollection {
     /// Removes the first element that fulfills a given condition closure
-    mutating func remove(compare: (Self.Iterator.Element) throws -> Bool) rethrows {
+    mutating func remove(where compute: (Iterator.Element) throws -> Bool) rethrows {
         var index = startIndex
         
         while(index != endIndex) {
             index = self.index(after: index)
             
-            if(try compare(self[index])) {
+            if(try compute(self[index])) {
                 remove(at: index)
                 return
             }

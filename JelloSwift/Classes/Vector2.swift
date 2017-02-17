@@ -72,14 +72,20 @@ public struct Vector2: VectorRepresentable, Equatable, CustomStringConvertible {
     }
     
     /// For conformance to VectorRepresentable - always returns self
-    public var vector: Vector2 { return self }
+    public var vector: Vector2 {
+        return self
+    }
     
     /// Textual representation of this vector's coordinates
-    public var description: String { return "{ \(self.x) : \(self.y) }" }
+    public var description: String {
+        return "{ \(self.x) : \(self.y) }"
+    }
     
     /// Utility property for getting a CGPoint that matches this vector's 
     /// coordinates
-    public var cgPoint: CGPoint { return CGPoint(x: x, y: y) }
+    public var cgPoint: CGPoint {
+        return CGPoint(x: x, y: y)
+    }
     
     init(_ vector: NativeVectorType) {
         theVector = vector
@@ -280,11 +286,17 @@ extension Vector2 {
     
     /// Rotates a given vector by an angle in radians
     public static func rotate(_ vec: Vector2, by angleInRadians: CGFloat) -> Vector2 {
-        if(angleInRadians.truncatingRemainder(dividingBy: (CGFloat(M_PI) * 2)) == 0) {
+        
+        // Check if we have a 0º or 180º rotation - these we can figure out
+        // using conditionals to speedup common paths.
+        let remainder =
+            angleInRadians.truncatingRemainder(dividingBy: (PI * 2))
+        
+        if(remainder == 0) {
             return vec
         }
-        if(angleInRadians.truncatingRemainder(dividingBy: (CGFloat(M_PI) * 2)) == CGFloat(M_PI)) {
-            return vec.perpendicular().perpendicular()
+        if(remainder == PI) {
+            return -vec
         }
         
         let c = cos(angleInRadians)
