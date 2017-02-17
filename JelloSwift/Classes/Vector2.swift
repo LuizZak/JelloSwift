@@ -65,7 +65,8 @@ public struct Vector2: VectorRepresentable, Equatable, CustomStringConvertible {
         return CGFloat(length_squared(theVector))
     }
     
-    /// Returns the magnitude (or square root of the squared length) of this Vector2
+    /// Returns the magnitude (or square root of the squared length) of this 
+    /// Vector2
     public var magnitude : CGFloat {
         return CGFloat(simd.length(theVector))
     }
@@ -76,7 +77,8 @@ public struct Vector2: VectorRepresentable, Equatable, CustomStringConvertible {
     /// Textual representation of this vector's coordinates
     public var description: String { return "{ \(self.x) : \(self.y) }" }
     
-    /// Utility property for getting a CGPoint that matches this vector's coordinates
+    /// Utility property for getting a CGPoint that matches this vector's 
+    /// coordinates
     public var cgPoint: CGPoint { return CGPoint(x: x, y: y) }
     
     init(_ vector: NativeVectorType) {
@@ -150,9 +152,10 @@ extension Vector2 {
     }
     
     /// Calculates the cross product between this and another provided Vector2.
-    /// The resulting scalar would match the 'z' axis of the cross product between
-    /// 3d vectors matching the x and y coordinates of the operands, with the 'z'
-    /// coordinate being 0.
+    /// The resulting scalar would match the 'z' axis of the cross product 
+    /// between
+    /// 3d vectors matching the x and y coordinates of the operands, with the 
+    /// 'z' coordinate being 0.
     public func cross(with other: Vector2) -> CGFloat {
         return CGFloat(theVector.x * other.theVector.x - theVector.y * other.theVector.y)
     }
@@ -205,7 +208,8 @@ extension Vector2 {
     }
     
     static public func %(lhs: Vector2, rhs: Vector2) -> Vector2 {
-        return Vector2(lhs.x.truncatingRemainder(dividingBy: rhs.x), lhs.y.truncatingRemainder(dividingBy: rhs.y))
+        return Vector2(lhs.x.truncatingRemainder(dividingBy: rhs.x),
+                       lhs.y.truncatingRemainder(dividingBy: rhs.y))
     }
     
     // CGFloat interaction
@@ -226,7 +230,8 @@ extension Vector2 {
     }
     
     static public func %(lhs: Vector2, rhs: CGFloat) -> Vector2 {
-        return Vector2(lhs.x.truncatingRemainder(dividingBy: rhs), lhs.y.truncatingRemainder(dividingBy: rhs))
+        return Vector2(lhs.x.truncatingRemainder(dividingBy: rhs),
+                       lhs.y.truncatingRemainder(dividingBy: rhs))
     }
     
     ////
@@ -261,7 +266,8 @@ extension Vector2 {
 }
 
 extension Vector2 {
-    /// Returns a rotated version of this vector, rotated around by a given angle in radians
+    /// Returns a rotated version of this vector, rotated around by a given 
+    /// angle in radians
     public func rotated(by angleInRadians: CGFloat) -> Vector2 {
         return Vector2.rotate(self, by: angleInRadians)
     }
@@ -301,12 +307,14 @@ extension Collection where Iterator.Element: VectorRepresentable, IndexDistance 
     }
 }
 
-/// Returns a Vector2 that represents the minimum coordinates between two Vector2 objects
+/// Returns a Vector2 that represents the minimum coordinates between two 
+/// Vector2 objects
 public func min(_ a: Vector2, _ b: Vector2) -> Vector2 {
     return Vector2(min(a.theVector, b.theVector))
 }
 
-/// Returns a Vector2 that represents the maximum coordinates between two Vector2 objects
+/// Returns a Vector2 that represents the maximum coordinates between two 
+/// Vector2 objects
 public func max(_ a: Vector2, _ b: Vector2) -> Vector2 {
     return Vector2(max(a.theVector, b.theVector))
 }
@@ -319,7 +327,9 @@ public func vectorsAreCCW(_ A: Vector2, B: Vector2) -> Bool {
 ////////
 //// Define the operations to be performed on the Vector2
 ////////
-infix operator • : MultiplicationPrecedence  // This character is available as 'Option-8' combination on Mac keyboards
+
+// This • character is available as 'Option-8' combination on Mac keyboards
+infix operator • : MultiplicationPrecedence
 infix operator =/ : MultiplicationPrecedence
 
 public func round(_ x: Vector2) -> Vector2 {

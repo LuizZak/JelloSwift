@@ -11,9 +11,10 @@ import CoreGraphics
 /// Specifies a point mass that composes a body
 public final class PointMass: VectorRepresentable {
     /// The mass of this point mass.
-    /// Leave this value always `> 0` to maintain consistency on the simulation, unless
-    /// the point is supposed to be fixed.
-    /// Values `< 0.2` usually cause inconsistency and instability in the simulation
+    /// Leave this value always `> 0` to maintain consistency on the simulation,
+    /// unless the point is supposed to be fixed.
+    /// Values `< 0.2` usually cause inconsistency and instability in the
+    /// simulation
     public var mass: CGFloat = 1
     
     /// The global position of the point, in world coordinates
@@ -33,7 +34,8 @@ public final class PointMass: VectorRepresentable {
     
     /// Integrates a single physics simulation step for this point mass
     ///
-    /// - parameter elapsed: The elapsed time to integrate by, usually in seconds
+    /// - parameter elapsed: The elapsed time to integrate by, usually in 
+    /// seconds
     public func integrate(_ elapsed: CGFloat) {
         if (mass.isFinite) {
             let elapMass = elapsed / mass

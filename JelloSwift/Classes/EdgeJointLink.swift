@@ -17,8 +17,10 @@ open class EdgeJointLink: JointLinkType {
     fileprivate let _pointMass2: PointMass
     
     /// The ratio of the edge this edge joint is linked to.
-    /// Values must range between [0 - 1] inclusive, and dictate the middle point of the edge.
-    /// Specifying either 0 or 1 makes this edge joint link behave essentially like a PointJointLink
+    /// Values must range between [0 - 1] inclusive, and dictate the middle
+    /// point of the edge.
+    /// Specifying either 0 or 1 makes this edge joint link behave essentially
+    /// like a PointJointLink
     open var edgeRatio: CGFloat
     
     /// Gets the body that this joint link is linked to
@@ -27,14 +29,19 @@ open class EdgeJointLink: JointLinkType {
     /// Gets the type of joint this joint link represents
     open let linkType = LinkType.edge
     
-    /// Gets the position, in world coordinates, at which this joint links with the underlying body
+    /// Gets the position, in world coordinates, at which this joint links with 
+    /// the underlying body
     open var position: Vector2 {
-        return calculateVectorRatio(_pointMass1.position, vec2: _pointMass2.position, ratio: edgeRatio)
+        return calculateVectorRatio(_pointMass1.position,
+                                    vec2: _pointMass2.position,
+                                    ratio: edgeRatio)
     }
     
     /// Gets the velocity of the object this joint links to
     open var velocity: Vector2 {
-        return calculateVectorRatio(_pointMass1.velocity, vec2: _pointMass2.velocity, ratio: edgeRatio)
+        return calculateVectorRatio(_pointMass1.velocity,
+                                    vec2: _pointMass2.velocity,
+                                    ratio: edgeRatio)
     }
     
     /// Gets the total mass of the subject of this joint link
@@ -42,7 +49,8 @@ open class EdgeJointLink: JointLinkType {
         return _pointMass1.mass + _pointMass2.mass
     }
     
-    /// Gets a value specifying whether the object referenced by this JointLinkType is static
+    /// Gets a value specifying whether the object referenced by this 
+    /// JointLinkType is static
     open var isStatic: Bool {
         return _pointMass1.mass.isInfinite && _pointMass2.mass.isInfinite
     }

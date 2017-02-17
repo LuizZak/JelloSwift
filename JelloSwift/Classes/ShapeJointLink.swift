@@ -15,7 +15,7 @@ open class ShapeJointLink: JointLinkType {
     fileprivate let _pointMasses: [PointMass]
     
     /// The indices of this shape joint link
-    fileprivate let _indices: [Int]
+    fileprivate let _indexes: [Int]
     
     /// Gets the body that this joint link is linked to
     open fileprivate(set) unowned var body: Body
@@ -23,10 +23,12 @@ open class ShapeJointLink: JointLinkType {
     /// Gets the type of joint this joint link represents
     open let linkType = LinkType.shape
     
-    /// The offset to apply to the position of this shape joint, in body coordinates
+    /// The offset to apply to the position of this shape joint, in body 
+    /// coordinates
     open var offset = Vector2.zero
     
-    /// Gets the position, in world coordinates, at which this joint links with the underlying body
+    /// Gets the position, in world coordinates, at which this joint links with 
+    /// the underlying body
     open var position: Vector2 {
         var center = Vector2.zero
         
@@ -73,7 +75,8 @@ open class ShapeJointLink: JointLinkType {
         return sum
     }
     
-    /// Gets a value specifying whether the object referenced by this JointLinkType is static
+    /// Gets a value specifying whether the object referenced by this 
+    /// JointLinkType is static
     open var isStatic: Bool {
         for p in _pointMasses {
             if(p.mass.isFinite) {
@@ -88,7 +91,7 @@ open class ShapeJointLink: JointLinkType {
     public init(body: Body, pointMassIndexes: [Int]) {
         self.body = body
         _pointMasses = pointMassIndexes.map { body.pointMasses[$0] }
-        _indices = pointMassIndexes
+        _indexes = pointMassIndexes
     }
     
     /// Appies a given force to the subject of this joint link
@@ -104,16 +107,18 @@ open class ShapeJointLink: JointLinkType {
         }
     }
     
-    // TODO: Implement the function below to derive the angle of the shape's angle
+    // TODO: Implement the function below to derive the angle of the shape's
+    // angle
     
-    /// Returns the average angle of the vertices of this ShapeJointLink, based on the body's original shape's vertices
+    /// Returns the average angle of the vertices of this ShapeJointLink, based 
+    /// on the body's original shape's vertices
     fileprivate func angle() -> CGFloat {
         var angle: CGFloat = 0
         
         var originalSign = 1
         var originalAngle: CGFloat = 0
         
-        for i in _indices {
+        for i in _indexes {
             let pm = body.pointMasses[i]
             
             let baseNorm = body.baseShape[i].normalized()
@@ -129,7 +134,11 @@ open class ShapeJointLink: JointLinkType {
                 let thisSign = (thisAngle >= 0.0) ? 1 : -1
                 
                 if (abs(diff) > PI && (thisSign != originalSign)) {
-                    thisAngle = (thisSign == -1) ? (PI + (PI + thisAngle)) : ((PI - thisAngle) - PI)
+                    if(thisSign == -1) {
+                        thisAngle = PI + (PI + thisAngle)
+                    } else {
+                        thisAngle = (PI - thisAngle) - PI
+                    }
                 }
             }
             

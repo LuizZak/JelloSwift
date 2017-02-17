@@ -11,7 +11,8 @@ import CoreGraphics
 
 /// Represents a joint link that links directly to a point mass of a body
 open class PointJointLink: JointLinkType {
-    // This is a very straightforward implementation, it basically delegates the calls to the underlying point mass
+    // This is a very straightforward implementation, it basically delegates the
+    // calls to the underlying point mass
     
     /// The point mass this joint is linked to
     fileprivate let _pointMass: PointMass
@@ -22,7 +23,8 @@ open class PointJointLink: JointLinkType {
     /// Gets the type of joint this joint link represents
     open let linkType = LinkType.point
     
-    /// Gets the position, in world coordinates, at which this joint links with the underlying body
+    /// Gets the position, in world coordinates, at which this joint links with
+    /// the underlying body
     open var position: Vector2 {
         return _pointMass.position
     }
@@ -37,7 +39,8 @@ open class PointJointLink: JointLinkType {
         return _pointMass.mass
     }
     
-    /// Gets a value specifying whether the object referenced by this JointLinkType is static
+    /// Gets a value specifying whether the object referenced by this
+    /// JointLinkType is static
     open var isStatic: Bool {
         return _pointMass.mass.isInfinite
     }

@@ -16,35 +16,42 @@ public func ==(lhs: BodyJoint, rhs: BodyJoint) -> Bool {
 /// Base class for joints which unites two separate bodies
 open class BodyJoint: Equatable {
     
-    /// Gets the first link that contins informationa bout the first body linked by this joint
+    /// Gets the first link that contins informationa bout the first body linked
+    /// by this joint
     public final let bodyLink1: JointLinkType
-    /// Gets the second link that contins informationa bout the first body linked by this joint
+    /// Gets the second link that contins informationa bout the first body
+    /// linked by this joint
     public final let bodyLink2: JointLinkType
     
-    /// Whether to allow collisions between the two objects joined by this BodyJoint.
+    /// Whether to allow collisions between the two objects joined by this
+    /// BodyJoint.
     /// Defaults to false
     open var allowCollisions = false
     
     /// Controls whether this valubody joint is enabled.
     /// Disabling body joints disables all of the physics of the joint.
-    /// Note that collisions between bodies are still governed by .allowCollisions even if the joint is disabled
+    /// Note that collisions between bodies are still governed by
+    /// .allowCollisions even if the joint is disabled
     open var enabled = true
     
     /// Gets or sets the rest distance for this joint
-    /// In case the rest distance represents a ranged distance (RestDistance.ranged), the joint only applies
-    /// forces if the distance between the links is dist > restDistance.min && dist < restDistance.max
+    /// In case the rest distance represents a ranged distance 
+    /// (RestDistance.ranged), the joint only applies forces if the distance
+    /// between the links is dist > restDistance.min && dist < restDistance.max
     open var restDistance: RestDistance
     
     /// Initializes a body joint on a given world, linking the two given links.
     /// Optionally provides the distance.
-    /// In case the distance was not provided, it will be automatically calculated based off of the position of each
-    /// link.
-    public init(on world: World, link1: JointLinkType, link2: JointLinkType, distance: RestDistance? = nil) {
+    /// In case the distance was not provided, it will be automatically
+    /// calculated based off of the position of each link.
+    public init(on world: World, link1: JointLinkType, link2: JointLinkType,
+                distance: RestDistance? = nil) {
         bodyLink1 = link1
         bodyLink2 = link2
         
         // Automatic distance calculation
-        restDistance = distance ?? .fixed(link1.position.distance(to: link2.position))
+        restDistance =
+                distance ?? .fixed(link1.position.distance(to: link2.position))
     }
     
     /**
@@ -57,8 +64,8 @@ open class BodyJoint: Equatable {
     }
     
     /// Specifies a rest distance for a body joint.
-    /// Distances can either by fixed by a distance, or ranged
-    /// so the body joint only applies within a specified range
+    /// Distances can either by fixed by a distance, or ranged so the body joint
+    /// only applies within a specified range
     public enum RestDistance: ExpressibleByFloatLiteral, ExpressibleByIntegerLiteral {
         
         /// Fixed distance
@@ -97,9 +104,10 @@ open class BodyJoint: Equatable {
             self = .fixed(CGFloat(value))
         }
         
-        /// Returns whether a given range is within the range of this rest distance.
-        /// If the current value is .fixed, this does an exact equality operation,
-        /// if .ranged, it performs `value > min && value < max`
+        /// Returns whether a given range is within the range of this rest
+        /// distance.
+        /// If the current value is .fixed, this does an exact equality
+        /// operation, if .ranged, it performs `value > min && value < max`
         public func inRange(value: CGFloat) -> Bool {
             switch(self) {
             case .fixed(let d):
@@ -129,7 +137,8 @@ public func ...(lhs: CGFloat, rhs: CGFloat) -> BodyJoint.RestDistance {
     return .ranged(min: lhs, max: rhs)
 }
 
-/// Protocol to be implemented by objects that specify the way a joint links with a body
+/// Protocol to be implemented by objects that specify the way a joint links
+/// with a body
 public protocol JointLinkType {
     
     /// Gets the body that this joint link is linked to
@@ -138,7 +147,8 @@ public protocol JointLinkType {
     /// Gets the type of joint this joint link represents
     var linkType: LinkType { get }
     
-    /// Gets the position, in world coordinates, at which this joint links with the underlying body
+    /// Gets the position, in world coordinates, at which this joint links with
+    /// the underlying body
     var position: Vector2 { get }
     
     /// Gets the velocity of the object this joint links to
@@ -147,7 +157,8 @@ public protocol JointLinkType {
     /// Gets the total mass of the subject of this joint link
     var mass: CGFloat { get }
     
-    /// Gets a value specifying whether the object referenced by this JointLinkType is static
+    /// Gets a value specifying whether the object referenced by this
+    /// JointLinkType is static
     var isStatic: Bool { get }
     
     /// Appies a given force to the subject of this joint link

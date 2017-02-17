@@ -6,15 +6,16 @@
 //  Copyright (c) 2014 Luiz Fernando Silva. All rights reserved.
 //
 
-/// Represents a Gravity component that can be added to a body to make it constantly affected by gravity
+/// Represents a Gravity component that can be added to a body to make it
+/// constantly affected by gravity
 public final class GravityComponent: BodyComponent {
     
     /// The gravity vector to apply to the body
     public var gravity = Vector2(0, -9.8)
     
     /// Accumulates the force of gravity by applying a unified force downwards.
-    /// This force ignores mass by multiplying the gravity component by mass before
-    /// applying the force.
+    /// This force ignores mass by multiplying the gravity component by mass
+    /// before applying the force.
     override public func accumulateExternalForces(on body: Body) {
         super.accumulateExternalForces(on: body)
         

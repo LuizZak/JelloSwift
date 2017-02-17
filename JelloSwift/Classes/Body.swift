@@ -26,7 +26,8 @@ public final class Body: Equatable {
     /// The base shape for the body
     public var baseShape = ClosedShape()
     
-    /// The global shape for the body - this is the same as the base shape, but rotated and translated around the world
+    /// The global shape for the body - this is the same as the base shape, but
+    /// rotated and translated around the world
     public var globalShape: [Vector2] = []
     
     /// The array of point masses for the body
@@ -35,7 +36,8 @@ public final class Body: Equatable {
     /// An array of all the collision that involve this body
     public var pointMassCollisions: [BodyCollisionInformation] = []
     
-    /// Whether to collect the collisions of this body into the pointMassCollisions array. Defaults to false
+    /// Whether to collect the collisions of this body into the
+    /// pointMassCollisions array. Defaults to false
     public var collectCollisions = false
     
     /// The scale for this body's shape
@@ -44,11 +46,14 @@ public final class Body: Equatable {
     /// The derived center position of this body - in world coordinates
     public fileprivate(set) var derivedPos = Vector2.zero
     
-    /// The derived velocity of this body - in world coordinates. The derivation assumes the mean of the velocity of all the point masses
+    /// The derived velocity of this body - in world coordinates. The derivation
+    /// assumes the mean of the velocity of all the point masses
     public fileprivate(set) var derivedVel = Vector2.zero
     
-    /// The velocity damping to apply to the body. Values closer to 0 deaccelerate faster, values closer to 1 deaccelerate slower.
-    /// 1 never deaccelerates. Values outside the range [0, 1] inclusive may introduce instability
+    /// The velocity damping to apply to the body. Values closer to 0
+    /// deaccelerate faster, values closer to 1 deaccelerate slower.
+    /// 1 never deaccelerates. Values outside the range [0, 1] inclusive may
+    /// introduce instability
     public var velDamping: CGFloat = 0.999
     
     /// The array of body components for this body object
@@ -69,36 +74,42 @@ public final class Body: Equatable {
     // Utilize to calculate the omega for the body
     fileprivate var lastAngle: CGFloat = 0
     
-    /// Gets a list of vertices that represents the current position of each PointMass in this body
+    /// Gets a list of vertices that represents the current position of each
+    /// PointMass in this body
     public var vertices: [Vector2] {
         return pointMasses.map { $0.position }
     }
     
     /// The axis-aligned bounding box for this body's point masses.
-    /// Will be slighly expanded to include the velocity of the points, in case this body is kinematic,
-    /// so it won't always match exactly the position of the point masses.
+    /// Will be slighly expanded to include the velocity of the points, in case
+    /// this body is kinematic, so it won't always match exactly the position of
+    /// the point masses.
     public var aabb = AABB()
     
-    /// The index of the material in the world material array to use for this body
+    /// The index of the material in the world material array to use for this
+    /// body
     public var material = 0
     
     /// Whether this body is static
     public var isStatic = false
     
-    /// Whether this body is kinematic - kinematic bodies do not rotate or move their base shape, so they
-    /// always appear to not move, like a static body, but can be squished and moved, like a dynamic body.
-    /// This effectively sticks their globalShape to always be around the current derived position (see
-    /// `setPositionAngle`).
+    /// Whether this body is kinematic - kinematic bodies do not rotate or move
+    /// their base shape, so they always appear to not move, like a static body,
+    /// but can be squished and moved, like a dynamic body. This effectively
+    /// sticks their globalShape to always be around the current derived
+    /// position (see `setPositionAngle`).
     public var isKinematic = false
     
-    /// Whether this body is pinned - pinned bodies rotate around their axis, but try to remain in place,
+    /// Whether this body is pinned - pinned bodies rotate around their axis,
+    /// but try to remain in place,
     /// like a kinematic body.
     public var isPined = false
     
     /// Whether the body is able to rotate while moving
     public var freeRotate = true
     
-    /// A free field that can be used to attach custom objects to a soft body instance
+    /// A free field that can be used to attach custom objects to a soft body
+    /// instance
     public var objectTag: Any? = nil
     
     /// Whether to render this body
@@ -112,7 +123,10 @@ public final class Body: Equatable {
     /// The Y-axis bitmask for the body - used for collision filtering
     public var bitmaskY: Bitmask = 0
     
-    public init(world: World?, shape: ClosedShape, pointMasses: [CGFloat] = [1], position: Vector2 = Vector2.zero, angle: CGFloat = 0, scale: Vector2 = Vector2.unit, kinematic: Bool = false, components: [BodyComponentCreator] = []) {
+    public init(world: World?, shape: ClosedShape, pointMasses: [CGFloat] = [1],
+                position: Vector2 = Vector2.zero, angle: CGFloat = 0,
+                scale: Vector2 = Vector2.unit, kinematic: Bool = false,
+                components: [BodyComponentCreator] = []) {
         aabb = AABB()
         derivedPos = position
         derivedAngle = angle
@@ -197,7 +211,8 @@ public final class Body: Equatable {
         for (i, curP) in pointMasses.enumerated() {
             let nextP = pointMasses[(i + 1) % c]
             
-            edges[i] = BodyEdge(edgeIndex: i, start: curP.position, end: nextP.position)
+            edges[i] = BodyEdge(edgeIndex: i, start: curP.position,
+                                end: nextP.position)
         }
     }
     
@@ -226,14 +241,20 @@ public final class Body: Equatable {
         let curP = pointMasses[edgeIndex]
         let nextP = pointMasses[(edgeIndex + 1) % pointMasses.count]
         
-        edges[edgeIndex] = BodyEdge(edgeIndex: edgeIndex, start: curP.position, end: nextP.position)
+        edges[edgeIndex] = BodyEdge(edgeIndex: edgeIndex, start: curP.position,
+                                    end: nextP.position)
     }
     
-    /// Updates the AABB for this body, including padding for velocity given a timestep.
-    /// This function is called by the World object on Update(), so the user should not need this in most cases.
+    /// Updates the AABB for this body, including padding for velocity given a
+    /// timestep.
+    /// This function is called by the World object on Update(), so the user
+    /// should not need this in most cases.
     /// 
-    /// - parameter elapsed: elapsed The elapsed time to update by, usually in seconds
-    /// - parameter forceUpdate: Whether to force the update of the body, even if it's a static body
+    /// - parameter elapsed:
+    ///     The elapsed time to update by, usually in seconds
+    ///
+    /// - parameter forceUpdate:
+    ///     Whether to force the update of the body, even if it's a static body
     public func updateAABB(_ elapsed: CGFloat, forceUpdate: Bool) {
         if(!isStatic && !forceUpdate) {
             return
@@ -251,16 +272,19 @@ public final class Body: Equatable {
     }
     
     /// Sets the shape of this body to a new ClosedShape object.  This function
-    /// will remove any existing PointMass objects, and replace them with new ones IF
-    /// the new shape has a different vertex count than the previous one.  In this case
-    /// the mass for each newly added point mass will be set zero.  Otherwise the shape is just
-    /// updated, not affecting the existing PointMasses.
+    /// will remove any existing PointMass objects, and replace them with new
+    /// ones IF the new shape has a different vertex count than the previous
+    /// one. In this case the mass for each newly added point mass will be set
+    /// zero. Otherwise the shape is just updated, not affecting the existing
+    /// PointMasses.
     public func setShape(_ shape: ClosedShape) {
         baseShape = shape
         
-        globalShape = [Vector2](repeating: Vector2.zero, count: shape.localVertices.count)
+        globalShape = [Vector2](repeating: Vector2.zero,
+                                count: shape.localVertices.count)
         
-        baseShape.transformVertices(&globalShape, worldPos: derivedPos, angleInRadians: derivedAngle, localScale: scale)
+        baseShape.transformVertices(&globalShape, worldPos: derivedPos,
+                                    angleInRadians: derivedAngle, localScale: scale)
         
         if(baseShape.localVertices.count != pointMasses.count) {
             pointMasses = []
@@ -285,26 +309,29 @@ public final class Body: Equatable {
     public func setMassForPointMass(atIndex index: Int, mass: CGFloat) {
         pointMasses[index].mass = mass
         
-        isStatic = pointMasses.any { $0.mass.isInfinite } // Re-evaluate whether body is static
+        // Re-evaluate whether body is static
+        isStatic = pointMasses.any { $0.mass.isInfinite }
     }
     
     /// Sets the mass for all the point masses from a list of masses.
-    /// In case the array count is bigger than the point mass count, it
-    /// only sets up to the count of masses in the array, if larger, it
-    /// sets the matching masses for all point masses, and ignores the
-    /// rest of the array
+    /// In case the array count is bigger than the point mass count, it only
+    /// sets up to the count of masses in the array, if larger, it sets the
+    /// matching masses for all point masses, and ignores the rest of the array
     public func setMass(fromList masses: [CGFloat]) {
         for (mass, pointMass) in zip(masses, pointMasses) {
             pointMass.mass = mass
         }
         
-        isStatic = pointMasses.any { $0.mass.isInfinite } // Re-evaluate whether body is static
+        // Re-evaluate whether body is static
+        isStatic = pointMasses.any { $0.mass.isInfinite }
     }
     
     /// Sets the position and angle of the body manually.
-    /// Setting the position and angle resets the current shape to the original base shape of the object
+    /// Setting the position and angle resets the current shape to the original
+    /// base shape of the object
     public func setPositionAngle(_ pos: Vector2, angle: CGFloat, scale: Vector2) {
-        baseShape.transformVertices(&globalShape, worldPos: pos, angleInRadians: angle, localScale: scale)
+        baseShape.transformVertices(&globalShape, worldPos: pos,
+                                    angleInRadians: angle, localScale: scale)
         
         for (i, pm) in pointMasses.enumerated() {
             pm.position = globalShape[i]
@@ -321,10 +348,13 @@ public final class Body: Equatable {
         }
     }
     
-    /// Derives the global position and angle of this body, based on the average of all the points.
-    /// This updates the DerivedPosision, DerivedAngle, and DerivedVelocity properties.
-    /// This is called by the World object each Update(), so usually a user does not need to call this.  Instead
-    /// you can juse access the DerivedPosition, DerivedAngle, DerivedVelocity, and DerivedOmega properties.
+    /// Derives the global position and angle of this body, based on the average
+    /// of all the points.
+    /// This updates the DerivedPosision, DerivedAngle, and DerivedVelocity
+    /// properties.
+    /// This is called by the World object each Update(), so usually a user does
+    /// not need to call this. Instead you can juse access the DerivedPosition,
+    /// DerivedAngle, DerivedVelocity, and DerivedOmega properties.
     public func derivePositionAndAngle(_ elapsed: CGFloat) {
         // No need if this is a static body, or kinematically controlled.
         if (isStatic || isKinematic) {
@@ -339,59 +369,67 @@ public final class Body: Equatable {
             derivedVel = PointMass.averageVelocity(of: pointMasses)
         }
             
-        if(freeRotate) {
-            let meanPos = isPined ? currentDerivedPosition : derivedPos
-            
-            // find the average angle of all of the masses.
-            var angle: CGFloat = 0
+        if(!freeRotate) {
+            return
+        }
         
-            var originalSign = 1
-            var originalAngle: CGFloat = 0
+        let meanPos = isPined ? currentDerivedPosition : derivedPos
+        
+        // find the average angle of all of the masses.
+        var angle: CGFloat = 0
+    
+        var originalSign = 1
+        var originalAngle: CGFloat = 0
+        
+        let c = pointMasses.count
+        for (i, pm) in pointMasses.enumerated() {
+            let baseNorm = baseShape[i].normalized()
+            let curNorm  = (pm.position - meanPos).normalized()
             
-            let c = pointMasses.count
-            for (i, pm) in pointMasses.enumerated() {
-                let baseNorm = baseShape[i].normalized()
-                let curNorm  = (pm.position - meanPos).normalized()
+            var thisAngle = atan2(baseNorm.x * curNorm.y - baseNorm.y * curNorm.x, baseNorm • curNorm)
+            
+            if (i == 0) {
+                originalSign = (thisAngle >= 0.0) ? 1 : -1
+                originalAngle = thisAngle
+            } else {
+                let diff = (thisAngle - originalAngle)
+                let thisSign = (thisAngle >= 0.0) ? 1 : -1
                 
-                var thisAngle = atan2(baseNorm.x * curNorm.y - baseNorm.y * curNorm.x, baseNorm • curNorm)
-                
-                if (i == 0) {
-                    originalSign = (thisAngle >= 0.0) ? 1 : -1
-                    originalAngle = thisAngle
-                } else {
-                    let diff = (thisAngle - originalAngle)
-                    let thisSign = (thisAngle >= 0.0) ? 1 : -1
-                    
-                    if (abs(diff) > PI && (thisSign != originalSign)) {
-                        thisAngle = (thisSign == -1) ? (PI + (PI + thisAngle)) : ((PI - thisAngle) - PI)
+                if (abs(diff) > PI && (thisSign != originalSign)) {
+                    if(thisSign == -1) {
+                        thisAngle = PI + (PI + thisAngle)
+                    } else {
+                        thisAngle = (PI - thisAngle) - PI
                     }
                 }
-                
-                angle += thisAngle
             }
             
-            angle /= CGFloat(c)
-        
-            derivedAngle = angle
-            
-            // now calculate the derived Omega, based on change in angle over time.
-            var angleChange = (derivedAngle - lastAngle)
-        
-            if ((angleChange < 0 ? -angleChange : angleChange) >= PI) {
-                if (angleChange < 0) {
-                    angleChange = angleChange + (PI * 2)
-                } else {
-                    angleChange = angleChange - (PI * 2)
-                }
-            }
-        
-            derivedOmega = angleChange / elapsed
-        
-            lastAngle = derivedAngle
+            angle += thisAngle
         }
+        
+        angle /= CGFloat(c)
+    
+        derivedAngle = angle
+        
+        // now calculate the derived Omega, based on change in angle over 
+        // time.
+        var angleChange = (derivedAngle - lastAngle)
+    
+        if ((angleChange < 0 ? -angleChange : angleChange) >= PI) {
+            if (angleChange < 0) {
+                angleChange = angleChange + (PI * 2)
+            } else {
+                angleChange = angleChange - (PI * 2)
+            }
+        }
+    
+        derivedOmega = angleChange / elapsed
+    
+        lastAngle = derivedAngle
     }
     
-    /// This function should add all internal forces to the Force member variable of each PointMass in the body.
+    /// This function should add all internal forces to the Force member
+    /// variable of each PointMass in the body.
     /// These should be forces that try to maintain the shape of the body.
     public func accumulateInternalForces() {
         for component in components {
@@ -399,8 +437,10 @@ public final class Body: Equatable {
         }
     }
     
-    /// This function should add all external forces to the Force member variable of each PointMass in the body.
-    /// These are external forces acting on the PointMasses, such as gravity, etc.
+    /// This function should add all external forces to the Force member
+    /// variable of each PointMass in the body.
+    /// These are external forces acting on the PointMasses, such as gravity,
+    /// etc.
     public func accumulateExternalForces() {
         for component in components {
             component.accumulateExternalForces(on: self)
@@ -482,19 +522,22 @@ public final class Body: Equatable {
             return false
         }
         
-        // basic idea: draw a line from the point to a point known to be outside the body.  count the number of
-        // lines in the polygon it intersects.  if that number is odd, we are inside.  if it's even, we are outside.
-        // in this implementation we will always use a line that moves off in the X direction from the point to
-        // simplify things.
+        // basic idea: draw a line from the point to a point known to be outside
+        // the body. count the number of lines in the polygon it intersects. 
+        // if that number is odd, we are inside. 
+        // if it's even, we are outside.
+        // in this implementation we will always use a line that moves off in
+        // the X direction from the point to simplify things.
         let endPt: Vector2
         
         // line we are testing against goes from pt -> endPt.
         var inside = false
         
-        // If the line lies to the left of the body, apply the test going from the point to the left
-        // this way we may end up reducing the total ammount of edges to test against.
-        // This basic assumption may not hold for every body, but for most bodies (specially round),
-        // this may hold true most of the time.
+        // If the line lies to the left of the body, apply the test going from
+        // the point to the left this way we may end up reducing the total
+        // ammount of edges to test against.
+        // This basic assumption may not hold for every body, but for most
+        // bodies (specially round), this may hold true most of the time.
         if(pt.x < aabb.midX) {
             endPt = Vector2(aabb.minimum.x - 0.1, pt.y)
             
@@ -509,9 +552,11 @@ public final class Body: Equatable {
                     continue
                 }
                 
-                // Check if the edge crosses the imaginary horizontal line from top to bottom or bottom to top
+                // Check if the edge crosses the imaginary horizontal line from
+                // top to bottom or bottom to top
                 if (((edgeSt.y <= pt.y) && (edgeEnd.y > pt.y)) || ((edgeSt.y > pt.y) && (edgeEnd.y <= pt.y))) {
-                    // this line crosses the test line at some point... does it do so within our test range?
+                    // this line crosses the test line at some point... does it 
+                    // do so within our test range?
                     let slope = (edgeEnd.x - edgeSt.x) / (edgeEnd.y - edgeSt.y)
                     let hitX = edgeSt.x + ((pt.y - edgeSt.y) * slope)
                     
@@ -534,9 +579,11 @@ public final class Body: Equatable {
                     continue
                 }
                 
-                // Check if the edge crosses the imaginary horizontal line from top to bottom or bottom to top
+                // Check if the edge crosses the imaginary horizontal line from
+                // top to bottom or bottom to top
                 if (((edgeSt.y <= pt.y) && (edgeEnd.y > pt.y)) || ((edgeSt.y > pt.y) && (edgeEnd.y <= pt.y))) {
-                    // this line crosses the test line at some point... does it do so within our test range?
+                    // this line crosses the test line at some point... does it
+                    // do so within our test range?
                     let slope = (edgeEnd.x - edgeSt.x) / (edgeEnd.y - edgeSt.y)
                     let hitX = edgeSt.x + ((pt.y - edgeSt.y) * slope)
                     
@@ -550,7 +597,8 @@ public final class Body: Equatable {
         return inside
     }
     
-    /// Returns whether the given line consisting of two points intersects this body
+    /// Returns whether the given line consisting of two points intersects this
+    /// body
     public func intersectsLine(from start: Vector2, to end: Vector2) -> Bool {
         // Create and test against a temporary line AABB
         if(!aabb.intersects(AABB(points: [start, end]))) {
@@ -567,7 +615,8 @@ public final class Body: Equatable {
         return false
     }
     
-    /// Returns whether the given ray collides with this Body, changing the resulting collision vector before returning
+    /// Returns whether the given ray collides with this Body, changing the
+    /// resulting collision vector before returning
     public func raycast(from start: Vector2, to end: Vector2) -> Vector2? {
         // Test each edge against the line
         var p1 = Vector2.zero
@@ -588,14 +637,19 @@ public final class Body: Equatable {
     }
     
     /**
-     * Given a global point, finds the closest point on an edge of a specified index, returning the squared distance to the edge found
+     * Given a global point, finds the closest point on an edge of a specified 
+     * index, returning the squared distance to the edge found
      *
-     * - parameter pt: The point to get the closest edge of, in world coordinates
+     * - parameter pt: The point to get the closest edge of, in world 
+     *      coordinates
      * - parameter edgeNum: The index of the edge to search
      * - returns: A tuple containing the results of the test, with fields:
-     *            **hitPoint**: The closest point in the edge to the global point provided
-     *            **normal**: A unit vector containing information about the normal of the edge found
-     *            **edgeD**: The ratio of the edge where the point was grabbed, [0-1] inclusive
+     *            **hitPoint**: The closest point in the edge to the global
+     *  point provided
+     *            **normal**: A unit vector containing information about the
+     *  normal of the edge found
+     *            **edgeD**: The ratio of the edge where the point was grabbed, 
+     *  [0-1] inclusive
      *            **distance**: The squared distance to the closest edge found
      */
     public func closestPointSquared(to pt: Vector2, onEdge edgeNum: Int) -> (hitPoint: Vector2, normal: Vector2, edgeD: CGFloat, distance: CGFloat) {
@@ -645,14 +699,19 @@ public final class Body: Equatable {
     }
     
     /**
-     * Given a global point, finds the closest point on an edge of a specified index, returning the distance to the edge found
+     * Given a global point, finds the closest point on an edge of a specified
+     * index, returning the distance to the edge found
      *
-     * - parameter pt: The point to get the closest edge of, in world coordinates
+     * - parameter pt: The point to get the closest edge of, in world 
+     *      coordinates
      * - parameter edgeNum: The index of the edge to search
      * - returns: A tuple containing the results of the test, with fields:
-     *            **hitPoint**: The closest point in the edge to the global point provided
-     *            **normal**: A unit vector containing information about the normal of the edge found
-     *            **edgeD**: The ratio of the edge where the point was grabbed, [0-1] inclusive
+     *            **hitPoint**: The closest point in the edge to the global
+     *  point provided
+     *            **normal**: A unit vector containing information about the
+     *  normal of the edge found
+     *            **edgeD**: The ratio of the edge where the point was grabbed, 
+     *  [0-1] inclusive
      *            **distance**: The distance to the closest edge found
     */
     public func closestPoint(to pt: Vector2, onEdge edgeNum: Int) -> (hitPoint: Vector2, normal: Vector2, edgeD: CGFloat, distance: CGFloat) {
@@ -662,16 +721,22 @@ public final class Body: Equatable {
     }
     
     /**
-     * Given a global point, finds the point on this body that is closest to the given global point, and if it's an edge, information about the edge it resides on
+     * Given a global point, finds the point on this body that is closest to the
+     * given global point, and if it's an edge, information about the edge it
+     * resides on
      *
-     * - parameter pt: The point to get the closest edge of, in world coordinates
+     * - parameter pt: The point to get the closest edge of, in world 
+     *      coordinates
      * - returns: The distance to the closest edge found
      * - returns: A tuple containing the results of the test, with fields:
-     *            **hitPoint**: The closest point in the edge to the global point provided
-     *            **normal**: A unit vector containing information about the normal of the edge found
+     *            **hitPoint**: The closest point in the edge to the global
+     *  point provided
+     *            **normal**: A unit vector containing information about the 
+     *  normal of the edge found
      *            **pointA**: The index of the first point of the edge
      *            **pointB**: The index of the second point of the edge
-     *            **edgeD**: The ratio of the edge where the point was grabbed, [0-1] inclusive
+     *            **edgeD**: The ratio of the edge where the point was grabbed, 
+     *  [0-1] inclusive
      *            **distance**: The distance to the closest edge found
     */
     public func closestPoint(to pt: Vector2) -> (hitPoint: Vector2, normal: Vector2, pointA: Int, pointB: Int, edgeD: CGFloat, distance: CGFloat) {
@@ -703,17 +768,23 @@ public final class Body: Equatable {
     
     
     /**
-     * Returns the closest point to the given position on an edge of the body's shape
+     * Returns the closest point to the given position on an edge of the body's 
+     * shape
      * The position must be in world coordinates
-     * The tolerance is the distance to the edge that will be ignored if larget than that
-     * Returns nil if no edge found (no points on the shape), or a tuple of the parameters that can be used to track down the shape's edge
+     * The tolerance is the distance to the edge that will be ignored if larget
+     * than that
+     * Returns nil if no edge found (no points on the shape), or a tuple of the
+     * parameters that can be used to track down the shape's edge
      *
      * - parameter pt: The point to get the closest edge of, in world coordinates
-     * - parameter tolerance: A tolerance distance for the edges detected - any edge farther than this distance is ignored
-     * - returns: A tuple containing information about the edge, if it was found, or nil if none was found.
+     * - parameter tolerance: A tolerance distance for the edges detected - any 
+     *      edge farther than this distance is ignored
+     * - returns: A tuple containing information about the edge, if it was
+     *      found, or nil if none was found.
      *  Contents of the tuple:
      *  **edgePosition**: The edge's closest position to the point provided
-     *  **edgeRatio**: The ratio of the edge where the point was grabbed, [0-1] inclusive
+     *  **edgeRatio**: The ratio of the edge where the point was grabbed, [0-1] 
+     *  inclusive
      *  **edgePoint1**: The first point mass on the edge
      *  **edgePoint2**: The second point mass on the edge
      */
@@ -737,7 +808,8 @@ public final class Body: Equatable {
             
             let adotb = ((pm.position - pt) • d).clamped(minimum: 0, maximum: len)
             
-            // Apply the dot product to the normalized vector - this projects the point on top of the edge
+            // Apply the dot product to the normalized vector - this projects
+            // the point on top of the edge
             d *= adotb
             
             let dis = pt - (pm.position - d)
@@ -780,12 +852,15 @@ public final class Body: Equatable {
     }
     
     /**
-     * Applies a global force to all the point masses in this body at the specified point, in world coordinates.
-     * Applying a force with any position off-center of the body (different than `derivedPos`) will result in an additional torque
-     * being applied to the body, making it spin.
+     * Applies a global force to all the point masses in this body at the
+     * specified point, in world coordinates.
+     * Applying a force with any position off-center of the body (different than
+     * `derivedPos`) will result in an additional torque being applied to the
+     * body, making it spin.
      * Ignored, if body is static.
      *
-     * - parameter pt: The point to apply the force, in world coordinates. Specify .derivedPos to apply a force at the exact center of the body
+     * - parameter pt: The point to apply the force, in world coordinates. 
+     *      Specify .derivedPos to apply a force at the exact center of the body
      * - parameter force: The force to apply to the point masses in this body
     */
     public func applyForce(_ force: Vector2, atGlobalPoint pt: Vector2) {
@@ -806,7 +881,8 @@ public final class Body: Equatable {
      * Adds a velocity vector to all the point masses in this body
      * Ignored, if body is static.
      *
-     * - parameter velocity: The velocity to add to all the point masses in this body
+     * - parameter velocity: The velocity to add to all the point masses in this
+     *      body
      */
     public func addVelocity(_ velocity: Vector2) {
         if(isStatic) {
@@ -818,7 +894,8 @@ public final class Body: Equatable {
         }
     }
     
-    /// Resets the pointMassCollisions array of the body, keeping capacity in the process.
+    /// Resets the pointMassCollisions array of the body, keeping capacity in 
+    /// the process.
     public func resetCollisionInfo() {
         pointMassCollisions.removeAll(keepingCapacity: true)
     }

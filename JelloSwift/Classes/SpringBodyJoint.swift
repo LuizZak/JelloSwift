@@ -18,8 +18,12 @@ open class SpringBodyJoint : BodyJoint {
     /// The spring damping for this spring body joint
     var springDamping: CGFloat
     
-    /// Inits a new spring body joint witht he specified parameters. Leave the distance as -1 to calculate the distance automatically from the current distance of the two provided joint links
-    public init(on world: World, link1: JointLinkType, link2: JointLinkType, coefficient: CGFloat, damping: CGFloat, distance: RestDistance? = nil) {
+    /// Inits a new spring body joint witht he specified parameters. Leave the 
+    /// distance as -1 to calculate the distance automatically from the current 
+    /// distance of the two provided joint links
+    public init(on world: World, link1: JointLinkType, link2: JointLinkType,
+                coefficient: CGFloat, damping: CGFloat,
+                distance: RestDistance? = nil) {
         self.springCoefficient = coefficient
         self.springDamping = damping
         
@@ -47,7 +51,11 @@ open class SpringBodyJoint : BodyJoint {
         
         let targetDist = restDistance.clamp(value: dist)
         
-        let force = calculateSpringForce(posA: pos1, velA: bodyLink1.velocity, posB: pos2, velB: bodyLink2.velocity, distance: targetDist, springK: springCoefficient, springD: springDamping)
+        let force = calculateSpringForce(posA: pos1, velA: bodyLink1.velocity,
+                                         posB: pos2, velB: bodyLink2.velocity,
+                                         distance: targetDist,
+                                         springK: springCoefficient,
+                                         springD: springDamping)
         
         if(!bodyLink1.isStatic && !bodyLink2.isStatic) {
             let mass1 = bodyLink1.mass

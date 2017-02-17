@@ -11,7 +11,8 @@ import CoreGraphics
 /// CGFloat version of the PI constant
 public let PI = CGFloat(M_PI)
 
-/// Returns an approximation of the area of the polygon defined by a given set of vertices
+/// Returns an approximation of the area of the polygon defined by a given set
+/// of vertices
 public func polygonArea<T: BidirectionalCollection>(of points: T) -> CGFloat where T.Iterator.Element: VectorRepresentable {
     var area: CGFloat = 0
     
@@ -26,8 +27,10 @@ public func polygonArea<T: BidirectionalCollection>(of points: T) -> CGFloat whe
 }
 
 /// Checks if 2 line segments intersect. (line A collides with line B)
-/// Returns a tuple containing information about the hit detection, or nil, if the lines don't intersect
-public func lineIntersect(lineA: (start: Vector2, end: Vector2), lineB: (start: Vector2, end: Vector2)) ->  (hitPt: Vector2, Ua: CGFloat, Ub: CGFloat)? {
+/// Returns a tuple containing information about the hit detection, or nil, if
+/// the lines don't intersect
+public func lineIntersect(lineA: (start: Vector2, end: Vector2),
+                          lineB: (start: Vector2, end: Vector2)) -> (hitPt: Vector2, Ua: CGFloat, Ub: CGFloat)? {
     let denom = ((lineB.end.y - lineB.start.y) * (lineA.end.x - lineA.start.x)) - ((lineB.end.x - lineB.start.x) * (lineA.end.y - lineA.start.y))
     
     // if denom == 0, lines are parallel - being a bit generous on this one..
@@ -51,7 +54,8 @@ public func lineIntersect(lineA: (start: Vector2, end: Vector2), lineB: (start: 
     return nil
 }
 
-// Calculates a spring force, given position, velocity, spring constant, and damping factor
+/// Calculates a spring force, given position, velocity, spring constant, and
+/// damping factor
 public func calculateSpringForce(posA: Vector2, velA: Vector2, posB: Vector2, velB: Vector2, distance: CGFloat, springK: CGFloat, springD: CGFloat) -> Vector2 {
     var dist = posA.distance(to: posB)
     
@@ -69,7 +73,8 @@ public func calculateSpringForce(posA: Vector2, velA: Vector2, posB: Vector2, ve
     return BtoA * ((dist * springK) - (totalRelVel * springD))
 }
 
-/// Returns a Vector2 that represents a point between vec1 and vec2, with a given ratio specified
+/// Returns a Vector2 that represents a point between vec1 and vec2, with a
+/// given ratio specified
 public func calculateVectorRatio(_ vec1: Vector2, vec2: Vector2, ratio: CGFloat) -> Vector2 {
     return vec1 + (vec2 - vec1) * ratio
 }

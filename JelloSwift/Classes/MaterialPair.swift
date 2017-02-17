@@ -8,19 +8,21 @@
 
 import CoreGraphics
 
-// Represents information about the collision response behavior between two bodies
+/// Represents information about the collision response behavior between two
+/// bodies
 public struct MaterialPair {
     
-    // Whether the collision between the two bodies should happen
+    /// Whether the collision between the two bodies should happen
     public var collide = true
     
-    // The elasticity of the point mass when bouncing off the bodies
+    /// The elasticity of the point mass when bouncing off the bodies
     public var elasticity: CGFloat = 0.0
     
-    // The relative friction between the two bodies
+    /// The relative friction between the two bodies
     public var friction: CGFloat = 1.0
     
-    // A function to call and utilize as a collision filter when figuring out whether the two bodies should collide
+    /// A function to call and utilize as a collision filter when figuring out
+    /// whether the two bodies should collide
     public var collisionFilter: (_ info: BodyCollisionInformation, _ normalVelocity: CGFloat) -> (Bool)
     
     public init() {
@@ -31,7 +33,9 @@ public struct MaterialPair {
     }
 }
 
-// The default collision filter. Always returns true, so all collisions passed through it are approved
-public func defaultCollisionFilter(_ info: BodyCollisionInformation, normalVelocity: CGFloat) -> Bool {
+/// The default collision filter. Always returns true, so all collisions passed 
+/// through it are approved
+public func defaultCollisionFilter(_ info: BodyCollisionInformation,
+                                   normalVelocity: CGFloat) -> Bool {
     return true
 }

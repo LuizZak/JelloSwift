@@ -8,14 +8,15 @@
 
 import CoreGraphics
 
-/// Represents an axis-aligned bounding box, utilized to figure out the AABB of soft-bodies
+/// Represents an axis-aligned bounding box, utilized to figure out the AABB of
+/// soft-bodies
 public struct AABB {
     /// Returns an empty, invalid AABB
     static let empty = AABB()
     
     /// The validity of this AABB.
-    /// AABBs that have a .invalid validity set cannot be used until they are expanded
-    /// via calls to `AABB.expand(toInclude:)` methods bellow.
+    /// AABBs that have a .invalid validity set cannot be used until they are
+    /// expanded via calls to `AABB.expand(toInclude:)` methods bellow.
     public var validity = PointValidity.invalid
     
     /// Maximum points for this bounding box
@@ -50,9 +51,10 @@ public struct AABB {
         
     }
     
-    /// Initializes a valid AABB instance out of the given minimum and maximum coordinates.
-    /// The coordinates are not checked for ordering, and will be directly assigned to `minimum`
-    /// and `maximum` properties.
+    /// Initializes a valid AABB instance out of the given minimum and maximum
+    /// coordinates.
+    /// The coordinates are not checked for ordering, and will be directly
+    /// assigned to `minimum` and `maximum` properties.
     public init(min: Vector2, max: Vector2) {
         validity = .valid
       
@@ -60,8 +62,8 @@ public struct AABB {
         maximum = max
     }
     
-    /// Initializes a valid AABB out of a set of points, expanding to the smallest bounding box
-    /// capable of fitting each point.
+    /// Initializes a valid AABB out of a set of points, expanding to the
+    /// smallest bounding box capable of fitting each point.
     public init(points: [Vector2]) {
         expand(toInclude: points)
     }
@@ -71,10 +73,10 @@ public struct AABB {
         validity = .invalid
     }
     
-    /// Expands the bounding box of this AABB to include the given point. If the AABB
-    /// is invalid, it sets the `minimum` and `maximum` coordinates to the point, if
-    /// not, it fits the point, expanding the bounding box to fit the point, if
-    /// necessary.
+    /// Expands the bounding box of this AABB to include the given point. If the
+    /// AABB is invalid, it sets the `minimum` and `maximum` coordinates to the
+    /// point, if not, it fits the point, expanding the bounding box to fit the
+    /// point, if necessary.
     public mutating func expand(toInclude point: Vector2) {
         if(validity == .invalid) {
             minimum = point
@@ -87,7 +89,8 @@ public struct AABB {
         }
     }
     
-    /// Expands the bounding box of this AABB to include the given point set of points.
+    /// Expands the bounding box of this AABB to include the given point set of
+    /// points.
     /// Same as calling `expand(toInclude:Vector2)` over each point.
     /// If the array is empty, nothing is done.
     public mutating func expand(toInclude points: [Vector2]) {

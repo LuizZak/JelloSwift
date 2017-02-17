@@ -11,7 +11,8 @@ import CoreGraphics
 
 /// Represents a joint link that links to a while body
 open class BodyJointLink: JointLinkType {
-    // Like the PointJointLink, this is a very straightforward implementation, delegating most of the methods to the underlying body object
+    // Like the PointJointLink, this is a very straightforward implementation,
+    // delegating most of the methods to the underlying body object
     
     /// Gets the body that this joint link is linked to
     open fileprivate(set) unowned var body: Body
@@ -19,7 +20,8 @@ open class BodyJointLink: JointLinkType {
     /// Gets the type of joint this joint link represents
     open let linkType = LinkType.body
     
-    /// Gets the position, in world coordinates, at which this joint links with the underlying body
+    /// Gets the position, in world coordinates, at which this joint links with
+    /// the underlying body
     open var position: Vector2 {
         return body.derivedPos
     }
@@ -34,7 +36,8 @@ open class BodyJointLink: JointLinkType {
         return body.pointMasses.reduce(0) { $0 + $1.mass }
     }
     
-    /// Gets a value specifying whether the object referenced by this JointLinkType is static
+    /// Gets a value specifying whether the object referenced by this 
+    /// JointLinkType is static
     open var isStatic: Bool {
         return body.isStatic || body.isPined
     }

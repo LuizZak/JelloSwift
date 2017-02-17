@@ -8,16 +8,18 @@
 
 import CoreGraphics
 
-/// Contains a set of points that is equivalent as the internal shape of a soft body.
-/// Do note that points must be added in a counter-clockwise fashion, since the points
-/// are represented in an Euclidean space where the y-axis grows upwards, as oposed to
-/// screen space where the y-axis grows down.
+/// Contains a set of points that is equivalent as the internal shape of a soft
+/// body.
+/// Do note that points must be added in a counter-clockwise fashion, since the
+/// points are represented in an Euclidean space where the y-axis grows upwards,
+/// as oposed to screen space where the y-axis grows down.
 public struct ClosedShape: ExpressibleByArrayLiteral {
     public typealias Element = Vector2
     
     fileprivate(set) public var localVertices: [Vector2] = []
     
-    /// Gets or sets the Vector2 for the vertex with a given integer index on this ClosedShape
+    /// Gets or sets the Vector2 for the vertex with a given integer index on
+    /// this ClosedShape
     public subscript(i: Int) -> Vector2 {
         get {
             return localVertices[i]
@@ -51,15 +53,16 @@ public struct ClosedShape: ExpressibleByArrayLiteral {
         addVertex(Vector2(x, y))
     }
     
-    /// Finishes constructing this closed shape, optionally converting them to local space (by default)
+    /// Finishes constructing this closed shape, optionally converting them to 
+    /// local space (by default)
     public mutating func finish(recentering recenter: Bool = true) {
         if(recenter) {
             self.recenter()
         }
     }
     
-    /// Returns a closed shape that is this closed shape, with the closed shape's centroid
-    /// (geometric center) laying on (0, 0).
+    /// Returns a closed shape that is this closed shape, with the closed 
+    /// shape's centroid (geometric center) laying on (0, 0).
     public func centered() -> ClosedShape {
         // Find the average location of all the vertices
         let center = localVertices.averageVector()
@@ -67,10 +70,16 @@ public struct ClosedShape: ExpressibleByArrayLiteral {
         return ClosedShape(points: localVertices.map { $0 - center })
     }
     
-    /// Recenters the points of this closed shape so its centroid (geometric center) lays
-    /// on (0, 0).
+    /// Recenters the points of this closed shape so its centroid (geometric 
+    /// center) lays on (0, 0).
     public mutating func recenter() {
         self = centered()
+    }
+    
+    /// Inverts the point list, so they become clockwise if they where counter-
+    /// clockwise, or becomes counter-clockwise if they where clockwise.
+    public mutating func invertPoints() {
+        localVertices = localVertices.reversed()
     }
 }
 
@@ -78,26 +87,50 @@ public struct ClosedShape: ExpressibleByArrayLiteral {
 extension ClosedShape {
     
     /// Transforms all vertices by the given angle and scale locally
-    public mutating func transformOwnBy(rotatingBy angleInRadians: CGFloat = 0, scalingBy scale: Vector2 = .unit) {
-        localVertices = localVertices.map { transform(vertex: $0, worldPos: Vector2.zero, angleInRadians: angleInRadians, localScale: scale) }
+    public mutating func transformOwnBy(rotatingBy angleInRadians: CGFloat = 0,
+                                        scalingBy scale: Vector2 = .unit) {
+        let points = localVertices.map {
+            transform(vertex: $0, worldPos: Vector2.zero,
+                      angleInRadians: angleInRadians, localScale: scale)
+        }
+        
+        localVertices = points
     }
     
-    /// Gets a new closed shape from this shape transformed by the given position, angle, and scale.
-    /// transformation is applied in the following order:  scale -> rotation -> position.
-    public func transformedBy(translatingBy worldPos: Vector2 = .zero, rotatingBy angleInRadians: CGFloat = 0, scalingBy localScale: Vector2 = .unit) -> ClosedShape {
-        return ClosedShape(points: localVertices.map { transform(vertex: $0, worldPos: worldPos, angleInRadians: angleInRadians, localScale: localScale) })
+    /// Gets a new closed shape from this shape transformed by the given
+    /// position, angle, and scale.
+    /// Transformation is applied in the following order:  scale -> rotation ->
+    /// position.
+    public func transformedBy(translatingBy worldPos: Vector2 = .zero,
+                              rotatingBy angleInRadians: CGFloat = 0,
+                              scalingBy localScale: Vector2 = .unit) -> ClosedShape {
+        
+        let points = localVertices.map {
+            transform(vertex: $0, worldPos: worldPos,
+                      angleInRadians: angleInRadians, localScale: localScale)
+        }
+        
+        return ClosedShape(points: points)
     }
     
-    /// Transforms the points on this closed shape into the given array of points.
-    /// Transformation is applied in the following order:  scale -> rotation -> position.
-    /// - note: The target array of points must have the **same** count of vertices as this closed shape.
-    public func transformVertices(_ target: inout [Vector2], worldPos: Vector2, angleInRadians: CGFloat, localScale: Vector2 = Vector2.unit) {
+    /// Transforms the points on this closed shape into the given array of
+    /// points.
+    /// Transformation is applied in the following order:  scale -> rotation ->
+    /// position.
+    /// - note: The target array of points must have the **same** count of
+    ///     vertices as this closed shape.
+    public func transformVertices(_ target: inout [Vector2], worldPos: Vector2,
+                                  angleInRadians: CGFloat,
+                                  localScale: Vector2 = Vector2.unit) {
         for i in 0..<target.count {
-            target[i] = transform(vertex: localVertices[i], worldPos: worldPos, angleInRadians: angleInRadians, localScale: localScale)
+            target[i] = transform(vertex: localVertices[i], worldPos: worldPos,
+                                  angleInRadians: angleInRadians,
+                                  localScale: localScale)
         }
     }
     
-    private func transform(vertex: Vector2, worldPos: Vector2, angleInRadians: CGFloat, localScale: Vector2) -> Vector2 {
+    private func transform(vertex: Vector2, worldPos: Vector2,
+                           angleInRadians: CGFloat, localScale: Vector2) -> Vector2 {
         return Vector2.rotate(vertex * localScale, by: angleInRadians) + worldPos
     }
 }
@@ -105,37 +138,50 @@ extension ClosedShape {
 /// MARK: - Shape creation methods
 extension ClosedShape {
     
-    /// Creates a closed shape that represents a circle of a given radius, with the specified number of points
-    /// around its circumference
+    /// Creates a closed shape that represents a circle of a given radius, with
+    /// the specified number of points around its circumference
     public static func circle(ofRadius radius: CGFloat, pointCount: Int) -> ClosedShape {
         
-        var shape = ClosedShape()
-        shape.begin()
-        for i in 0..<pointCount
-        {
-            let n = PI * 2 * (CGFloat(i) / CGFloat(pointCount))
-            shape.addVertex(Vector2(cos(-n) * radius, sin(-n) * radius))
+        return .create { shape in
+            for i in 0..<pointCount
+            {
+                let n = PI * 2 * (CGFloat(i) / CGFloat(pointCount))
+                shape.addVertex(Vector2(cos(-n) * radius, sin(-n) * radius))
+            }
         }
-        shape.finish()
-        
-        return shape
     }
     
-    /// Creates a closed shape that represents a square, with side of the specified length
+    /// Creates a closed shape that represents a square, with side of the
+    /// specified length
     public static func square(ofSide length: CGFloat) -> ClosedShape {
         return rectangle(ofSize: Vector2(value: length))
     }
     
-    /// Creates a closed shape that represents a rectangle, with side of the specified length
+    /// Creates a closed shape that represents a rectangle, with side of the
+    /// specified length
     public static func rectangle(ofSize size: Vector2) -> ClosedShape {
+        
         // Counter-clockwise!
+        return .create { shape in
+            shape.addVertex(Vector2(-size.x,  size.y))
+            shape.addVertex(Vector2( size.x,  size.y))
+            shape.addVertex(Vector2( size.x, -size.y))
+            shape.addVertex(Vector2(-size.x, -size.y))
+        }
+    }
+    
+    /// Creates a closed shape using a closure that passes the closed shape that
+    /// is opened and closed automatically once the closure's finished.
+    ///
+    /// You can specify `centered` to recenter the shape once it's finished
+    /// (see `ClosedShape.centered()`).
+    public static func create(centered: Bool = true,
+                              closure: (inout ClosedShape) -> ()) -> ClosedShape {
         var shape = ClosedShape()
+        
         shape.begin()
-        shape.addVertex(Vector2(-size.x,  size.y))
-        shape.addVertex(Vector2( size.x,  size.y))
-        shape.addVertex(Vector2( size.x, -size.y))
-        shape.addVertex(Vector2(-size.x, -size.y))
-        shape.finish()
+        closure(&shape)
+        shape.finish(recentering: centered)
         
         return shape
     }

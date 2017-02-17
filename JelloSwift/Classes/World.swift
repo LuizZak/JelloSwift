@@ -9,7 +9,8 @@
 import Foundation
 import CoreGraphics
 
-/// Represents a simulation world, containing soft bodies and the code utilized to make them interact with each other
+/// Represents a simulation world, containing soft bodies and the code utilized
+/// to make them interact with each other
 public final class World {
     /// The bodies contained within this world
     public private(set) var bodies: ContiguousArray<Body> = []
@@ -21,8 +22,9 @@ public final class World {
     fileprivate var worldSize = Vector2.zero
     fileprivate var worldGridStep = Vector2.zero
     
-    /// The threshold at which penetrations are ignored, since they are far too deep to be resolved
-    /// without applying unreasonable forces that will destabilize the simulation.
+    /// The threshold at which penetrations are ignored, since they are far too
+    /// deep to be resolved without applying unreasonable forces that will 
+    /// destabilize the simulation.
     /// Usually 0.3 is a good default.
     public var penetrationThreshold: CGFloat = 0.3
     
@@ -82,12 +84,14 @@ public final class World {
         
         worldSize = max - min
         
-        // Divide the world into 1024 boxes (32 x 32) for broad-phase collision detection
+        // Divide the world into 1024 boxes (32 x 32) for broad-phase collision
+        // detection
         worldGridStep = worldSize / 32
     }
     
     /// MATERIALS
-    /// Adds a new material to the world. All previous material data is kept intact.
+    /// Adds a new material to the world. All previous material data is kept
+    /// intact.
     public func addMaterial() -> Int {
         let old = materialPairs
         materialCount += 1
@@ -137,19 +141,22 @@ public final class World {
         }
     }
     
-    /// Adds a body to the world. Bodies do this automatically on their constructors, you should not need to call this method most of the times.
+    /// Adds a body to the world. Bodies do this automatically on their 
+    /// constructors, you should not need to call this method most of the times.
     public func addBody(_ body: Body) {
         if(!bodies.contains(body)) {
             bodies.append(body)
         }
     }
     
-    /// Removes a body from the world. Call this outside of an update to remove the body.
+    /// Removes a body from the world. Call this outside of an update to remove 
+    /// the body.
     public func removeBody(_ body: Body) {
         bodies.remove(body)
     }
     
-    /// Adds a joint to the world. Joints call this automatically during their initialization
+    /// Adds a joint to the world. Joints call this automatically during their
+    /// initialization
     public func addJoint(_ joint: BodyJoint) {
         if(!joints.contains(joint)) {
             joints.append(joint)
@@ -210,16 +217,27 @@ public final class World {
     }
     
     /**
-     * Casts a ray between the given points and returns the first body it comes in contact with
+     * Casts a ray between the given points and returns the first body it comes 
+     * in contact with
      * 
-     * - parameter start: The start point to cast the ray from, in world coordinates
-     * - parameter end: The end point to end the ray cast at, in world coordinates
-     * - parameter bitmask: An optional collision bitmask that filters the bodies to collide using a bitwise AND (|) operation.
-     *             If the value specified is 0, collision filtering is ignored and all bodies are considered for collision
-     * - parameter ignoring: A custom list of bodies that will be ignored during collision checking. Provide an empty list
-     *                    to consider all bodies in the world
+     * - parameter start: The start point to cast the ray from, in world 
+     *      coordinates
      *
-     * - return: An optional tuple containing the farthest point reached by the ray, and a Body value specifying the body that was closest to the ray, if it hit any body, or nil if it hit nothing.
+     * - parameter end: The end point to end the ray cast at, in world 
+     *      coordinates
+     *
+     * - parameter bitmask: An optional collision bitmask that filters the 
+     *      bodies to collide using a bitwise AND (|) operation.
+     *      If the value specified is 0, collision filtering is ignored and all 
+     *      bodies are considered for collision
+     *
+     * - parameter ignoring: A custom list of bodies that will be ignored during
+     *      collision checking. Provide an empty list to consider all bodies in 
+     *      the world
+     *
+     * - return: An optional tuple containing the farthest point reached by the 
+     *      ray, and a Body value specifying the body that was closest to the 
+     *      ray, if it hit any body, or nil if it hit nothing.
      */
     public func rayCast(from start: Vector2, to end: Vector2, bitmask: Bitmask = 0, ignoring ignoreList: [Body] = []) -> (retPt: Vector2, body: Body)? {
         var aabb = AABB(points: [start, end])
@@ -244,7 +262,8 @@ public final class World {
     
     /**
      * Updates the world by a specific timestep.
-     * This method performs body point mass force/velocity/position simulation, and collision detection & resolving.
+     * This method performs body point mass force/velocity/position simulation,
+     * and collision detection & resolving.
      *
      * - parameter elapsed: The elapsed time to update by, usually in seconds
      */
@@ -253,7 +272,8 @@ public final class World {
         for body in bodies {
             body.derivePositionAndAngle(elapsed)
             
-            // Only update edge and normals pre-accumulation if the body has components
+            // Only update edge and normals pre-accumulation if the body has 
+            // components
             if(body.componentCount > 0) {
                 body.updateEdgesAndNormals()
             }
@@ -303,7 +323,8 @@ public final class World {
                     continue
                 }
                 
-                // Joints relationship: if one body is joined to another by a joint, check the joint's rule for collision
+                // Joints relationship: if one body is joined to another by a 
+                // joint, check the joint's rule for collision
                 for j in body1.joints {
                     if(j.bodyLink1.body == body1 && j.bodyLink2.body == body2 ||
                        j.bodyLink2.body == body1 && j.bodyLink1.body == body2) {
@@ -313,7 +334,8 @@ public final class World {
                     }
                 }
                 
-                // okay, the AABB's of these 2 are intersecting.  now check for collision of A against B.
+                // okay, the AABB's of these 2 are intersecting. now check for
+                // collision of A against B.
                 bodyCollide(body1, body2)
                 
                 // and the opposite case, B colliding with A
@@ -335,7 +357,8 @@ public final class World {
         }
     }
     
-    /// Checks collision between two bodies, and store the collision information if they do
+    /// Checks collision between two bodies, and store the collision information
+    /// if they do
     fileprivate func bodyCollide(_ bA: Body, _ bB: Body) {
         let bBpCount = bB.pointMasses.count
         
@@ -348,16 +371,21 @@ public final class World {
             
             let ptNorm = bA.pointNormals[i]
             
-            // FIXME: This may happen when Body.updateNormals() finds two edges with the same .difference magnitude
-            // resulting in Vector.zero.perpendicular().normalized(), which normalized, results in NaN values in the
-            // vector. Figure out how to deal with that, and also check other places it may happen in the future.
-            // If not checked against, it may result in incorrect calculations bellow, resulting in out-of-bound
-            // errors in handleCollision() as it tries to index non-initialized bodyBpmA and bodtBpmB values of -1.
+            // FIXME: This may happen when Body.updateNormals() finds two edges 
+            // with the same .difference magnitude resulting in 
+            // Vector.zero.perpendicular().normalized(), which normalized, 
+            // results in NaN values in the vector. Figure out how to deal with
+            // that, and also check other places it may happen in the future. If
+            // not checked against, it may result in incorrect calculations 
+            // bellow, resulting in out-of-bound errors in handleCollision() as
+            // it tries to index non-initialized bodyBpmA and bodtBpmB values of
+            // -1.
             if(ptNorm.x.isNaN || ptNorm.y.isNaN) { // Invalid point
                 continue
             }
             
-            // this point is inside the other body.  now check if the edges on either side intersect with and edges on bodyB.
+            // this point is inside the other body.  now check if the edges on
+            // either side intersect with and edges on bodyB.
             var closestAway = CGFloat.infinity
             var closestSame = CGFloat.infinity
             
@@ -373,7 +401,8 @@ public final class World {
                 // test against this edge.
                 let (hitPt, normal, edgeD, dist) = bB.closestPointSquared(to: pt, onEdge: j)
                 
-                // only perform the check if the normal for this edge is facing AWAY from the point normal.
+                // only perform the check if the normal for this edge is facing
+                // AWAY from the point normal.
                 let dot = ptNorm • normal
                 
                 if (dot <= 0.0) {
@@ -402,7 +431,8 @@ public final class World {
                 }
             }
             
-            // we've checked all edges on BodyB.  add the collision info to the stack.
+            // we've checked all edges on BodyB.  add the collision info to the
+            // stack.
             if (found && (closestAway > penetrationThreshold) && (closestSame < closestAway)) {
                 assert(infoSame.bodyBpmA > -1 && infoSame.bodyBpmB > -1)
                 
@@ -455,7 +485,8 @@ public final class World {
                 continue
             }
             
-            // Check exceeding point-mass penetration - we ignore the collision, then.
+            // Check exceeding point-mass penetration - we ignore the collision,
+            // then.
             if(info.penetration > penetrationThreshold) {
                 self.collisionObserver?.bodyCollision(info, didExceedPenetrationThreshold: penetrationThreshold)
                 continue
@@ -472,7 +503,8 @@ public final class World {
             let Amove: CGFloat
             let Bmove: CGFloat
             
-            // Static detection - when one of the parties is static, the other should move the total amount of the penetration
+            // Static detection - when one of the parties is static, the other
+            // should move the total amount of the penetration
             if(A.mass.isInfinite) {
                 Amove = 0
                 Bmove = info.penetration + 0.001
@@ -495,7 +527,8 @@ public final class World {
                 B2.position -= info.normal * (Bmove * b2inf)
             }
             
-            // TODO: Re-evaluate this block to clarify names, or check if they are term-of-art in physics
+            // TODO: Re-evaluate this block to clarify names, or check if they
+            // are term-of-art in physics
             if(relDot <= 0.0001 && (A.mass.isFinite || b2MassSum.isFinite)) {
                 let AinvMass: CGFloat = A.mass.isInfinite ? 0 : 1.0 / A.mass
                 let BinvMass: CGFloat = b2MassSum.isInfinite ? 0 : 1.0 / b2MassSum
@@ -540,7 +573,8 @@ public final class World {
         body.bitmaskX = 0
         body.bitmaskY = 0
         
-        // In case the body is contained within an invalid bound, disable collision completely
+        // In case the body is contained within an invalid bound, disable 
+        // collision completely
         if(minVec.x.isNaN || minVec.y.isNaN || maxVec.x.isNaN || maxVec.y.isNaN) {
             return
         }

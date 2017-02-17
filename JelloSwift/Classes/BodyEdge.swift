@@ -37,8 +37,8 @@ public struct BodyEdge {
     }
     
     /// Initializes an edge with a given index, and start and end vectors.
-    /// The `difference`, `normal`, `length` and `lengthSquared` properties
-    /// are automatically initialized out of these values.
+    /// The `difference`, `normal`, `length` and `lengthSquared` properties are
+    /// automatically initialized out of these values.
     public init(edgeIndex: Int, start: Vector2, end: Vector2) {
         self.edgeIndex = edgeIndex
         self.start = start

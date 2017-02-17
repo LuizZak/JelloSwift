@@ -40,5 +40,9 @@ public struct BodyCollisionInformation: Equatable {
 }
 
 public func ==(lhs: BodyCollisionInformation, rhs: BodyCollisionInformation) -> Bool {
-    return lhs.bodyA == rhs.bodyA && lhs.bodyApm == rhs.bodyApm && lhs.bodyB == rhs.bodyB && lhs.bodyBpmA == rhs.bodyBpmA && lhs.bodyBpmB == rhs.bodyBpmB && lhs.edgeD == rhs.edgeD && lhs.hitPt == rhs.hitPt && lhs.normal == rhs.normal && lhs.penetration == rhs.penetration
+    return lhs.bodyA == rhs.bodyA && lhs.bodyApm == rhs.bodyApm &&
+        lhs.bodyB == rhs.bodyB && lhs.bodyBpmA == rhs.bodyBpmA &&
+        lhs.bodyBpmB == rhs.bodyBpmB && lhs.edgeD == rhs.edgeD &&
+        lhs.hitPt == rhs.hitPt && lhs.normal == rhs.normal &&
+        lhs.penetration == rhs.penetration
 }

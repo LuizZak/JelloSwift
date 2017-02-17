@@ -8,18 +8,22 @@
 
 import CoreGraphics
 
-/// Represents a Pressure component that can be added to a body to include gas pressure as an internal force.
-/// This component applies an outwards force in the body that tries to expand the contents of the body, resulting
-/// in resistance to compression and expansion past the rest shape of the body, like a balloon.
+/// Represents a Pressure component that can be added to a body to include gas
+/// pressure as an internal force.
+/// This component applies an outwards force in the body that tries to expand
+/// the contents of the body, resulting in resistance to compression and
+/// expansion past the rest shape of the body, like a balloon.
 public final class PressureComponent: BodyComponent {
     // PRIVATE VARIABLES
     
-    /// The total volume of the body, as was calculated during the previous internal force accumulation step.
+    /// The total volume of the body, as was calculated during the previous
+    /// internal force accumulation step.
     /// Equal to half the polygonal area of the body's point masses
     public var volume: CGFloat = 0
     
     /// The gass pressure coefficient for the pressure component.
-    /// Higher values result in higher resistance to compression and higher expansion.
+    /// Higher values result in higher resistance to compression and higher
+    /// expansion.
     public var gasAmmount: CGFloat = 0
     
     override public func prepare(_ body: Body) {
