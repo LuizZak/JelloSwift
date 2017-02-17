@@ -15,7 +15,8 @@ public final class GravityComponent: BodyComponent {
     
     /// Accumulates the force of gravity by applying a unified force downwards.
     /// This force ignores mass by multiplying the gravity component by mass
-    /// before applying the force.
+    /// before applying the force, resulting in uniform velocity application in
+    /// all bodies.
     override public func accumulateExternalForces(on body: Body) {
         super.accumulateExternalForces(on: body)
         
