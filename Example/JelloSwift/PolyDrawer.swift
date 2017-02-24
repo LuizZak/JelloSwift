@@ -60,6 +60,11 @@ class PolyDrawer
     /// Renders the contents of this PolyDrawer on a given CGContextRef
     func renderOnContext(_ context: CGContext)
     {
+        context.setShouldAntialias(false)
+        context.setFlatness(10)
+        context.setLineCap(.butt)
+        context.setLineJoin(CGLineJoin.miter)
+        
         for poly in polys
         {
             let hasFill = ((poly.fillColorUInt >> 24) & 0xFF) != 0
@@ -80,8 +85,6 @@ class PolyDrawer
             context.setStrokeColor(poly.lineColor.cgColor)
             context.setFillColor(poly.fillColor.cgColor)
             context.setLineWidth(poly.lineWidth)
-            context.setLineJoin(CGLineJoin.round)
-            context.setLineCap(CGLineCap.round)
             
             context.addPath(path)
             
