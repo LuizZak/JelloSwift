@@ -24,6 +24,7 @@
 		A0CD1AF11E5363B600D41938 /* JelloSwiftTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0CD1AEB1E5363B600D41938 /* JelloSwiftTests.swift */; };
 		A0CD1AF21E5363B600D41938 /* PhysicsMathTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0CD1AEC1E5363B600D41938 /* PhysicsMathTest.swift */; };
 		A0CD1AF31E5363B600D41938 /* PointMassTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0CD1AED1E5363B600D41938 /* PointMassTests.swift */; };
+		A0DBAE291E6243C500D630B2 /* BodyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0DBAE281E6243C500D630B2 /* BodyTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -64,6 +65,7 @@
 		A0CD1AEB1E5363B600D41938 /* JelloSwiftTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JelloSwiftTests.swift; sourceTree = "<group>"; };
 		A0CD1AEC1E5363B600D41938 /* PhysicsMathTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhysicsMathTest.swift; sourceTree = "<group>"; };
 		A0CD1AED1E5363B600D41938 /* PointMassTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PointMassTests.swift; sourceTree = "<group>"; };
+		A0DBAE281E6243C500D630B2 /* BodyTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BodyTests.swift; sourceTree = "<group>"; };
 		A319CC9058C830A23DE465BD /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		B6733245AB58FC5F0C76AEAA /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		C8F76D0DBAF70A14FF4BD932 /* Pods-JelloSwift_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JelloSwift_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-JelloSwift_Tests/Pods-JelloSwift_Tests.release.xcconfig"; sourceTree = "<group>"; };
@@ -157,6 +159,7 @@
 				A0CD1AEC1E5363B600D41938 /* PhysicsMathTest.swift */,
 				A0CD1AED1E5363B600D41938 /* PointMassTests.swift */,
 				A05EE0D81E578637007978E6 /* Vector2Tests.swift */,
+				A0DBAE281E6243C500D630B2 /* BodyTests.swift */,
 				607FACE91AFB9204008FA782 /* Supporting Files */,
 			);
 			path = Tests;
@@ -419,6 +422,7 @@
 				A0CD1AEF1E5363B600D41938 /* ClosedShapeTests.swift in Sources */,
 				A0CD1AF11E5363B600D41938 /* JelloSwiftTests.swift in Sources */,
 				A0CD1AEE1E5363B600D41938 /* AABBTests.swift in Sources */,
+				A0DBAE291E6243C500D630B2 /* BodyTests.swift in Sources */,
 				A0CD1AF01E5363B600D41938 /* GeomUtilsTests.swift in Sources */,
 				A0CD1AF21E5363B600D41938 /* PhysicsMathTest.swift in Sources */,
 				A05EE0D91E578637007978E6 /* Vector2Tests.swift in Sources */,

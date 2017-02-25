@@ -234,8 +234,16 @@ public final class Body: Equatable {
             let edge1N = prev.difference
             let edge2N = curEdge.difference
             
-            pointNormals[i] = (edge1N + edge2N).perpendicular().normalized()
+            let perp = (edge1N + edge2N).perpendicular()
             
+            // Avoid dividing by zero when calculating the normal - use the 
+            // first edge's pointing direction instead
+            if(perp == .zero) {
+                pointNormals[i] = edge1N
+            } else {
+                pointNormals[i] = perp.normalized()
+            }
+        
             prev = curEdge
         }
     }
