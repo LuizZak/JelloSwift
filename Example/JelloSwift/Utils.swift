@@ -80,6 +80,16 @@ extension UIColor {
         
         return UIColor(red: CGFloat(red) / 255.0, green: CGFloat(green) / 255.0, blue: CGFloat(blue) / 255.0, alpha: CGFloat(alpha) / 255.0)
     }
+    
+    static func fromUInt(_ color: UInt) -> UIColor
+    {
+        let a = CGFloat((color >> 24) & 0xFF) / 255.0
+        let r = CGFloat((color >> 16) & 0xFF) / 255.0
+        let g = CGFloat((color >> 8) & 0xFF) / 255.0
+        let b = CGFloat(color & 0xFF) / 255.0
+        
+        return UIColor(red: r, green: g, blue: b, alpha: a)
+    }
 }
 
 func flattenColors(_ backColor: UIColor, withColor foreColor: UIColor) -> UIColor {

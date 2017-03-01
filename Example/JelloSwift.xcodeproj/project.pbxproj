@@ -14,9 +14,15 @@
 		607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDC1AFB9204008FA782 /* Images.xcassets */; };
 		607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDE1AFB9204008FA782 /* LaunchScreen.xib */; };
 		761582D658283FA30C017437 /* Pods_JelloSwift_Example_JelloSwift_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8450031F73AA21EE70E1545D /* Pods_JelloSwift_Example_JelloSwift_Tests.framework */; };
+		A00385761E63710400546EB8 /* OpenGLContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00385751E63710400546EB8 /* OpenGLContext.swift */; };
+		A003857A1E63712B00546EB8 /* Triangulator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00385791E63712B00546EB8 /* Triangulator.swift */; };
+		A003857C1E63713200546EB8 /* Shader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A003857B1E63713200546EB8 /* Shader.swift */; };
+		A003857F1E6374EB00546EB8 /* SimpleFragment.glsl in Resources */ = {isa = PBXBuildFile; fileRef = A003857D1E6374EB00546EB8 /* SimpleFragment.glsl */; };
+		A00385801E6374EB00546EB8 /* SimpleVertex.glsl in Resources */ = {isa = PBXBuildFile; fileRef = A003857E1E6374EB00546EB8 /* SimpleVertex.glsl */; };
 		A05EE0D91E578637007978E6 /* Vector2Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05EE0D81E578637007978E6 /* Vector2Tests.swift */; };
+		A097789A1E66582B0095D4A7 /* LibTessTriangulate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A09778991E66582B0095D4A7 /* LibTessTriangulate.swift */; };
+		A097789F1E6687810095D4A7 /* Vertex.swift in Sources */ = {isa = PBXBuildFile; fileRef = A097789E1E6687810095D4A7 /* Vertex.swift */; };
 		A0CD1AE31E535C6C00D41938 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0CD1AE21E535C6C00D41938 /* Utils.swift */; };
-		A0CD1AE51E535C7800D41938 /* PolyDrawer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0CD1AE41E535C7800D41938 /* PolyDrawer.swift */; };
 		A0CD1AE71E535CC100D41938 /* DemoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0CD1AE61E535CC100D41938 /* DemoView.swift */; };
 		A0CD1AEE1E5363B600D41938 /* AABBTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0CD1AE81E5363B600D41938 /* AABBTests.swift */; };
 		A0CD1AEF1E5363B600D41938 /* ClosedShapeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0CD1AE91E5363B600D41938 /* ClosedShapeTests.swift */; };
@@ -54,10 +60,16 @@
 		7B52A8EEE140BC9CD780C7F1 /* Pods-JelloSwift_Example-JelloSwift_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JelloSwift_Example-JelloSwift_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-JelloSwift_Example-JelloSwift_Tests/Pods-JelloSwift_Example-JelloSwift_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		8450031F73AA21EE70E1545D /* Pods_JelloSwift_Example_JelloSwift_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_JelloSwift_Example_JelloSwift_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9A7119EFEF38E227BE06C6F0 /* Pods-JelloSwift_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JelloSwift_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-JelloSwift_Example/Pods-JelloSwift_Example.release.xcconfig"; sourceTree = "<group>"; };
+		A00385751E63710400546EB8 /* OpenGLContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OpenGLContext.swift; sourceTree = "<group>"; };
+		A00385791E63712B00546EB8 /* Triangulator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Triangulator.swift; sourceTree = "<group>"; };
+		A003857B1E63713200546EB8 /* Shader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Shader.swift; sourceTree = "<group>"; };
+		A003857D1E6374EB00546EB8 /* SimpleFragment.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SimpleFragment.glsl; sourceTree = "<group>"; };
+		A003857E1E6374EB00546EB8 /* SimpleVertex.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SimpleVertex.glsl; sourceTree = "<group>"; };
 		A05EE0D81E578637007978E6 /* Vector2Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Vector2Tests.swift; sourceTree = "<group>"; };
+		A09778991E66582B0095D4A7 /* LibTessTriangulate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibTessTriangulate.swift; sourceTree = "<group>"; };
+		A097789E1E6687810095D4A7 /* Vertex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Vertex.swift; sourceTree = "<group>"; };
 		A0B032FF1E547D00002AD0BF /* CHANGELOG.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = CHANGELOG.md; path = ../CHANGELOG.md; sourceTree = "<group>"; };
 		A0CD1AE21E535C6C00D41938 /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
-		A0CD1AE41E535C7800D41938 /* PolyDrawer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PolyDrawer.swift; sourceTree = "<group>"; };
 		A0CD1AE61E535CC100D41938 /* DemoView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DemoView.swift; sourceTree = "<group>"; };
 		A0CD1AE81E5363B600D41938 /* AABBTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AABBTests.swift; sourceTree = "<group>"; };
 		A0CD1AE91E5363B600D41938 /* ClosedShapeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClosedShapeTests.swift; sourceTree = "<group>"; };
@@ -197,10 +209,24 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		A00385811E6374ED00546EB8 /* Shaders */ = {
+			isa = PBXGroup;
+			children = (
+				A003857D1E6374EB00546EB8 /* SimpleFragment.glsl */,
+				A003857E1E6374EB00546EB8 /* SimpleVertex.glsl */,
+			);
+			name = Shaders;
+			sourceTree = "<group>";
+		};
 		A0CD1AE11E535C6400D41938 /* DrawingUtils */ = {
 			isa = PBXGroup;
 			children = (
-				A0CD1AE41E535C7800D41938 /* PolyDrawer.swift */,
+				A00385811E6374ED00546EB8 /* Shaders */,
+				A097789E1E6687810095D4A7 /* Vertex.swift */,
+				A00385791E63712B00546EB8 /* Triangulator.swift */,
+				A09778991E66582B0095D4A7 /* LibTessTriangulate.swift */,
+				A003857B1E63713200546EB8 /* Shader.swift */,
+				A00385751E63710400546EB8 /* OpenGLContext.swift */,
 			);
 			name = DrawingUtils;
 			sourceTree = "<group>";
@@ -295,6 +321,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */,
+				A003857F1E6374EB00546EB8 /* SimpleFragment.glsl in Resources */,
+				A00385801E6374EB00546EB8 /* SimpleVertex.glsl in Resources */,
 				607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */,
 				607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */,
 			);
@@ -407,11 +435,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A0CD1AE51E535C7800D41938 /* PolyDrawer.swift in Sources */,
+				A00385761E63710400546EB8 /* OpenGLContext.swift in Sources */,
+				A003857A1E63712B00546EB8 /* Triangulator.swift in Sources */,
+				A097789F1E6687810095D4A7 /* Vertex.swift in Sources */,
 				607FACD81AFB9204008FA782 /* ViewController.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
+				A003857C1E63713200546EB8 /* Shader.swift in Sources */,
 				A0CD1AE71E535CC100D41938 /* DemoView.swift in Sources */,
 				A0CD1AE31E535C6C00D41938 /* Utils.swift in Sources */,
+				A097789A1E66582B0095D4A7 /* LibTessTriangulate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

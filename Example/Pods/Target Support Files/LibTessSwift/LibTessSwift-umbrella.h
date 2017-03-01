@@ -11,6 +11,6 @@
 #endif
 
 
-FOUNDATION_EXPORT double Pods_JelloSwift_Example_JelloSwift_TestsVersionNumber;
-FOUNDATION_EXPORT const unsigned char Pods_JelloSwift_Example_JelloSwift_TestsVersionString[];
+FOUNDATION_EXPORT double LibTessSwiftVersionNumber;
+FOUNDATION_EXPORT const unsigned char LibTessSwiftVersionString[];
 

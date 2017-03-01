@@ -234,14 +234,14 @@ public final class Body: Equatable {
             let edge1N = prev.difference
             let edge2N = curEdge.difference
             
-            let perp = (edge1N + edge2N).perpendicular()
+            let sum = (edge1N + edge2N)
             
-            // Avoid dividing by zero when calculating the normal - use the 
-            // first edge's pointing direction instead
-            if(perp == .zero) {
+            // Edges are exactly 360º - normal should be the first edge's
+            // vector, then
+            if(sum == .zero) {
                 pointNormals[i] = edge1N
             } else {
-                pointNormals[i] = perp.normalized()
+                pointNormals[i] = sum.perpendicular().normalized()
             }
         
             prev = curEdge

@@ -259,6 +259,10 @@ extension Vector2 {
                        lhs.y.truncatingRemainder(dividingBy: rhs))
     }
     
+    static public func /(lhs: CGFloat, rhs: Vector2) -> Vector2 {
+        return Vector2(lhs / rhs.x, lhs / rhs.y)
+    }
+    
     ////
     // Compound assignment operators
     ////

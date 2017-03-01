@@ -8,15 +8,31 @@
 
 import UIKit
 import JelloSwift
+import simd
 
 // Note: This view is only implemented for testing purposes - in a real use case you'd probably
 // want to use this library along with a proper hardware-accelerated rendering library.
 
 class DemoView: UIView, CollisionObserver
 {
+    var context: OpenGLContext!
+    
+    override class var layerClass : AnyClass {
+        // In order for our view to display OpenGL content, we need to set it's
+        //   default layer to be a CAEAGLayer
+        return CAEAGLLayer.self
+    }
+    
+    /// OpenGL VAO for the objects on screen
+    var bufferVertices: [VertexBuffer] = []
+    
+    /// Main OpenGL VAO in which all bodies will be rendered on
+    var vao: VertexArrayObject = VertexArrayObject(vao: 0, buffer: VertexBuffer())
+    
+    var viewportMatrix = Vector2.matrix(scalingBy: 1.0 / (renderingScale / 2), translatingBy: renderingOffset)
+    
     var world = World()
     var timer: CADisplayLink! = nil
-    var polyDrawer: PolyDrawer
     
     var updateLabelStopwatch = Stopwatch(startTime: 0)
     var renderLabelStopwatch = Stopwatch(startTime: 0)
@@ -47,8 +63,6 @@ class DemoView: UIView, CollisionObserver
     
     override init(frame: CGRect)
     {
-        polyDrawer = PolyDrawer()
-        
         physicsTimeLabel = UILabel()
         renderTimeLabel = UILabel()
         
@@ -62,31 +76,45 @@ class DemoView: UIView, CollisionObserver
         
         initializeLevel()
         
+        viewportMatrix = Vector2.matrix(scalingBy: 1.0 / renderingScale)
+        
         renderingOffset = Vector2(300, frame.size.height)
         renderingScale = Vector2(renderingScale.x, -renderingScale.y)
         
         isOpaque = false
         
         world.collisionObserver = self
+        
+        initOpenGL()
     }
     
     required init?(coder aDecoder: NSCoder)
     {
-        polyDrawer = PolyDrawer()
-        
         physicsTimeLabel = UILabel()
         renderTimeLabel = UILabel()
         
         super.init(coder: aDecoder)
         
         initLabels()
+        
+        initOpenGL()
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
         
+        context.resetContext()
+        
         physicsTimeLabel.frame = CGRect(x: 20, y: 20, width: self.bounds.width - 40, height: 20)
         renderTimeLabel.frame = CGRect(x: 20, y: 37, width: self.bounds.width - 40, height: 20)
+    }
+    
+    func initOpenGL() {
+        layer.isOpaque = true
+        
+        context = OpenGLContext(layer: layer as! CAEAGLLayer)
+        
+        vao = context.generateVAO()
     }
     
     func initLabels()
@@ -218,33 +246,42 @@ class DemoView: UIView, CollisionObserver
     
     // MARK: - Drawing
     
-    // Only override drawRect: if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func draw(_ rect: CGRect)
-    {
-        // Drawing code
-        autoreleasepool {
-            worldSemaphore.wait()
-            render()
-            worldSemaphore.signal()
+    func drawLine(from start: Vector2, to end: Vector2, color: UInt = 0xFFFFFFFF) {
+        
+        let normal = (start - end).normalized().perpendicular() / 15
+        
+        var buffer = VertexBuffer()
+        
+        buffer.addVertex(start + normal / 2, color: color)
+        buffer.addVertex(end + normal / 2, color: color)
+        buffer.addVertex(end - normal / 2, color: color)
+        buffer.addVertex(start - normal / 2, color: color)
+        
+        buffer.addTriangleAtIndexes(0, 1, 2)
+        buffer.addTriangleAtIndexes(2, 3, 0)
+        
+        bufferVertices.append(buffer)
+    }
+    
+    func drawPolyOutline(_ points: [Vector2], color: UInt = 0xFFFFFFFF) {
+        guard var last = points.last else {
+            return
+        }
+        
+        for point in points {
+            drawLine(from: point, to: last, color: color)
+            last = point
         }
     }
     
     func render()
-    {
-        guard let context = UIGraphicsGetCurrentContext() else {
-            print("Error rendering scene: Could not get context to draw scene on!")
-            return
-        }
-        
+    {  
         let sw = Stopwatch.startNew()
-        
-        polyDrawer.reset()
         
         world.joints.forEach(drawJoint)
         world.bodies.forEach(drawBody)
         
-        drawDrag(context)
+        drawDrag()
         
         if(useDetailedRender)
         {
@@ -254,14 +291,13 @@ class DemoView: UIView, CollisionObserver
                 let pointB = info.hitPt
                 let normal = info.normal
                 
-                polyDrawer.queuePoly([pointB, pointB + normal / 4].map(toScreenCoords).map { $0.cgPoint }, fillColor: 0, strokeColor: 0xFFFF0000, lineWidth: 1)
+                drawLine(from: pointB, to: pointB + normal / 4, color: 0xFFFF0000)
             }
         }
         
         collisions.removeAll(keepingCapacity: true)
         
-        polyDrawer.renderOnContext(context)
-        polyDrawer.reset()
+        renderOpenGL()
         
         if let duration = renderLabelStopwatch.duration, duration > updateInterval
         {
@@ -278,12 +314,8 @@ class DemoView: UIView, CollisionObserver
     
     func gameLoop()
     {
-        DispatchQueue.global().async {
-            self.worldSemaphore.wait()
-            self.update()
-            self.worldSemaphore.signal()
-        }
-        setNeedsDisplay()
+        update()
+        render()
     }
     
     func update()
@@ -352,7 +384,7 @@ class DemoView: UIView, CollisionObserver
     // MARK: - Rendering Utils
     
     /// Renders the dragging shape line
-    func drawDrag(_ context: CGContext)
+    func drawDrag()
     {
         // Dragging point
         guard let p = draggingPoint , inputMode == InputMode.dragBody else {
@@ -360,34 +392,46 @@ class DemoView: UIView, CollisionObserver
         }
         
         // Create the path to draw
-        let lineStart = toScreenCoords(p.position)
-        let lineEnd = toScreenCoords(fingerLocation)
+        let lineStart = p.position
+        let lineEnd = fingerLocation
         
-        let points = [lineStart.cgPoint, lineEnd.cgPoint]
-        
-        polyDrawer.queuePoly(points, fillColor: 0xFFFFFFFF, strokeColor: 0xFF00DD00)
+        drawLine(from: lineStart, to: lineEnd, color: 0xFF00DD00)
     }
     
     func drawJoint(_ joint: BodyJoint)
     {
-        let start = toScreenCoords(joint.bodyLink1.position)
-        let end = toScreenCoords(joint.bodyLink2.position)
+        let start = joint.bodyLink1.position
+        let end = joint.bodyLink2.position
         
-        let points = [start.cgPoint, end.cgPoint]
-        
-        polyDrawer.queuePoly(points, fillColor: 0xFFFFFFFF, strokeColor: joint.enabled ? 0xFFEEEEEE : 0xFFCCCCCC)
+        drawLine(from: start, to: end, color: joint.enabled ? 0xFFEEEEEE : 0xFFCCCCCC)
     }
     
     func drawBody(_ body: Body)
     {
-        let shapePoints = body.vertices
+        // Triangulate body's polygon
+        guard let (vertices, indices) = LibTessTriangulate.process(polygon: body.vertices) else {
+            return
+        }
         
-        let points = shapePoints.map { toScreenCoords($0).cgPoint }
+        var bodyBuffer = VertexBuffer()
+        
+        for vert in vertices {
+            bodyBuffer.addVertex(x: vert.x, y: vert.y)
+        }
+        
+        // Add vertex index triplets
+        for i in 0..<indices.count / 3 {
+            bodyBuffer.addTriangleAtIndexes(indices[i * 3], indices[i * 3 + 1], indices[i * 3 + 2])
+        }
+        
+        bodyBuffer.setVerticesColor(0x7DFFFFFF)
+        
+        let shapePoints = body.vertices
         
         if(!useDetailedRender)
         {
-            // Draw the body now
-            polyDrawer.queuePoly(points, fillColor: 0xADFFFFFF, strokeColor: 0xFF000000)
+            // Don't do any other rendering other than the body's buffer
+            bufferVertices.append(bodyBuffer)
             return
         }
         
@@ -398,38 +442,38 @@ class DemoView: UIView, CollisionObserver
             {
                 let p = shapePoints[i]
                 
-                let s = toScreenCoords(p).cgPoint
-                let e = toScreenCoords(p + normal / 3).cgPoint
-                polyDrawer.queuePoly([s, e], fillColor: 0, strokeColor: 0xFFEC33EC, lineWidth: 1)
+                drawLine(from: p, to: p + normal / 3, color: 0xFFEC33EC)
             }
         }
         
         // Draw the body's global shape
-        polyDrawer.queuePoly(body.globalShape.map { toScreenCoords($0).cgPoint }, fillColor: 0x33FFFFFF, strokeColor: 0xFF777777, lineWidth: 1)
+//        polyDrawer.queuePoly(body.globalShape.map { toScreenCoords($0).cgPoint }, fillColor: 0x33FFFFFF, strokeColor: 0xFF777777, lineWidth: 1)
+        drawPolyOutline(body.globalShape, color: 0xFF777777)
         
         // Draw lines going from the body's outer points to the global shape indices
-        for (globalShape, p) in zip(body.globalShape, points)
+        for (globalShape, p) in zip(body.globalShape, shapePoints)
         {
             let start = p
-            let end = toScreenCoords(globalShape).cgPoint
+            let end = globalShape
             
-            polyDrawer.queuePoly([start, end], fillColor: 0, strokeColor: 0xFF449944, lineWidth: 1)
+            drawLine(from: start, to: end, color: 0xFF449944)
         }
         
         // Draw the body now
-        polyDrawer.queuePoly(points, fillColor: 0xADFFFFFF, strokeColor: 0xFF000000)
+        
+        bufferVertices.append(bodyBuffer)
+        drawPolyOutline(shapePoints, color: 0xFF000000)
+        
+        //polyDrawer.queuePoly(points, fillColor: 0xADFFFFFF, strokeColor: 0xFF000000)
         
         // Draw the body axis
-        let axisUp    = [body.derivedPos, body.derivedPos + Vector2(0, 0.6).rotated(by: body.derivedAngle)].map(toScreenCoords)
-        let axisRight = [body.derivedPos, body.derivedPos + Vector2(0.6, 0).rotated(by: body.derivedAngle)].map(toScreenCoords)
-        
-        let axisUpCg = axisUp.map { $0.cgPoint }
-        let axisRightCg = axisRight.map { $0.cgPoint }
+        let axisUp    = [body.derivedPos, body.derivedPos + Vector2(0, 0.6).rotated(by: body.derivedAngle)]
+        let axisRight = [body.derivedPos, body.derivedPos + Vector2(0.6, 0).rotated(by: body.derivedAngle)]
         
         // Rep Up vector
-        polyDrawer.queuePoly(axisUpCg, fillColor: 0xFFFFFFFF, strokeColor: 0xFFED0000, lineWidth: 1)
+        drawLine(from: axisUp[0], to: axisUp[1], color: 0xFFED0000)
         // Green Right vector
-        polyDrawer.queuePoly(axisRightCg, fillColor: 0xFFFFFFFF, strokeColor: 0xFF00ED00, lineWidth: 1)
+        drawLine(from: axisRight[0], to: axisRight[1], color: 0xFF00ED00)
     }
     
     // MARK: - Helper body creation methods
@@ -621,5 +665,115 @@ class DemoView: UIView, CollisionObserver
         case createBall
         /// Allows dragging bodies around
         case dragBody
+    }
+}
+
+extension DemoView {
+    
+    ///                                               1
+    /// Returns a 3x3 matrix for projecting into a -1 0 1 -style space such that
+    ///                                              -1
+    /// a [0, 0] vector projects into the top-left (1, -1), and [width, height]
+    /// projects into the bottom-right (-1, 1).
+    ///
+    func matrixForOrthoProjection(width: CGFloat, height: CGFloat) -> Vector2.NativeMatrixType {
+        let size = Vector2(width, height)
+        let scaledSize = Vector2(1 / width, -1 / height) * 2
+        
+        let matrix = Vector2.matrix(translatingBy: -size / 2)
+        return matrix * Vector2.matrix(scalingBy: scaledSize)
+    }
+    
+    func renderOpenGL() {
+        glBindFramebuffer(GLenum(GL_FRAMEBUFFER), context.sampleFramebuffer)
+        
+        glClearColor(0.7, 0.7, 0.7, 1.0)
+        glClear(GLbitfield(Int(GL_COLOR_BUFFER_BIT) | Int(GL_DEPTH_BUFFER_BIT)))
+        
+        // Adjust viewport by the aspect ratio
+        let viewportMatrix = matrixForOrthoProjection(width: bounds.size.width, height: bounds.size.height)
+        
+        // Apply transformation matrix
+        let matrix = viewportMatrix.glFloatMatrix4x4()
+        
+        let matrixSlot = context.transformMatrixSlot
+        glUniformMatrix4fv(GLint(matrixSlot), 1, GLboolean(0), matrix)
+        
+        glViewport(0, 0, GLint(bounds.size.width), GLint(bounds.size.height))
+        
+        vao.buffer.clearVertices()
+        
+        // Matrix to transform JelloSwift's coordinates into proper coordinates
+        // for OpenGL
+        let mat = Vector2.matrix(scalingBy: renderingScale, rotatingBy: 0, translatingBy: renderingOffset).matrix4x4()
+        
+        /// Merge buffers
+        for buffer in bufferVertices {
+            // Convert point to screen coordinates
+            var buffer = buffer
+            buffer.applyTransformation(mat)
+            
+            vao.buffer.merge(with: buffer)
+        }
+        
+        // Update VAO before rendering
+        context.updateVAO(for: vao)
+        
+        glBindVertexArrayOES(vao.vao)
+        
+        glDrawElements(GLenum(GL_TRIANGLES), GLsizei(vao.buffer.indices.count), GLenum(GL_UNSIGNED_INT), nil)
+        
+        glBindFramebuffer(GLenum(GL_DRAW_FRAMEBUFFER_APPLE), context.frameBuffer)
+        glBindFramebuffer(GLenum(GL_READ_FRAMEBUFFER_APPLE), context.sampleFramebuffer)
+        
+        glResolveMultisampleFramebufferAPPLE()
+        
+        let discards: [GLenum] = [ GLenum(GL_COLOR_ATTACHMENT0), GLenum(GL_DEPTH_ATTACHMENT) ]
+        glDiscardFramebufferEXT(GLenum(GL_READ_FRAMEBUFFER_APPLE), 2, discards)
+        
+        glBindRenderbuffer(GLenum(GL_RENDERBUFFER), context.colorRenderBuffer)
+        
+        context.context.presentRenderbuffer(Int(GL_RENDERBUFFER))
+        
+        glBindVertexArrayOES(0)
+        
+        bufferVertices = []
+    }
+}
+
+extension Vector2.NativeMatrixType {
+    
+    /// Returns a 4x4 GLfloat matrix representation for this matrix object
+    func glFloatMatrix4x4() -> [GLfloat] {
+        var matrix: [GLfloat] = [GLfloat](repeating: 0, count: 16)
+        
+        matrix[0] = GLfloat(cmatrix.columns.0.x)
+        matrix[4] = GLfloat(cmatrix.columns.0.y)
+        matrix[12] = GLfloat(cmatrix.columns.0.z)
+        
+        matrix[1] = GLfloat(cmatrix.columns.1.x)
+        matrix[5] = GLfloat(cmatrix.columns.1.y)
+        matrix[13] = GLfloat(cmatrix.columns.1.z)
+        
+        matrix[2] = GLfloat(cmatrix.columns.2.x)
+        matrix[6] = GLfloat(cmatrix.columns.2.y)
+        matrix[14] = GLfloat(cmatrix.columns.2.z)
+        
+        matrix[15] = 1
+        
+        return matrix
+    }
+    
+    /// Returns a 4x4 floating-point transformation matrix for this matrix
+    /// object
+    func matrix4x4() -> float4x4 {
+        var matrix = float4x4(diagonal: [1, 1, 1, 1])
+        
+        matrix[0] = float4(x: self[0, 0], y: self[0, 1], z: 0, w: self[0, 2])
+        matrix[1] = float4(x: self[1, 0], y: self[1, 1], z: 0, w: self[1, 2])
+        matrix[2] = float4(x: self[2, 0], y: self[2, 1], z: 1, w: self[2, 2])
+        matrix[3] = float4(x: 0, y: 0, z: 0, w: 1)
+        
+        return matrix
     }
 }
