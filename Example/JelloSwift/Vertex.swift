@@ -154,6 +154,14 @@ struct VertexBuffer {
         indices = []
     }
     
+    init(capacity: Int) {
+        vertices = []
+        indices = []
+        
+        vertices.reserveCapacity(capacity)
+        indices.reserveCapacity(capacity)
+    }
+    
     init(vertices: [Vertex], indices: [GLuint]) {
         self.vertices = vertices
         self.indices = indices
@@ -237,8 +245,8 @@ struct VertexBuffer {
     
     /// Clears all the vertices and indices from this vertex buffer
     mutating func clearVertices() {
-        vertices = []
-        indices = []
+        vertices.removeAll(keepingCapacity: true)
+        indices.removeAll(keepingCapacity: true)
     }
     
     /// Creates a vertex buffer from a given set of vectors

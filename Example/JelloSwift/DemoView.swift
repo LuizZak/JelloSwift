@@ -250,7 +250,7 @@ class DemoView: UIView, CollisionObserver
         
         let normal = (start - end).normalized().perpendicular() / 15
         
-        var buffer = VertexBuffer()
+        var buffer = VertexBuffer(capacity: 16)
         
         buffer.addVertex(start + normal / 2, color: color)
         buffer.addVertex(end + normal / 2, color: color)
@@ -279,7 +279,7 @@ class DemoView: UIView, CollisionObserver
         let sw = Stopwatch.startNew()
         
         world.joints.forEach(drawJoint)
-        world.bodies.forEach(drawBody)
+        try? world.bodies.forEach(drawBody)
         
         drawDrag()
         
@@ -406,10 +406,10 @@ class DemoView: UIView, CollisionObserver
         drawLine(from: start, to: end, color: joint.enabled ? 0xFFEEEEEE : 0xFFCCCCCC)
     }
     
-    func drawBody(_ body: Body)
+    func drawBody(_ body: Body) throws
     {
         // Triangulate body's polygon
-        guard let (vertices, indices) = LibTessTriangulate.process(polygon: body.vertices) else {
+        guard let (vertices, indices) = try LibTessTriangulate.process(polygon: body.vertices) else {
             return
         }
         

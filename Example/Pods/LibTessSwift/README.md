@@ -5,7 +5,9 @@
 [![License](https://img.shields.io/cocoapods/l/LibTessSwift.svg?style=flat)](http://cocoapods.org/pods/LibTessSwift)
 [![Platform](https://img.shields.io/cocoapods/p/LibTessSwift.svg?style=flat)](http://cocoapods.org/pods/LibTessSwift)
 
-A Swift port of .NET library [LibTessDotNet](https://github.com/speps/LibTessDotNet) for polygon triangulation.
+A Swift wrapper on top of [Libtess2](https://github.com/memononen/Libtess2) for polygon triangulation.
+
+Tests where derived from [LibTessDotNet](https://github.com/speps/LibTessDotNet) library, which is also a port of the library above.
 
 Supports self-intersecting polygons and polygons with holes.
 
