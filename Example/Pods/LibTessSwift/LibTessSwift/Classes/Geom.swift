@@ -43,11 +43,11 @@ internal class Geom {
     /// let r be the negated result (this evaluates (uw)(v->s)), then
     /// r is guaranteed to satisfy MIN(u->t,w->t) <= r <= MAX(u->t,w->t).
     /// </summary>
-    public static func EdgeEval(_ u: MeshUtils.Vertex, _ v: MeshUtils.Vertex, _ w: MeshUtils.Vertex) -> CGFloat {
+    public static func EdgeEval(_ u: MeshUtils.Vertex, _ v: MeshUtils.Vertex, _ w: MeshUtils.Vertex) -> Real {
         assert(VertLeq(u, v) && VertLeq(v, w))
         
-        let gapL: CGFloat = v._s - u._s as CGFloat
-        let gapR: CGFloat = w._s - v._s as CGFloat
+        let gapL: Real = v._s - u._s as Real
+        let gapR: Real = w._s - v._s as Real
         
         /* vertical line */
         if (gapL + gapR <= 0.0) {
@@ -55,15 +55,15 @@ internal class Geom {
         }
         
         if (gapL < gapR) {
-            let k = gapL / (gapL + gapR) as CGFloat
-            let t1 = v._t - u._t as CGFloat
-            let t2 = u._t - w._t as CGFloat
+            let k = gapL / (gapL + gapR) as Real
+            let t1 = v._t - u._t as Real
+            let t2 = u._t - w._t as Real
             
             return t1 + t2 * k
         } else {
-            let k = gapR / (gapL + gapR) as CGFloat
-            let t1 = v._t - w._t as CGFloat
-            let t2 = w._t - u._t as CGFloat
+            let k = gapR / (gapL + gapR) as Real
+            let t1 = v._t - w._t as Real
+            let t2 = w._t - u._t as Real
             
             return t1 + t2 * k
         }
@@ -74,15 +74,15 @@ internal class Geom {
     /// is cheaper to evaluate. Returns > 0, == 0 , or < 0
     /// as v is above, on, or below the edge uw.
     /// </summary>
-    public static func EdgeSign(_ u: MeshUtils.Vertex, _ v: MeshUtils.Vertex, _ w: MeshUtils.Vertex) -> CGFloat {
+    public static func EdgeSign(_ u: MeshUtils.Vertex, _ v: MeshUtils.Vertex, _ w: MeshUtils.Vertex) -> Real {
         assert(VertLeq(u, v) && VertLeq(v, w))
 
-        let gapL = v._s - u._s as CGFloat
-        let gapR = w._s - v._s as CGFloat
+        let gapL = v._s - u._s as Real
+        let gapR = w._s - v._s as Real
         
         if (gapL + gapR > 0.0) {
-            let t1 = (v._t - w._t) * gapL as CGFloat
-            let t2 = (v._t - u._t) * gapR as CGFloat
+            let t1 = (v._t - w._t) * gapL as Real
+            let t2 = (v._t - u._t) * gapR as Real
             return t1 + t2
         }
         /* vertical line */
@@ -93,22 +93,22 @@ internal class Geom {
         return (lhs._t < rhs._t) || (lhs._t == rhs._t && lhs._s <= rhs._s)
     }
 
-    public static func TransEval(_ u: MeshUtils.Vertex, _ v: MeshUtils.Vertex, _ w: MeshUtils.Vertex) -> CGFloat {
+    public static func TransEval(_ u: MeshUtils.Vertex, _ v: MeshUtils.Vertex, _ w: MeshUtils.Vertex) -> Real {
         assert(TransLeq(u, v) && TransLeq(v, w))
         
-        let gapL = (v._t - u._t) as CGFloat
-        let gapR = (w._t - v._t) as CGFloat
+        let gapL = (v._t - u._t) as Real
+        let gapR = (w._t - v._t) as Real
 
         if (gapL + gapR > 0.0) {
             if (gapL < gapR) {
-                let k = (gapL / (gapL + gapR)) as CGFloat
-                let s1 = (v._s - u._s) as CGFloat
-                let s2 = (u._s - w._s) as CGFloat
+                let k = (gapL / (gapL + gapR)) as Real
+                let s1 = (v._s - u._s) as Real
+                let s2 = (u._s - w._s) as Real
                 return s1 + s2 * k
             } else {
-                let k = (gapR / (gapL + gapR)) as CGFloat
-                let s1 = (v._s - w._s) as CGFloat
-                let s2 = (w._s - u._s) as CGFloat
+                let k = (gapR / (gapL + gapR)) as Real
+                let s1 = (v._s - w._s) as Real
+                let s2 = (w._s - u._s) as Real
                 return s1 + s2 * k
             }
         }
@@ -116,15 +116,15 @@ internal class Geom {
         return 0
     }
 
-    public static func TransSign(_ u: MeshUtils.Vertex, _ v: MeshUtils.Vertex, _ w: MeshUtils.Vertex) -> CGFloat {
+    public static func TransSign(_ u: MeshUtils.Vertex, _ v: MeshUtils.Vertex, _ w: MeshUtils.Vertex) -> Real {
         assert(TransLeq(u, v) && TransLeq(v, w))
         
         let gapL = v._t - u._t
         let gapR = w._t - v._t
         
         if (gapL + gapR > 0.0) {
-            let s1 = ((v._s - w._s) * gapL) as CGFloat
-            let s2 = ((v._s - u._s) * gapR) as CGFloat
+            let s1 = ((v._s - w._s) * gapL) as Real
+            let s2 = ((v._s - u._s) * gapR) as Real
             return s1 + s2
         }
         /* vertical line */
@@ -139,9 +139,9 @@ internal class Geom {
         return VertLeq(e._Org!, e._Dst!)
     }
 
-    public static func VertL1dist(u: MeshUtils.Vertex, v: MeshUtils.Vertex) -> CGFloat {
-        let s = abs(u._s - v._s) as CGFloat
-        let t = abs(u._t - v._t) as CGFloat
+    public static func VertL1dist(u: MeshUtils.Vertex, v: MeshUtils.Vertex) -> Real {
+        let s = abs(u._s - v._s) as Real
+        let t = abs(u._t - v._t) as Real
         return s + t
     }
 
@@ -150,7 +150,7 @@ internal class Geom {
         eDst._Sym!._winding += eSrc._Sym!._winding
     }
 
-    public static func Interpolate(_ a: CGFloat, _ x: CGFloat, _ b: CGFloat, _ y: CGFloat) -> CGFloat {
+    public static func Interpolate(_ a: Real, _ x: Real, _ b: Real, _ y: Real) -> Real {
         var a = a
         var b = b
         if (a < 0.0) {

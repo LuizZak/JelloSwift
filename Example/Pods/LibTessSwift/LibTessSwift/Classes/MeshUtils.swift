@@ -6,80 +6,44 @@
 //  Copyright © 2017 Luiz Fernando Silva. All rights reserved.
 //
 
+import simd
+
 /// Objects that can be initialized using a parameterless init
 public protocol EmptyInitializable {
     init()
 }
 
-public struct Vec3: CustomStringConvertible, EmptyInitializable {
-    public static var Zero = Vec3()
-
-    public var X: CGFloat, Y: CGFloat, Z: CGFloat
-
-    public subscript(index: Int) -> CGFloat {
-        get {
-            if (index == 0) { return X }
-            if (index == 1) { return Y }
-            if (index == 2) { return Z }
-            fatalError("out of bounds")
-        }
-        set {
-            if (index == 0) { X = newValue } else if (index == 1) { Y = newValue } else if (index == 2) { Z = newValue }
-        }
-    }
+#if arch(x86_64) || arch(arm64)
+    public typealias Real = Double
+    public typealias Vector3 = double3
     
-    public init(X: CGFloat, Y: CGFloat, Z: CGFloat) {
-        self.X = X
-        self.Y = Y
-        self.Z = Z
+    public extension Vector3 {
+        public static let zero = double3()
+        
+        public static func longAxis(v: inout Vector3) -> Int {
+            var i = 0
+            if (abs(v.y) > abs(v.x)) { i = 1 }
+            if (abs(v.z) > abs(i == 0 ? v.x : v.y)) { i = 2 }
+            
+            return i
+        }
     }
+#else
+    public typealias Real = Float
+    public typealias Vector3 = float3
     
-    public init() {
-        self.X = 0
-        self.Y = 0
-        self.Z = 0
-    }
-
-    public static func Sub(lhs: inout Vec3, rhs: inout Vec3, result: inout Vec3)  {
-        result.X = lhs.X - rhs.X
-        result.Y = lhs.Y - rhs.Y
-        result.Z = lhs.Z - rhs.Z
-    }
-
-    public static func Neg(v: inout Vec3) {
-        v.X = -v.X
-        v.Y = -v.Y
-        v.Z = -v.Z
-    }
-
-    public static func Dot(u: inout Vec3, v: inout Vec3, dot: inout CGFloat) {
-        dot = u.X * v.X + u.Y * v.Y + u.Z * v.Z
-    }
-
-    public static func Normalize(v: inout Vec3) {
+    public extension Vector3 {
+        public static let zero = float3()
         
-        var len: CGFloat = v.X * v.X + v.Y * v.Y + v.Z * v.Z
-        
-        assert(len >= 0.0)
-        
-        len = 1.0 / sqrt(len)
-        v.X *= len
-        v.Y *= len
-        v.Z *= len
+        public static func longAxis(v: inout Vector3) -> Int {
+            var i = 0
+            if (abs(v.y) > abs(v.x)) { i = 1 }
+            if (abs(v.z) > abs(i == 0 ? v.x : v.y)) { i = 2 }
+            
+            return i
+        }
     }
-
-    public static func LongAxis(v: inout Vec3) -> Int {
-        var i = 0
-        if (abs(v.Y) > abs(v.X)) { i = 1 }
-        if (abs(v.Z) > abs(i == 0 ? v.X : v.Y)) { i = 2 }
-        
-        return i
-    }
-
-    public var description: String {
-        return "\(X), \(Y), \(Z)"
-    }
-}
+#endif
 
 /// Describes an object that can be chained with other instances of itself
 /// indefinitely. This also supports looped links that point circularly.
@@ -138,8 +102,8 @@ internal class MeshUtils {
         internal weak var _next: Vertex!
         internal weak var _anEdge: Edge!
 
-        internal var _coords: Vec3 = .Zero
-        internal var _s: CGFloat = 0, _t: CGFloat = 0
+        internal var _coords: Vector3 = .zero
+        internal var _s: Real = 0, _t: Real = 0
         internal var _pqHandle: PQHandle = PQHandle()
         internal var _n: Int = 0
         internal var _data: Any?
@@ -152,7 +116,7 @@ internal class MeshUtils {
             _prev = nil
             _next = nil
             _anEdge = nil
-            _coords = Vec3.Zero
+            _coords = Vector3.zero
             _s = 0
             _t = 0
             _pqHandle = PQHandle()
@@ -269,8 +233,8 @@ internal class MeshUtils {
     /// <summary>
     /// Return signed area of face.
     /// </summary>
-    public static func FaceArea(_ f: Face) -> CGFloat {
-        var area: CGFloat = 0
+    public static func FaceArea(_ f: Face) -> Real {
+        var area: Real = 0
         var e = f._anEdge!
         repeat {
             area += (e._Org._s - e._Dst._s) * (e._Org._t + e._Dst._t)

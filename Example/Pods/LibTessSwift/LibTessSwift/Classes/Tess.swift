@@ -6,6 +6,8 @@
 //  Copyright © 2017 Luiz Fernando Silva. All rights reserved.
 //
 
+import simd
+
 public enum WindingRule: String {
     case evenOdd
     case nonZero
@@ -27,20 +29,20 @@ public enum ContourOrientation {
 }
 
 public struct ContourVertex: CustomStringConvertible {
-    public var position: Vec3
+    public var position: Vector3
     public var data: Any?
     
     public init() {
-        position = .Zero
+        position = .zero
         data = nil
     }
     
-    public init(Position: Vec3) {
+    public init(Position: Vector3) {
         self.position = Position
         self.data = nil
     }
     
-    public init(Position: Vec3, Data: Any?) {
+    public init(Position: Vector3, Data: Any?) {
         self.position = Position
         self.data = Data
     }
@@ -50,18 +52,18 @@ public struct ContourVertex: CustomStringConvertible {
     }
 }
 
-public typealias CombineCallback = (_ position: Vec3, _ data: [Any?], _ weights: [CGFloat]) -> Any?
+public typealias CombineCallback = (_ position: Vector3, _ data: [Any?], _ weights: [Real]) -> Any?
 
 public class Tess {
     internal var _mesh: Mesh!
-    internal var _normal: Vec3
-    internal var _sUnit: Vec3 = .Zero
-    internal var _tUnit: Vec3 = .Zero
+    internal var _normal: Vector3
+    internal var _sUnit: Vector3 = .zero
+    internal var _tUnit: Vector3 = .zero
 
-    internal var _bminX: CGFloat
-    internal var _bminY: CGFloat
-    internal var _bmaxX: CGFloat
-    internal var _bmaxY: CGFloat
+    internal var _bminX: Real
+    internal var _bminY: Real
+    internal var _bmaxX: Real
+    internal var _bmaxY: Real
 
     internal var _windingRule: WindingRule
 
@@ -78,14 +80,14 @@ public class Tess {
     internal var _elements: [Int]!
     internal var _elementCount: Int
     
-    public var normal: Vec3 { get { return _normal } set { _normal = newValue } }
+    public var normal: Vector3 { get { return _normal } set { _normal = newValue } }
     
-    public var SUnitX: CGFloat = 1
-    public var SUnitY: CGFloat = 0
+    public var SUnitX: Real = 1
+    public var SUnitY: Real = 0
 #if DOUBLE
-    public var SentinelCoord: CGFloat = 4e150
+    public var SentinelCoord: Real = 4e150
 #else
-    public var SentinelCoord: CGFloat = 4e30
+    public var SentinelCoord: Real = 4e30
 #endif
 
     /// <summary>
@@ -100,7 +102,7 @@ public class Tess {
     public var elementCount: Int { get { return _elementCount } }
     
     public init() {
-        _normal = Vec3.Zero
+        _normal = Vector3.zero
         _bminX = 0
         _bminY = 0
         _bmaxX = 0
@@ -127,41 +129,41 @@ public class Tess {
         _regionsPool.reset()
     }
     
-    private func computeNormal(norm: inout Vec3) {
+    private func computeNormal(norm: inout Vector3) {
         var v = _mesh._vHead._next!
 
-        var minVal: [CGFloat] = [ v._coords.X, v._coords.Y, v._coords.Z ]
+        var minVal: [Real] = [ v._coords.x, v._coords.y, v._coords.z ]
         var minVert: ContiguousArray<MeshUtils.Vertex> = [ v, v, v ]
-        var maxVal: [CGFloat] = [ v._coords.X, v._coords.Y, v._coords.Z ]
+        var maxVal: [Real] = [ v._coords.x, v._coords.y, v._coords.z ]
         var maxVert: ContiguousArray<MeshUtils.Vertex> = [ v, v, v ]
         
-        func subMinMax(_ index: Int) -> CGFloat {
+        func subMinMax(_ index: Int) -> Real {
             return maxVal[index] - minVal[index]
         }
         
         _mesh.forEachVertex { v in
-            if (v._coords.X < minVal[0]) {
-                minVal[0] = v._coords.X
+            if (v._coords.x < minVal[0]) {
+                minVal[0] = v._coords.x
                 minVert[0] = v
             }
-            if (v._coords.Y < minVal[1]) {
-                minVal[1] = v._coords.Y
+            if (v._coords.y < minVal[1]) {
+                minVal[1] = v._coords.y
                 minVert[1] = v
             }
-            if (v._coords.Z < minVal[2]) {
-                minVal[2] = v._coords.Z
+            if (v._coords.z < minVal[2]) {
+                minVal[2] = v._coords.z
                 minVert[2] = v }
             
-            if (v._coords.X > maxVal[0]) {
-                maxVal[0] = v._coords.X
+            if (v._coords.x > maxVal[0]) {
+                maxVal[0] = v._coords.x
                 maxVert[0] = v
             }
-            if (v._coords.Y > maxVal[1]) {
-                maxVal[1] = v._coords.Y
+            if (v._coords.y > maxVal[1]) {
+                maxVal[1] = v._coords.y
                 maxVert[1] = v
             }
-            if (v._coords.Z > maxVal[2]) {
-                maxVal[2] = v._coords.Z
+            if (v._coords.z > maxVal[2]) {
+                maxVal[2] = v._coords.z
                 maxVert[2] = v
             }
         }
@@ -180,24 +182,27 @@ public class Tess {
         
         if (minVal[i] >= maxVal[i]) {
             // All vertices are the same -- normal doesn't matter
-            norm = Vec3(X: 0, Y: 0, Z: 1)
+            norm = Vector3(x: 0, y: 0, z: 1)
             return
         }
         
         // Look for a third vertex which forms the triangle with maximum area
         // (Length of normal == twice the triangle area)
-        var maxLen2: CGFloat = 0
+        var maxLen2: Real = 0
         let v1 = minVert[i]
         let v2 = maxVert[i]
-        var d1: Vec3 = .Zero, d2: Vec3 = .Zero, tNorm: Vec3 = .Zero
-        Vec3.Sub(lhs: &v1._coords, rhs: &v2._coords, result: &d1)
+        
+        var tNorm: Vector3 = .zero
+        var d1 = v1._coords - v2._coords
         
         _mesh.forEachVertex { v in
-            Vec3.Sub(lhs: &v._coords, rhs: &v2._coords, result: &d2)
-            tNorm.X = d1.Y * d2.Z - d1.Z * d2.Y
-            tNorm.Y = d1.Z * d2.X - d1.X * d2.Z
-            tNorm.Z = d1.X * d2.Y - d1.Y * d2.X
-            let tLen2 = tNorm.X * tNorm.X + tNorm.Y * tNorm.Y + tNorm.Z * tNorm.Z
+            
+            let d2 = v._coords - v2._coords
+            
+            tNorm.x = d1.y * d2.z - d1.z * d2.y
+            tNorm.y = d1.z * d2.x - d1.x * d2.z
+            tNorm.z = d1.x * d2.y - d1.y * d2.x
+            let tLen2 = tNorm.x * tNorm.x + tNorm.y * tNorm.y + tNorm.z * tNorm.z
             
             if (tLen2 > maxLen2) {
                 maxLen2 = tLen2
@@ -207,8 +212,8 @@ public class Tess {
         
         if (maxLen2 <= 0.0) {
             // All points lie on a single line -- any decent normal will do
-            norm = Vec3.Zero
-            i = Vec3.LongAxis(v: &d1)
+            norm = Vector3.zero
+            i = Vector3.longAxis(v: &d1)
             norm[i] = 1
         }
     }
@@ -216,7 +221,7 @@ public class Tess {
     private func checkOrientation() {
         // When we compute the normal automatically, we choose the orientation
         // so that the the sum of the signed areas of all contours is non-negative.
-        var area: CGFloat = 0.0
+        var area: Real = 0.0
         
         _mesh.forEachFace { f in
             if (f._anEdge!._winding <= 0) {
@@ -231,7 +236,7 @@ public class Tess {
                 v._t = -v._t
             }
             
-            Vec3.Neg(v: &_tUnit)
+            _tUnit = -_tUnit
         }
     }
 
@@ -239,13 +244,13 @@ public class Tess {
         var norm = _normal
 
         var computedNormal = false
-        if (norm.X == 0.0 && norm.Y == 0.0 && norm.Z == 0.0) {
+        if (norm.x == 0.0 && norm.y == 0.0 && norm.z == 0.0) {
             computeNormal(norm: &norm)
             _normal = norm
             computedNormal = true
         }
 
-        let i = Vec3.LongAxis(v: &norm)
+        let i = Vector3.longAxis(v: &norm)
         
         _sUnit[i] = 0
         _sUnit[(i + 1) % 3] = SUnitX
@@ -257,8 +262,8 @@ public class Tess {
 
         // Project the vertices onto the sweep plane
         _mesh.forEachVertex { v in
-            Vec3.Dot(u: &v._coords, v: &_sUnit, dot: &v._s)
-            Vec3.Dot(u: &v._coords, v: &_tUnit, dot: &v._t)
+            v._s = dot(v._coords, _sUnit)
+            v._t = dot(v._coords, _tUnit)
         }
         
         if (computedNormal) {
@@ -446,7 +451,7 @@ public class Tess {
             
             if (noEmptyPolygons) {
                 let area = MeshUtils.FaceArea(f)
-                if (abs(area) < CGFloat.leastNonzeroMagnitude) {
+                if (abs(area) < Real.leastNonzeroMagnitude) {
                     return
                 }
             }
@@ -476,7 +481,7 @@ public class Tess {
         _elements = Array(repeating: 0, count: maxFaceCount * polySize)
 
         _vertexCount = maxVertexCount
-        _vertices = Array(repeating: ContourVertex(Position: .Zero, Data: nil), count: _vertexCount)
+        _vertices = Array(repeating: ContourVertex(Position: .zero, Data: nil), count: _vertexCount)
 
         // Output vertices.
         _mesh.forEachVertex { v in
@@ -495,7 +500,7 @@ public class Tess {
             
             if (noEmptyPolygons) {
                 let area = MeshUtils.FaceArea(f)
-                if (abs(area) < CGFloat.leastNonzeroMagnitude) {
+                if (abs(area) < Real.leastNonzeroMagnitude) {
                     return
                 }
             }
@@ -557,7 +562,7 @@ public class Tess {
         }
 
         _elements = Array(repeating: 0, count: _elementCount * 2)
-        _vertices = Array(repeating: ContourVertex(Position: .Zero, Data: nil), count: _vertexCount)
+        _vertices = Array(repeating: ContourVertex(Position: .zero, Data: nil), count: _vertexCount)
 
         var vertIndex = 0
         var elementIndex = 0
@@ -589,15 +594,15 @@ public class Tess {
         }
     }
 
-    private func signedArea(_ vertices: [ContourVertex]) -> CGFloat {
-        var area: CGFloat = 0.0
+    private func signedArea(_ vertices: [ContourVertex]) -> Real {
+        var area: Real = 0.0
         
         for i in 0..<vertices.count {
             let v0 = vertices[i]
             let v1 = vertices[(i + 1) % vertices.count]
 
-            area += v0.position.X * v1.position.Y
-            area -= v0.position.Y * v1.position.X
+            area += v0.position.x * v1.position.y
+            area -= v0.position.y * v1.position.x
         }
 
         return 0.5 * area
@@ -649,7 +654,7 @@ public class Tess {
     }
     
     public func tessellate(windingRule: WindingRule, elementType: ElementType, polySize: Int, combineCallback: CombineCallback?) {
-        _normal = Vec3.Zero
+        _normal = Vector3.zero
         _vertices = nil
         _elements = nil
 

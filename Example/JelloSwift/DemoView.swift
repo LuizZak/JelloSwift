@@ -447,7 +447,6 @@ class DemoView: UIView, CollisionObserver
         }
         
         // Draw the body's global shape
-//        polyDrawer.queuePoly(body.globalShape.map { toScreenCoords($0).cgPoint }, fillColor: 0x33FFFFFF, strokeColor: 0xFF777777, lineWidth: 1)
         drawPolyOutline(body.globalShape, color: 0xFF777777)
         
         // Draw lines going from the body's outer points to the global shape indices
@@ -737,7 +736,7 @@ extension DemoView {
         
         glBindVertexArrayOES(0)
         
-        bufferVertices = []
+        bufferVertices.removeAll(keepingCapacity: true)
     }
 }
 

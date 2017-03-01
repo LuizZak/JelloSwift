@@ -18,7 +18,7 @@ class LibTessTriangulate {
         let polySize = 3
         
         let contour = polygon.map {
-            ContourVertex(Position: Vec3(X: $0.x, Y: $0.y, Z: 0))
+            ContourVertex(Position: LibTessSwift.Vector3(x: Double($0.x), y: Double($0.y), z: Double(0.0)))
         }
         
         tess.addContour(contour)
@@ -29,7 +29,7 @@ class LibTessTriangulate {
         var indices: [Int] = []
         
         for vertex in tess.vertices {
-            result.append(Vector2(vertex.position.X, vertex.position.Y))
+            result.append(Vector2(vertex.position.x, vertex.position.y))
         }
         
         for i in 0..<tess.elementCount
@@ -41,7 +41,7 @@ class LibTessTriangulate {
                     continue;
                 }
                 indices.append(index)
-                let v = Vector2(tess.vertices[index].position.X, tess.vertices[index].position.Y)
+                let v = Vector2(tess.vertices[index].position.x, tess.vertices[index].position.y)
                 
                 result.append(v)
             }
