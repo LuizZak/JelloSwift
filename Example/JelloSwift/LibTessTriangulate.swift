@@ -12,10 +12,14 @@ import LibTessSwift
 
 class LibTessTriangulate {
     
+    static let tess = TessC()!
+    
     /// Triangulates a set of vertices using LibTessSwift
     static func process(polygon: [Vector2]) throws -> (vertices: [Vector2], indices: [Int])? {
-        guard let tess = TessC() else {
-            return nil
+        
+        // Try a simple triangulation, and fallback to libtess if it fails
+        if let simple = Triangulate.processIndices(polygon: polygon) {
+            return (polygon, simple)
         }
         
         let polySize = 3

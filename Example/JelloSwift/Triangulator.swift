@@ -22,6 +22,23 @@ class Triangulate
     /// Returns nil, if the operation failed.
     public static func process(polygon: [Vector2]) -> (vertices: [Vector2], indices: [Int])? {
         
+        if let indices = processIndices(polygon: polygon) {
+            var points: [Vector2] = []
+            for ind in indices {
+                points.append(polygon[ind])
+            }
+            return (points, indices)
+        }
+        
+        return nil
+    }
+    
+    /// Triangulates a contour/polygon, returning the resulting index triplets
+    /// that to the points on the polygon array to form the triangles.
+    ///
+    /// Returns nil, if the operation failed.
+    public static func processIndices(polygon: [Vector2]) -> [Int]? {
+        
         let pointCount = polygon.count
         if (pointCount < 3) {
             return nil
@@ -44,7 +61,6 @@ class Triangulate
         
         var v = nv-1
         
-        var result: [Vector2] = []
         var indices: [Int] = []
         
         while nv > 2 {
@@ -82,11 +98,6 @@ class Triangulate
                 indices.append(b)
                 indices.append(c)
                 
-                /* output Triangle */
-                result.append(polygon[a])
-                result.append(polygon[b])
-                result.append(polygon[c])
-                
                 /* remove v from remaining polygon */
                 //var s = v
                 for t in v+1..<nv {
@@ -101,7 +112,7 @@ class Triangulate
             }
         }
         
-        return (result, indices)
+        return indices
     }
 
     // compute area of a contour/polygon
