@@ -11,7 +11,7 @@
 public final class GravityComponent: BodyComponent {
     
     /// The gravity vector to apply to the body
-    public var gravity = Vector2(0, -9.8)
+    public var gravity = Vector2(x: 0, y: -9.8)
     
     /// Accumulates the force of gravity by applying a unified force downwards.
     /// This force ignores mass by multiplying the gravity component by mass
@@ -37,7 +37,7 @@ public final class GravityComponent: BodyComponent {
 open class GravityComponentCreator: BodyComponentCreator {
     open var vector: Vector2
     
-    public required init(gravity: Vector2 = Vector2(0, -9.8)) {
+    public required init(gravity: Vector2 = Vector2(x: 0, y: -9.8)) {
         vector = gravity
         
         super.init()

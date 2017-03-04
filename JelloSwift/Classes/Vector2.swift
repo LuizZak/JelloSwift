@@ -19,16 +19,16 @@ public protocol VectorRepresentable {
 public struct Vector2: VectorRepresentable, Equatable, CustomStringConvertible {
     
     /// A zeroed-value Vector2
-    public static let zero = Vector2(0, 0)
+    public static let zero = Vector2(x: 0, y: 0)
     
     /// An unit-valued Vector2
-    public static let unit = Vector2(1, 1)
+    public static let unit = Vector2(x: 1, y: 1)
     
     #if arch(x86_64) || arch(arm64)
     /// Used to match `CGFloat`'s native type
     public typealias NativeVectorType = double2
     
-    /// The 3x2 matrix type that can be used to apply transformations by
+    /// The 3x3 matrix type that can be used to apply transformations by
     /// multiplying on this Vector2
     public typealias NativeMatrixType = double3x3
     
@@ -50,6 +50,7 @@ public struct Vector2: VectorRepresentable, Equatable, CustomStringConvertible {
     var theVector: NativeVectorType
     
     /// The CGFloat representation of this vector's x axis
+    @_transparent
     public var x: CGFloat {
         get {
             return CGFloat(theVector.x)
@@ -60,6 +61,7 @@ public struct Vector2: VectorRepresentable, Equatable, CustomStringConvertible {
     }
     
     /// The CGFloat representation of this vector's y axis
+    @_transparent
     public var y: CGFloat {
         get {
             return CGFloat(theVector.y)
@@ -109,19 +111,19 @@ public struct Vector2: VectorRepresentable, Equatable, CustomStringConvertible {
         theVector = NativeVectorType(0)
     }
     
-    public init(_ x: Int, _ y: Int) {
+    public init(x: Int, y: Int) {
         theVector = NativeVectorType(CGFloat.NativeType(x), CGFloat.NativeType(y))
     }
     
-    public init(_ x: CGFloat, _ y: CGFloat) {
+    public init(x: CGFloat, y: CGFloat) {
         theVector = NativeVectorType(x.native, y.native)
     }
     
-    public init(_ x: Float, _ y: Float) {
+    public init(x: Float, y: Float) {
         theVector = NativeVectorType(CGFloat.NativeType(x), CGFloat.NativeType(y))
     }
     
-    public init(_ x: Double, _ y: Double) {
+    public init(x: Double, y: Double) {
         theVector = NativeVectorType(CGFloat.NativeType(x), CGFloat.NativeType(y))
     }
     
@@ -152,7 +154,7 @@ public struct Vector2: VectorRepresentable, Equatable, CustomStringConvertible {
     
     /// Returns a Vector2 perpendicular to this Vector2
     public func perpendicular() -> Vector2 {
-        return Vector2(-y, x)
+        return Vector2(x: -y, y: x)
     }
     
     // Normalizes this Vector2 instance.
@@ -233,8 +235,8 @@ extension Vector2 {
     }
     
     static public func %(lhs: Vector2, rhs: Vector2) -> Vector2 {
-        return Vector2(lhs.x.truncatingRemainder(dividingBy: rhs.x),
-                       lhs.y.truncatingRemainder(dividingBy: rhs.y))
+        return Vector2(x: lhs.x.truncatingRemainder(dividingBy: rhs.x),
+                       y: lhs.y.truncatingRemainder(dividingBy: rhs.y))
     }
     
     // CGFloat interaction
@@ -255,12 +257,12 @@ extension Vector2 {
     }
     
     static public func %(lhs: Vector2, rhs: CGFloat) -> Vector2 {
-        return Vector2(lhs.x.truncatingRemainder(dividingBy: rhs),
-                       lhs.y.truncatingRemainder(dividingBy: rhs))
+        return Vector2(x: lhs.x.truncatingRemainder(dividingBy: rhs),
+                       y: lhs.y.truncatingRemainder(dividingBy: rhs))
     }
     
     static public func /(lhs: CGFloat, rhs: Vector2) -> Vector2 {
-        return Vector2(lhs / rhs.x, lhs / rhs.y)
+        return Vector2(x: lhs / rhs.x, y: lhs / rhs.y)
     }
     
     ////
@@ -377,7 +379,7 @@ extension Vector2 {
         
         let transformed = homog * rhs
         
-        return Vector2(transformed.x, transformed.y)
+        return Vector2(x: transformed.x, y: transformed.y)
     }
 }
 
@@ -413,7 +415,7 @@ extension Vector2 {
         let c = cos(angleInRadians)
         let s = sin(angleInRadians)
         
-        return Vector2((c * vec.x) - (s * vec.y), (c * vec.y) + (s * vec.x))
+        return Vector2(x: (c * vec.x) - (s * vec.y), y: (c * vec.y) + (s * vec.x))
     }
 }
 
@@ -456,7 +458,7 @@ infix operator • : MultiplicationPrecedence
 infix operator =/ : MultiplicationPrecedence
 
 public func round(_ x: Vector2) -> Vector2 {
-    return Vector2(round(x.x), round(x.y))
+    return Vector2(x: round(x.x), y: round(x.y))
 }
 
 public func ceil(_ x: Vector2) -> Vector2 {

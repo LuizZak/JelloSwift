@@ -26,9 +26,9 @@ class JelloSwiftTests: XCTestCase
     
     func testAABB()
     {
-        let aabb1 = AABB(min: Vector2.zero, max: Vector2(10, 10))
-        let aabb2 = AABB(min: Vector2(-1, -1), max: Vector2(0, 0))
-        let vec = Vector2(0, 0)
+        let aabb1 = AABB(min: Vector2.zero, max: Vector2(x: 10, y: 10))
+        let aabb2 = AABB(min: Vector2(x: -1, y: -1), max: Vector2(x: 0, y: 0))
+        let vec = Vector2(x: 0, y: 0)
         
         // This is an example of a functional test case.
         XCTAssert(aabb1.contains(vec), "Pass")

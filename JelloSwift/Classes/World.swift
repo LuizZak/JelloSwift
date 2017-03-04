@@ -72,8 +72,8 @@ public final class World {
         materialCount = 1
         materialPairs = [[defaultMatPair]]
         
-        let min = Vector2(-20.0, -20.0)
-        let max = Vector2( 20.0,  20.0)
+        let min = Vector2(x: -20.0, y: -20.0)
+        let max = Vector2(x:  20.0, y:  20.0)
         
         setWorldLimits(min, max)
     }
@@ -564,8 +564,8 @@ public final class World {
     fileprivate func updateBodyBitmask(_ body: Body) {
         let box = body.aabb
         
-        let minVec = max(Vector2.zero, min(Vector2(32, 32), (box.minimum - worldLimits.minimum) / worldGridStep))
-        let maxVec = max(Vector2.zero, min(Vector2(32, 32), (box.maximum - worldLimits.minimum) / worldGridStep))
+        let minVec = max(Vector2.zero, min(Vector2(x: 32, y: 32), (box.minimum - worldLimits.minimum) / worldGridStep))
+        let maxVec = max(Vector2.zero, min(Vector2(x: 32, y: 32), (box.maximum - worldLimits.minimum) / worldGridStep))
         
         assert(minVec.x >= 0 && minVec.x <= 32 && minVec.y >= 0 && minVec.y <= 32)
         assert(maxVec.x >= 0 && maxVec.x <= 32 && maxVec.y >= 0 && maxVec.y <= 32)

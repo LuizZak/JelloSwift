@@ -36,7 +36,7 @@ class LibTessTriangulate {
         var indices: [Int] = []
         
         for vertex in tess.vertices! {
-            result.append(Vector2(vertex.x, vertex.y))
+            result.append(Vector2(x: vertex.x, y: vertex.y))
         }
         
         for i in 0..<tess.elementCount
@@ -48,7 +48,7 @@ class LibTessTriangulate {
                     continue;
                 }
                 indices.append(index)
-                let v = Vector2(tess.vertices![index].x, tess.vertices![index].y)
+                let v = Vector2(x: tess.vertices![index].x, y: tess.vertices![index].y)
                 
                 result.append(v)
             }

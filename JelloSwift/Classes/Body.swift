@@ -559,7 +559,7 @@ public final class Body: Equatable {
         // This basic assumption may not hold for every body, but for most
         // bodies (specially round), this may hold true most of the time.
         if(pt.x < aabb.midX) {
-            endPt = Vector2(aabb.minimum.x - 0.1, pt.y)
+            endPt = Vector2(x: aabb.minimum.x - 0.1, y: pt.y)
             
             for e in edges {
                 let edgeSt = e.start
@@ -586,7 +586,7 @@ public final class Body: Equatable {
                 }
             }
         } else {
-            endPt = Vector2(aabb.maximum.x + 0.1, pt.y)
+            endPt = Vector2(x: aabb.maximum.x + 0.1, y: pt.y)
             
             for e in edges {
                 let edgeSt = e.start

@@ -9,11 +9,11 @@
 import CoreGraphics
 
 /// The rendering scale for the scene
-public var renderingScale = Vector2(25.8, 25.8)
+public var renderingScale = Vector2(x: 25.8, y: 25.8)
 
 /// The offset is independent of the scale, unlike Flash DisplayObject's x-y 
 /// coordinates and scaleX-scaleY
-public var renderingOffset = Vector2(300, -50)
+public var renderingOffset = Vector2(x: 300, y: -50)
 
 /// Transforms the given point on stage coordinates into World coordinates by 
 /// using the rendering settings

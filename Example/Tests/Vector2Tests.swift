@@ -14,10 +14,10 @@ class Vector2Tests: XCTestCase {
     func testMatrixTranslate() {
         // Tests a Vector2.matrix() to translate a Vector2
         
-        let vector = Vector2(10, 10)
-        let expected = Vector2(-10, 20)
+        let vector = Vector2(x: 10, y: 10)
+        let expected = Vector2(x: -10, y: 20)
         
-        let matrix = Vector2.matrix(translatingBy: Vector2(-20, 10))
+        let matrix = Vector2.matrix(translatingBy: Vector2(x: -20, y: 10))
         
         let transformed = vector * matrix
         
@@ -27,10 +27,10 @@ class Vector2Tests: XCTestCase {
     func testMatrixScale() {
         // Tests a Vector2.matrix() to scale a Vector2
         
-        let vector = Vector2(10, -20)
-        let expected = Vector2(5, -40)
+        let vector = Vector2(x: 10, y: -20)
+        let expected = Vector2(x: 5, y: -40)
         
-        let matrix = Vector2.matrix(scalingBy: Vector2(0.5, 2))
+        let matrix = Vector2.matrix(scalingBy: Vector2(x: 0.5, y: 2))
         
         let transformed = vector * matrix
         
@@ -40,8 +40,8 @@ class Vector2Tests: XCTestCase {
     func testMatrixRotate() {
         // Tests a Vector2.matrix() to rotate a Vector2
         
-        let vector = Vector2(10, 10)
-        let expected = Vector2(-10, 10)
+        let vector = Vector2(x: 10, y: 10)
+        let expected = Vector2(x: -10, y: 10)
         
         let matrix = Vector2.matrix(rotatingBy: CGFloat.pi / 2)
         
@@ -55,12 +55,12 @@ class Vector2Tests: XCTestCase {
         // of a Vector2
         // Order of operations should be: scaling -> rotating -> translating
         
-        let vector = Vector2(10, 10)
-        let expected = Vector2(5, 15)
+        let vector = Vector2(x: 10, y: 10)
+        let expected = Vector2(x: 5, y: 15)
         
-        let matrix = Vector2.matrix(scalingBy: Vector2(0.5, 0.5),
+        let matrix = Vector2.matrix(scalingBy: Vector2(x: 0.5, y: 0.5),
                                     rotatingBy: CGFloat.pi / 2,
-                                    translatingBy: Vector2(10, 10))
+                                    translatingBy: Vector2(x: 10, y: 10))
         
         let transformed = vector * matrix
         

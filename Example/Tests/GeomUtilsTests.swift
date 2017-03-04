@@ -15,8 +15,8 @@ class GeomUtilsTests: XCTestCase
 {
     func testLineRatio()
     {
-        let pt1 = Vector2(0, 0)
-        let pt2 = Vector2(10, 10)
+        let pt1 = Vector2(x: 0, y: 0)
+        let pt2 = Vector2(x: 10, y: 10)
         
         // Edge cases
         XCTAssertEqual(pt1, calculateVectorRatio(pt1, vec2: pt2, ratio: 0), "Failed to calculate point in line correctly")
@@ -28,8 +28,8 @@ class GeomUtilsTests: XCTestCase
     
     func testLineRatioCentralized()
     {
-        let pt1 = Vector2(-10, -10)
-        let pt2 = Vector2(10, 10)
+        let pt1 = Vector2(x: -10, y: -10)
+        let pt2 = Vector2(x: 10, y: 10)
         
         // Edge cases
         XCTAssertEqual(pt1, calculateVectorRatio(pt1, vec2: pt2, ratio: 0), "Failed to calculate point in line correctly")

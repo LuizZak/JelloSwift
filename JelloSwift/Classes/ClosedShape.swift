@@ -50,7 +50,7 @@ public struct ClosedShape: ExpressibleByArrayLiteral {
     
     /// Adds a vertex to this closed shape
     public mutating func addVertex(x: CGFloat, y: CGFloat) {
-        addVertex(Vector2(x, y))
+        addVertex(Vector2(x: x, y: y))
     }
     
     /// Finishes constructing this closed shape, optionally converting them to 
@@ -171,7 +171,7 @@ extension ClosedShape {
             for i in 0..<pointCount
             {
                 let n = .pi * 2 * (CGFloat(i) / CGFloat(pointCount))
-                shape.addVertex(Vector2(cos(-n) * radius, sin(-n) * radius))
+                shape.addVertex(Vector2(x: cos(-n) * radius, y: sin(-n) * radius))
             }
         }
     }
@@ -179,19 +179,19 @@ extension ClosedShape {
     /// Creates a closed shape that represents a square, with side of the
     /// specified length
     public static func square(ofSide length: CGFloat) -> ClosedShape {
-        return rectangle(ofSize: Vector2(value: length))
+        return rectangle(ofSides: Vector2(value: length))
     }
     
-    /// Creates a closed shape that represents a rectangle, with side of the
+    /// Creates a closed shape that represents a rectangle, with sides of the
     /// specified length
-    public static func rectangle(ofSize size: Vector2) -> ClosedShape {
+    public static func rectangle(ofSides sides: Vector2) -> ClosedShape {
         
         // Counter-clockwise!
         return .create { shape in
-            shape.addVertex(Vector2(-size.x,  size.y))
-            shape.addVertex(Vector2( size.x,  size.y))
-            shape.addVertex(Vector2( size.x, -size.y))
-            shape.addVertex(Vector2(-size.x, -size.y))
+            shape.addVertex(Vector2(x: -sides.x, y:  sides.y) / 2)
+            shape.addVertex(Vector2(x:  sides.x, y:  sides.y) / 2)
+            shape.addVertex(Vector2(x:  sides.x, y: -sides.y) / 2)
+            shape.addVertex(Vector2(x: -sides.x, y: -sides.y) / 2)
         }
     }
     

@@ -78,8 +78,8 @@ class DemoView: UIView, CollisionObserver
         
         viewportMatrix = Vector2.matrix(scalingBy: 1.0 / renderingScale)
         
-        renderingOffset = Vector2(300, frame.size.height)
-        renderingScale = Vector2(renderingScale.x, -renderingScale.y)
+        renderingOffset = Vector2(x: 300, y: frame.size.height)
+        renderingScale = Vector2(x: renderingScale.x, y: -renderingScale.y)
         
         isOpaque = false
         
@@ -131,60 +131,60 @@ class DemoView: UIView, CollisionObserver
         let size = frame.size
         
         // Create basic shapes
-        let vec = toWorldCoords(Vector2(size.width, 400) / 2)
+        let vec = toWorldCoords(Vector2(x: size.width, y: 400) / 2)
         
         createBouncyBall(vec)
         
         for i in 0..<6
         {
-            let v = vec + Vector2(CGFloat(i - 3), CGFloat(2 + i * 1))
+            let v = vec + Vector2(x: CGFloat(i - 3), y: CGFloat(2 + i * 1))
             
             createBouncyBall(v)
         }
         
         // Create a few pinned bodies
-        let pb1 = createBouncyBall(toWorldCoords(Vector2(size.width * 0.2, size.height / 2)), pinned: true, radius: 3)
-        let pb2 = createBouncyBall(toWorldCoords(Vector2(size.width * 0.8, size.height / 2)), pinned: true, radius: 3)
+        let pb1 = createBouncyBall(toWorldCoords(Vector2(x: size.width * 0.2, y: size.height / 2)), pinned: true, radius: 3)
+        let pb2 = createBouncyBall(toWorldCoords(Vector2(x: size.width * 0.8, y: size.height / 2)), pinned: true, radius: 3)
         pb1.component(ofType: SpringComponent.self)?.setShapeMatchingConstants(200, 10)
         pb2.component(ofType: SpringComponent.self)?.setShapeMatchingConstants(200, 10)
         
         // Create some free boxes around the level
-        createBox(toWorldCoords(Vector2(size.width / 2, size.height / 3)), size: Vector2.unit)
-        createBox(toWorldCoords(Vector2(size.width * 0.4, size.height / 3)), size: Vector2.unit)
-        let box3 = createBox(toWorldCoords(Vector2(size.width * 0.6, size.height / 3)), size: Vector2.unit)
+        createBox(toWorldCoords(Vector2(x: size.width / 2, y: size.height / 3)), size: Vector2.unit * 2)
+        createBox(toWorldCoords(Vector2(x: size.width * 0.4, y: size.height / 3)), size: Vector2.unit * 2)
+        let box3 = createBox(toWorldCoords(Vector2(x: size.width * 0.6, y: size.height / 3)), size: Vector2.unit * 2)
         
         // Lock the rotation of the third box
         box3.freeRotate = false
         
         // Create a pinned box in the middle of the level
-        let pinnedBox = createBox(toWorldCoords(Vector2(size.width / 2, size.height / 2)), size: Vector2.unit, pinned: true)
+        let pinnedBox = createBox(toWorldCoords(Vector2(x: size.width / 2, y: size.height / 2)), size: Vector2.unit * 2, pinned: true)
         // Increase the velocity damping of the pinned box so it doesn't jiggles around nonstop
         pinnedBox.velDamping = 0.99
         
         // Create two kinematic boxes
-        createBox(toWorldCoords(Vector2(size.width * 0.3, size.height / 2)), size: Vector2(2, 2), kinematic: true)
-        createBox(toWorldCoords(Vector2(size.width * 0.7, size.height / 2)), size: Vector2(2, 2), kinematic: true)
+        createBox(toWorldCoords(Vector2(x: size.width * 0.3, y: size.height / 2)), size: Vector2(x: 2, y: 2) * 2, kinematic: true)
+        createBox(toWorldCoords(Vector2(x: size.width * 0.7, y: size.height / 2)), size: Vector2(x: 2, y: 2) * 2, kinematic: true)
         
         // Create a few structures to showcase the joints feature
-        createLinkedBouncyBalls(toWorldCoords(Vector2(size.width / 2, size.height * 0.65)))
+        createLinkedBouncyBalls(toWorldCoords(Vector2(x: size.width / 2, y: size.height * 0.65)))
         
-        createBallBoxLinkedStructure(toWorldCoords(Vector2(size.width * 0.8, size.height * 0.8)))
-        createScaleStructure(toWorldCoords(Vector2(size.width * 0.4, size.height * 0.8)))
+        createBallBoxLinkedStructure(toWorldCoords(Vector2(x: size.width * 0.8, y: size.height * 0.8)))
+        createScaleStructure(toWorldCoords(Vector2(x: size.width * 0.4, y: size.height * 0.8)))
         
-        createCarStructure(toWorldCoords(Vector2(size.width * 0.12, 90)))
-        createBox(toWorldCoords(Vector2(size.width * 0.5, 16)), size: Vector2(17, 0.5), isStatic: true)
+        createCarStructure(toWorldCoords(Vector2(x: size.width * 0.12, y: 90)))
+        createBox(toWorldCoords(Vector2(x: size.width * 0.5, y: 16)), size: Vector2(x: 34, y: 1), isStatic: true)
         
         // Create the ground box
         var box = ClosedShape()
         box.begin()
-        box.addVertex(Vector2(-10,   1))
-        box.addVertex(Vector2( 0,  0.6)) // A little inward slope
-        box.addVertex(Vector2( 10,   1))
-        box.addVertex(Vector2( 10,  -1))
-        box.addVertex(Vector2(-10,  -1))
+        box.addVertex(Vector2(x: -10, y:   1))
+        box.addVertex(Vector2(x:  0,  y: 0.6)) // A little inward slope
+        box.addVertex(Vector2(x:  10, y:   1))
+        box.addVertex(Vector2(x:  10, y:  -1))
+        box.addVertex(Vector2(x: -10, y:  -1))
         box.finish()
         
-        let platform = Body(world: world, shape: box, pointMasses: [CGFloat.infinity], position: toWorldCoords(Vector2(size.width / 2, 150)))
+        let platform = Body(world: world, shape: box, pointMasses: [CGFloat.infinity], position: toWorldCoords(Vector2(x: size.width / 2, y: 150)))
         platform.isStatic = true
     }
     
@@ -199,7 +199,7 @@ class DemoView: UIView, CollisionObserver
             {
                 let location = touch.location(in: self)
                 
-                let vecLoc = toWorldCoords(Vector2(location.x, location.y))
+                let vecLoc = toWorldCoords(Vector2(x: location.x, y: location.y))
                 
                 createBouncyBall(vecLoc)
             }
@@ -209,7 +209,7 @@ class DemoView: UIView, CollisionObserver
             // Select the closest point-mass to drag
             let touch: UITouch = touches.first!
             let location = touch.location(in: self)
-            fingerLocation = toWorldCoords(Vector2(location.x, location.y))
+            fingerLocation = toWorldCoords(Vector2(x: location.x, y: location.y))
             
             var closest: PointMass? = nil
             var closestD = CGFloat.greatestFiniteMagnitude
@@ -235,7 +235,7 @@ class DemoView: UIView, CollisionObserver
     {
         let touch: AnyObject = touches.first!
         let location = touch.location(in: self)
-        fingerLocation = toWorldCoords(Vector2(location.x, location.y))
+        fingerLocation = toWorldCoords(Vector2(x: location.x, y: location.y))
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?)
@@ -466,8 +466,8 @@ class DemoView: UIView, CollisionObserver
         //polyDrawer.queuePoly(points, fillColor: 0xADFFFFFF, strokeColor: 0xFF000000)
         
         // Draw the body axis
-        let axisUp    = [body.derivedPos, body.derivedPos + Vector2(0, 0.6).rotated(by: body.derivedAngle)]
-        let axisRight = [body.derivedPos, body.derivedPos + Vector2(0.6, 0).rotated(by: body.derivedAngle)]
+        let axisUp    = [body.derivedPos, body.derivedPos + Vector2(x: 0, y: 0.6).rotated(by: body.derivedAngle)]
+        let axisRight = [body.derivedPos, body.derivedPos + Vector2(x: 0.6, y: 0).rotated(by: body.derivedAngle)]
         
         // Rep Up vector
         drawLine(from: axisUp[0], to: axisUp[1], color: 0xFFED0000)
@@ -483,7 +483,7 @@ class DemoView: UIView, CollisionObserver
     {
         // Create the closed shape for the box's physics body
         let shape = ClosedShape
-                        .rectangle(ofSize: size)
+                        .rectangle(ofSides: size)
                         .transformedBy(rotatingBy: angle)
         
         var comps = [BodyComponentCreator]()
@@ -520,7 +520,7 @@ class DemoView: UIView, CollisionObserver
         // Create the closed shape for the ball's physics body
         let shape = ClosedShape
                         .circle(ofRadius: radius, pointCount: def)
-                        .transformedBy(scalingBy: Vector2(0.3, 0.3))
+                        .transformedBy(scalingBy: Vector2(x: 0.3, y: 0.3))
         
         var comps = [BodyComponentCreator]()
         
@@ -545,8 +545,8 @@ class DemoView: UIView, CollisionObserver
     /// Creates two linked bouncy balls in a given position in the world
     func createLinkedBouncyBalls(_ pos: Vector2)
     {
-        let b1 = createBouncyBall(pos - Vector2(1, 0), pinned: false, kinematic: false, radius: 1)
-        let b2 = createBouncyBall(pos + Vector2(1, 0), pinned: false, kinematic: false, radius: 1)
+        let b1 = createBouncyBall(pos - Vector2(x: 1, y: 0), pinned: false, kinematic: false, radius: 1)
+        let b2 = createBouncyBall(pos + Vector2(x: 1, y: 0), pinned: false, kinematic: false, radius: 1)
         
         // Create the joint links
         let l1 = BodyJointLink(body: b1)
@@ -558,8 +558,8 @@ class DemoView: UIView, CollisionObserver
     /// Creates a pinned box with a ball attached to one of its edges
     func createBallBoxLinkedStructure(_ pos: Vector2)
     {
-        let b1 = createBouncyBall(pos - Vector2(0, 2), pinned: false, kinematic: false, radius: 1, mass: 1)
-        let b2 = createBox(pos, size: Vector2.unit, pinned: true, kinematic: false, mass: 1)
+        let b1 = createBouncyBall(pos - Vector2(x: 0, y: 2), pinned: false, kinematic: false, radius: 1, mass: 1)
+        let b2 = createBox(pos, size: Vector2.unit * 2, pinned: true, kinematic: false, mass: 1)
         
         // Create the joint links
         let l1 = BodyJointLink(body: b1)
@@ -571,9 +571,9 @@ class DemoView: UIView, CollisionObserver
     /// Creates a pinned box with two balls attached to one of its edges
     func createScaleStructure(_ pos: Vector2)
     {
-        let b1 = createBox(pos, size: Vector2(2, 1), pinned: true, kinematic: false)
-        let b2 = createBouncyBall(pos + Vector2(-1.2, -2), pinned: false, kinematic: false, radius: 1)
-        let b3 = createBouncyBall(pos + Vector2( 1.2, -2), pinned: false, kinematic: false, radius: 1)
+        let b1 = createBox(pos, size: Vector2(x: 4, y: 2), pinned: true, kinematic: false)
+        let b2 = createBouncyBall(pos + Vector2(x: -1.2, y: -2), pinned: false, kinematic: false, radius: 1)
+        let b3 = createBouncyBall(pos + Vector2(x:  1.2, y: -2), pinned: false, kinematic: false, radius: 1)
         
         // Create the joints that link the box with the left sphere
         let l1 = BodyJointLink(body: b2)
@@ -628,27 +628,27 @@ class DemoView: UIView, CollisionObserver
         carShape.addVertex(x: -0.5865141450377307, y: -0.9404120779458979)
         
         // Scale down
-        carShape.transformOwnBy(scalingBy: Vector2(0.65, 0.65))
+        carShape.transformOwnBy(scalingBy: Vector2(x: 0.65, y: 0.65))
         carShape.finish(recentering: true)
         
-        let bodyOffset = Vector2(0, 0.4)
+        let bodyOffset = Vector2(x: 0, y: 0.4)
         
         let carBody = Body(world: world, shape: carShape, pointMasses: [0.7], position: pos + bodyOffset, components: [SpringComponentCreator(shapeMatchingOn: true, edgeSpringK: 300, edgeSpringDamp: 30, shapeSpringK: 600, shapeSpringDamp: 30), GravityComponentCreator()])
         
-        let leftWheel  = createBouncyBall(carBody.derivedPos + Vector2.rotate(Vector2(-1.1, -0.5) - bodyOffset, by: carBody.derivedAngle), pinned: false, kinematic: false, radius: 0.5, mass: 0.5)
-        let rightWheel = createBouncyBall(carBody.derivedPos + Vector2.rotate(Vector2( 1.1, -0.5) - bodyOffset, by: carBody.derivedAngle), pinned: false, kinematic: false, radius: 0.5, mass: 0.5)
+        let leftWheel  = createBouncyBall(carBody.derivedPos + Vector2.rotate(Vector2(x: -1.1, y: -0.5) - bodyOffset, by: carBody.derivedAngle), pinned: false, kinematic: false, radius: 0.5, mass: 0.5)
+        let rightWheel = createBouncyBall(carBody.derivedPos + Vector2.rotate(Vector2(x:  1.1, y: -0.5) - bodyOffset, by: carBody.derivedAngle), pinned: false, kinematic: false, radius: 0.5, mass: 0.5)
         
         // Create the left wheel constraint
         let ljWheel = BodyJointLink(body: leftWheel)
         let ljCar = ShapeJointLink(body: carBody, pointMassIndexes: [19, 0, 1, 2, 3, 4])
-        ljCar.offset = Vector2(0, -0.6)
+        ljCar.offset = Vector2(x: 0, y: -0.6)
         
         let leftJoint = SpringBodyJoint(on: world, link1: ljWheel, link2: ljCar, coefficient: 100, damping: 15, distance: 0.0)
         leftJoint.allowCollisions = true
         
         let rjWheel = BodyJointLink(body: rightWheel)
         let rjCar = ShapeJointLink(body: carBody, pointMassIndexes: [13, 14, 15, 16, 17, 18])
-        rjCar.offset = Vector2(0, -0.6)
+        rjCar.offset = Vector2(x: 0, y: -0.6)
         
         let rightJoint = SpringBodyJoint(on: world, link1: rjWheel, link2: rjCar, coefficient: 100, damping: 15, distance: 0.0)
         rightJoint.allowCollisions = true
@@ -676,8 +676,8 @@ extension DemoView {
     /// projects into the bottom-right (-1, 1).
     ///
     func matrixForOrthoProjection(width: CGFloat, height: CGFloat) -> Vector2.NativeMatrixType {
-        let size = Vector2(width, height)
-        let scaledSize = Vector2(1 / width, -1 / height) * 2
+        let size = Vector2(x: width, y: height)
+        let scaledSize = Vector2(x: 1 / width, y: -1 / height) * 2
         
         let matrix = Vector2.matrix(translatingBy: -size / 2)
         return matrix * Vector2.matrix(scalingBy: scaledSize)

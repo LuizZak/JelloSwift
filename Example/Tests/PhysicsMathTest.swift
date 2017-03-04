@@ -14,7 +14,7 @@ class PhysicsMathTest: XCTestCase
 {
     func testVector2Perp()
     {
-        let vec1 = Vector2(0, 1)
+        let vec1 = Vector2(x: 0, y: 1)
         let vecPerp = vec1.perpendicular()
         
         XCTAssert(vecPerp.x == -vec1.y && vecPerp.y == vec1.x, "Pass")
@@ -22,8 +22,8 @@ class PhysicsMathTest: XCTestCase
     
     func testVector2Dist()
     {
-        let vec1 = Vector2(4, 8)
-        let vec2 = Vector2(14, 13)
+        let vec1 = Vector2(x: 4, y: 8)
+        let vec2 = Vector2(x: 14, y: 13)
         
         let dx: CGFloat = 4 - 14
         let dy: CGFloat = 8 - 13
@@ -37,8 +37,8 @@ class PhysicsMathTest: XCTestCase
     
     func testVector2Math()
     {
-        let vec1 = Vector2(4, 6)
-        let vec2 = Vector2(9, 7)
+        let vec1 = Vector2(x: 4, y: 6)
+        let vec2 = Vector2(x: 9, y: 7)
         
         XCTAssert((vec1 • vec2) == CGFloat(4 * 9 + 6 * 7), "DOT product test failed!")
         XCTAssert((vec1 =/ vec2) == CGFloat(4 * 9 - 6 * 7), "CROSS product test failed!")
@@ -46,7 +46,7 @@ class PhysicsMathTest: XCTestCase
     
     func testVector2Rotate()
     {
-        //var vec = Vector2(0, 1)
+        //var vec = Vector2(x: 0, y: 1)
         
 //        XCTAssertEqual(rotateVector(vec, PI * 2), vec, "Vector rotation test failed!")
 //        XCTAssertEqual(rotateVector(vec, PI / 2), Vector2(-1,  0), "Vector rotation test failed!")
