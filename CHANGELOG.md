@@ -1,13 +1,19 @@
-**_Current stable release: v0.3.0_**
+**_Current stable release: v0.4.0_**
 
 #### Develop trunk changelog:
 
-- Adding support for Vector2 affine transformations using simd to allow speeding up operations.
-- Now the optimized build builds with -Owholemodule.
-- Added `ClosedShape.create` static method.
+- Making corrections to method parameter labeling on Vector2 methods to make them more idiomatic to swift.
+- Adding `World.bodiesIntersecting(closedShape:at:)` to query bodies that intersect a specified closed shape in world space.
 
 ## Stable Releases
 ---
+
+## v0.4.0:
+
+- Fixing crash issue with `nan` floats generated during body point mass normal calculation.
+- Adding support for Vector2 affine transformations using simd to allow speeding up operations.
+- Now the optimized build builds with -Owholemodule.
+- Added `ClosedShape.create` static method.
 
 ## v0.3.0:
 
