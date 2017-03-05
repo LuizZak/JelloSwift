@@ -236,8 +236,8 @@ public final class Body: Equatable {
             
             let sum = (edge1N + edge2N)
             
-            // Edges are exactly 360º - normal should be the first edge's
-            // vector, then
+            // Edges are exactly 180º to each other - normal should be the first
+            // edge's vector, then
             if(sum == .zero) {
                 pointNormals[i] = edge1N
             } else {
