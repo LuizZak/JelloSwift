@@ -216,6 +216,50 @@ public final class World {
         return bodies.filter { (bitmask == 0 || ($0.bitmask & bitmask) != 0) && $0.intersectsLine(from: start, to: end) }
     }
     
+    /// Returns all bodies that overlap a given closed shape, on a given point
+    /// in world coordinates.
+    ///
+    /// - Parameters:
+    ///   - closedShape: A closed shape that represents the segments to query.
+    ///                  Should contain at least 2 points.
+    ///
+    ///   - worldPos: The location in world coordinates to put the closed
+    ///               shape's center at when performing the query. For closed
+    ///               shapes that have absolute coordinates, this parameter must
+    ///               be `Vector2.zero`.
+    ///
+    /// - Returns: All bodies that intersect with the closed shape. If closed
+    ///            shape contains less than 2 points, returns empty.
+    public func bodiesIntersecting(closedShape: ClosedShape, at worldPos: Vector2) -> ContiguousArray<Body> {
+        if(closedShape.localVertices.count < 2) {
+            return []
+        }
+        
+        let queryShape = closedShape.transformedBy(translatingBy: worldPos)
+        let shapeAABB = AABB(points: queryShape.localVertices)
+        
+        var results = ContiguousArray<Body>()
+        
+        for body in bodies {
+            if(!shapeAABB.intersects(body.aabb)) {
+                continue
+            }
+            
+            // Try line-by-line intersection
+            var last = queryShape.localVertices[queryShape.localVertices.count - 1]
+            for point in queryShape.localVertices {
+                
+                if(body.intersectsLine(from: last, to: point)) {
+                    results.append(body)
+                    break
+                }
+                last = point
+            }
+        }
+        
+        return results
+    }
+    
     /**
      * Casts a ray between the given points and returns the first body it comes 
      * in contact with
