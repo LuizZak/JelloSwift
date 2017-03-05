@@ -147,7 +147,7 @@ public struct Vector2: VectorRepresentable, Equatable, CustomStringConvertible {
     
     /// Makes this Vector2 perpendicular to its current position.
     /// This alters the vector instance
-    public mutating func perpendicularize() -> Vector2 {
+    public mutating func formPerpendicular() -> Vector2 {
         self = perpendicular()
         return self
     }
@@ -173,7 +173,7 @@ public struct Vector2: VectorRepresentable, Equatable, CustomStringConvertible {
 /// Dot and Cross products
 extension Vector2 {
     /// Calculates the dot product between this and another provided Vector2
-    public func dot(with other: Vector2) -> CGFloat {
+    public func dot(_ other: Vector2) -> CGFloat {
         return CGFloat(simd.dot(theVector, other.theVector))
     }
     
@@ -182,7 +182,7 @@ extension Vector2 {
     /// between
     /// 3d vectors matching the x and y coordinates of the operands, with the 
     /// 'z' coordinate being 0.
-    public func cross(with other: Vector2) -> CGFloat {
+    public func cross(_ other: Vector2) -> CGFloat {
         return CGFloat(theVector.x * other.theVector.x - theVector.y * other.theVector.y)
     }
 }
@@ -205,14 +205,14 @@ extension Vector2 {
     /// Calculates the dot product between two provided coordinates.
     /// See `Vector2.dot`
     static public func •(lhs: Vector2, rhs: Vector2) -> CGFloat {
-        return lhs.dot(with: rhs)
+        return lhs.dot(rhs)
     }
     
     // CROSS operator
     /// Calculates the dot product between two provided coordinates
     /// See `Vector2.cross`
     static public func =/(lhs: Vector2, rhs: Vector2) -> CGFloat {
-        return lhs.cross(with: rhs)
+        return lhs.cross(rhs)
     }
     
     ////
