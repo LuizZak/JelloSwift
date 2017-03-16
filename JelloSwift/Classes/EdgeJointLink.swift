@@ -21,7 +21,7 @@ open class EdgeJointLink: JointLinkType {
     /// point of the edge.
     /// Specifying either 0 or 1 makes this edge joint link behave essentially
     /// like a PointJointLink
-    open var edgeRatio: CGFloat
+    open var edgeRatio: JFloat
     
     /// Gets the body that this joint link is linked to
     open fileprivate(set) unowned var body: Body
@@ -45,7 +45,7 @@ open class EdgeJointLink: JointLinkType {
     }
     
     /// Gets the total mass of the subject of this joint link
-    open var mass: CGFloat {
+    open var mass: JFloat {
         return _pointMass1.mass + _pointMass2.mass
     }
     
@@ -56,7 +56,7 @@ open class EdgeJointLink: JointLinkType {
     }
     
     /// Inits a new edge joint link with the specified parameters
-    public init(body: Body, edgeIndex: Int, edgeRatio: CGFloat = 0.5) {
+    public init(body: Body, edgeIndex: Int, edgeRatio: JFloat = 0.5) {
         self.body = body
         _pointMass1 = body.pointMasses[edgeIndex % body.pointMasses.count]
         _pointMass2 = body.pointMasses[(edgeIndex + 1) % body.pointMasses.count]

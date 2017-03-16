@@ -22,16 +22,16 @@ public struct InternalSpring {
     
     /// Rest distance of the spring, or the distance the spring tries to
     /// maintain
-    public var distance: CGFloat = 0
+    public var distance: JFloat = 0
     
     /// The spring coefficient
-    public var coefficient: CGFloat = 0
+    public var coefficient: JFloat = 0
     
     /// The spring damping
-    public var damping: CGFloat = 0
+    public var damping: JFloat = 0
     
-    public init(_ pmA: PointMass, _ pmB: PointMass, _ distance: CGFloat = 0,
-                _ springK: CGFloat, _ springD: CGFloat) {
+    public init(_ pmA: PointMass, _ pmB: PointMass, _ distance: JFloat = 0,
+                _ springK: JFloat, _ springD: JFloat) {
         pointMassA = pmA
         pointMassB = pmB
         self.distance = distance

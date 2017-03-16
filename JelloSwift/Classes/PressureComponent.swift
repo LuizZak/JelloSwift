@@ -19,12 +19,12 @@ public final class PressureComponent: BodyComponent {
     /// The total volume of the body, as was calculated during the previous
     /// internal force accumulation step.
     /// Equal to half the polygonal area of the body's point masses
-    public var volume: CGFloat = 0
+    public var volume: JFloat = 0
     
     /// The gass pressure coefficient for the pressure component.
     /// Higher values result in higher resistance to compression and higher
     /// expansion.
-    public var gasAmmount: CGFloat = 0
+    public var gasAmmount: JFloat = 0
     
     override public func prepare(_ body: Body) {
         
@@ -64,9 +64,9 @@ open class PressureComponentCreator : BodyComponentCreator {
     /// The gass pressure coefficient for the pressure component.
     /// Higher values result in higher resistance to compression and higher
     /// expansion.
-    open var gasAmmount: CGFloat
+    open var gasAmmount: JFloat
     
-    public required init(gasAmmount: CGFloat = 0) {
+    public required init(gasAmmount: JFloat = 0) {
         self.gasAmmount = gasAmmount
         
         super.init()

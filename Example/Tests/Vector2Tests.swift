@@ -43,7 +43,7 @@ class Vector2Tests: XCTestCase {
         let vector = Vector2(x: 10, y: 10)
         let expected = Vector2(x: -10, y: 10)
         
-        let matrix = Vector2.matrix(rotatingBy: CGFloat.pi / 2)
+        let matrix = Vector2.matrix(rotatingBy: JFloat.pi / 2)
         
         let transformed = vector * matrix
         
@@ -59,7 +59,7 @@ class Vector2Tests: XCTestCase {
         let expected = Vector2(x: 5, y: 15)
         
         let matrix = Vector2.matrix(scalingBy: Vector2(x: 0.5, y: 0.5),
-                                    rotatingBy: CGFloat.pi / 2,
+                                    rotatingBy: JFloat.pi / 2,
                                     translatingBy: Vector2(x: 10, y: 10))
         
         let transformed = vector * matrix

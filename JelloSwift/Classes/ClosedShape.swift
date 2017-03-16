@@ -49,7 +49,7 @@ public struct ClosedShape: ExpressibleByArrayLiteral {
     }
     
     /// Adds a vertex to this closed shape
-    public mutating func addVertex(x: CGFloat, y: CGFloat) {
+    public mutating func addVertex(x: JFloat, y: JFloat) {
         addVertex(Vector2(x: x, y: y))
     }
     
@@ -89,7 +89,7 @@ extension ClosedShape {
     /// Transforms all vertices of this closed shape by the given angle and
     /// scale locally.
     /// Transformation is applied in the following order: scale -> rotation.
-    public mutating func transformOwnBy(rotatingBy angleInRadians: CGFloat = 0,
+    public mutating func transformOwnBy(rotatingBy angleInRadians: JFloat = 0,
                                         scalingBy scale: Vector2 = .unit) {
         let points = localVertices.map {
             transform(vertex: $0, worldPos: Vector2.zero,
@@ -114,7 +114,7 @@ extension ClosedShape {
     /// Transformation is applied in the following order: scale -> rotation ->
     /// position.
     public func transformedBy(translatingBy worldPos: Vector2 = .zero,
-                              rotatingBy angleInRadians: CGFloat = 0,
+                              rotatingBy angleInRadians: JFloat = 0,
                               scalingBy localScale: Vector2 = .unit) -> ClosedShape {
         
         let points = localVertices.map {
@@ -132,7 +132,7 @@ extension ClosedShape {
     /// - note: The target array of points must have the **same** count of
     ///     vertices as this closed shape.
     public func transformVertices(_ target: inout [Vector2], worldPos: Vector2,
-                                  angleInRadians: CGFloat,
+                                  angleInRadians: JFloat,
                                   localScale: Vector2 = Vector2.unit) {
         for i in 0..<target.count {
             target[i] = transform(vertex: localVertices[i], worldPos: worldPos,
@@ -153,7 +153,7 @@ extension ClosedShape {
     }
     
     private func transform(vertex: Vector2, worldPos: Vector2,
-                           angleInRadians: CGFloat, localScale: Vector2) -> Vector2 {
+                           angleInRadians: JFloat, localScale: Vector2) -> Vector2 {
         return Vector2.rotate(vertex * localScale, by: angleInRadians) + worldPos
     }
 }
@@ -165,12 +165,12 @@ extension ClosedShape {
     
     /// Creates a closed shape that represents a circle of a given radius, with
     /// the specified number of points around its circumference
-    public static func circle(ofRadius radius: CGFloat, pointCount: Int) -> ClosedShape {
+    public static func circle(ofRadius radius: JFloat, pointCount: Int) -> ClosedShape {
         
         return .create { shape in
             for i in 0..<pointCount
             {
-                let n = .pi * 2 * (CGFloat(i) / CGFloat(pointCount))
+                let n = .pi * 2 * (JFloat(i) / JFloat(pointCount))
                 shape.addVertex(Vector2(x: cos(-n) * radius, y: sin(-n) * radius))
             }
         }
@@ -178,7 +178,7 @@ extension ClosedShape {
     
     /// Creates a closed shape that represents a square, with side of the
     /// specified length
-    public static func square(ofSide length: CGFloat) -> ClosedShape {
+    public static func square(ofSide length: JFloat) -> ClosedShape {
         return rectangle(ofSides: Vector2(value: length))
     }
     

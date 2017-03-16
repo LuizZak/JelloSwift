@@ -26,7 +26,7 @@ public final class World {
     /// deep to be resolved without applying unreasonable forces that will 
     /// destabilize the simulation.
     /// Usually 0.3 is a good default.
-    public var penetrationThreshold: CGFloat = 0.3
+    public var penetrationThreshold: JFloat = 0.3
     
     // material chart.
     public var materialPairs: [[MaterialPair]] = []
@@ -48,11 +48,6 @@ public final class World {
     
     /// Clears the world's contents and readies it to be loaded again
     public func clear() {
-        // Clear all the bodies
-        for b in bodies {
-            b.pointMassCollisions.removeAll(keepingCapacity: true)
-        }
-        
         // Remove all joints - this is needed to avoid retain cycles
         for joint in joints {
             removeJoint(joint)
@@ -123,7 +118,7 @@ public final class World {
     }
     
     /// Sets the collision response variables for a pair of materials.
-    public func setMaterialPairData(_ a: Int, b: Int, friction: CGFloat, elasticity: CGFloat) {
+    public func setMaterialPairData(_ a: Int, b: Int, friction: JFloat, elasticity: JFloat) {
         if ((a >= 0) && (a < materialCount) && (b >= 0) && (b < materialCount)) {
             materialPairs[a][b].friction = friction
             materialPairs[a][b].elasticity = elasticity
@@ -134,7 +129,7 @@ public final class World {
     }
     
     /// Sets a user function to call when 2 bodies of the given materials collide.
-    public func setMaterialPairFilterCallback(_ a: Int, b: Int, filter: @escaping (BodyCollisionInformation, CGFloat) -> (Bool)) {
+    public func setMaterialPairFilterCallback(_ a: Int, b: Int, filter: @escaping (BodyCollisionInformation, JFloat) -> (Bool)) {
         if ((a >= 0) && (a < materialCount) && (b >= 0) && (b < materialCount)) {
             materialPairs[a][b].collisionFilter = filter
             materialPairs[b][a].collisionFilter = filter
@@ -179,7 +174,7 @@ public final class World {
     public func closestPointMass(to pt: Vector2) -> (Body, PointMass)? {
         var ret: (Body, PointMass)? = nil
         
-        var closestD = CGFloat.greatestFiniteMagnitude
+        var closestD = JFloat.greatestFiniteMagnitude
         
         for body in bodies {
             let (pm, dist) = body.closestPointMass(to: pt)
@@ -288,16 +283,18 @@ public final class World {
         var result: (Vector2, Body)?
         
         for body in bodies {
-            if((bitmask == 0 || (body.bitmask & bitmask) != 0) && !ignoreList.contains(body)) {
-                if(!body.aabb.intersects(aabb)) {
-                    continue
-                }
+            guard (bitmask == 0 || (body.bitmask & bitmask) != 0) && !ignoreList.contains(body) else {
+                continue
+            }
+            
+            if !body.aabb.intersects(aabb) {
+                continue
+            }
+            
+            if let ret = body.raycast(from: start, to: end) {
+                result = (ret, body)
                 
-                if let ret = body.raycast(from: start, to: end) {
-                    result = (ret, body)
-                    
-                    aabb = AABB(points: [start, ret])
-                }
+                aabb = AABB(points: [start, ret])
             }
         }
         
@@ -311,7 +308,7 @@ public final class World {
      *
      * - parameter elapsed: The elapsed time to update by, usually in seconds
      */
-    public func update(_ elapsed: CGFloat) {
+    public func update(_ elapsed: JFloat) {
         // Update the bodies
         for body in bodies {
             body.derivePositionAndAngle(elapsed)
@@ -329,7 +326,6 @@ public final class World {
             body.updateEdgesAndNormals()
             
             body.updateAABB(elapsed, forceUpdate: true)
-            body.resetCollisionInfo()
             
             updateBodyBitmask(body)
         }
@@ -417,8 +413,8 @@ public final class World {
             
             // this point is inside the other body.  now check if the edges on
             // either side intersect with and edges on bodyB.
-            var closestAway = CGFloat.infinity
-            var closestSame = CGFloat.infinity
+            var closestAway = JFloat.infinity
+            var closestSame = JFloat.infinity
             
             var infoAway = BodyCollisionInformation(bodyA: bA, bodyApm: i, bodyB: bB)
             var infoSame = infoAway
@@ -467,26 +463,10 @@ public final class World {
             if (found && (closestAway > penetrationThreshold) && (closestSame < closestAway)) {
                 assert(infoSame.bodyBpmA > -1 && infoSame.bodyBpmB > -1)
                 
-                if(bA.collectCollisions) {
-                    bA.pointMassCollisions.append(infoSame)
-                }
-                
-                if(bB.collectCollisions) {
-                    bB.pointMassCollisions.append(infoSame)
-                }
-                
                 infoSame.penetration = sqrt(infoSame.penetration)
                 collisionList.append(infoSame)
             } else {
                 assert(infoAway.bodyBpmA > -1 && infoAway.bodyBpmB > -1)
-                
-                if(bA.collectCollisions) {
-                    bA.pointMassCollisions.append(infoAway)
-                }
-                
-                if(bB.collectCollisions) {
-                    bB.pointMassCollisions.append(infoAway)
-                }
                 
                 infoAway.penetration = sqrt(infoAway.penetration)
                 collisionList.append(infoAway)
@@ -531,8 +511,8 @@ public final class World {
             let massSum = A.mass + b2MassSum
             
             // Amount to move each party of the collision
-            let Amove: CGFloat
-            let Bmove: CGFloat
+            let Amove: JFloat
+            let Bmove: JFloat
             
             // Static detection - when one of the parties is static, the other
             // should move the total amount of the penetration
@@ -561,18 +541,18 @@ public final class World {
             // TODO: Re-evaluate this block to clarify names, or check if they
             // are term-of-art in physics
             if(relDot <= 0.0001 && (A.mass.isFinite || b2MassSum.isFinite)) {
-                let AinvMass: CGFloat = A.mass.isInfinite ? 0 : 1.0 / A.mass
-                let BinvMass: CGFloat = b2MassSum.isInfinite ? 0 : 1.0 / b2MassSum
+                let AinvMass: JFloat = A.mass.isInfinite ? 0 : 1.0 / A.mass
+                let BinvMass: JFloat = b2MassSum.isInfinite ? 0 : 1.0 / b2MassSum
                 
-                let jDenom: CGFloat = AinvMass + BinvMass
-                let elas: CGFloat = 1 + material.elasticity
+                let jDenom: JFloat = AinvMass + BinvMass
+                let elas: JFloat = 1 + material.elasticity
                 
-                let j: CGFloat = -((relVel * elas) • info.normal) / jDenom
+                let j: JFloat = -((relVel * elas) • info.normal) / jDenom
                 
                 let tangent: Vector2 = info.normal.perpendicular()
                 
-                let friction: CGFloat = material.friction
-                let f: CGFloat = (relVel • tangent) * friction / jDenom
+                let friction: JFloat = material.friction
+                let f: JFloat = (relVel • tangent) * friction / jDenom
                 
                 if(A.mass.isFinite) {
                     A.velocity += (info.normal * (j / A.mass)) - (tangent * (f / A.mass))

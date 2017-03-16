@@ -184,7 +184,7 @@ class DemoView: UIView, CollisionObserver
         box.addVertex(Vector2(x: -10, y:  -1))
         box.finish()
         
-        let platform = Body(world: world, shape: box, pointMasses: [CGFloat.infinity], position: toWorldCoords(Vector2(x: size.width / 2, y: 150)))
+        let platform = Body(world: world, shape: box, pointMasses: [JFloat.infinity], position: toWorldCoords(Vector2(x: size.width / 2, y: 150)))
         platform.isStatic = true
     }
     
@@ -212,7 +212,7 @@ class DemoView: UIView, CollisionObserver
             fingerLocation = toWorldCoords(Vector2(x: location.x, y: location.y))
             
             var closest: PointMass? = nil
-            var closestD = CGFloat.greatestFiniteMagnitude
+            var closestD = JFloat.greatestFiniteMagnitude
             
             for body in world.bodies
             {
@@ -377,7 +377,7 @@ class DemoView: UIView, CollisionObserver
         collisions.append(info)
     }
     
-    func bodyCollision(_ info: BodyCollisionInformation, didExceedPenetrationThreshold penetrationThreshold: CGFloat) {
+    func bodyCollision(_ info: BodyCollisionInformation, didExceedPenetrationThreshold penetrationThreshold: JFloat) {
         print("penetration above Penetration Threshold!!  penetration = \(info.penetration), threshold = \(penetrationThreshold), difference = \(info.penetration-penetrationThreshold)")
     }
     
@@ -463,8 +463,6 @@ class DemoView: UIView, CollisionObserver
         bufferVertices.append(bodyBuffer)
         drawPolyOutline(shapePoints, color: 0xFF000000)
         
-        //polyDrawer.queuePoly(points, fillColor: 0xADFFFFFF, strokeColor: 0xFF000000)
-        
         // Draw the body axis
         let axisUp    = [body.derivedPos, body.derivedPos + Vector2(x: 0, y: 0.6).rotated(by: body.derivedAngle)]
         let axisRight = [body.derivedPos, body.derivedPos + Vector2(x: 0.6, y: 0).rotated(by: body.derivedAngle)]
@@ -479,7 +477,7 @@ class DemoView: UIView, CollisionObserver
     
     /// Creates a box at the specified world coordinates with the specified size
     @discardableResult
-    func createBox(_ pos: Vector2, size: Vector2, pinned: Bool = false, kinematic: Bool = false, isStatic: Bool = false, angle: CGFloat = 0, mass: CGFloat = 0.5) -> Body
+    func createBox(_ pos: Vector2, size: Vector2, pinned: Bool = false, kinematic: Bool = false, isStatic: Bool = false, angle: JFloat = 0, mass: JFloat = 0.5) -> Body
     {
         // Create the closed shape for the box's physics body
         let shape = ClosedShape
@@ -498,7 +496,7 @@ class DemoView: UIView, CollisionObserver
             comps.append(GravityComponentCreator())
         }
         
-        let body = Body(world: world, shape: shape, pointMasses: [isStatic ? CGFloat.infinity : mass], position: pos, kinematic: kinematic, components: comps)
+        let body = Body(world: world, shape: shape, pointMasses: [isStatic ? JFloat.infinity : mass], position: pos, kinematic: kinematic, components: comps)
         body.isPined = pinned
         
         // In order to have the box behave correctly, we need to add some internal springs to the body
@@ -515,7 +513,7 @@ class DemoView: UIView, CollisionObserver
     
     /// Creates a bouncy ball at the specified world coordinates
     @discardableResult
-    func createBouncyBall(_ pos: Vector2, pinned: Bool = false, kinematic: Bool = false, radius: CGFloat = 1, mass: CGFloat = 0.5, def: Int = 12) -> Body
+    func createBouncyBall(_ pos: Vector2, pinned: Bool = false, kinematic: Bool = false, radius: JFloat = 1, mass: JFloat = 0.5, def: Int = 12) -> Body
     {
         // Create the closed shape for the ball's physics body
         let shape = ClosedShape

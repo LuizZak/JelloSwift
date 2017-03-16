@@ -116,8 +116,8 @@ class Triangulate
     }
 
     // compute area of a contour/polygon
-    public static func Area(_ contour: [Vector2]) -> CGFloat {
-        var area: CGFloat = 0.0
+    public static func Area(_ contour: [Vector2]) -> JFloat {
+        var area: JFloat = 0.0
         var prev = contour.count - 1
         
         for cur in 0..<contour.count
@@ -131,17 +131,17 @@ class Triangulate
 
     // decide if point Px/Py is inside triangle defined by
     // (Ax,Ay) (Bx,By) (Cx,Cy)
-    public static func InsideTriangle(Ax: CGFloat, Ay: CGFloat,
-                                      Bx: CGFloat, By: CGFloat,
-                                      Cx: CGFloat, Cy: CGFloat,
-                                      Px: CGFloat, Py: CGFloat) -> Bool {
+    public static func InsideTriangle(Ax: JFloat, Ay: JFloat,
+                                      Bx: JFloat, By: JFloat,
+                                      Cx: JFloat, Cy: JFloat,
+                                      Px: JFloat, Py: JFloat) -> Bool {
         
         
-        var ax: CGFloat, ay: CGFloat, bx: CGFloat, by: CGFloat, cx: CGFloat,
-            cy: CGFloat, apx: CGFloat, apy: CGFloat, bpx: CGFloat,
-            bpy: CGFloat, cpx: CGFloat, cpy: CGFloat
+        var ax: JFloat, ay: JFloat, bx: JFloat, by: JFloat, cx: JFloat,
+            cy: JFloat, apx: JFloat, apy: JFloat, bpx: JFloat,
+            bpy: JFloat, cpx: JFloat, cpy: JFloat
         
-        var cCROSSap: CGFloat, bCROSScp: CGFloat, aCROSSbp: CGFloat
+        var cCROSSap: JFloat, bCROSScp: JFloat, aCROSSbp: JFloat
         
         ax = Cx - Bx
         ay = Cy - By
@@ -172,7 +172,7 @@ class Triangulate
     // (Ax,Ay) (Bx,By) (Cx,Cy)
     public static func InsideTriangle(A: Vector2, B: Vector2, C: Vector2, P: Vector2) -> Bool {
         
-        var cCROSSap: CGFloat, bCROSScp: CGFloat, aCROSSbp: CGFloat
+        var cCROSSap: JFloat, bCROSScp: JFloat, aCROSSbp: JFloat
         
         let a = C - B
         let b = A - C
@@ -194,7 +194,7 @@ class Triangulate
         let B = contour[V[v]]
         let C = contour[V[w]]
         
-        if (((B.x - A.x) * (C.y - A.y)) - ((B.y - A.y) * (C.x - A.x)) < CGFloat.leastNonzeroMagnitude) {
+        if (((B.x - A.x) * (C.y - A.y)) - ((B.y - A.y) * (C.x - A.x)) < JFloat.leastNonzeroMagnitude) {
             return false
         }
         

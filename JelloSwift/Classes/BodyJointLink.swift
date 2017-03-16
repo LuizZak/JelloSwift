@@ -32,7 +32,7 @@ open class BodyJointLink: JointLinkType {
     }
     
     /// Gets the total mass of the subject of this joint link
-    open var mass: CGFloat {
+    open var mass: JFloat {
         return body.pointMasses.reduce(0) { $0 + $1.mass }
     }
     

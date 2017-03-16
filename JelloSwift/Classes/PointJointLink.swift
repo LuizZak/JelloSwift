@@ -35,7 +35,7 @@ open class PointJointLink: JointLinkType {
     }
     
     /// Gets the total mass of the subject of this joint link
-    open var mass: CGFloat {
+    open var mass: JFloat {
         return _pointMass.mass
     }
     

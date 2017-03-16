@@ -22,7 +22,7 @@ public protocol CollisionObserver: class {
     /// a minimum specified penetration threshold.
     /// When this happens, the collision is ignored and dropped from the resolve
     /// list, and this delegate notifier is called.
-    func bodyCollision(_ info: BodyCollisionInformation, didExceedPenetrationThreshold penetrationThreshold: CGFloat)
+    func bodyCollision(_ info: BodyCollisionInformation, didExceedPenetrationThreshold penetrationThreshold: JFloat)
 }
 
 public extension CollisionObserver {
@@ -31,7 +31,7 @@ public extension CollisionObserver {
         
     }
     
-    public func bodyCollision(_ info: BodyCollisionInformation, didExceedPenetrationThreshold penetrationThreshold: CGFloat) {
+    public func bodyCollision(_ info: BodyCollisionInformation, didExceedPenetrationThreshold penetrationThreshold: JFloat) {
         
     }
 }

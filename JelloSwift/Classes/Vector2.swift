@@ -15,6 +15,12 @@ public protocol VectorRepresentable {
     var vector: Vector2 { get }
 }
 
+#if arch(x86_64) || arch(arm64)
+public typealias JFloat = Double
+#else
+public typealias JFloat = Float
+#endif
+
 /// Represents a 2D vector
 public struct Vector2: VectorRepresentable, Equatable, CustomStringConvertible {
     
@@ -25,7 +31,7 @@ public struct Vector2: VectorRepresentable, Equatable, CustomStringConvertible {
     public static let unit = Vector2(x: 1, y: 1)
     
     #if arch(x86_64) || arch(arm64)
-    /// Used to match `CGFloat`'s native type
+    /// Used to match `JFloat`'s native type
     public typealias NativeVectorType = double2
     
     /// The 3x3 matrix type that can be used to apply transformations by
@@ -35,7 +41,7 @@ public struct Vector2: VectorRepresentable, Equatable, CustomStringConvertible {
     /// This is used during affine transformation
     typealias HomogenousVectorType = double3
     #else
-    ///Used to match `CGFloat`'s native type
+    ///Used to match `JFloat`'s native type
     public typealias NativeVectorType = float2
     
     /// The 3x3 matrix type that can be used to apply transformations by
@@ -49,42 +55,42 @@ public struct Vector2: VectorRepresentable, Equatable, CustomStringConvertible {
     /// The underlying SIMD vector type
     var theVector: NativeVectorType
     
-    /// The CGFloat representation of this vector's x axis
+    /// The JFloat representation of this vector's x axis
     @_transparent
-    public var x: CGFloat {
+    public var x: JFloat {
         get {
-            return CGFloat(theVector.x)
+            return theVector.x
         }
         set {
-            theVector.x = newValue.native
+            theVector.x = newValue
         }
     }
     
-    /// The CGFloat representation of this vector's y axis
+    /// The JFloat representation of this vector's y axis
     @_transparent
-    public var y: CGFloat {
+    public var y: JFloat {
         get {
-            return CGFloat(theVector.y)
+            return theVector.y
         }
         set {
-            theVector.y = newValue.native
+            theVector.y = newValue
         }
     }
     
     /// Returns the angle in radians of this Vector2
-    public var angle : CGFloat {
+    public var angle : JFloat {
         return atan2(y, x)
     }
     
     /// Returns the squared length of this Vector2
-    public var length : CGFloat {
-        return CGFloat(length_squared(theVector))
+    public var length : JFloat {
+        return length_squared(theVector)
     }
     
     /// Returns the magnitude (or square root of the squared length) of this 
     /// Vector2
-    public var magnitude : CGFloat {
-        return CGFloat(simd.length(theVector))
+    public var magnitude : JFloat {
+        return simd.length(theVector)
     }
     
     /// For conformance to VectorRepresentable - always returns self
@@ -100,7 +106,7 @@ public struct Vector2: VectorRepresentable, Equatable, CustomStringConvertible {
     /// Utility property for getting a CGPoint that matches this vector's 
     /// coordinates
     public var cgPoint: CGPoint {
-        return CGPoint(x: x, y: y)
+        return CGPoint(x: CGFloat(x), y: CGFloat(y))
     }
     
     init(_ vector: NativeVectorType) {
@@ -112,7 +118,7 @@ public struct Vector2: VectorRepresentable, Equatable, CustomStringConvertible {
     }
     
     public init(x: Int, y: Int) {
-        theVector = NativeVectorType(CGFloat.NativeType(x), CGFloat.NativeType(y))
+        theVector = NativeVectorType(JFloat(x), JFloat(y))
     }
     
     public init(x: CGFloat, y: CGFloat) {
@@ -120,15 +126,19 @@ public struct Vector2: VectorRepresentable, Equatable, CustomStringConvertible {
     }
     
     public init(x: Float, y: Float) {
-        theVector = NativeVectorType(CGFloat.NativeType(x), CGFloat.NativeType(y))
+        theVector = NativeVectorType(JFloat(x), JFloat(y))
     }
     
     public init(x: Double, y: Double) {
-        theVector = NativeVectorType(CGFloat.NativeType(x), CGFloat.NativeType(y))
+        theVector = NativeVectorType(JFloat(x), JFloat(y))
     }
     
     public init(value: CGFloat) {
         theVector = NativeVectorType(value.native)
+    }
+    
+    public init(value: JFloat) {
+        theVector = NativeVectorType(value)
     }
     
     public init(_ point: CGPoint) {
@@ -136,13 +146,13 @@ public struct Vector2: VectorRepresentable, Equatable, CustomStringConvertible {
     }
     
     /// Returns the distance between this Vector2 and another Vector2
-    public func distance(to vec: Vector2) -> CGFloat {
-        return CGFloat(simd.distance(self.theVector, vec.theVector))
+    public func distance(to vec: Vector2) -> JFloat {
+        return simd.distance(self.theVector, vec.theVector)
     }
     
     /// Returns the distance squared between this Vector2 and another Vector2
-    public func distanceSquared(to vec: Vector2) -> CGFloat {
-        return CGFloat(distance_squared(self.theVector, vec.theVector))
+    public func distanceSquared(to vec: Vector2) -> JFloat {
+        return distance_squared(self.theVector, vec.theVector)
     }
     
     /// Makes this Vector2 perpendicular to its current position.
@@ -173,8 +183,8 @@ public struct Vector2: VectorRepresentable, Equatable, CustomStringConvertible {
 /// Dot and Cross products
 extension Vector2 {
     /// Calculates the dot product between this and another provided Vector2
-    public func dot(_ other: Vector2) -> CGFloat {
-        return CGFloat(simd.dot(theVector, other.theVector))
+    public func dot(_ other: Vector2) -> JFloat {
+        return simd.dot(theVector, other.theVector)
     }
     
     /// Calculates the cross product between this and another provided Vector2.
@@ -182,8 +192,8 @@ extension Vector2 {
     /// between
     /// 3d vectors matching the x and y coordinates of the operands, with the 
     /// 'z' coordinate being 0.
-    public func cross(_ other: Vector2) -> CGFloat {
-        return CGFloat(theVector.x * other.theVector.x - theVector.y * other.theVector.y)
+    public func cross(_ other: Vector2) -> JFloat {
+        return theVector.x * other.theVector.x - theVector.y * other.theVector.y
     }
 }
 
@@ -204,14 +214,14 @@ extension Vector2 {
     // DOT operator
     /// Calculates the dot product between two provided coordinates.
     /// See `Vector2.dot`
-    static public func •(lhs: Vector2, rhs: Vector2) -> CGFloat {
+    static public func •(lhs: Vector2, rhs: Vector2) -> JFloat {
         return lhs.dot(rhs)
     }
     
     // CROSS operator
     /// Calculates the dot product between two provided coordinates
     /// See `Vector2.cross`
-    static public func =/(lhs: Vector2, rhs: Vector2) -> CGFloat {
+    static public func =/(lhs: Vector2, rhs: Vector2) -> JFloat {
         return lhs.cross(rhs)
     }
     
@@ -239,29 +249,29 @@ extension Vector2 {
                        y: lhs.y.truncatingRemainder(dividingBy: rhs.y))
     }
     
-    // CGFloat interaction
-    static public func +(lhs: Vector2, rhs: CGFloat) -> Vector2 {
-        return Vector2(lhs.theVector + Vector2.NativeVectorType(rhs.native))
+    // JFloat interaction
+    static public func +(lhs: Vector2, rhs: JFloat) -> Vector2 {
+        return Vector2(lhs.theVector + Vector2.NativeVectorType(rhs))
     }
     
-    static public func -(lhs: Vector2, rhs: CGFloat) -> Vector2 {
-        return Vector2(lhs.theVector - Vector2.NativeVectorType(rhs.native))
+    static public func -(lhs: Vector2, rhs: JFloat) -> Vector2 {
+        return Vector2(lhs.theVector - Vector2.NativeVectorType(rhs))
     }
     
-    static public func *(lhs: Vector2, rhs: CGFloat) -> Vector2 {
-        return Vector2(lhs.theVector * Vector2.NativeVectorType(rhs.native))
+    static public func *(lhs: Vector2, rhs: JFloat) -> Vector2 {
+        return Vector2(lhs.theVector * Vector2.NativeVectorType(rhs))
     }
     
-    static public func /(lhs: Vector2, rhs: CGFloat) -> Vector2 {
-        return Vector2(lhs.theVector / Vector2.NativeVectorType(rhs.native))
+    static public func /(lhs: Vector2, rhs: JFloat) -> Vector2 {
+        return Vector2(lhs.theVector / Vector2.NativeVectorType(rhs))
     }
     
-    static public func %(lhs: Vector2, rhs: CGFloat) -> Vector2 {
+    static public func %(lhs: Vector2, rhs: JFloat) -> Vector2 {
         return Vector2(x: lhs.x.truncatingRemainder(dividingBy: rhs),
                        y: lhs.y.truncatingRemainder(dividingBy: rhs))
     }
     
-    static public func /(lhs: CGFloat, rhs: Vector2) -> Vector2 {
+    static public func /(lhs: JFloat, rhs: Vector2) -> Vector2 {
         return Vector2(x: lhs / rhs.x, y: lhs / rhs.y)
     }
     
@@ -281,17 +291,17 @@ extension Vector2 {
         lhs.theVector /= rhs.theVector
     }
     
-    // CGFloat interaction
-    static public func +=(lhs: inout Vector2, rhs: CGFloat) {
+    // JFloat interaction
+    static public func +=(lhs: inout Vector2, rhs: JFloat) {
         lhs = lhs + rhs
     }
-    static public func -=(lhs: inout Vector2, rhs: CGFloat) {
+    static public func -=(lhs: inout Vector2, rhs: JFloat) {
         lhs = lhs - rhs
     }
-    static public func *=(lhs: inout Vector2, rhs: CGFloat) {
+    static public func *=(lhs: inout Vector2, rhs: JFloat) {
         lhs = lhs * rhs
     }
-    static public func /=(lhs: inout Vector2, rhs: CGFloat) {
+    static public func /=(lhs: inout Vector2, rhs: JFloat) {
         lhs = lhs / rhs
     }
 }
@@ -307,7 +317,7 @@ extension Vector2 {
     ///
     /// The order of operations are: scaling -> rotation -> translation
     static public func matrix(scalingBy scale: Vector2 = Vector2.unit,
-                              rotatingBy angle: CGFloat = 0,
+                              rotatingBy angle: JFloat = 0,
                               translatingBy translate: Vector2 = Vector2.zero) -> Vector2.NativeMatrixType {
         
         var matrix = Vector2.NativeMatrixType(1)
@@ -346,8 +356,8 @@ extension Vector2 {
         }
         
         if(angle != 0) {
-            let c = CGFloat.NativeType(cos(-angle))
-            let s = CGFloat.NativeType(sin(-angle))
+            let c = cos(-angle)
+            let s = sin(-angle)
             
             let rotationMatrix =
                 Vector2.NativeMatrixType([
@@ -387,18 +397,18 @@ extension Vector2 {
 extension Vector2 {
     /// Returns a rotated version of this vector, rotated around by a given 
     /// angle in radians
-    public func rotated(by angleInRadians: CGFloat) -> Vector2 {
+    public func rotated(by angleInRadians: JFloat) -> Vector2 {
         return Vector2.rotate(self, by: angleInRadians)
     }
     
     /// Rotates this vector around by a given angle in radians
-    public mutating func rotate(by angleInRadians: CGFloat) -> Vector2 {
+    public mutating func rotate(by angleInRadians: JFloat) -> Vector2 {
         self = rotated(by: angleInRadians)
         return self
     }
     
     /// Rotates a given vector by an angle in radians
-    public static func rotate(_ vec: Vector2, by angleInRadians: CGFloat) -> Vector2 {
+    public static func rotate(_ vec: Vector2, by angleInRadians: JFloat) -> Vector2 {
         
         // Check if we have a 0º or 180º rotation - these we can figure out
         // using conditionals to speedup common paths.
@@ -428,7 +438,7 @@ extension Collection where Iterator.Element: VectorRepresentable, IndexDistance 
             average += vec.vector
         }
         
-        return average / CGFloat(count)
+        return average / JFloat(count)
     }
 }
 
