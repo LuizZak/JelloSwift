@@ -32,6 +32,9 @@ public struct Vector2: VectorRepresentable, Equatable, CustomStringConvertible {
     /// multiplying on this Vector2
     public typealias NativeMatrixType = double3x3
     
+    /// C matrix type
+    public typealias NativeCMatrixType = matrix_double3x3
+    
     /// This is used during affine transformation
     typealias HomogenousVectorType = double3
     #else
@@ -42,11 +45,15 @@ public struct Vector2: VectorRepresentable, Equatable, CustomStringConvertible {
     /// multiplying on this Vector2
     public typealias NativeMatrixType = float3x3
     
+    /// C matrix type
+    public typealias NativeCMatrixType = matrix_float3x3
+    
     /// This is used during affine transformation
     typealias HomogenousVectorType = float3
     #endif
     
     /// The underlying SIMD vector type
+    @_versioned
     var theVector: NativeVectorType
     
     /// The CGFloat representation of this vector's x axis
@@ -72,17 +79,20 @@ public struct Vector2: VectorRepresentable, Equatable, CustomStringConvertible {
     }
     
     /// Returns the angle in radians of this Vector2
+    @_transparent
     public var angle : CGFloat {
         return atan2(y, x)
     }
     
     /// Returns the squared length of this Vector2
+    @_transparent
     public var length : CGFloat {
         return CGFloat(length_squared(theVector))
     }
     
     /// Returns the magnitude (or square root of the squared length) of this 
     /// Vector2
+    @_transparent
     public var magnitude : CGFloat {
         return CGFloat(simd.length(theVector))
     }
@@ -103,6 +113,7 @@ public struct Vector2: VectorRepresentable, Equatable, CustomStringConvertible {
         return CGPoint(x: x, y: y)
     }
     
+    @_versioned
     init(_ vector: NativeVectorType) {
         theVector = vector
     }
@@ -136,35 +147,41 @@ public struct Vector2: VectorRepresentable, Equatable, CustomStringConvertible {
     }
     
     /// Returns the distance between this Vector2 and another Vector2
+    @_transparent
     public func distance(to vec: Vector2) -> CGFloat {
         return CGFloat(simd.distance(self.theVector, vec.theVector))
     }
     
     /// Returns the distance squared between this Vector2 and another Vector2
+    @_transparent
     public func distanceSquared(to vec: Vector2) -> CGFloat {
         return CGFloat(distance_squared(self.theVector, vec.theVector))
     }
     
     /// Makes this Vector2 perpendicular to its current position.
     /// This alters the vector instance
+    @_transparent
     public mutating func formPerpendicular() -> Vector2 {
         self = perpendicular()
         return self
     }
     
     /// Returns a Vector2 perpendicular to this Vector2
+    @_transparent
     public func perpendicular() -> Vector2 {
         return Vector2(x: -y, y: x)
     }
     
     // Normalizes this Vector2 instance.
     // This alters the current vector instance
+    @_transparent
     public mutating func normalize() -> Vector2 {
         self = normalized()
         return self
     }
     
     /// Returns a normalized version of this Vector2
+    @_transparent
     public func normalized() -> Vector2 {
         return Vector2(simd.normalize(theVector))
     }
@@ -197,6 +214,7 @@ extension Vector2 {
     }
     
     // Unary operators
+    @_transparent
     static public prefix func -(lhs: Vector2) -> Vector2 {
         return Vector2(-lhs.theVector)
     }
@@ -204,6 +222,7 @@ extension Vector2 {
     // DOT operator
     /// Calculates the dot product between two provided coordinates.
     /// See `Vector2.dot`
+    @_transparent
     static public func •(lhs: Vector2, rhs: Vector2) -> CGFloat {
         return lhs.dot(rhs)
     }
@@ -211,6 +230,7 @@ extension Vector2 {
     // CROSS operator
     /// Calculates the dot product between two provided coordinates
     /// See `Vector2.cross`
+    @_transparent
     static public func =/(lhs: Vector2, rhs: Vector2) -> CGFloat {
         return lhs.cross(rhs)
     }
@@ -218,49 +238,60 @@ extension Vector2 {
     ////
     // Basic arithmetic operators
     ////
+    @_transparent
     static public func +(lhs: Vector2, rhs: Vector2) -> Vector2 {
         return Vector2(lhs.theVector + rhs.theVector)
     }
     
+    @_transparent
     static public func -(lhs: Vector2, rhs: Vector2) -> Vector2 {
         return Vector2(lhs.theVector - rhs.theVector)
     }
     
+    @_transparent
     static public func *(lhs: Vector2, rhs: Vector2) -> Vector2 {
         return Vector2(lhs.theVector * rhs.theVector)
     }
     
+    @_transparent
     static public func /(lhs: Vector2, rhs: Vector2) -> Vector2 {
         return Vector2(lhs.theVector / rhs.theVector)
     }
     
+    @_transparent
     static public func %(lhs: Vector2, rhs: Vector2) -> Vector2 {
         return Vector2(x: lhs.x.truncatingRemainder(dividingBy: rhs.x),
                        y: lhs.y.truncatingRemainder(dividingBy: rhs.y))
     }
     
     // CGFloat interaction
+    @_transparent
     static public func +(lhs: Vector2, rhs: CGFloat) -> Vector2 {
         return Vector2(lhs.theVector + Vector2.NativeVectorType(rhs.native))
     }
     
+    @_transparent
     static public func -(lhs: Vector2, rhs: CGFloat) -> Vector2 {
         return Vector2(lhs.theVector - Vector2.NativeVectorType(rhs.native))
     }
     
+    @_transparent
     static public func *(lhs: Vector2, rhs: CGFloat) -> Vector2 {
         return Vector2(lhs.theVector * Vector2.NativeVectorType(rhs.native))
     }
     
+    @_transparent
     static public func /(lhs: Vector2, rhs: CGFloat) -> Vector2 {
         return Vector2(lhs.theVector / Vector2.NativeVectorType(rhs.native))
     }
     
+    @_transparent
     static public func %(lhs: Vector2, rhs: CGFloat) -> Vector2 {
         return Vector2(x: lhs.x.truncatingRemainder(dividingBy: rhs),
                        y: lhs.y.truncatingRemainder(dividingBy: rhs))
     }
     
+    @_transparent
     static public func /(lhs: CGFloat, rhs: Vector2) -> Vector2 {
         return Vector2(x: lhs / rhs.x, y: lhs / rhs.y)
     }
@@ -335,39 +366,37 @@ extension Vector2 {
         // |   0       0     1 |
         
         if(scale != .unit) {
-            let scaleMatrix =
-                Vector2.NativeMatrixType([
-                    Vector2.HomogenousVectorType(scale.theVector.x, 0, 0),
-                    Vector2.HomogenousVectorType(0, scale.theVector.y, 0),
-                    Vector2.HomogenousVectorType(0, 0, 1)
-                ])
             
-            matrix *= scaleMatrix
+            let cScale =
+                Vector2.NativeCMatrixType(columns:
+                    (Vector2.HomogenousVectorType(scale.theVector.x, 0, 0),
+                     Vector2.HomogenousVectorType(0, scale.theVector.y, 0),
+                     Vector2.HomogenousVectorType(0, 0, 1)))
+            
+            matrix *= Vector2.NativeMatrixType(cScale)
         }
         
         if(angle != 0) {
             let c = CGFloat.NativeType(cos(-angle))
             let s = CGFloat.NativeType(sin(-angle))
             
-            let rotationMatrix =
-                Vector2.NativeMatrixType([
-                    Vector2.HomogenousVectorType(c, s, 0),
-                    Vector2.HomogenousVectorType(-s, c, 0),
-                    Vector2.HomogenousVectorType(0, 0, 1)
-                ])
+            let cRotation =
+                Vector2.NativeCMatrixType(columns:
+                    (Vector2.HomogenousVectorType(c, s, 0),
+                     Vector2.HomogenousVectorType(-s, c, 0),
+                     Vector2.HomogenousVectorType(0, 0, 1)))
             
-            matrix *= rotationMatrix
+            matrix *= Vector2.NativeMatrixType(cRotation)
         }
         
         if(translate != .zero) {
-            let translateMatrix =
-                Vector2.NativeMatrixType([
-                    Vector2.HomogenousVectorType(1, 0, translate.theVector.x),
-                    Vector2.HomogenousVectorType(0, 1, translate.theVector.y),
-                    Vector2.HomogenousVectorType(0, 0, 1)
-                ])
+            let cTranslation =
+                Vector2.NativeCMatrixType(columns:
+                    (Vector2.HomogenousVectorType(1, 0, translate.theVector.x),
+                     Vector2.HomogenousVectorType(0, 1, translate.theVector.y),
+                     Vector2.HomogenousVectorType(0, 0, 1)))
             
-            matrix *= translateMatrix
+            matrix *= Vector2.NativeMatrixType(cTranslation)
         }
         
         return matrix
@@ -434,12 +463,14 @@ extension Collection where Iterator.Element: VectorRepresentable, IndexDistance 
 
 /// Returns a Vector2 that represents the minimum coordinates between two 
 /// Vector2 objects
+@_transparent
 public func min(_ a: Vector2, _ b: Vector2) -> Vector2 {
     return Vector2(min(a.theVector, b.theVector))
 }
 
 /// Returns a Vector2 that represents the maximum coordinates between two 
 /// Vector2 objects
+@_transparent
 public func max(_ a: Vector2, _ b: Vector2) -> Vector2 {
     return Vector2(max(a.theVector, b.theVector))
 }
