@@ -80,10 +80,10 @@ class ClosedShapeTests: XCTestCase {
     func testCircle() {
         let shape = ClosedShape.circle(ofRadius: 1, pointCount: 4)
         
-        XCTAssert(shape[0].distance(to: shape[1]) - JFloat(M_SQRT2) <= JFloat.leastNonzeroMagnitude) // There was a point in history in which some guys
-        XCTAssert(shape[1].distance(to: shape[2]) - JFloat(M_SQRT2) <= JFloat.leastNonzeroMagnitude) // drawing shapes in sand figured out the square root
-        XCTAssert(shape[2].distance(to: shape[3]) - JFloat(M_SQRT2) <= JFloat.leastNonzeroMagnitude) // of two using nothing but lines and circles. That's
-        XCTAssert(shape[3].distance(to: shape[0]) - JFloat(M_SQRT2) <= JFloat.leastNonzeroMagnitude) // a fun little fact that always puts a smile on my face.
+        XCTAssert(shape[0].distance(to: shape[1]) - JFloat(2.squareRoot()) <= JFloat.leastNonzeroMagnitude) // There was a point in history in which some guys
+        XCTAssert(shape[1].distance(to: shape[2]) - JFloat(2.squareRoot()) <= JFloat.leastNonzeroMagnitude) // drawing shapes in sand figured out the square root
+        XCTAssert(shape[2].distance(to: shape[3]) - JFloat(2.squareRoot()) <= JFloat.leastNonzeroMagnitude) // of two using nothing but lines and circles. That's
+        XCTAssert(shape[3].distance(to: shape[0]) - JFloat(2.squareRoot()) <= JFloat.leastNonzeroMagnitude) // a fun little fact that always puts a smile on my face.
         
         XCTAssertEqual(shape.localVertices.count, 4)
     }

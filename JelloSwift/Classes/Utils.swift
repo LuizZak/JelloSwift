@@ -23,15 +23,14 @@ extension Comparable {
 }
 
 extension Sequence {
-    fileprivate typealias Element = Iterator.Element
     
     // MARK: Helper collection searching methods
     
     /// Returns the last item in the sequence that when passed through `compute`
     /// returns true.
     /// Returns nil if no item was found
-    func last(where compute: (Element) -> Bool) -> Element? {
-        var last: Element?
+    func last(where compute: (Iterator.Element) -> Bool) -> Iterator.Element? {
+        var last: Iterator.Element?
         for item in self {
             if(compute(item)) {
                 last = item
@@ -46,7 +45,7 @@ extension Sequence {
     /// Returns true if any of the elements in this sequence return true when 
     /// passed through `compute`.
     /// Succeeds fast on the first item that returns true
-    func any(where compute: (Element) -> Bool) -> Bool {
+    func any(where compute: (Iterator.Element) -> Bool) -> Bool {
         for item in self {
             if(compute(item)) {
                 return true
@@ -59,7 +58,7 @@ extension Sequence {
     /// Returns true if all of the elements in this sequence return true when 
     /// passed through `compute`.
     /// Fails fast on the first item that returns false
-    func all(where compute: (Element) -> Bool) -> Bool {
+    func all(where compute: (Iterator.Element) -> Bool) -> Bool {
         for item in self {
             if(!compute(item)) {
                 return false
