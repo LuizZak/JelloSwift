@@ -2,7 +2,7 @@ use_frameworks!
 
 target 'JelloSwift_Example' do
   pod 'JelloSwift', :path => '../'
-  pod 'LibTessSwift', '~> 0.4.2'
+  pod 'LibTessSwift', '~> 0.4.3'
 
   target 'JelloSwift_Tests' do
     inherit! :complete
