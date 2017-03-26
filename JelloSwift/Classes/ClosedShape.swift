@@ -6,8 +6,6 @@
 //  Copyright (c) 2014 Luiz Fernando Silva. All rights reserved.
 //
 
-import CoreGraphics
-
 /// Contains a set of points that is equivalent as the internal shape of a soft
 /// body.
 /// Do note that points must be added in a counter-clockwise fashion, since the
@@ -91,12 +89,10 @@ extension ClosedShape {
     /// Transformation is applied in the following order: scale -> rotation.
     public mutating func transformOwnBy(rotatingBy angleInRadians: JFloat = 0,
                                         scalingBy scale: Vector2 = .unit) {
-        let points = localVertices.map {
-            transform(vertex: $0, worldPos: Vector2.zero,
-                      angleInRadians: angleInRadians, localScale: scale)
-        }
         
-        localVertices = points
+        let m = Vector2.matrix(scalingBy: scale, rotatingBy: angleInRadians)
+        
+        localVertices = localVertices.map { $0 * m }
     }
     
     /// Gets a new closed shape by taking each point of this closed shape and
@@ -117,10 +113,9 @@ extension ClosedShape {
                               rotatingBy angleInRadians: JFloat = 0,
                               scalingBy localScale: Vector2 = .unit) -> ClosedShape {
         
-        let points = localVertices.map {
-            transform(vertex: $0, worldPos: worldPos,
-                      angleInRadians: angleInRadians, localScale: localScale)
-        }
+        let m = Vector2.matrix(scalingBy: localScale, rotatingBy: angleInRadians, translatingBy: worldPos)
+        
+        let points = localVertices.map { $0 * m }
         
         return ClosedShape(points: points)
     }
@@ -134,10 +129,11 @@ extension ClosedShape {
     public func transformVertices(_ target: inout [Vector2], worldPos: Vector2,
                                   angleInRadians: JFloat,
                                   localScale: Vector2 = Vector2.unit) {
+        
+        let m = Vector2.matrix(scalingBy: localScale, rotatingBy: angleInRadians, translatingBy: worldPos)
+        
         for i in 0..<target.count {
-            target[i] = transform(vertex: localVertices[i], worldPos: worldPos,
-                                  angleInRadians: angleInRadians,
-                                  localScale: localScale)
+            target[i] = localVertices[i] * m
         }
     }
     
@@ -150,11 +146,6 @@ extension ClosedShape {
         for i in 0..<target.count {
             target[i] = localVertices[i] * matrix
         }
-    }
-    
-    private func transform(vertex: Vector2, worldPos: Vector2,
-                           angleInRadians: JFloat, localScale: Vector2) -> Vector2 {
-        return Vector2.rotate(vertex * localScale, by: angleInRadians) + worldPos
     }
 }
 

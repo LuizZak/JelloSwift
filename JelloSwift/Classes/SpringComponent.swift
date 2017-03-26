@@ -6,8 +6,6 @@
 //  Copyright (c) 2014 Luiz Fernando Silva. All rights reserved.
 //
 
-import CoreGraphics
-
 /// Represents a Spring component that can be added to a body to include 
 /// spring-based physics in the body's point masses
 public final class SpringComponent: BodyComponent {

@@ -6,9 +6,6 @@
 //  Copyright (c) 2015 Luiz Fernando Silva. All rights reserved.
 //
 
-import Foundation
-import CoreGraphics
-
 public func ==(lhs: BodyJoint, rhs: BodyJoint) -> Bool {
     return lhs === rhs
 }
@@ -53,11 +50,9 @@ open class BodyJoint: Equatable {
                 distance ?? .fixed(link1.position.distance(to: link2.position))
     }
     
-    /**
-     * Resolves this joint
-     *
-     * - parameter dt: The delta time to update the resolve on
-     */
+    /// Resolves this joint
+    ///
+    /// - Parameter dt: The delta time to update the resolve on
     open func resolve(_ dt: JFloat) {
         
     }

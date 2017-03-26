@@ -6,8 +6,6 @@
 //  Copyright (c) 2014 Luiz Fernando Silva. All rights reserved.
 //
 
-import CoreGraphics
-
 /// Represents an internal spring inside a soft body object, and keeps points
 /// close together
 public struct InternalSpring {

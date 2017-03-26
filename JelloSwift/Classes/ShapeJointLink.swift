@@ -6,9 +6,6 @@
 //  Copyright (c) 2015 Luiz Fernando Silva. All rights reserved.
 //
 
-import Foundation
-import CoreGraphics
-
 /// Represents a joint link that links to multiple point masses of a body
 open class ShapeJointLink: JointLinkType {
     /// The point masses this joint is linked to

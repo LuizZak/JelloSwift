@@ -6,8 +6,6 @@
 //  Copyright (c) 2014 Luiz Fernando Silva. All rights reserved.
 //
 
-import CoreGraphics
-
 /// Specifies a point mass that composes a body
 public final class PointMass: VectorRepresentable {
     /// The mass of this point mass.

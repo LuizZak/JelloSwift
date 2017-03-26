@@ -6,9 +6,6 @@
 //  Copyright (c) 2015 Luiz Fernando Silva. All rights reserved.
 //
 
-import Foundation
-import CoreGraphics
-
 /// Represents a joint that links two joint links with spring forces
 open class SpringBodyJoint : BodyJoint {
     
@@ -30,11 +27,9 @@ open class SpringBodyJoint : BodyJoint {
         super.init(on: world, link1: link1, link2: link2, distance: distance)
     }
     
-    /**
-     * Resolves this joint
-     *
-     * - parameter dt: The delta time to update the resolve on
-    */
+    /// Resolves this joint
+    ///
+    /// - Parameter dt: The delta time to update the resolve on
     open override func resolve(_ dt: JFloat) {
         if(!enabled) {
             return

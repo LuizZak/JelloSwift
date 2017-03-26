@@ -40,12 +40,15 @@ open class BodyComponent {
 open class BodyComponentCreator {
     open var bodyComponentClass: BodyComponent.Type = BodyComponent.self
     
+    /// Creates and attaches the component to a given body
     open func attach(to body: Body) {
         body.addComponent(ofType: bodyComponentClass)
         
         prepareBodyAfterComponent(body)
     }
     
+    /// Performs post-attachment configurations to a body.
+    /// called by `attach(to:)`
     open func prepareBodyAfterComponent(_ body: Body) {
         
     }

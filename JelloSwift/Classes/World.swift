@@ -6,9 +6,6 @@
 //  Copyright (c) 2014 Luiz Fernando Silva. All rights reserved.
 //
 
-import Foundation
-import CoreGraphics
-
 /// Represents a simulation world, containing soft bodies and the code utilized
 /// to make them interact with each other
 public final class World {
@@ -28,9 +25,12 @@ public final class World {
     /// Usually 0.3 is a good default.
     public var penetrationThreshold: JFloat = 0.3
     
-    // material chart.
+    /// Matrix of material pairs used during collision resolving
     public var materialPairs: [[MaterialPair]] = []
+    
+    /// The default material pair for newly created materials
     public var defaultMatPair = MaterialPair()
+    
     fileprivate var materialCount = 0
     
     fileprivate var collisionList: [BodyCollisionInformation] = []
@@ -38,6 +38,7 @@ public final class World {
     /// The object to report collisions to
     public weak var collisionObserver: CollisionObserver?
     
+    /// Inits an empty world
     public init() {
         self.clear()
     }
@@ -255,29 +256,23 @@ public final class World {
         return results
     }
     
-    /**
-     * Casts a ray between the given points and returns the first body it comes 
-     * in contact with
-     * 
-     * - parameter start: The start point to cast the ray from, in world 
-     *      coordinates
-     *
-     * - parameter end: The end point to end the ray cast at, in world 
-     *      coordinates
-     *
-     * - parameter bitmask: An optional collision bitmask that filters the 
-     *      bodies to collide using a bitwise AND (|) operation.
-     *      If the value specified is 0, collision filtering is ignored and all 
-     *      bodies are considered for collision
-     *
-     * - parameter ignoring: A custom list of bodies that will be ignored during
-     *      collision checking. Provide an empty list to consider all bodies in 
-     *      the world
-     *
-     * - return: An optional tuple containing the farthest point reached by the 
-     *      ray, and a Body value specifying the body that was closest to the 
-     *      ray, if it hit any body, or nil if it hit nothing.
-     */
+    
+    /// Casts a ray between the given points and returns the first body it comes
+    /// in contact with
+    ///
+    /// - Parameters:
+    ///   - start: The start point to cast the ray from, in world coordinates
+    ///   - end: The end point to end the ray cast at, in world coordinates
+    ///   - bitmask: An optional collision bitmask that filters the
+    /// bodies to collide using a bitwise AND (|) operation.
+    /// If the value specified is 0, collision filtering is ignored and all
+    /// bodies are considered for collision
+    ///   - ignoreList: A custom list of bodies that will be ignored during
+    /// collision checking. Provide an empty list to consider all bodies in
+    /// the world
+    /// - Returns: An optional tuple containing the farthest point reached by
+    /// the ray, and a Body value specifying the body that was closest to the
+    /// ray, if it hit any body, or nil if it hit nothing.
     public func rayCast(from start: Vector2, to end: Vector2, bitmask: Bitmask = 0, ignoring ignoreList: [Body] = []) -> (retPt: Vector2, body: Body)? {
         var aabb = AABB(points: [start, end])
         var result: (Vector2, Body)?
@@ -301,13 +296,11 @@ public final class World {
         return result
     }
     
-    /**
-     * Updates the world by a specific timestep.
-     * This method performs body point mass force/velocity/position simulation,
-     * and collision detection & resolving.
-     *
-     * - parameter elapsed: The elapsed time to update by, usually in seconds
-     */
+    /// Updates the world by a specific timestep.
+    /// This method performs body point mass force/velocity/position simulation,
+    /// and collision detection & resolving.
+    ///
+    /// - Parameter elapsed: The elapsed time to update by, usually in seconds
     public func update(_ elapsed: JFloat) {
         // Update the bodies
         for body in bodies {

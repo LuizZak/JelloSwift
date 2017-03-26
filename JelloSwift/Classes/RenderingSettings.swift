@@ -6,8 +6,6 @@
 //  Copyright (c) 2014 Luiz Fernando Silva. All rights reserved.
 //
 
-import CoreGraphics
-
 /// The rendering scale for the scene
 public var renderingScale = Vector2(x: 25.8, y: 25.8)
 

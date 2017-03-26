@@ -6,9 +6,6 @@
 //  Copyright (c) 2015 Luiz Fernando Silva. All rights reserved.
 //
 
-import Foundation
-import CoreGraphics
-
 /// Represents a joint link that links to an edge of a body
 open class EdgeJointLink: JointLinkType {
     /// The first point mass this joint is linked to

@@ -6,8 +6,6 @@
 //  Copyright (c) 2015 Luiz Fernando Silva. All rights reserved.
 //
 
-import CoreGraphics
-
 /// Contains information about the edge of a body
 public struct BodyEdge {
     
