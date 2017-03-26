@@ -118,30 +118,37 @@ public struct Vector2: VectorRepresentable, Equatable, CustomStringConvertible {
         theVector = vector
     }
     
+    /// Inits a 0-valued Vector2
     public init() {
         theVector = NativeVectorType(0)
     }
     
+    /// Inits a vector 2 with two integer components
     public init(x: Int, y: Int) {
         theVector = NativeVectorType(CGFloat.NativeType(x), CGFloat.NativeType(y))
     }
     
+    /// Inits a vector 2 with two float components
     public init(x: CGFloat, y: CGFloat) {
         theVector = NativeVectorType(x.native, y.native)
     }
     
+    /// Inits a vector 2 with two float components
     public init(x: Float, y: Float) {
         theVector = NativeVectorType(CGFloat.NativeType(x), CGFloat.NativeType(y))
     }
     
+    /// Inits a vector 2 with two double-precision floating point components
     public init(x: Double, y: Double) {
         theVector = NativeVectorType(CGFloat.NativeType(x), CGFloat.NativeType(y))
     }
     
+    /// Inits a vector 2 with X and Y defined as a given float
     public init(value: CGFloat) {
         theVector = NativeVectorType(value.native)
     }
     
+    /// Inits a vector 2 with a CGPoint
     public init(_ point: CGPoint) {
         theVector = NativeVectorType(point.x.native, point.y.native)
     }

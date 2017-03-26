@@ -53,11 +53,9 @@ open class BodyJoint: Equatable {
                 distance ?? .fixed(link1.position.distance(to: link2.position))
     }
     
-    /**
-     * Resolves this joint
-     *
-     * - parameter dt: The delta time to update the resolve on
-     */
+    /// Resolves this joint
+    ///
+    /// - Parameter dt: The delta time to update the resolve on
     open func resolve(_ dt: CGFloat) {
         
     }

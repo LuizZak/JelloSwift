@@ -8,6 +8,8 @@
 
 import CoreGraphics
 
+/// Performs a reference-equality against two Body instances.
+/// Returns true iff lhs === rhs
 public func ==(lhs: Body, rhs: Body) -> Bool {
     return lhs === rhs
 }
@@ -152,9 +154,7 @@ public final class Body: Equatable {
         
         updateAABB(0, forceUpdate: true)
         
-        if let w = world {
-            w.addBody(self)
-        }
+        world?.addBody(self)
         
         // Add the components now
         components.forEach { $0.attach(to: self) }
@@ -212,7 +212,7 @@ public final class Body: Equatable {
         // Update edges
         for (i, curP) in pointMasses.enumerated() {
             let j = (i + 1) % c
-            let nextP = pointMasses[j]
+            unowned(unsafe) let nextP = pointMasses[j]
             
             edges[i] = BodyEdge(edgeIndex: i, startPointIndex: i,
                                 endPointIndex: j, start: curP.position,
@@ -656,22 +656,20 @@ public final class Body: Equatable {
         return farPoint
     }
     
-    /**
-     * Given a global point, finds the closest point on an edge of a specified 
-     * index, returning the squared distance to the edge found
-     *
-     * - parameter pt: The point to get the closest edge of, in world 
-     *      coordinates
-     * - parameter edgeNum: The index of the edge to search
-     * - returns: A tuple containing the results of the test, with fields:
-     *            **hitPoint**: The closest point in the edge to the global
-     *  point provided
-     *            **normal**: A unit vector containing information about the
-     *  normal of the edge found
-     *            **edgeD**: The ratio of the edge where the point was grabbed, 
-     *  [0-1] inclusive
-     *            **distance**: The squared distance to the closest edge found
-     */
+    /// Given a global point, finds the closest point on an edge of a specified
+    /// index, returning the squared distance to the edge found
+    ///
+    /// - Parameters:
+    ///   - pt: The point to get the closest edge of, in world coordinates
+    ///   - edgeNum: The index of the edge to search
+    /// - Returns: A tuple containing the results of the test, with fields:
+    ///      - **hitPoint**: The closest point in the edge to the global
+    /// point provided
+    ///      - **normal**: A unit vector containing information about the
+    /// normal of the edge found
+    ///      - **edgeD**: The ratio of the edge where the point was grabbed,
+    /// [0-1] inclusive
+    ///      - **distance**: The squared distance to the closest edge found
     public func closestPointSquared(to pt: Vector2, onEdge edgeNum: Int) -> (hitPoint: Vector2, normal: Vector2, edgeD: CGFloat, distance: CGFloat) {
         var hitPt: Vector2 = .zero
         var normal: Vector2 = .zero
@@ -718,47 +716,41 @@ public final class Body: Equatable {
         return (hitPt, normal, edgeD, dist)
     }
     
-    /**
-     * Given a global point, finds the closest point on an edge of a specified
-     * index, returning the distance to the edge found
-     *
-     * - parameter pt: The point to get the closest edge of, in world 
-     *      coordinates
-     * - parameter edgeNum: The index of the edge to search
-     * - returns: A tuple containing the results of the test, with fields:
-     *            **hitPoint**: The closest point in the edge to the global
-     *  point provided
-     *            **normal**: A unit vector containing information about the
-     *  normal of the edge found
-     *            **edgeD**: The ratio of the edge where the point was grabbed, 
-     *  [0-1] inclusive
-     *            **distance**: The distance to the closest edge found
-    */
+    /// Given a global point, finds the closest point on an edge of a specified
+    /// index, returning the distance to the edge found
+    ///
+    /// - Parameters:
+    ///   - pt: The point to get the closest edge of, in world coordinates
+    ///   - edgeNum: The index of the edge to search
+    /// - Returns: A tuple containing the results of the test, with fields:
+    ///      - **hitPoint**: The closest point in the edge to the global
+    /// point provided
+    ///      - **normal**: A unit vector containing information about the
+    /// normal of the edge found
+    ///      - **edgeD**: The ratio of the edge where the point was grabbed,
+    /// [0-1] inclusive
+    ///      - **distance**: The distance to the closest edge found
     public func closestPoint(to pt: Vector2, onEdge edgeNum: Int) -> (hitPoint: Vector2, normal: Vector2, edgeD: CGFloat, distance: CGFloat) {
         let result = closestPointSquared(to: pt, onEdge: edgeNum)
         
         return (result.hitPoint, result.normal, result.edgeD, sqrt(result.distance))
     }
     
-    /**
-     * Given a global point, finds the point on this body that is closest to the
-     * given global point, and if it's an edge, information about the edge it
-     * resides on
-     *
-     * - parameter pt: The point to get the closest edge of, in world 
-     *      coordinates
-     * - returns: The distance to the closest edge found
-     * - returns: A tuple containing the results of the test, with fields:
-     *            **hitPoint**: The closest point in the edge to the global
-     *  point provided
-     *            **normal**: A unit vector containing information about the 
-     *  normal of the edge found
-     *            **pointA**: The index of the first point of the edge
-     *            **pointB**: The index of the second point of the edge
-     *            **edgeD**: The ratio of the edge where the point was grabbed, 
-     *  [0-1] inclusive
-     *            **distance**: The distance to the closest edge found
-    */
+    /// Given a global point, finds the point on this body that is closest to the
+    /// given global point, and if it's an edge, information about the edge it
+    /// resides on
+    ///
+    /// - Parameter pt: The point to get the closest edge of, in world coordinates
+    /// - Returns:  A tuple containing the results of the test, with fields:
+    ///      - **hitPoint**: The closest point in the edge to the global
+    /// point provided
+    ///      - **normal**: A unit vector containing information about the
+    /// normal of the edge found
+    ///      - **pointA**: The index of the first point of the edge
+    ///      - **pointB**: The index of the second point of the edge
+    ///      - **edgeD**: The ratio of the edge where the point was grabbed,
+    /// [0-1] inclusive
+    ///      - **distance**: The distance to the closest edge found
     public func closestPoint(to pt: Vector2) -> (hitPoint: Vector2, normal: Vector2, pointA: Int, pointB: Int, edgeD: CGFloat, distance: CGFloat) {
         var pointA = -1
         var pointB = -1
@@ -787,27 +779,26 @@ public final class Body: Equatable {
     }
     
     
-    /**
-     * Returns the closest point to the given position on an edge of the body's 
-     * shape
-     * The position must be in world coordinates
-     * The tolerance is the distance to the edge that will be ignored if larget
-     * than that
-     * Returns nil if no edge found (no points on the shape), or a tuple of the
-     * parameters that can be used to track down the shape's edge
-     *
-     * - parameter pt: The point to get the closest edge of, in world coordinates
-     * - parameter tolerance: A tolerance distance for the edges detected - any 
-     *      edge farther than this distance is ignored
-     * - returns: A tuple containing information about the edge, if it was
-     *      found, or nil if none was found.
-     *  Contents of the tuple:
-     *  **edgePosition**: The edge's closest position to the point provided
-     *  **edgeRatio**: The ratio of the edge where the point was grabbed, [0-1] 
-     *  inclusive
-     *  **edgePoint1**: The first point mass on the edge
-     *  **edgePoint2**: The second point mass on the edge
-     */
+    /// Returns the closest point to the given position on an edge of the body's
+    /// shape
+    /// The position must be in world coordinates
+    /// The tolerance is the distance to the edge that will be ignored if larget
+    /// than that
+    /// Returns nil if no edge found (no points on the shape), or a tuple of the
+    /// parameters that can be used to track down the shape's edge
+    ///
+    /// - Parameters:
+    ///   - pt: The point to get the closest edge of, in world coordinates
+    ///   - tolerance: A tolerance distance for the edges detected - any edge
+    ///         farther than this distance is ignored
+    /// - Returns: A tuple containing information about the edge, if it was
+    /// found, or nil if none was found.
+    /// Contents of the tuple:
+    ///     - **edgePosition**: The edge's closest position to the point provided
+    ///     - **edgeRatio**: The ratio of the edge where the point was grabbed, 
+    /// [0-1] inclusive
+    ///     - **edgePoint1**: The first point mass on the edge
+    ///     - **edgePoint2**: The second point mass on the edge
     public func closestEdge(to pt: Vector2, withTolerance tolerance: CGFloat = CGFloat.infinity) -> (edgePosition: Vector2, edgeRatio: CGFloat, edgePoint1: PointMass, edgePoint2: PointMass)? {
         if(pointMasses.count == 0) {
             return nil
@@ -870,18 +861,17 @@ public final class Body: Equatable {
         return (closest, sqrt(closestSQD))
     }
     
-    /**
-     * Applies a global force to all the point masses in this body at the
-     * specified point, in world coordinates.
-     * Applying a force with any position off-center of the body (different than
-     * `derivedPos`) will result in an additional torque being applied to the
-     * body, making it spin.
-     * Ignored, if body is static.
-     *
-     * - parameter pt: The point to apply the force, in world coordinates. 
-     *      Specify .derivedPos to apply a force at the exact center of the body
-     * - parameter force: The force to apply to the point masses in this body
-    */
+    /// Applies a global force to all the point masses in this body at the
+    /// specified point, in world coordinates.
+    /// Applying a force with any position off-center of the body (different than
+    /// `derivedPos`) will result in an additional torque being applied to the
+    /// body, making it spin.
+    /// Ignored, if body is static.
+    ///
+    /// - Parameters:
+    ///   - force: The point to apply the force, in world coordinates.
+    /// Specify .derivedPos to apply a force at the exact center of the body
+    ///   - pt: The force to apply to the point masses in this body
     public func applyForce(_ force: Vector2, atGlobalPoint pt: Vector2) {
         if(isStatic) {
             return
@@ -896,13 +886,11 @@ public final class Body: Equatable {
         }
     }
     
-    /**
-     * Adds a velocity vector to all the point masses in this body
-     * Ignored, if body is static.
-     *
-     * - parameter velocity: The velocity to add to all the point masses in this
-     *      body
-     */
+    /// Adds a velocity vector to all the point masses in this body.
+    /// Does nothing, if body is static.
+    ///
+    /// - Parameter velocity: The velocity to add to all the point masses in this
+    /// body
     public func addVelocity(_ velocity: Vector2) {
         if(isStatic) {
             return

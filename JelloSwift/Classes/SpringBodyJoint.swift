@@ -30,11 +30,9 @@ open class SpringBodyJoint : BodyJoint {
         super.init(on: world, link1: link1, link2: link2, distance: distance)
     }
     
-    /**
-     * Resolves this joint
-     *
-     * - parameter dt: The delta time to update the resolve on
-    */
+    /// Resolves this joint
+    ///
+    /// - Parameter dt: The delta time to update the resolve on
     open override func resolve(_ dt: CGFloat) {
         if(!enabled) {
             return

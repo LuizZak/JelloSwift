@@ -14,16 +14,15 @@ import CoreGraphics
 /// the contents of the body, resulting in resistance to compression and
 /// expansion past the rest shape of the body, like a balloon.
 public final class PressureComponent: BodyComponent {
-    // PRIVATE VARIABLES
     
     /// The total volume of the body, as was calculated during the previous
     /// internal force accumulation step.
-    /// Equal to half the polygonal area of the body's point masses
-    public var volume: CGFloat = 0
+    /// Equal the polygonal area of the body's point masses.
+    /// Is clamped to always be be >= 0.5
+    fileprivate(set) public var volume: CGFloat = 0
     
     /// The gass pressure coefficient for the pressure component.
-    /// Higher values result in higher resistance to compression and higher
-    /// expansion.
+    /// Higher values result in higher expansion and resistance to compression.
     public var gasAmmount: CGFloat = 0
     
     override public func prepare(_ body: Body) {
