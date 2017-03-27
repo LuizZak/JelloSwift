@@ -11,6 +11,14 @@ import JelloSwift
 
 class Vector2Tests: XCTestCase {
     
+    // Precision delta
+    
+    #if arch(x86_64) || arch(arm64)
+        let delta: JFloat = 0.00000000000001
+    #else
+        let delta: JFloat = 0.000001
+    #endif
+    
     func testMatrixTranslate() {
         // Tests a Vector2.matrix() to translate a Vector2
         
@@ -43,11 +51,14 @@ class Vector2Tests: XCTestCase {
         let vector = Vector2(x: 10, y: 10)
         let expected = Vector2(x: -10, y: 10)
         
-        let matrix = Vector2.matrix(rotatingBy: JFloat.pi / 2)
+        let matrix = Vector2.matrix(rotatingBy: JFloat.pi / 2) // 90º
         
         let transformed = vector * matrix
         
-        XCTAssertEqual(expected, transformed)
+        let diff = abs(expected - transformed)
+        
+        XCTAssert(diff.x <= delta)
+        XCTAssert(diff.y <= delta)
     }
     
     func testCompoundMatrix() {
@@ -64,6 +75,9 @@ class Vector2Tests: XCTestCase {
         
         let transformed = vector * matrix
         
-        XCTAssertEqual(expected, transformed)
+        let diff = abs(expected - transformed)
+        
+        XCTAssert(diff.x <= delta)
+        XCTAssert(diff.y <= delta)
     }
 }
