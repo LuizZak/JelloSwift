@@ -11,6 +11,6 @@ before_install:
 - pod update --project-directory=Example
 - pod install --project-directory=Example
 script:
+- set -o pipefail && xcodebuild test -workspace Example/JelloSwift.xcworkspace -scheme JelloSwift-Example -sdk iphonesimulator10.2 ONLY_ACTIVE_ARCH=NO -destination 'platform=iOS Simulator,id=D0257C83-DB81-4567-93EC-4C6DF23DC24C,OS=10.2' | xcpretty # D0257C83-DB81-4567-93EC-4C6DF23DC24C = iPhone 5
 - set -o pipefail && xcodebuild test -workspace Example/JelloSwift.xcworkspace -scheme JelloSwift-Example -sdk iphonesimulator10.2 ONLY_ACTIVE_ARCH=NO -destination 'platform=iOS Simulator,name=iPad Air 2,OS=10.2' | xcpretty
-- set -o pipefail && xcodebuild test -workspace Example/JelloSwift.xcworkspace -scheme JelloSwift-Example -sdk iphonesimulator10.2 ONLY_ACTIVE_ARCH=NO -destination 'platform=iOS Simulator,name=iPhone 5,OS=10.2' | xcpretty
 - pod lib lint
