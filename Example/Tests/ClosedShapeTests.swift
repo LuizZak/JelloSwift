@@ -12,6 +12,14 @@ import JelloSwift
 
 class ClosedShapeTests: XCTestCase {
     
+    // Precision delta
+    
+    #if arch(x86_64) || arch(arm64)
+        let delta: CGFloat = 0.000000000000001
+    #else
+        let delta: CGFloat = 0.0000001
+    #endif
+    
     func testOffsetTransformVertices() {
         // Create a small box shape
         let shape = ClosedShape.create { (shape) in
@@ -50,14 +58,6 @@ class ClosedShapeTests: XCTestCase {
         // Create the transformed shape with no modifications
         let transformed = shape.transformedBy(translatingBy: Vector2.zero, rotatingBy: .pi, scalingBy: Vector2.unit)
         
-        // Precision delta
-        
-        #if CGFLOAT_IS_DOUBLE
-            let delta: CGFloat = 0.000000000000001
-        #else
-            let delta: CGFloat = 0.0000001
-        #endif
-        
         // Since we rotated a box 90º, the edges are the same, but offset by 1.
         for i in 0..<expected.localVertices.count {
             let diff = expected.localVertices[i] - transformed[i]
@@ -91,10 +91,12 @@ class ClosedShapeTests: XCTestCase {
     func testCircle() {
         let shape = ClosedShape.circle(ofRadius: 1, pointCount: 4)
         
-        XCTAssert(shape[0].distance(to: shape[1]) - CGFloat(2.squareRoot()) <= CGFloat.leastNonzeroMagnitude) // There was a point in history in which some guys
-        XCTAssert(shape[1].distance(to: shape[2]) - CGFloat(2.squareRoot()) <= CGFloat.leastNonzeroMagnitude) // drawing shapes in sand figured out the square root
-        XCTAssert(shape[2].distance(to: shape[3]) - CGFloat(2.squareRoot()) <= CGFloat.leastNonzeroMagnitude) // of two using nothing but lines and circles. That's
-        XCTAssert(shape[3].distance(to: shape[0]) - CGFloat(2.squareRoot()) <= CGFloat.leastNonzeroMagnitude) // a fun little fact that always puts a smile on my face.
+        let delta = self.delta * 2 // Increase delta a bit for testing
+        
+        XCTAssert(abs(shape[0].distance(to: shape[1]) - CGFloat(2.squareRoot())) <= delta) // There was a point in history in which some guys
+        XCTAssert(abs(shape[1].distance(to: shape[2]) - CGFloat(2.squareRoot())) <= delta) // drawing shapes in sand figured out the square root
+        XCTAssert(abs(shape[2].distance(to: shape[3]) - CGFloat(2.squareRoot())) <= delta) // of two using nothing but lines and circles. That's
+        XCTAssert(abs(shape[3].distance(to: shape[0]) - CGFloat(2.squareRoot())) <= delta) // a fun little fact that always puts a smile on my face.
         
         XCTAssertEqual(shape.localVertices.count, 4)
     }
@@ -107,10 +109,12 @@ class ClosedShapeTests: XCTestCase {
         let radi = shape[0].magnitude
         let dist = shape[0].distance(to: shape[1])
         
+        let delta = self.delta * 10 // Increase delta a bit for testing
+        
         var lastPoint = shape[7]
         for (i, p) in shape.localVertices.enumerated() {
-            XCTAssert(p.magnitude - radi <= CGFloat.leastNonzeroMagnitude, "Failed radius check on point \(i)")
-            XCTAssert(p.distance(to: lastPoint) - dist <= 0.00000001, "Failed distance check on point \(i)")
+            XCTAssert(abs(p.magnitude - radi) <= self.delta, "Failed radius check on point \(i)")
+            XCTAssert(abs(p.distance(to: lastPoint) - dist) <= delta, "Failed distance check on point \(i)")
             lastPoint = p
         }
         
