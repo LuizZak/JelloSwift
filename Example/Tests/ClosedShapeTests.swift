@@ -52,10 +52,10 @@ class ClosedShapeTests: XCTestCase {
         
         // Precision delta
         
-        #if CGFLOAT_IS_DOUBLE
-            let delta: CGFloat = 0.000000000000001
+        #if arch(x86_64) || arch(arm64)
+            let delta: JFloat = 0.000000000000001
         #else
-            let delta: CGFloat = 0.0000001
+            let delta: JFloat = 0.0000001
         #endif
         
         // Since we rotated a box 90º, the edges are the same, but offset by 1.
