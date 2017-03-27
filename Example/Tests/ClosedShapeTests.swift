@@ -11,6 +11,7 @@ import XCTest
 import JelloSwift
 
 class ClosedShapeTests: XCTestCase {
+    
     func testOffsetTransformVertices() {
         // Create a small box shape
         let shape = ClosedShape.create { (shape) in
@@ -49,9 +50,19 @@ class ClosedShapeTests: XCTestCase {
         // Create the transformed shape with no modifications
         let transformed = shape.transformedBy(translatingBy: Vector2.zero, rotatingBy: .pi, scalingBy: Vector2.unit)
         
+        // Precision delta
+        
+        #if CGFLOAT_IS_DOUBLE
+            let delta: CGFloat = 0.000000000000001
+        #else
+            let delta: CGFloat = 0.0000001
+        #endif
+        
         // Since we rotated a box 90º, the edges are the same, but offset by 1.
         for i in 0..<expected.localVertices.count {
-            XCTAssertEqual(expected.localVertices[i], transformed[i], "The transformed shape is incorrect!")
+            let diff = expected.localVertices[i] - transformed[i]
+            XCTAssert(diff.x < delta, "The transformed shape is incorrect!")
+            XCTAssert(diff.y < delta, "The transformed shape is incorrect!")
         }
     }
     
