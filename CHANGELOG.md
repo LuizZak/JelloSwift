@@ -1,4 +1,4 @@
-**_Current stable release: v0.5.0_**
+**_Current stable release: v0.5.1_**
 
 #### Develop trunk changelog:
 
@@ -6,6 +6,10 @@
 
 ## Stable Releases
 ---
+
+## v0.5.1:
+
+- Using unchecked arithmetic operators in some tight loops that we know won't overlow under reasonable circumstances.
 
 ## v0.5.0:
 
