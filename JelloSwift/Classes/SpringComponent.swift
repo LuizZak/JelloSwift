@@ -154,15 +154,13 @@ public final class SpringComponent: BodyComponent {
         body.baseShape.transformVertices(&body.globalShape, matrix: matrix)
         
         for (global, p) in zip(body.globalShape, body.pointMasses) {
-            let force: Vector2
-            
             let velB = body.isKinematic ? Vector2.zero : p.velocity
             
-            force = calculateSpringForce(posA: p.position, velA: p.velocity,
-                                         posB: global, velB: velB,
-                                         distance: 0.0,
-                                         springK: shapeSpringK,
-                                         springD: shapeSpringDamp)
+            let force = calculateSpringForce(posA: p.position, velA: p.velocity,
+                                             posB: global, velB: velB,
+                                             distance: 0.0,
+                                             springK: shapeSpringK,
+                                             springD: shapeSpringDamp)
             
             p.applyForce(of: force)
         }

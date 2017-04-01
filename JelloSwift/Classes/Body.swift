@@ -211,7 +211,7 @@ public final class Body: Equatable {
         
         // Update edges
         for (i, curP) in pointMasses.enumerated() {
-            let j = (i + 1) % c
+            let j = (i &+ 1) % c
             unowned(unsafe) let nextP = pointMasses[j]
             
             edges[i] = BodyEdge(edgeIndex: i, startPointIndex: i,
@@ -250,10 +250,10 @@ public final class Body: Equatable {
     
     /// Updates a single edge in this body
     public func updateEdge(_ edgeIndex: Int) {
-        let j = (edgeIndex + 1) % pointMasses.count
+        let j = (edgeIndex &+ 1) % pointMasses.count
         
         let curP = pointMasses[edgeIndex]
-        let nextP = pointMasses[(edgeIndex + 1) % pointMasses.count]
+        let nextP = pointMasses[j]
         
         edges[edgeIndex] = BodyEdge(edgeIndex: edgeIndex,
                                     startPointIndex: edgeIndex,
@@ -767,7 +767,7 @@ public final class Body: Equatable {
             if(dist < closestD) {
                 closestD = dist
                 pointA = i
-                pointB = (i + 1) % c
+                pointB = (i &+ 1) % c
                 
                 edgeD = tempEdgeD
                 normal = tempNorm

@@ -337,7 +337,7 @@ public final class World {
         
         let c = bodies.count
         for (i, body1) in bodies.enumerated() {
-            innerLoop: for j in (i + 1)..<c {
+            innerLoop: for j in (i &+ 1)..<c {
                 let body2 = bodies[j]
                 
                 // bitmask filtering
@@ -423,7 +423,7 @@ public final class World {
             
             for j in 0..<bBpCount {
                 let b1 = j
-                let b2 = (j + 1) % (bBpCount)
+                let b2 = (j &+ 1) % (bBpCount)
                 
                 // test against this edge.
                 let (hitPt, normal, edgeD, dist) = bB.closestPointSquared(to: pt, onEdge: j)

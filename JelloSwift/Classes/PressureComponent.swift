@@ -32,11 +32,8 @@ public final class PressureComponent: BodyComponent {
     override public func accumulateInternalForces(in body: Body) {
         super.accumulateInternalForces(in: body)
         
-        volume = 0
-        
-        let c = body.pointMasses.count
-        
-        if(c < 1) {
+        if(body.pointMasses.count < 1) {
+            volume = 0
             return
         }
         
