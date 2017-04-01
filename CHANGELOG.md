@@ -1,12 +1,19 @@
-**_Current stable release: v0.4.0_**
+**_Current stable release: v0.5.0_**
 
 #### Develop trunk changelog:
 
-- Making corrections to method parameter labeling on Vector2 methods to make them more idiomatic to swift.
-- Adding `World.bodiesIntersecting(closedShape:at:)` to query bodies that intersect a specified closed shape in world space.
+- Trunk is clean!
 
 ## Stable Releases
 ---
+
+## v0.5.0:
+
+- Making corrections to method parameter labeling on Vector2 methods to make them more idiomatic to swift.
+- Adding `World.bodiesIntersecting(closedShape:at:)` to query bodies that intersect a specified closed shape in world space.
+- Adding @_transparent annotations to some members of Vector2 that really don't have to be opaque.
+
+Note: Some operations with transformation of Vector2 lists using ClosedShape w/ rotations might become slightly more imprecise due to usage of Matrices to reduce calls to cos/sin.
 
 ## v0.4.0:
 
