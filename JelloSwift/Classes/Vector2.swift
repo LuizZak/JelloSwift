@@ -197,6 +197,7 @@ public struct Vector2: VectorRepresentable, Equatable, CustomStringConvertible {
 /// Dot and Cross products
 extension Vector2 {
     /// Calculates the dot product between this and another provided Vector2
+    @_transparent
     public func dot(_ other: Vector2) -> CGFloat {
         return CGFloat(simd.dot(theVector, other.theVector))
     }
@@ -206,6 +207,7 @@ extension Vector2 {
     /// between
     /// 3d vectors matching the x and y coordinates of the operands, with the 
     /// 'z' coordinate being 0.
+    @_transparent
     public func cross(_ other: Vector2) -> CGFloat {
         return CGFloat(theVector.x * other.theVector.x - theVector.y * other.theVector.y)
     }
@@ -216,6 +218,7 @@ extension Vector2 {
     ////
     // Comparision operators
     ////
+    @_transparent
     static public func ==(lhs: Vector2, rhs: Vector2) -> Bool {
         return lhs.theVector.x == rhs.theVector.x && lhs.theVector.y == rhs.theVector.y
     }
@@ -306,29 +309,37 @@ extension Vector2 {
     ////
     // Compound assignment operators
     ////
+    @_transparent
     static public func +=(lhs: inout Vector2, rhs: Vector2) {
         lhs.theVector += rhs.theVector
     }
+    @_transparent
     static public func -=(lhs: inout Vector2, rhs: Vector2) {
         lhs.theVector -= rhs.theVector
     }
+    @_transparent
     static public func *=(lhs: inout Vector2, rhs: Vector2) {
         lhs.theVector *= rhs.theVector
     }
+    @_transparent
     static public func /=(lhs: inout Vector2, rhs: Vector2) {
         lhs.theVector /= rhs.theVector
     }
     
     // CGFloat interaction
+    @_transparent
     static public func +=(lhs: inout Vector2, rhs: CGFloat) {
         lhs = lhs + rhs
     }
+    @_transparent
     static public func -=(lhs: inout Vector2, rhs: CGFloat) {
         lhs = lhs - rhs
     }
+    @_transparent
     static public func *=(lhs: inout Vector2, rhs: CGFloat) {
         lhs = lhs * rhs
     }
+    @_transparent
     static public func /=(lhs: inout Vector2, rhs: CGFloat) {
         lhs = lhs / rhs
     }
@@ -495,18 +506,22 @@ public func vectorsAreCCW(_ A: Vector2, B: Vector2) -> Bool {
 infix operator • : MultiplicationPrecedence
 infix operator =/ : MultiplicationPrecedence
 
+@_transparent
 public func round(_ x: Vector2) -> Vector2 {
     return Vector2(x: round(x.x), y: round(x.y))
 }
 
+@_transparent
 public func ceil(_ x: Vector2) -> Vector2 {
     return Vector2(ceil(x.theVector))
 }
 
+@_transparent
 public func floor(_ x: Vector2) -> Vector2 {
     return Vector2(floor(x.theVector))
 }
 
+@_transparent
 public func abs(_ x: Vector2) -> Vector2 {
     return Vector2(abs(x.theVector))
 }
