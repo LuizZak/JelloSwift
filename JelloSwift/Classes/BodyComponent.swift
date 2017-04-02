@@ -37,11 +37,20 @@ open class BodyComponent {
 }
 
 /// Used to create body components into the body
-open class BodyComponentCreator {
-    open var bodyComponentClass: BodyComponent.Type = BodyComponent.self
+public protocol BodyComponentCreator {
+    var bodyComponentClass: BodyComponent.Type { get }
     
     /// Creates and attaches the component to a given body
-    open func attach(to body: Body) {
+    func attach(to body: Body)
+    
+    /// Performs post-attachment configurations to a body.
+    /// called by `attach(to:)`
+    func prepareBodyAfterComponent(_ body: Body)
+}
+
+public extension BodyComponentCreator {
+    /// Creates and attaches the component to a given body
+    public func attach(to body: Body) {
         body.addComponent(ofType: bodyComponentClass)
         
         prepareBodyAfterComponent(body)
@@ -49,7 +58,7 @@ open class BodyComponentCreator {
     
     /// Performs post-attachment configurations to a body.
     /// called by `attach(to:)`
-    open func prepareBodyAfterComponent(_ body: Body) {
+    public func prepareBodyAfterComponent(_ body: Body) {
         
     }
 }

@@ -168,28 +168,31 @@ public final class SpringComponent: BodyComponent {
 }
 
 /// Creator for the Spring component
-open class SpringComponentCreator : BodyComponentCreator {
+public struct SpringComponentCreator : BodyComponentCreator {
+    
+    public var bodyComponentClass: BodyComponent.Type = SpringComponent.self
+    
     /// Whether the shape matching is on - turning on shape matching will make
     /// the soft body try to mantain its original shape as specified by its
     /// baseShape
-    open var shapeMatchingOn = true
+    public var shapeMatchingOn = true
     
     /// The spring constant for the edges of the spring body
-    open var edgeSpringK: CGFloat = 50
+    public var edgeSpringK: CGFloat = 50
     /// The spring damping for the edges of the spring body
-    open var edgeSpringDamp: CGFloat = 2
+    public var edgeSpringDamp: CGFloat = 2
     
     /// The spring constant for the shape matching of the body - ignored if
     /// shape matching is off
-    open var shapeSpringK: CGFloat = 200
+    public var shapeSpringK: CGFloat = 200
     /// The spring damping for the shape matching of the body - ignored if the 
     /// shape matching is off
-    open var shapeSpringDamp: CGFloat = 10
+    public var shapeSpringDamp: CGFloat = 10
     
     /// An array of inner springs for a body
-    open var innerSprings: [SpringComponentInnerSpring] = []
+    public var innerSprings: [SpringComponentInnerSpring] = []
     
-    public required init(shapeMatchingOn: Bool = true,
+    public init(shapeMatchingOn: Bool = true,
                          edgeSpringK: CGFloat = 50,
                          edgeSpringDamp: CGFloat = 2,
                          shapeSpringK: CGFloat = 200,
@@ -204,13 +207,9 @@ open class SpringComponentCreator : BodyComponentCreator {
         self.shapeSpringDamp = shapeSpringDamp
         
         self.innerSprings = innerSprings
-        
-        super.init()
-        
-        bodyComponentClass = SpringComponent.self
     }
     
-    open override func prepareBodyAfterComponent(_ body: Body) {
+    public func prepareBodyAfterComponent(_ body: Body) {
         guard let comp = body.component(ofType: SpringComponent.self) else {
             return
         }

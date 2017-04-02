@@ -34,18 +34,16 @@ public final class GravityComponent: BodyComponent {
 }
 
 /// Component that can be added to bodies to add a gravity-like constant force
-open class GravityComponentCreator: BodyComponentCreator {
-    open var vector: Vector2
+public struct GravityComponentCreator: BodyComponentCreator {
+    public var bodyComponentClass: BodyComponent.Type = GravityComponent.self
     
-    public required init(gravity: Vector2 = Vector2(x: 0, y: -9.8)) {
+    public var vector: Vector2
+    
+    public init(gravity: Vector2 = Vector2(x: 0, y: -9.8)) {
         vector = gravity
-        
-        super.init()
-        
-        bodyComponentClass = GravityComponent.self
     }
     
-    open override func prepareBodyAfterComponent(_ body: Body) {
+    public func prepareBodyAfterComponent(_ body: Body) {
         body.component(ofType: GravityComponent.self)?.gravity = vector
     }
 }

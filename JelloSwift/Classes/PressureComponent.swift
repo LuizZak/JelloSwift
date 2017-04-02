@@ -55,22 +55,20 @@ public final class PressureComponent: BodyComponent {
 }
 
 // Creator for the Spring component
-open class PressureComponentCreator : BodyComponentCreator {
+public struct PressureComponentCreator : BodyComponentCreator {
+    
+    public var bodyComponentClass: BodyComponent.Type = PressureComponent.self
     
     /// The gass pressure coefficient for the pressure component.
     /// Higher values result in higher resistance to compression and higher
     /// expansion.
-    open var gasAmmount: CGFloat
+    public var gasAmmount: CGFloat
     
-    public required init(gasAmmount: CGFloat = 0) {
+    public init(gasAmmount: CGFloat = 0) {
         self.gasAmmount = gasAmmount
-        
-        super.init()
-        
-        bodyComponentClass = PressureComponent.self
     }
     
-    open override func prepareBodyAfterComponent(_ body: Body) {
+    public func prepareBodyAfterComponent(_ body: Body) {
         body.component(ofType: PressureComponent.self)?.gasAmmount = gasAmmount
     }
 }
