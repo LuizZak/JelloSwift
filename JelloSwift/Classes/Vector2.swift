@@ -36,7 +36,7 @@ public struct Vector2: VectorRepresentable, Equatable, CustomStringConvertible {
     public typealias NativeCMatrixType = matrix_double3x3
     
     /// This is used during affine transformation
-    typealias HomogenousVectorType = double3
+    public typealias HomogenousVectorType = double3
     #else
     ///Used to match `CGFloat`'s native type
     public typealias NativeVectorType = float2
@@ -49,7 +49,7 @@ public struct Vector2: VectorRepresentable, Equatable, CustomStringConvertible {
     public typealias NativeCMatrixType = matrix_float3x3
     
     /// This is used during affine transformation
-    typealias HomogenousVectorType = float3
+    public typealias HomogenousVectorType = float3
     #endif
     
     /// The underlying SIMD vector type
