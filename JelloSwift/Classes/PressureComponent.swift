@@ -6,8 +6,6 @@
 //  Copyright (c) 2014 Luiz Fernando Silva. All rights reserved.
 //
 
-import CoreGraphics
-
 /// Represents a Pressure component that can be added to a body to include gas
 /// pressure as an internal force.
 /// This component applies an outwards force in the body that tries to expand
@@ -19,11 +17,11 @@ public final class PressureComponent: BodyComponent {
     /// internal force accumulation step.
     /// Equal the polygonal area of the body's point masses.
     /// Is clamped to always be be >= 0.5
-    fileprivate(set) public var volume: CGFloat = 0
+    fileprivate(set) public var volume: JFloat = 0
     
     /// The gass pressure coefficient for the pressure component.
     /// Higher values result in higher expansion and resistance to compression.
-    public var gasAmmount: CGFloat = 0
+    public var gasAmmount: JFloat = 0
     
     override public func prepare(_ body: Body) {
         
@@ -62,9 +60,9 @@ public struct PressureComponentCreator : BodyComponentCreator {
     /// The gass pressure coefficient for the pressure component.
     /// Higher values result in higher resistance to compression and higher
     /// expansion.
-    public var gasAmmount: CGFloat
+    public var gasAmmount: JFloat
     
-    public init(gasAmmount: CGFloat = 0) {
+    public init(gasAmmount: JFloat = 0) {
         self.gasAmmount = gasAmmount
     }
     

@@ -6,8 +6,6 @@
 //  Copyright (c) 2014 Luiz Fernando Silva. All rights reserved.
 //
 
-import CoreGraphics
-
 /// Represents an axis-aligned bounding box, utilized to figure out the AABB of
 /// soft-bodies
 public struct AABB {
@@ -26,38 +24,33 @@ public struct AABB {
     fileprivate(set) public var maximum = Vector2.zero
     
     /// Gets the X position of this AABB
-    public var x: CGFloat {
+    public var x: JFloat {
         return minimum.x
     }
     /// Gets the Y position of this AABB
-    public var y: CGFloat {
+    public var y: JFloat {
         return minimum.y
     }
     
     /// Gets the width of this AABB.
     /// This is the same as `maximum.x - minimum.x`
-    public var width: CGFloat {
+    public var width: JFloat {
         return maximum.x - minimum.x
     }
     
     /// Gets the height of this AABB
     /// This is the same as `maximum.y - minimum.y`
-    public var height: CGFloat {
+    public var height: JFloat {
         return maximum.y - minimum.y
     }
     
     /// Gets the middle X position of this AABB
-    public var midX: CGFloat {
+    public var midX: JFloat {
         return (minimum.x + maximum.x) / 2
     }
     /// Gets the middle Y position of this AABB
-    public var midY: CGFloat {
+    public var midY: JFloat {
         return (minimum.y + maximum.y) / 2
-    }
-    
-    /// Gets a CGRect that represents the boundaries of this AABB object
-    public var cgRect: CGRect {
-        return CGRect(x: x, y: y, width: width, height: height)
     }
     
     /// Initializes an empty, invalid AABB instance

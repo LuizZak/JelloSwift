@@ -6,8 +6,6 @@
 //  Copyright (c) 2015 Luiz Fernando Silva. All rights reserved.
 //
 
-import CoreGraphics
-
 /// Contains information about the edge of a body
 public struct BodyEdge {
     
@@ -35,10 +33,10 @@ public struct BodyEdge {
     public var difference = Vector2.zero
     
     /// The edge's length
-    public var length: CGFloat = 0
+    public var length: JFloat = 0
     
     /// The edge's length, squared
-    public var lengthSquared: CGFloat = 0
+    public var lengthSquared: JFloat = 0
     
     public init() {
         startPointIndex = 0

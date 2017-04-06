@@ -6,9 +6,6 @@
 //  Copyright (c) 2015 Luiz Fernando Silva. All rights reserved.
 //
 
-import Foundation
-import CoreGraphics
-
 /// Represents a joint link that links to a while body
 open class BodyJointLink: JointLinkType {
     // Like the PointJointLink, this is a very straightforward implementation,
@@ -32,7 +29,7 @@ open class BodyJointLink: JointLinkType {
     }
     
     /// Gets the total mass of the subject of this joint link
-    open var mass: CGFloat {
+    open var mass: JFloat {
         return body.pointMasses.reduce(0) { $0 + $1.mass }
     }
     

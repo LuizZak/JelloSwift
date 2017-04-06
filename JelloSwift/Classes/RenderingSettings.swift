@@ -6,8 +6,6 @@
 //  Copyright (c) 2014 Luiz Fernando Silva. All rights reserved.
 //
 
-import CoreGraphics
-
 /// The rendering scale for the scene
 public var renderingScale = Vector2(x: 25.8, y: 25.8)
 
@@ -45,8 +43,8 @@ public func setCamera(_ position: Vector2, scale: Vector2) {
 }
 
 /// Sets the camera position and scale from scalar values
-public func setCamera(_ positionX: CGFloat, positionY: CGFloat, scaleX: CGFloat,
-                      scaleY: CGFloat) {
+public func setCamera(_ positionX: JFloat, positionY: JFloat, scaleX: JFloat,
+                      scaleY: JFloat) {
     renderingOffset.x = positionX
     renderingOffset.y = positionY
     

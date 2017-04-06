@@ -6,9 +6,6 @@
 //  Copyright (c) 2015 Luiz Fernando Silva. All rights reserved.
 //
 
-import Foundation
-import CoreGraphics
-
 public func ==(lhs: BodyJoint, rhs: BodyJoint) -> Bool {
     return lhs === rhs
 }
@@ -56,7 +53,7 @@ open class BodyJoint: Equatable {
     /// Resolves this joint
     ///
     /// - Parameter dt: The delta time to update the resolve on
-    open func resolve(_ dt: CGFloat) {
+    open func resolve(_ dt: JFloat) {
         
     }
     
@@ -66,15 +63,15 @@ open class BodyJoint: Equatable {
     public enum RestDistance: ExpressibleByFloatLiteral, ExpressibleByIntegerLiteral {
         
         /// Fixed distance
-        case fixed(CGFloat)
+        case fixed(JFloat)
         
         /// Distance is ranged between a minimum and maximum value
-        case ranged(min: CGFloat, max: CGFloat)
+        case ranged(min: JFloat, max: JFloat)
         
         /// Returns the minimum distance for this rest distance.
         /// If the current value is .fixed, this method always returns the rest
         /// distance it represents, if .ranged, it returns its min value
-        public var minimumDistance: CGFloat {
+        public var minimumDistance: JFloat {
             switch(self) {
             case .fixed(let value),
                  .ranged(let value, _):
@@ -85,7 +82,7 @@ open class BodyJoint: Equatable {
         /// Returns the maximum distance for this rest distance.
         /// If the current value is .fixed, this method always returns the rest
         /// distance it represents, if .ranged, it returns its max value
-        public var maximumDistance: CGFloat {
+        public var maximumDistance: JFloat {
             switch(self) {
             case .fixed(let value),
                  .ranged(_, let value):
@@ -94,18 +91,18 @@ open class BodyJoint: Equatable {
         }
         
         public init(integerLiteral value: Int) {
-            self = .fixed(CGFloat(value))
+            self = .fixed(JFloat(value))
         }
         
         public init(floatLiteral value: Double) {
-            self = .fixed(CGFloat(value))
+            self = .fixed(JFloat(value))
         }
         
         /// Returns whether a given range is within the range of this rest
         /// distance.
         /// If the current value is .fixed, this does an exact equality
         /// operation, if .ranged, it performs `value > min && value < max`
-        public func inRange(value: CGFloat) -> Bool {
+        public func inRange(value: JFloat) -> Bool {
             switch(self) {
             case .fixed(let d):
                 return value == d
@@ -118,7 +115,7 @@ open class BodyJoint: Equatable {
         /// If the current value is .fixed, this method always returns the rest
         /// distance it represents, if .ranged, it performs
         /// `max(minValue, min(maxValue, value))`
-        public func clamp(value: CGFloat) -> CGFloat {
+        public func clamp(value: JFloat) -> JFloat {
             switch(self) {
             case .fixed(let d):
                 return d
@@ -130,7 +127,7 @@ open class BodyJoint: Equatable {
 }
 
 /// Helper operator for creating a body's rest distance
-public func ...(lhs: CGFloat, rhs: CGFloat) -> BodyJoint.RestDistance {
+public func ...(lhs: JFloat, rhs: JFloat) -> BodyJoint.RestDistance {
     return .ranged(min: lhs, max: rhs)
 }
 
@@ -152,7 +149,7 @@ public protocol JointLinkType {
     var velocity: Vector2 { get }
     
     /// Gets the total mass of the subject of this joint link
-    var mass: CGFloat { get }
+    var mass: JFloat { get }
     
     /// Gets a value specifying whether the object referenced by this
     /// JointLinkType is static

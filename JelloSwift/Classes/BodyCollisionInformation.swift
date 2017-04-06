@@ -6,8 +6,6 @@
 //  Copyright (c) 2014 Luiz Fernando Silva. All rights reserved.
 //
 
-import CoreGraphics
-
 // Encapsulates information about a collision between two soft bodies
 public struct BodyCollisionInformation: Equatable {
     /// First body in collision, and the body that is penetrating the second
@@ -28,12 +26,12 @@ public struct BodyCollisionInformation: Equatable {
     public var hitPt = Vector2.zero
     /// A value from 0 - 1 specifying at which point inthe edge
     /// bodyBpmA - bodyBpmB is the penetration ocurring.
-    public var edgeD: CGFloat = 0
+    public var edgeD: JFloat = 0
     /// Global normal for the collision. Always the penetrated edge's normal.
     public var normal = Vector2.zero
     /// Penetration distance.
     /// Is the distance required to move bodyApm in order to solve the collision
-    public var penetration: CGFloat = 0
+    public var penetration: JFloat = 0
     
     /// Inits this collision information with no edge information.
     public init(bodyA: Body, bodyApm: Int, bodyB: Body) {

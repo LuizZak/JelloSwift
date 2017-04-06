@@ -6,8 +6,6 @@
 //  Copyright (c) 2014 Luiz Fernando Silva. All rights reserved.
 //
 
-import CoreGraphics
-
 /// Represents a Spring component that can be added to a body to include 
 /// spring-based physics in the body's point masses
 public final class SpringComponent: BodyComponent {
@@ -26,16 +24,16 @@ public final class SpringComponent: BodyComponent {
     fileprivate var shapeMatchingOn = true
     
     /// The spring constant for the edges of the spring body
-    fileprivate var edgeSpringK: CGFloat = 50
+    fileprivate var edgeSpringK: JFloat = 50
     /// The spring damping for the edges of the spring body
-    fileprivate var edgeSpringDamp: CGFloat = 2
+    fileprivate var edgeSpringDamp: JFloat = 2
     
     /// The spring constant for the shape matching of the body - ignored if
     /// shape matching is off
-    fileprivate var shapeSpringK: CGFloat = 200
+    fileprivate var shapeSpringK: JFloat = 200
     /// The spring damping for the shape matching of the body - ignored if the
     /// shape matching is off
-    fileprivate var shapeSpringDamp: CGFloat = 10
+    fileprivate var shapeSpringDamp: JFloat = 10
     
     override public func prepare(_ body: Body) {
         clearAllSprings(body)
@@ -44,8 +42,8 @@ public final class SpringComponent: BodyComponent {
     /// Adds an internal spring to this body
     @discardableResult
     public func addInternalSpring(_ body: Body, pointA: Int, pointB: Int,
-                                  springK: CGFloat, damping: CGFloat,
-                                  dist: CGFloat? = nil) -> InternalSpring {
+                                  springK: JFloat, damping: JFloat,
+                                  dist: JFloat? = nil) -> InternalSpring {
         let pointA = body.pointMasses[pointA]
         let pointB = body.pointMasses[pointB]
         
@@ -76,15 +74,15 @@ public final class SpringComponent: BodyComponent {
     }
     
     /// Sets the shape-matching spring constants
-    public func setShapeMatchingConstants(_ springK: CGFloat, _ damping: CGFloat) {
+    public func setShapeMatchingConstants(_ springK: JFloat, _ damping: JFloat) {
         shapeSpringK = springK
         shapeSpringDamp = damping
     }
     
     /// Changes the spring constants for the springs around the shape itself 
     /// (edge springs)
-    public func setEdgeSpringConstants(_ body: Body, edgeSpringK: CGFloat,
-                                       _ edgeSpringDamp: CGFloat) {
+    public func setEdgeSpringConstants(_ body: Body, edgeSpringK: JFloat,
+                                       _ edgeSpringDamp: JFloat) {
         // we know that the first n springs in the list are the edge springs.
         for i in 0..<body.pointMasses.count {
             springs[i].coefficient = edgeSpringK
@@ -96,7 +94,7 @@ public final class SpringComponent: BodyComponent {
     /// The spring index starts from pointMasses.count and onwards, so the first
     /// spring will not be the first edge spring.
     public func setSpringConstants(_ body: Body, springID: Int,
-                                   _ springK: CGFloat, _ springDamp: CGFloat) {
+                                   _ springK: JFloat, _ springDamp: JFloat) {
         // index is for all internal springs, AFTER the default internal springs.
         let index = body.pointMasses.count + springID
         
@@ -107,14 +105,14 @@ public final class SpringComponent: BodyComponent {
     /// Gets the spring constant of a spring at the specified index.
     /// This ignores the default edge springs, so the index is always 
     /// `+ body.pointMasses.count`
-    public func springCoefficient(forSpringIndex springID: Int, in body: Body) -> CGFloat {
+    public func springCoefficient(forSpringIndex springID: Int, in body: Body) -> JFloat {
         return springs[body.pointMasses.count + springID].coefficient
     }
     
     /// Gets the spring damping of a spring at the specified index
     /// This ignores the default edge springs, so the index is always 
     /// `+ body.pointMasses.count`
-    public func springDamping(forSpringIndex springID: Int, in body: Body) -> CGFloat {
+    public func springDamping(forSpringIndex springID: Int, in body: Body) -> JFloat {
         return springs[body.pointMasses.count + springID].damping
     }
     
@@ -178,25 +176,25 @@ public struct SpringComponentCreator : BodyComponentCreator {
     public var shapeMatchingOn = true
     
     /// The spring constant for the edges of the spring body
-    public var edgeSpringK: CGFloat = 50
+    public var edgeSpringK: JFloat = 50
     /// The spring damping for the edges of the spring body
-    public var edgeSpringDamp: CGFloat = 2
+    public var edgeSpringDamp: JFloat = 2
     
     /// The spring constant for the shape matching of the body - ignored if
     /// shape matching is off
-    public var shapeSpringK: CGFloat = 200
+    public var shapeSpringK: JFloat = 200
     /// The spring damping for the shape matching of the body - ignored if the 
     /// shape matching is off
-    public var shapeSpringDamp: CGFloat = 10
+    public var shapeSpringDamp: JFloat = 10
     
     /// An array of inner springs for a body
     public var innerSprings: [SpringComponentInnerSpring] = []
     
     public init(shapeMatchingOn: Bool = true,
-                         edgeSpringK: CGFloat = 50,
-                         edgeSpringDamp: CGFloat = 2,
-                         shapeSpringK: CGFloat = 200,
-                         shapeSpringDamp: CGFloat = 10,
+                         edgeSpringK: JFloat = 50,
+                         edgeSpringDamp: JFloat = 2,
+                         shapeSpringK: JFloat = 200,
+                         shapeSpringDamp: JFloat = 10,
                          innerSprings: [SpringComponentInnerSpring] = []) {
         self.shapeMatchingOn = shapeMatchingOn
         
@@ -239,16 +237,16 @@ public struct SpringComponentInnerSpring {
     public var indexB = 0
     
     /// The spring coefficient for this spring
-    public var coefficient: CGFloat = 0
+    public var coefficient: JFloat = 0
     /// Damping coefficient for this spring
-    public var damping: CGFloat = 0
+    public var damping: JFloat = 0
     
     /// The rest distance for this spring, as in, the distance this spring will
     /// try to mantain between the two point masses.
-    public var dist: CGFloat = 0
+    public var dist: JFloat = 0
     
-    public init(a: Int, b: Int, coefficient: CGFloat, damping: CGFloat,
-                dist: CGFloat = -1) {
+    public init(a: Int, b: Int, coefficient: JFloat, damping: JFloat,
+                dist: JFloat = -1) {
         indexA = a
         indexB = b
         

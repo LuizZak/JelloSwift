@@ -202,9 +202,19 @@ struct VertexBuffer {
         self.addVertex(x: x, y: y, color: 0xFFFFFFFF) // white color
     }
     
+    /// Adds a new vertex to this vertex buffer, with a white color component.
+    mutating func addVertex(x: JFloat, y: JFloat) {
+        self.addVertex(x: CGFloat(x), y: CGFloat(y), color: 0xFFFFFFFF) // white color
+    }
+    
     /// Adds a new vertex, specifying the color component to go along with it.
     mutating func addVertex(x: CGFloat, y: CGFloat, color: UInt) {
         self.addVertex(Vector2(x: x, y: y), color: color)
+    }
+    
+    /// Adds a new vertex, specifying the color component to go along with it.
+    mutating func addVertex(x: JFloat, y: JFloat, color: UInt) {
+        self.addVertex(Vector2(x: CGFloat(x), y: CGFloat(y)), color: color)
     }
     
     /// Adds a new vertex, specifying the color component to go along with it.

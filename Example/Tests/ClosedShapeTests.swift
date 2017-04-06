@@ -15,9 +15,9 @@ class ClosedShapeTests: XCTestCase {
     // Precision delta
     
     #if arch(x86_64) || arch(arm64)
-        let delta: CGFloat = 0.000000000000001
+        let delta: JFloat = 0.000000000000001
     #else
-        let delta: CGFloat = 0.0000001
+        let delta: JFloat = 0.0000001
     #endif
     
     func testOffsetTransformVertices() {
@@ -93,10 +93,10 @@ class ClosedShapeTests: XCTestCase {
         
         let delta = self.delta * 2 // Increase delta a bit for testing
         
-        XCTAssert(abs(shape[0].distance(to: shape[1]) - CGFloat(2.squareRoot())) <= delta) // There was a point in history in which some guys
-        XCTAssert(abs(shape[1].distance(to: shape[2]) - CGFloat(2.squareRoot())) <= delta) // drawing shapes in sand figured out the square root
-        XCTAssert(abs(shape[2].distance(to: shape[3]) - CGFloat(2.squareRoot())) <= delta) // of two using nothing but lines and circles. That's
-        XCTAssert(abs(shape[3].distance(to: shape[0]) - CGFloat(2.squareRoot())) <= delta) // a fun little fact that always puts a smile on my face.
+        XCTAssert(abs(shape[0].distance(to: shape[1]) - JFloat(2.squareRoot())) <= delta) // There was a point in history in which some guys
+        XCTAssert(abs(shape[1].distance(to: shape[2]) - JFloat(2.squareRoot())) <= delta) // drawing shapes in sand figured out the square root
+        XCTAssert(abs(shape[2].distance(to: shape[3]) - JFloat(2.squareRoot())) <= delta) // of two using nothing but lines and circles. That's
+        XCTAssert(abs(shape[3].distance(to: shape[0]) - JFloat(2.squareRoot())) <= delta) // a fun little fact that always puts a smile on my face.
         
         XCTAssertEqual(shape.localVertices.count, 4)
     }

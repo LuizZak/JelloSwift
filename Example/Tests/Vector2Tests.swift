@@ -14,9 +14,9 @@ class Vector2Tests: XCTestCase {
     // Precision delta
     
     #if arch(x86_64) || arch(arm64)
-        let delta: CGFloat = 0.00000000000001
+        let delta: JFloat = 0.00000000000001
     #else
-        let delta: CGFloat = 0.000001
+        let delta: JFloat = 0.000001
     #endif
     
     func testMatrixTranslate() {
@@ -51,7 +51,7 @@ class Vector2Tests: XCTestCase {
         let vector = Vector2(x: 10, y: 10)
         let expected = Vector2(x: -10, y: 10)
         
-        let matrix = Vector2.matrix(rotatingBy: CGFloat.pi / 2) // 90º
+        let matrix = Vector2.matrix(rotatingBy: JFloat.pi / 2) // 90º
         
         let transformed = vector * matrix
         
@@ -70,7 +70,7 @@ class Vector2Tests: XCTestCase {
         let expected = Vector2(x: 5, y: 15)
         
         let matrix = Vector2.matrix(scalingBy: Vector2(x: 0.5, y: 0.5),
-                                    rotatingBy: CGFloat.pi / 2,
+                                    rotatingBy: JFloat.pi / 2,
                                     translatingBy: Vector2(x: 10, y: 10))
         
         let transformed = vector * matrix

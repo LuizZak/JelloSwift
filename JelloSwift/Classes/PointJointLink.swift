@@ -6,9 +6,6 @@
 //  Copyright (c) 2015 Luiz Fernando Silva. All rights reserved.
 //
 
-import Foundation
-import CoreGraphics
-
 /// Represents a joint link that links directly to a point mass of a body
 open class PointJointLink: JointLinkType {
     // This is a very straightforward implementation, it basically delegates the
@@ -35,7 +32,7 @@ open class PointJointLink: JointLinkType {
     }
     
     /// Gets the total mass of the subject of this joint link
-    open var mass: CGFloat {
+    open var mass: JFloat {
         return _pointMass.mass
     }
     

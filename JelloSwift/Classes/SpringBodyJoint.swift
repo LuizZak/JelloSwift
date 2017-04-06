@@ -6,23 +6,20 @@
 //  Copyright (c) 2015 Luiz Fernando Silva. All rights reserved.
 //
 
-import Foundation
-import CoreGraphics
-
 /// Represents a joint that links two joint links with spring forces
 open class SpringBodyJoint : BodyJoint {
     
     /// The spring coefficient for this spring body joint
-    var springCoefficient: CGFloat
+    var springCoefficient: JFloat
     
     /// The spring damping for this spring body joint
-    var springDamping: CGFloat
+    var springDamping: JFloat
     
     /// Inits a new spring body joint witht he specified parameters. Leave the 
     /// distance as -1 to calculate the distance automatically from the current 
     /// distance of the two provided joint links
     public init(on world: World, link1: JointLinkType, link2: JointLinkType,
-                coefficient: CGFloat, damping: CGFloat,
+                coefficient: JFloat, damping: JFloat,
                 distance: RestDistance? = nil) {
         self.springCoefficient = coefficient
         self.springDamping = damping
@@ -33,7 +30,7 @@ open class SpringBodyJoint : BodyJoint {
     /// Resolves this joint
     ///
     /// - Parameter dt: The delta time to update the resolve on
-    open override func resolve(_ dt: CGFloat) {
+    open override func resolve(_ dt: JFloat) {
         if(!enabled) {
             return
         }

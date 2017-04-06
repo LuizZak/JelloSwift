@@ -6,8 +6,6 @@
 //  Copyright (c) 2014 Luiz Fernando Silva. All rights reserved.
 //
 
-import Foundation
-
 public typealias Bitmask = UInt
 
 extension Bitmask {

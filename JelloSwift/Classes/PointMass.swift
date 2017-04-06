@@ -6,8 +6,6 @@
 //  Copyright (c) 2014 Luiz Fernando Silva. All rights reserved.
 //
 
-import CoreGraphics
-
 /// Specifies a point mass that composes a body
 public final class PointMass: VectorRepresentable {
     /// The mass of this point mass.
@@ -15,7 +13,7 @@ public final class PointMass: VectorRepresentable {
     /// unless the point is supposed to be fixed.
     /// Values `< 0.2` usually cause inconsistency and instability in the
     /// simulation
-    public var mass: CGFloat = 1
+    public var mass: JFloat = 1
     
     /// The global position of the point, in world coordinates
     public var position = Vector2.zero
@@ -29,7 +27,7 @@ public final class PointMass: VectorRepresentable {
         return position
     }
     
-    public init(mass: CGFloat = 0, position: Vector2 = Vector2.zero) {
+    public init(mass: JFloat = 0, position: Vector2 = Vector2.zero) {
         self.mass = mass
         self.position = position
     }
@@ -38,7 +36,7 @@ public final class PointMass: VectorRepresentable {
     ///
     /// - parameter elapsed: The elapsed time to integrate by, usually in 
     /// seconds
-    public func integrate(_ elapsed: CGFloat) {
+    public func integrate(_ elapsed: JFloat) {
         if (mass.isFinite) {
             let elapMass = elapsed / mass
             
@@ -62,6 +60,6 @@ public final class PointMass: VectorRepresentable {
     
     /// Averages a list of point mass velocities into one normalized Vector2 point
     public static func averageVelocity<T: Collection>(of pointMasses: T) -> Vector2 where T.Iterator.Element == PointMass, T.IndexDistance == Int {
-        return pointMasses.reduce(Vector2.zero) { $0 + $1.velocity } / CGFloat(pointMasses.count)
+        return pointMasses.reduce(Vector2.zero) { $0 + $1.velocity } / JFloat(pointMasses.count)
     }
 }

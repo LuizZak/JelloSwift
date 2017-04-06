@@ -25,8 +25,8 @@ class PhysicsMathTest: XCTestCase
         let vec1 = Vector2(x: 4, y: 8)
         let vec2 = Vector2(x: 14, y: 13)
         
-        let dx: CGFloat = 4 - 14
-        let dy: CGFloat = 8 - 13
+        let dx: JFloat = 4 - 14
+        let dy: JFloat = 8 - 13
         
         let dis = vec1.distance(to: vec2)
         let dissq = vec1.distanceSquared(to: vec2)
@@ -40,8 +40,8 @@ class PhysicsMathTest: XCTestCase
         let vec1 = Vector2(x: 4, y: 6)
         let vec2 = Vector2(x: 9, y: 7)
         
-        XCTAssert((vec1 • vec2) == CGFloat(4 * 9 + 6 * 7), "DOT product test failed!")
-        XCTAssert((vec1 =/ vec2) == CGFloat(4 * 9 - 6 * 7), "CROSS product test failed!")
+        XCTAssert((vec1 • vec2) == JFloat(4 * 9 + 6 * 7), "DOT product test failed!")
+        XCTAssert((vec1 =/ vec2) == JFloat(4 * 9 - 6 * 7), "CROSS product test failed!")
     }
     
     func testVector2Rotate()

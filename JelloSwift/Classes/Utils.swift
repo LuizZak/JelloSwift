@@ -6,8 +6,6 @@
 //  Copyright (c) 2014 Luiz Fernando Silva. All rights reserved.
 //
 
-import Foundation
-
 /// Clamps a value so it's always `>= minimum` and `<= maximum`
 public func clamp<T: Comparable>(_ value: T, minimum: T, maximum: T) -> T {
     return value < minimum ? minimum

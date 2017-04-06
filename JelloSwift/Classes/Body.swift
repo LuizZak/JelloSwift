@@ -6,8 +6,6 @@
 //  Copyright (c) 2014 Luiz Fernando Silva. All rights reserved.
 //
 
-import CoreGraphics
-
 /// Performs a reference-equality against two Body instances.
 /// Returns true iff lhs === rhs
 public func ==(lhs: Body, rhs: Body) -> Bool {
@@ -35,13 +33,6 @@ public final class Body: Equatable {
     /// The array of point masses for the body
     public fileprivate(set) var pointMasses: ContiguousArray<PointMass> = []
     
-    /// An array of all the collision that involve this body
-    public var pointMassCollisions: [BodyCollisionInformation] = []
-    
-    /// Whether to collect the collisions of this body into the
-    /// pointMassCollisions array. Defaults to false
-    public var collectCollisions = false
-    
     /// The scale for this body's shape
     public var scale = Vector2.unit
     
@@ -56,7 +47,7 @@ public final class Body: Equatable {
     /// deaccelerate faster, values closer to 1 deaccelerate slower.
     /// 1 never deaccelerates. Values outside the range [0, 1] inclusive may
     /// introduce instability
-    public var velDamping: CGFloat = 0.999
+    public var velDamping: JFloat = 0.999
     
     /// The array of body components for this body object
     fileprivate var components: ContiguousArray<BodyComponent> = []
@@ -70,13 +61,13 @@ public final class Body: Equatable {
     // Both these properties are in radians:
     
     /// The derived rotation of the body, in radians
-    public fileprivate(set) var derivedAngle: CGFloat = 0
+    public fileprivate(set) var derivedAngle: JFloat = 0
     
     /// Omega (ω) is the relative angular speed of the body, in radians/s
-    public fileprivate(set) var derivedOmega: CGFloat = 0
+    public fileprivate(set) var derivedOmega: JFloat = 0
     
     // Utilize to calculate the omega for the body
-    fileprivate var lastAngle: CGFloat = 0
+    fileprivate var lastAngle: JFloat = 0
     
     /// Gets a list of vertices that represents the current position of each
     /// PointMass in this body
@@ -127,8 +118,8 @@ public final class Body: Equatable {
     /// The Y-axis bitmask for the body - used for collision filtering
     public var bitmaskY: Bitmask = 0
     
-    public init(world: World?, shape: ClosedShape, pointMasses: [CGFloat] = [1],
-                position: Vector2 = Vector2.zero, angle: CGFloat = 0,
+    public init(world: World?, shape: ClosedShape, pointMasses: [JFloat] = [1],
+                position: Vector2 = Vector2.zero, angle: JFloat = 0,
                 scale: Vector2 = Vector2.unit, kinematic: Bool = false,
                 components: [BodyComponentCreator] = []) {
         aabb = AABB()
@@ -271,7 +262,7 @@ public final class Body: Equatable {
     ///
     /// - parameter forceUpdate:
     ///     Whether to force the update of the body, even if it's a static body
-    public func updateAABB(_ elapsed: CGFloat, forceUpdate: Bool) {
+    public func updateAABB(_ elapsed: JFloat, forceUpdate: Bool) {
         if(!isStatic && !forceUpdate) {
             return
         }
@@ -318,14 +309,14 @@ public final class Body: Equatable {
     }
     
     /// Sets the mass for all the PointMass objects in this body
-    public func setMassAll(_ mass: CGFloat) {
+    public func setMassAll(_ mass: JFloat) {
         pointMasses.forEach { $0.mass = mass }
         
         isStatic = mass.isInfinite
     }
     
     /// Sets the mass for a single PointMass individually
-    public func setMassForPointMass(atIndex index: Int, mass: CGFloat) {
+    public func setMassForPointMass(atIndex index: Int, mass: JFloat) {
         pointMasses[index].mass = mass
         
         // Re-evaluate whether body is static
@@ -336,7 +327,7 @@ public final class Body: Equatable {
     /// In case the array count is bigger than the point mass count, it only
     /// sets up to the count of masses in the array, if larger, it sets the
     /// matching masses for all point masses, and ignores the rest of the array
-    public func setMass(fromList masses: [CGFloat]) {
+    public func setMass(fromList masses: [JFloat]) {
         for (mass, pointMass) in zip(masses, pointMasses) {
             pointMass.mass = mass
         }
@@ -348,7 +339,7 @@ public final class Body: Equatable {
     /// Sets the position and angle of the body manually.
     /// Setting the position and angle resets the current shape to the original
     /// base shape of the object
-    public func setPositionAngle(_ pos: Vector2, angle: CGFloat, scale: Vector2) {
+    public func setPositionAngle(_ pos: Vector2, angle: JFloat, scale: Vector2) {
         let matrix = Vector2.matrix(scalingBy: scale, rotatingBy: angle, translatingBy: pos)
         
         baseShape.transformVertices(&globalShape, matrix: matrix)
@@ -375,7 +366,7 @@ public final class Body: Equatable {
     /// This is called by the World object each Update(), so usually a user does
     /// not need to call this. Instead you can juse access the DerivedPosition,
     /// DerivedAngle, DerivedVelocity, and DerivedOmega properties.
-    public func derivePositionAndAngle(_ elapsed: CGFloat) {
+    public func derivePositionAndAngle(_ elapsed: JFloat) {
         // No need if this is a static body, or kinematically controlled.
         if (isStatic || isKinematic) {
             return
@@ -396,10 +387,10 @@ public final class Body: Equatable {
         let meanPos = isPined ? currentDerivedPosition : derivedPos
         
         // find the average angle of all of the masses.
-        var angle: CGFloat = 0
+        var angle: JFloat = 0
     
         var originalSign = 1
-        var originalAngle: CGFloat = 0
+        var originalAngle: JFloat = 0
         
         let c = pointMasses.count
         for (i, pm) in pointMasses.enumerated() {
@@ -427,7 +418,7 @@ public final class Body: Equatable {
             angle += thisAngle
         }
         
-        angle /= CGFloat(c)
+        angle /= JFloat(c)
     
         derivedAngle = angle
         
@@ -469,7 +460,7 @@ public final class Body: Equatable {
     
     /// Integrates the point masses for this Body.
     /// Ignored, if body is static.
-    public func integrate(_ elapsed: CGFloat) {
+    public func integrate(_ elapsed: JFloat) {
         if(isStatic) {
             return
         }
@@ -481,7 +472,7 @@ public final class Body: Equatable {
     
     /// Applies the velocity damping to the point masses.
     /// Ignored, if body is static.
-    public func dampenVelocity(_ elapsed: CGFloat) {
+    public func dampenVelocity(_ elapsed: JFloat) {
         if(isStatic) {
             return
         }
@@ -493,7 +484,7 @@ public final class Body: Equatable {
     
     /// Applies a rotational clockwise torque of a given force on this body.
     /// Ignored, if body is static.
-    public func applyTorque(of force: CGFloat) {
+    public func applyTorque(of force: JFloat) {
         if(isStatic) {
             return
         }
@@ -508,7 +499,7 @@ public final class Body: Equatable {
     
     /// Sets the angular velocity for this body.
     /// Ignored, if body is static.
-    public func setAngularVelocity(_ vel: CGFloat) {
+    public func setAngularVelocity(_ vel: JFloat) {
         if(isStatic) {
             return
         }
@@ -522,7 +513,7 @@ public final class Body: Equatable {
     }
     
     /// Accumulates the angular velocity for this body
-    public func addAngularVelocity(_ vel: CGFloat) {
+    public func addAngularVelocity(_ vel: JFloat) {
         if(isStatic) {
             return
         }
@@ -670,12 +661,12 @@ public final class Body: Equatable {
     ///      - **edgeD**: The ratio of the edge where the point was grabbed,
     /// [0-1] inclusive
     ///      - **distance**: The squared distance to the closest edge found
-    public func closestPointSquared(to pt: Vector2, onEdge edgeNum: Int) -> (hitPoint: Vector2, normal: Vector2, edgeD: CGFloat, distance: CGFloat) {
+    public func closestPointSquared(to pt: Vector2, onEdge edgeNum: Int) -> (hitPoint: Vector2, normal: Vector2, edgeD: JFloat, distance: JFloat) {
         var hitPt: Vector2 = .zero
         var normal: Vector2 = .zero
-        var edgeD: CGFloat = 0
+        var edgeD: JFloat = 0
         
-        var dist: CGFloat = 0
+        var dist: JFloat = 0
         
         let edge = edges[edgeNum]
         
@@ -730,7 +721,7 @@ public final class Body: Equatable {
     ///      - **edgeD**: The ratio of the edge where the point was grabbed,
     /// [0-1] inclusive
     ///      - **distance**: The distance to the closest edge found
-    public func closestPoint(to pt: Vector2, onEdge edgeNum: Int) -> (hitPoint: Vector2, normal: Vector2, edgeD: CGFloat, distance: CGFloat) {
+    public func closestPoint(to pt: Vector2, onEdge edgeNum: Int) -> (hitPoint: Vector2, normal: Vector2, edgeD: JFloat, distance: JFloat) {
         let result = closestPointSquared(to: pt, onEdge: edgeNum)
         
         return (result.hitPoint, result.normal, result.edgeD, sqrt(result.distance))
@@ -751,14 +742,14 @@ public final class Body: Equatable {
     ///      - **edgeD**: The ratio of the edge where the point was grabbed,
     /// [0-1] inclusive
     ///      - **distance**: The distance to the closest edge found
-    public func closestPoint(to pt: Vector2) -> (hitPoint: Vector2, normal: Vector2, pointA: Int, pointB: Int, edgeD: CGFloat, distance: CGFloat) {
+    public func closestPoint(to pt: Vector2) -> (hitPoint: Vector2, normal: Vector2, pointA: Int, pointB: Int, edgeD: JFloat, distance: JFloat) {
         var pointA = -1
         var pointB = -1
-        var edgeD: CGFloat = 0
+        var edgeD: JFloat = 0
         var normal: Vector2 = .zero
         var hitPt: Vector2 = .zero
         
-        var closestD = CGFloat.infinity
+        var closestD = JFloat.infinity
         
         let c = pointMasses.count
         for i in 0..<c {
@@ -799,7 +790,7 @@ public final class Body: Equatable {
     /// [0-1] inclusive
     ///     - **edgePoint1**: The first point mass on the edge
     ///     - **edgePoint2**: The second point mass on the edge
-    public func closestEdge(to pt: Vector2, withTolerance tolerance: CGFloat = CGFloat.infinity) -> (edgePosition: Vector2, edgeRatio: CGFloat, edgePoint1: PointMass, edgePoint2: PointMass)? {
+    public func closestEdge(to pt: Vector2, withTolerance tolerance: JFloat = JFloat.infinity) -> (edgePosition: Vector2, edgeRatio: JFloat, edgePoint1: PointMass, edgePoint2: PointMass)? {
         if(pointMasses.count == 0) {
             return nil
         }
@@ -808,8 +799,8 @@ public final class Body: Equatable {
         var closestP1 = pointMasses[0]
         var closestP2 = closestP1
         var edgePosition = Vector2.zero
-        var edgeRatio: CGFloat = 0
-        var closestD = CGFloat.infinity
+        var edgeRatio: JFloat = 0
+        var closestD = JFloat.infinity
         
         for edge in edges {
             let pm = pointMasses[edge.startPointIndex]
@@ -845,8 +836,8 @@ public final class Body: Equatable {
     
     /// Find the closest PointMass index in this body, given a global point
     /// - note: **Pre condition:** There is at least one point mass in this body
-    public func closestPointMass(to pos: Vector2) -> (point: PointMass, distance: CGFloat) {
-        var closestSQD = CGFloat.greatestFiniteMagnitude
+    public func closestPointMass(to pos: Vector2) -> (point: PointMass, distance: JFloat) {
+        var closestSQD = JFloat.greatestFiniteMagnitude
         var closest: PointMass!
         
         for point in pointMasses {
@@ -899,11 +890,5 @@ public final class Body: Equatable {
         for pointMass in pointMasses {
             pointMass.velocity += velocity
         }
-    }
-    
-    /// Resets the pointMassCollisions array of the body, keeping capacity in 
-    /// the process.
-    public func resetCollisionInfo() {
-        pointMassCollisions.removeAll(keepingCapacity: true)
     }
 }

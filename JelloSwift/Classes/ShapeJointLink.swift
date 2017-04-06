@@ -6,9 +6,6 @@
 //  Copyright (c) 2015 Luiz Fernando Silva. All rights reserved.
 //
 
-import Foundation
-import CoreGraphics
-
 /// Represents a joint link that links to multiple point masses of a body
 open class ShapeJointLink: JointLinkType {
     /// The point masses this joint is linked to
@@ -36,7 +33,7 @@ open class ShapeJointLink: JointLinkType {
             center += p.position
         }
         
-        center /= CGFloat(_pointMasses.count)
+        center /= JFloat(_pointMasses.count)
         center += offsetPosition
         
         return center
@@ -59,14 +56,14 @@ open class ShapeJointLink: JointLinkType {
             totalVel += p.velocity
         }
         
-        totalVel /= CGFloat(_pointMasses.count)
+        totalVel /= JFloat(_pointMasses.count)
         
         return totalVel
     }
     
     /// Gets the total mass of the subject of this joint link
-    open var mass: CGFloat {
-        var sum: CGFloat = 0
+    open var mass: JFloat {
+        var sum: JFloat = 0
         
         for p in _pointMasses {
             sum += p.mass
@@ -112,11 +109,11 @@ open class ShapeJointLink: JointLinkType {
     
     /// Returns the average angle of the vertices of this ShapeJointLink, based 
     /// on the body's original shape's vertices
-    fileprivate func angle() -> CGFloat {
-        var angle: CGFloat = 0
+    fileprivate func angle() -> JFloat {
+        var angle: JFloat = 0
         
         var originalSign = 1
-        var originalAngle: CGFloat = 0
+        var originalAngle: JFloat = 0
         
         for i in _indexes {
             let pm = body.pointMasses[i]
@@ -145,7 +142,7 @@ open class ShapeJointLink: JointLinkType {
             angle += thisAngle
         }
         
-        angle /= CGFloat(_pointMasses.count)
+        angle /= JFloat(_pointMasses.count)
         
         return angle
     }
