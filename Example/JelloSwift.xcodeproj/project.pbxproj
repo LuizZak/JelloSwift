@@ -174,7 +174,8 @@
 				A0DBAE281E6243C500D630B2 /* BodyTests.swift */,
 				607FACE91AFB9204008FA782 /* Supporting Files */,
 			);
-			path = Tests;
+			name = Tests;
+			path = ../Tests/JelloSwiftTests;
 			sourceTree = "<group>";
 		};
 		607FACE91AFB9204008FA782 /* Supporting Files */ = {

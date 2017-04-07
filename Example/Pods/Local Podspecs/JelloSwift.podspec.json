@@ -1,6 +1,6 @@
 {
   "name": "JelloSwift",
-  "version": "0.4.0",
+  "version": "0.6.1",
   "summary": "Swift soft body physics engine.",
   "description": "JelloSwift is a soft body physics engine written in Swift, ported from Walaber's JelloPhysics engine.\n\nThe intention is to write a fast and concise physics engine to be used in games on iOS.",
   "homepage": "https://github.com/LuizZak/JelloSwift",
@@ -13,11 +13,11 @@
   },
   "source": {
     "git": "https://github.com/LuizZak/JelloSwift.git",
-    "tag": "0.4.0"
+    "tag": "0.6.1"
   },
   "social_media_url": "https://twitter.com/LuizZak",
   "platforms": {
     "ios": "8.0"
   },
-  "source_files": "JelloSwift/Classes/**/*"
+  "source_files": "Sources/**/*"
 }

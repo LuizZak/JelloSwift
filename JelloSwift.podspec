@@ -32,5 +32,5 @@ The intention is to write a fast and concise physics engine to be used in games 
 
   s.ios.deployment_target = '8.0'
 
-  s.source_files = 'JelloSwift/Classes/**/*'
+  s.source_files = 'Sources/**/*'
 end
