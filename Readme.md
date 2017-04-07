@@ -26,11 +26,29 @@ To compile this project, you require Xcode 8.0 w/ Swift 3 installed.
 
 ## Installation
 
+#### CocoaPods
+
 JelloSwift is available through [CocoaPods](http://cocoapods.org). To install
 it, simply add the following line to your Podfile:
 
 ```ruby
 pod "JelloSwift"
+```
+
+#### Swift Package Manager
+
+JelloSwift is also available as a [Swift Package](https://swift.org/package-manager)
+
+```swift
+import PackageDescription
+
+let package = Package(
+    name: "project_name",
+    targets: [],
+    dependencies: [
+        .Package(url: "https://github.com/JelloSwift/JelloSwift.git", majorVersion: 0, minor: 7)
+    ]
+)
 ```
 
 ## Author
