@@ -591,7 +591,7 @@ class DemoView: UIView, CollisionObserver
         let joint1 = SpringBodyJoint(on: world, link1: l1, link2: l2, coefficient: 10, damping: 2)
         let joint2 = SpringBodyJoint(on: world, link1: l3, link2: l4, coefficient: 40, damping: 5)
         
-        joint2.restDistance = joint2.restDistance.minimumDistance...joint2.restDistance.minimumDistance + 2
+        joint2.restDistance = joint2.restDistance.minimumDistance <-> joint2.restDistance.minimumDistance + 2
         
         // Enable collision between the bodies
         joint1.allowCollisions = true
