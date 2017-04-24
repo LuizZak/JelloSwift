@@ -1,4 +1,4 @@
-**_Current stable release: v0.5.1_**
+**_Current stable release: v0.8.0_**
 
 #### Develop trunk changelog:
 
@@ -6,6 +6,11 @@
 
 ## Stable Releases
 ---
+
+## v0.8.0:
+
+- Replacing '...' operator for ranged resting distance for body constraints with '<->' operator.
+- Marking Vector2's inlineable implementations with @inline(__always) instead of @_transparent (easier to debug, as well).
 
 ## v0.5.1:
 
