@@ -206,7 +206,24 @@ public final class Body: Equatable {
             edges = .init(repeating: BodyEdge(), count: c)
         }
         
-        // Update edges
+        // Use unsafeBufferPointer for iteration because Swift still plucks in
+        // unnecessary retain/release calls
+        // FIXME: Remove and go back to traditional loop once ARC gets smarter
+        // about retain/releases.
+        pointMasses.withUnsafeBufferPointer { pointer -> Void in
+            // Update edges
+            for i in 0..<c {
+                let j = (i &+ 1) % c
+                let curP = pointer[i].position
+                let nextP = pointer[j].position
+                
+                edges[i] = BodyEdge(edgeIndex: i, startPointIndex: i,
+                                    endPointIndex: j, start: curP,
+                                    end: nextP)
+            }
+        }
+        
+        /*
         for (i, curP) in pointMasses.enumerated() {
             let j = (i &+ 1) % c
             unowned(unsafe) let nextP = pointMasses[j]
@@ -215,6 +232,7 @@ public final class Body: Equatable {
                                 endPointIndex: j, start: curP.position,
                                 end: nextP.position)
         }
+        */
     }
     
     /// Updates the point normals of the body
