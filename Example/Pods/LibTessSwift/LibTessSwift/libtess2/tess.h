@@ -42,13 +42,15 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+    
+NS_ASSUME_NONNULL_BEGIN
 
 //typedef struct TESStesselator TESStesselator;
 
 struct TESStesselator {
 
 	/*** state needed for collecting the input data ***/
-	TESSmesh	*mesh;		/* stores the input contours, and eventually
+	TESSmesh	*_Nullable mesh;		/* stores the input contours, and eventually
 						the tessellation itself */
 	int outOfMemory;
 
@@ -64,24 +66,26 @@ struct TESStesselator {
 	/*** state needed for the line sweep ***/
 	int	windingRule;	/* rule for determining polygon interior */
 
-	Dict *dict;		/* edge dictionary for sweep line */
-	PriorityQ *pq;		/* priority queue of vertex events */
-	TESSvertex *event;		/* current sweep event being processed */
+	Dict *_Nullable dict;		/* edge dictionary for sweep line */
+	PriorityQ *_Nullable pq;		/* priority queue of vertex events */
+	TESSvertex *_Nullable event;		/* current sweep event being processed */
 
-	struct BucketAlloc* regionPool;
+	struct BucketAlloc*_Nullable regionPool;
 
 	TESSindex vertexIndexCounter;
 	
-	TESSreal *vertices;
-	TESSindex *vertexIndices;
+	TESSreal *_Nullable vertices;
+	TESSindex *_Nullable vertexIndices;
 	int vertexCount;
-	TESSindex *elements;
+	TESSindex *_Nullable elements;
 	int elementCount;
 
 	TESSalloc alloc;
 	
 	jmp_buf env;			/* place to jump to when memAllocs fail */
-};
+} SWIFT_CLASS_NAMED("Tesselator");
+
+NS_ASSUME_NONNULL_END
 
 #ifdef __cplusplus
 };

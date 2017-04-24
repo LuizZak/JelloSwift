@@ -44,53 +44,15 @@ public enum ContourOrientation {
     case counterClockwise
 }
 
-func stdAlloc(userData: UnsafeMutableRawPointer, size: size_t) -> UnsafeMutableRawPointer {
-    let allocated = userData.assumingMemoryBound(to: Int.self)
-    allocated.pointee += size
-    
-    return malloc(size);
-}
-
-func stdFree(userData: UnsafeMutableRawPointer, ptr: UnsafeMutableRawPointer) {
-    free(ptr)
-}
-
-struct MemPool {
-    var buf: UnsafeMutablePointer<CUnsignedChar>
-    var cap: size_t
-    var size: size_t
-}
-
-func poolAlloc(userData: UnsafeMutableRawPointer, size: size_t ) -> UnsafeMutableRawPointer? {
-    let pool = userData.assumingMemoryBound(to: MemPool.self)
-    
-    let size = (size+0x7) & ~0x7;
-    
-    if (pool.pointee.size + size < pool.pointee.cap)
-    {
-        let ptr: UnsafeMutablePointer<CUnsignedChar> = pool.pointee.buf + pool.pointee.size;
-        pool.pointee.size += size
-        
-        return UnsafeMutableRawPointer(ptr)
-    }
-    NSLog("out of mem: %d < %d!\n", pool.pointee.size + size, pool.pointee.cap);
-    
-    return nil;
-}
-
-func poolFree(userData: UnsafeMutableRawPointer, ptr: UnsafeMutableRawPointer) {
-    
-}
-
 /// Wraps the low-level C libtess2 library in a nice interface for Swift
 public class TessC {
     
     var memoryPool: MemPool?
-    var mem: UnsafeMutablePointer<CUnsignedChar>?
+    var mem: UnsafeMutablePointer<UInt8>?
     var ma: TESSalloc?
     
     /// TESStesselator* tess
-    let tess: UnsafeMutablePointer<TESStesselator>
+    var tess: UnsafeMutablePointer<Tesselator>
     
     /// List of vertices tesselated.
     /// Is nil, until a tesselation is performed.
@@ -115,19 +77,19 @@ public class TessC {
     /// overhead of repeated malloc/free calls
     public init?(usePooling: Bool = false, poolSize: Int = 1024 * 1024 * 10) {
         if(usePooling) {
-            mem = malloc(poolSize).assumingMemoryBound(to: CUnsignedChar.self)
+            mem = malloc(poolSize).assumingMemoryBound(to: UInt8.self)
             
-            memoryPool = MemPool(buf: mem!, cap: size_t(poolSize), size: 0)
+            memoryPool = MemPool(buf: mem!, cap: poolSize, size: 0)
             
-            ma = TESSalloc(memalloc: { stdAlloc(userData: $0!, size: $1) },
+            ma = TESSalloc(memalloc: { poolAlloc(userData: $0, size: $1) },
                            memrealloc: nil,
-                           memfree: { stdFree(userData: $0!, ptr: $1!) },
+                           memfree: { poolFree(userData: $0, ptr: $1) },
                            userData: &memoryPool!, meshEdgeBucketSize: 0,
                            meshVertexBucketSize: 0, meshFaceBucketSize: 0,
                            dictNodeBucketSize: 0, regionBucketSize: 0,
                            extraVertices: 256)
             
-            guard let tess = tessNewTess(&ma!) else {
+            guard let tess = Tesselator.create(allocator: &ma!) else {
                 // Free memory
                 free(mem!)
                 
@@ -138,7 +100,7 @@ public class TessC {
             
             self.tess = tess
         } else {
-            guard let tess = tessNewTess(nil) else {
+            guard let tess = Tesselator.create(allocator: nil) else {
                 // Tesselator failed to initialize
                 print("Failed to initialize tesselator")
                 return nil
@@ -150,7 +112,7 @@ public class TessC {
     
     deinit {
         // Free tesselator
-        tessDeleteTess(tess)
+        tess.pointee.destroy()
         if let mem = mem {
             free(mem)
         }
@@ -169,7 +131,7 @@ public class TessC {
             vertices = vertices.reversed()
         }
         
-        tessAddContour(tess, 3, vertices, CInt(MemoryLayout<CVector3>.size), CInt(vertices.count))
+        tess.pointee.addContour(size: 3, pointer: vertices, stride: CInt(MemoryLayout<CVector3>.size), count: CInt(vertices.count))
     }
     
     /// Tesselates a given series of points, and returns the final vector
@@ -178,15 +140,16 @@ public class TessC {
     @discardableResult
     public func tessellate(windingRule: WindingRule, elementType: ElementType, polySize: Int) throws -> (vertices: [CVector3], indices: [Int]) {
         
-        if(tessTesselate(tess, Int32(windingRule.rawValue), Int32(elementType.rawValue), Int32(polySize), 3, nil) == 0) {
+        if(tess.pointee.tesselate(windingRule: Int32(windingRule.rawValue), elementType: Int32(elementType.rawValue), polySize: Int32(polySize), vertexSize: 3, normal: nil) == 0) {
             throw TessError.tesselationFailed
         }
         
         // Fetch tesselation out
-        let verts = tessGetVertices(tess)!
-        let elems = tessGetElements(tess)!
-        let nverts = Int(tessGetVertexCount(tess))
-        let nelems = Int(tessGetElementCount(tess))
+        tessGetElements(tess)
+        let verts = tess.pointee.vertices!
+        let elems = tess.pointee.elements!
+        let nverts = Int(tess.pointee.vertexCount)
+        let nelems = Int(tess.pointee.elementCount)
         
         var output: [CVector3] = []
         var indicesOut: [Int] = []

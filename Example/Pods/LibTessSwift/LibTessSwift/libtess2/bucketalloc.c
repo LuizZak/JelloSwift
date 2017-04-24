@@ -31,6 +31,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <simd/simd.h>
 #include "tesselator.h"
 
 //#define CHECK_BOUNDS
@@ -41,7 +42,7 @@ typedef struct Bucket Bucket;
 struct Bucket
 {
 	Bucket *next;
-};
+} _MM_ALIGN16; // Force 16-byte boundaries - otherwise TESSvertex->coords has a non-16 byte alignment!
 
 struct BucketAlloc
 {

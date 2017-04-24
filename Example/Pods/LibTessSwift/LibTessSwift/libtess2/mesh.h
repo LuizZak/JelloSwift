@@ -32,6 +32,7 @@
 #ifndef MESH_H
 #define MESH_H
 
+#include <simd/simd.h>
 #include "tesselator.h"
 
 typedef struct TESSmesh TESSmesh; 
@@ -107,17 +108,19 @@ typedef struct ActiveRegion ActiveRegion;
 */
 
 struct TESSvertex {
+    vector_float3 coords;
+    
 	TESSvertex *next;      /* next vertex (never NULL) */
 	TESSvertex *prev;      /* previous vertex (never NULL) */
+    
 	TESShalfEdge *anEdge;    /* a half-edge with this origin */
 
 	/* Internal data (keep hidden) */
-	TESSreal coords[3];  /* vertex location in 3D */
 	TESSreal s, t;       /* projection onto the sweep plane */
 	int pqHandle;   /* to allow deletion from priority queue */
 	TESSindex n;			/* to allow identify unique vertices */
 	TESSindex idx;			/* to allow map result to original verts */
-};
+} _MM_ALIGN16;
 
 struct TESSface {
 	TESSface *next;      /* next face (never NULL) */

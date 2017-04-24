@@ -32,6 +32,7 @@
 //#include "tesos.h"
 #include <stddef.h>
 #include <assert.h>
+#include <simd/simd.h>
 #include "mesh.h"
 #include "geom.h"
 #include "bucketalloc.h"
@@ -260,7 +261,9 @@ TESShalfEdge *tessMeshMakeEdge( TESSmesh *mesh )
 	TESSvertex *newVertex2 = (TESSvertex*)bucketAlloc(mesh->vertexBucket);
 	TESSface *newFace = (TESSface*)bucketAlloc(mesh->faceBucket);
 	TESShalfEdge *e;
-
+    
+    newVertex1->coords = vector3(0.0f, 0.0f, 0.0f);
+    
 	/* if any one is null then all get freed */
 	if (newVertex1 == NULL || newVertex2 == NULL || newFace == NULL) {
 		if (newVertex1 != NULL) bucketFree( mesh->vertexBucket, newVertex1 );
@@ -268,7 +271,7 @@ TESShalfEdge *tessMeshMakeEdge( TESSmesh *mesh )
 		if (newFace != NULL) bucketFree( mesh->faceBucket, newFace );     
 		return NULL;
 	} 
-
+    
 	e = MakeEdge( mesh, &mesh->eHead );
 	if (e == NULL) return NULL;
 
@@ -793,7 +796,6 @@ void tessMeshCheckMesh( TESSmesh *mesh )
 	TESSvertex *v, *vPrev;
 	TESShalfEdge *e, *ePrev;
 
-	fPrev = fHead;
 	for( fPrev = fHead ; (f = fPrev->next) != fHead; fPrev = f) {
 		assert( f->prev == fPrev );
 		e = f->anEdge;
@@ -808,7 +810,6 @@ void tessMeshCheckMesh( TESSmesh *mesh )
 	}
 	assert( f->prev == fPrev && f->anEdge == NULL );
 
-	vPrev = vHead;
 	for( vPrev = vHead ; (v = vPrev->next) != vHead; vPrev = v) {
 		assert( v->prev == vPrev );
 		e = v->anEdge;
@@ -823,7 +824,6 @@ void tessMeshCheckMesh( TESSmesh *mesh )
 	}
 	assert( v->prev == vPrev && v->anEdge == NULL );
 
-	ePrev = eHead;
 	for( ePrev = eHead ; (e = ePrev->next) != eHead; ePrev = e) {
 		assert( e->Sym->next == ePrev->Sym );
 		assert( e->Sym != e );

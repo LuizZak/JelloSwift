@@ -30,6 +30,9 @@
 */
 
 #import <stdlib.h>
+#import "objc-clang.h"
+
+NS_ASSUME_NONNULL_BEGIN
 
 #ifndef TESSELATOR_H
 #define TESSELATOR_H
@@ -37,17 +40,16 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-
+    
 // See OpenGL Red Book for description of the winding rules
 // http://www.glprogramming.com/red/chapter11.html
-
 enum TessWindingRule
 {
     TESS_WINDING_ODD,
-	TESS_WINDING_NONZERO,
-	TESS_WINDING_POSITIVE,
-	TESS_WINDING_NEGATIVE,
-	TESS_WINDING_ABS_GEQ_TWO,
+    TESS_WINDING_NONZERO,
+    TESS_WINDING_POSITIVE,
+    TESS_WINDING_NEGATIVE,
+    TESS_WINDING_ABS_GEQ_TWO,
 };
 
 // The contents of the tessGetElements() depends on element type being passed to tessTesselate().
@@ -112,13 +114,14 @@ enum TessWindingRule
 //
 enum TessElementType
 {
-	TESS_POLYGONS,
-	TESS_CONNECTED_POLYGONS,
-	TESS_BOUNDARY_CONTOURS,
+    TESS_POLYGONS,
+    TESS_CONNECTED_POLYGONS,
+    TESS_BOUNDARY_CONTOURS,
 };
-
+    
 typedef float TESSreal;
 typedef int TESSindex;
+
 typedef struct TESStesselator TESStesselator;
 typedef struct TESSalloc TESSalloc;
 
@@ -136,25 +139,25 @@ typedef struct TESSalloc TESSalloc;
 // how often to allocate memory from the system versus how much extra space the system
 // should allocate. Reasonable defaults are show in commects below, they will be used if
 // the bucket sizes are zero.
-// 
+//
 // The use may left the memrealloc to be null. In that case, the tesselator will not try to
 // dynamically grow int's internal arrays. The tesselator only needs the reallocation when it
 // has found intersecting segments and needs to add new vertex. This defency can be cured by
 // allocating some extra vertices beforehand. The 'extraVertices' variable allows to specify
-// number of expected extra vertices.  
+// number of expected extra vertices.
 struct TESSalloc
 {
     // Can return null, to indicate allocation failure
-	void *(*memalloc)( void * userData, size_t size );
-	void *(*memrealloc)( void *userData, void* ptr, size_t size );
-	void (*memfree)( void *userData, void *ptr );
-	void* userData;				// User data passed to the allocator functions.
-	int meshEdgeBucketSize;		// 512
-	int meshVertexBucketSize;	// 512
-	int meshFaceBucketSize;		// 256
-	int dictNodeBucketSize;		// 512
-	int regionBucketSize;		// 256
-	int extraVertices;			// Number of extra vertices allocated for the priority queue.
+    void *_Nullable(*_Nonnull memalloc)( void *_Nullable userData, size_t size );
+    void *_Nonnull(*_Nullable memrealloc)( void *_Nullable userData, void*_Nonnull ptr, size_t size );
+    void (*_Nonnull memfree)( void *_Nullable userData, void *_Nonnull ptr );
+    void*_Nullable userData;    // User data passed to the allocator functions.
+    int meshEdgeBucketSize;		// 512
+    int meshVertexBucketSize;	// 512
+    int meshFaceBucketSize;		// 256
+    int dictNodeBucketSize;		// 512
+    int regionBucketSize;		// 256
+    int extraVertices;			// Number of extra vertices allocated for the priority queue.
 };
 
 
@@ -171,12 +174,14 @@ struct TESSalloc
 //   alloc - pointer to a filled TESSalloc struct or NULL to use default malloc based allocator.
 // Returns:
 //   new tesselator object.
-TESStesselator* tessNewTess( TESSalloc* alloc );
+SWIFT_COMPILE_NAME("Tesselator.create(allocator:)")
+TESStesselator*_Nullable tessNewTess( TESSalloc*_Nullable alloc );
 
 // tessDeleteTess() - Deletes a tesselator.
 // Parameters:
 //   tess - pointer to tesselator object to be deleted.
-void tessDeleteTess( TESStesselator *tess );
+SWIFT_COMPILE_NAME("Tesselator.destroy(self:)")
+void tessDeleteTess( TESStesselator *_Nonnull tess );
 
 // tessAddContour() - Adds a contour to be tesselated.
 // The type of the vertex coordinates is assumed to be TESSreal.
@@ -186,7 +191,8 @@ void tessDeleteTess( TESStesselator *tess );
 //   pointer - pointer to the first coordinate of the first vertex in the array.
 //   stride - defines offset in bytes between consecutive vertices.
 //   count - number of vertices in contour.
-void tessAddContour( TESStesselator *tess, int size, const void* pointer, int stride, int count );
+SWIFT_COMPILE_NAME("Tesselator.addContour(self:size:pointer:stride:count:)")
+void tessAddContour( TESStesselator *_Nonnull tess, int size, const void*_Nonnull pointer, int stride, int count );
 
 // tessTesselate() - tesselate contours.
 // Parameters:
@@ -198,28 +204,31 @@ void tessAddContour( TESStesselator *tess, int size, const void* pointer, int st
 //   normal - defines the normal of the input contours, of null the normal is calculated automatically.
 // Returns:
 //   1 if succeed, 0 if failed.
-int tessTesselate( TESStesselator *tess, int windingRule, int elementType, int polySize, int vertexSize, const TESSreal* normal );
+SWIFT_COMPILE_NAME("Tesselator.tesselate(self:windingRule:elementType:polySize:vertexSize:normal:)")
+int tessTesselate( TESStesselator *_Nonnull tess, int windingRule, int elementType, int polySize, int vertexSize, const TESSreal*_Nullable normal );
 
 // tessGetVertexCount() - Returns number of vertices in the tesselated output.
-int tessGetVertexCount( TESStesselator *tess );
+int tessGetVertexCount( TESStesselator *_Nonnull tess );
 
 // tessGetVertices() - Returns pointer to first coordinate of first vertex.
-const TESSreal* tessGetVertices( TESStesselator *tess );
+const TESSreal*_Nonnull tessGetVertices( TESStesselator *_Nonnull tess );
 
 // tessGetVertexIndices() - Returns pointer to first vertex index.
 // Vertex indices can be used to map the generated vertices to the original vertices.
 // Every point added using tessAddContour() will get a new index starting at 0.
 // New vertices generated at the intersections of segments are assigned value TESS_UNDEF.
-const TESSindex* tessGetVertexIndices( TESStesselator *tess );
-	
+const TESSindex*_Nonnull tessGetVertexIndices( TESStesselator *_Nonnull tess );
+
 // tessGetElementCount() - Returns number of elements in the the tesselated output.
-int tessGetElementCount( TESStesselator *tess );
+int tessGetElementCount( TESStesselator *_Nonnull tess );
 
 // tessGetElements() - Returns pointer to the first element.
-const TESSindex* tessGetElements( TESStesselator *tess );
-
+const TESSindex*_Nonnull tessGetElements( TESStesselator *_Nonnull tess );
+    
 #ifdef __cplusplus
 };
 #endif
 
 #endif // TESSELATOR_H
+
+NS_ASSUME_NONNULL_END

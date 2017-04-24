@@ -14,6 +14,7 @@
 #import "dict.h"
 #import "geom.h"
 #import "mesh.h"
+#import "objc-clang.h"
 #import "priorityq.h"
 #import "sweep.h"
 #import "tess.h"
