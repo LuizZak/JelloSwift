@@ -16,7 +16,7 @@ open class SpringBodyJoint : BodyJoint {
     var springDamping: JFloat
     
     /// Inits a new spring body joint witht he specified parameters. Leave the 
-    /// distance as -1 to calculate the distance automatically from the current 
+    /// distance nil to calculate the distance automatically from the current
     /// distance of the two provided joint links
     public init(on world: World, link1: JointLinkType, link2: JointLinkType,
                 coefficient: JFloat, damping: JFloat,

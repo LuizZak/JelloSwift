@@ -155,8 +155,6 @@ extension ClosedShape {
     }
 }
 
-
-
 /// MARK: - Shape creation methods
 extension ClosedShape {
     
