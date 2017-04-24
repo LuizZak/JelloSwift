@@ -127,7 +127,16 @@ open class BodyJoint: Equatable {
 }
 
 /// Helper operator for creating a body's rest distance
+@available(*, deprecated, message: "use <-> instead")
 public func ...(lhs: JFloat, rhs: JFloat) -> BodyJoint.RestDistance {
+    return .ranged(min: lhs, max: rhs)
+}
+
+/// An operator for forming ranged rest distances with
+infix operator <-> : RangeFormationPrecedence
+
+/// Helper operator for creating a body's rest distance
+public func <->(lhs: JFloat, rhs: JFloat) -> BodyJoint.RestDistance {
     return .ranged(min: lhs, max: rhs)
 }
 
