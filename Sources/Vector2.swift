@@ -153,41 +153,41 @@ public struct Vector2: VectorRepresentable, Equatable, CustomStringConvertible {
     }
     
     /// Returns the distance between this Vector2 and another Vector2
-    @_transparent
+    @inline(__always)
     public func distance(to vec: Vector2) -> JFloat {
         return simd.distance(self.theVector, vec.theVector)
     }
     
     /// Returns the distance squared between this Vector2 and another Vector2
-    @_transparent
+    @inline(__always)
     public func distanceSquared(to vec: Vector2) -> JFloat {
         return distance_squared(self.theVector, vec.theVector)
     }
     
     /// Makes this Vector2 perpendicular to its current position.
     /// This alters the vector instance
-    @_transparent
+    @inline(__always)
     public mutating func formPerpendicular() -> Vector2 {
         self = perpendicular()
         return self
     }
     
     /// Returns a Vector2 perpendicular to this Vector2
-    @_transparent
+    @inline(__always)
     public func perpendicular() -> Vector2 {
         return Vector2(x: -y, y: x)
     }
     
     // Normalizes this Vector2 instance.
     // This alters the current vector instance
-    @_transparent
+    @inline(__always)
     public mutating func normalize() -> Vector2 {
         self = normalized()
         return self
     }
     
     /// Returns a normalized version of this Vector2
-    @_transparent
+    @inline(__always)
     public func normalized() -> Vector2 {
         return Vector2(simd.normalize(theVector))
     }
@@ -196,19 +196,18 @@ public struct Vector2: VectorRepresentable, Equatable, CustomStringConvertible {
 /// Dot and Cross products
 extension Vector2 {
     /// Calculates the dot product between this and another provided Vector2
-    @_transparent
+    @inline(__always)
     public func dot(_ other: Vector2) -> JFloat {
         return simd.dot(theVector, other.theVector)
     }
     
     /// Calculates the cross product between this and another provided Vector2.
     /// The resulting scalar would match the 'z' axis of the cross product 
-    /// between
-    /// 3d vectors matching the x and y coordinates of the operands, with the 
-    /// 'z' coordinate being 0.
-    @_transparent
+    /// between 3d vectors matching the x and y coordinates of the operands, with
+    /// the 'z' coordinate being 0.
+    @inline(__always)
     public func cross(_ other: Vector2) -> JFloat {
-        return theVector.x * other.theVector.x - theVector.y * other.theVector.y
+        return simd.cross(theVector, other.theVector).z
     }
 }
 
@@ -217,13 +216,13 @@ extension Vector2 {
     ////
     // Comparision operators
     ////
-    @_transparent
+    @inline(__always)
     static public func ==(lhs: Vector2, rhs: Vector2) -> Bool {
         return lhs.theVector.x == rhs.theVector.x && lhs.theVector.y == rhs.theVector.y
     }
     
     // Unary operators
-    @_transparent
+    @inline(__always)
     static public prefix func -(lhs: Vector2) -> Vector2 {
         return Vector2(-lhs.theVector)
     }
@@ -231,7 +230,7 @@ extension Vector2 {
     // DOT operator
     /// Calculates the dot product between two provided coordinates.
     /// See `Vector2.dot`
-    @_transparent
+    @inline(__always)
     static public func •(lhs: Vector2, rhs: Vector2) -> JFloat {
         return lhs.dot(rhs)
     }
@@ -239,7 +238,7 @@ extension Vector2 {
     // CROSS operator
     /// Calculates the dot product between two provided coordinates
     /// See `Vector2.cross`
-    @_transparent
+    @inline(__always)
     static public func =/(lhs: Vector2, rhs: Vector2) -> JFloat {
         return lhs.cross(rhs)
     }
@@ -247,60 +246,60 @@ extension Vector2 {
     ////
     // Basic arithmetic operators
     ////
-    @_transparent
+    @inline(__always)
     static public func +(lhs: Vector2, rhs: Vector2) -> Vector2 {
         return Vector2(lhs.theVector + rhs.theVector)
     }
     
-    @_transparent
+    @inline(__always)
     static public func -(lhs: Vector2, rhs: Vector2) -> Vector2 {
         return Vector2(lhs.theVector - rhs.theVector)
     }
     
-    @_transparent
+    @inline(__always)
     static public func *(lhs: Vector2, rhs: Vector2) -> Vector2 {
         return Vector2(lhs.theVector * rhs.theVector)
     }
     
-    @_transparent
+    @inline(__always)
     static public func /(lhs: Vector2, rhs: Vector2) -> Vector2 {
         return Vector2(lhs.theVector / rhs.theVector)
     }
     
-    @_transparent
+    @inline(__always)
     static public func %(lhs: Vector2, rhs: Vector2) -> Vector2 {
         return Vector2(x: lhs.x.truncatingRemainder(dividingBy: rhs.x),
                        y: lhs.y.truncatingRemainder(dividingBy: rhs.y))
     }
     
     // JFloat interaction
-    @_transparent
+    @inline(__always)
     static public func +(lhs: Vector2, rhs: JFloat) -> Vector2 {
         return Vector2(lhs.theVector + Vector2.NativeVectorType(rhs))
     }
     
-    @_transparent
+    @inline(__always)
     static public func -(lhs: Vector2, rhs: JFloat) -> Vector2 {
         return Vector2(lhs.theVector - Vector2.NativeVectorType(rhs))
     }
     
-    @_transparent
+    @inline(__always)
     static public func *(lhs: Vector2, rhs: JFloat) -> Vector2 {
         return Vector2(lhs.theVector * Vector2.NativeVectorType(rhs))
     }
     
-    @_transparent
+    @inline(__always)
     static public func /(lhs: Vector2, rhs: JFloat) -> Vector2 {
         return Vector2(lhs.theVector / Vector2.NativeVectorType(rhs))
     }
     
-    @_transparent
+    @inline(__always)
     static public func %(lhs: Vector2, rhs: JFloat) -> Vector2 {
         return Vector2(x: lhs.x.truncatingRemainder(dividingBy: rhs),
                        y: lhs.y.truncatingRemainder(dividingBy: rhs))
     }
     
-    @_transparent
+    @inline(__always)
     static public func /(lhs: JFloat, rhs: Vector2) -> Vector2 {
         return Vector2(x: lhs / rhs.x, y: lhs / rhs.y)
     }
@@ -308,37 +307,37 @@ extension Vector2 {
     ////
     // Compound assignment operators
     ////
-    @_transparent
+    @inline(__always)
     static public func +=(lhs: inout Vector2, rhs: Vector2) {
         lhs.theVector += rhs.theVector
     }
-    @_transparent
+    @inline(__always)
     static public func -=(lhs: inout Vector2, rhs: Vector2) {
         lhs.theVector -= rhs.theVector
     }
-    @_transparent
+    @inline(__always)
     static public func *=(lhs: inout Vector2, rhs: Vector2) {
         lhs.theVector *= rhs.theVector
     }
-    @_transparent
+    @inline(__always)
     static public func /=(lhs: inout Vector2, rhs: Vector2) {
         lhs.theVector /= rhs.theVector
     }
     
     // JFloat interaction
-    @_transparent
+    @inline(__always)
     static public func +=(lhs: inout Vector2, rhs: JFloat) {
         lhs = lhs + rhs
     }
-    @_transparent
+    @inline(__always)
     static public func -=(lhs: inout Vector2, rhs: JFloat) {
         lhs = lhs - rhs
     }
-    @_transparent
+    @inline(__always)
     static public func *=(lhs: inout Vector2, rhs: JFloat) {
         lhs = lhs * rhs
     }
-    @_transparent
+    @inline(__always)
     static public func /=(lhs: inout Vector2, rhs: JFloat) {
         lhs = lhs / rhs
     }
@@ -354,6 +353,7 @@ extension Vector2 {
     /// not alter a Vector2's coordinates once applied.
     ///
     /// The order of operations are: scaling -> rotation -> translation
+    @inline(__always)
     static public func matrix(scalingBy scale: Vector2 = Vector2.unit,
                               rotatingBy angle: JFloat = 0,
                               translatingBy translate: Vector2 = Vector2.zero) -> Vector2.NativeMatrixType {
@@ -382,16 +382,13 @@ extension Vector2 {
         // | -sin(a) cos(a)  0 |
         // |   0       0     1 |
         
-        if(scale != .unit) {
-            
-            let cScale =
-                Vector2.NativeCMatrixType(columns:
-                    (Vector2.HomogenousVectorType(scale.theVector.x, 0, 0),
-                     Vector2.HomogenousVectorType(0, scale.theVector.y, 0),
-                     Vector2.HomogenousVectorType(0, 0, 1)))
-            
-            matrix *= Vector2.NativeMatrixType(cScale)
-        }
+        let cScale =
+            Vector2.NativeCMatrixType(columns:
+                (Vector2.HomogenousVectorType(scale.theVector.x, 0, 0),
+                 Vector2.HomogenousVectorType(0, scale.theVector.y, 0),
+                 Vector2.HomogenousVectorType(0, 0, 1)))
+        
+        matrix *= Vector2.NativeMatrixType(cScale)
         
         if(angle != 0) {
             let c = cos(-angle)
@@ -405,16 +402,14 @@ extension Vector2 {
             
             matrix *= Vector2.NativeMatrixType(cRotation)
         }
+    
+        let cTranslation =
+            Vector2.NativeCMatrixType(columns:
+                (Vector2.HomogenousVectorType(1, 0, translate.theVector.x),
+                 Vector2.HomogenousVectorType(0, 1, translate.theVector.y),
+                 Vector2.HomogenousVectorType(0, 0, 1)))
         
-        if(translate != .zero) {
-            let cTranslation =
-                Vector2.NativeCMatrixType(columns:
-                    (Vector2.HomogenousVectorType(1, 0, translate.theVector.x),
-                     Vector2.HomogenousVectorType(0, 1, translate.theVector.y),
-                     Vector2.HomogenousVectorType(0, 0, 1)))
-            
-            matrix *= Vector2.NativeMatrixType(cTranslation)
-        }
+        matrix *= Vector2.NativeMatrixType(cTranslation)
         
         return matrix
     }
@@ -480,14 +475,14 @@ extension Collection where Iterator.Element: VectorRepresentable, IndexDistance 
 
 /// Returns a Vector2 that represents the minimum coordinates between two 
 /// Vector2 objects
-@_transparent
+@inline(__always)
 public func min(_ a: Vector2, _ b: Vector2) -> Vector2 {
     return Vector2(min(a.theVector, b.theVector))
 }
 
 /// Returns a Vector2 that represents the maximum coordinates between two 
 /// Vector2 objects
-@_transparent
+@inline(__always)
 public func max(_ a: Vector2, _ b: Vector2) -> Vector2 {
     return Vector2(max(a.theVector, b.theVector))
 }
@@ -505,22 +500,22 @@ public func vectorsAreCCW(_ A: Vector2, B: Vector2) -> Bool {
 infix operator • : MultiplicationPrecedence
 infix operator =/ : MultiplicationPrecedence
 
-@_transparent
+@inline(__always)
 public func round(_ x: Vector2) -> Vector2 {
     return Vector2(x: round(x.x), y: round(x.y))
 }
 
-@_transparent
+@inline(__always)
 public func ceil(_ x: Vector2) -> Vector2 {
     return Vector2(ceil(x.theVector))
 }
 
-@_transparent
+@inline(__always)
 public func floor(_ x: Vector2) -> Vector2 {
     return Vector2(floor(x.theVector))
 }
 
-@_transparent
+@inline(__always)
 public func abs(_ x: Vector2) -> Vector2 {
     return Vector2(abs(x.theVector))
 }
