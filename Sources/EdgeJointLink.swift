@@ -43,7 +43,7 @@ open class EdgeJointLink: JointLinkType {
     
     /// Gets the total mass of the subject of this joint link
     open var mass: JFloat {
-        return _pointMass1.mass + _pointMass2.mass
+        return _pointMass1.mass * (1 - edgeRatio) + _pointMass2.mass * (edgeRatio)
     }
     
     /// Gets a value specifying whether the object referenced by this 
@@ -67,5 +67,15 @@ open class EdgeJointLink: JointLinkType {
     open func applyForce(of force: Vector2) {
         _pointMass1.applyForce(of: force * (1 - edgeRatio))
         _pointMass2.applyForce(of: force * (edgeRatio))
+        
+        // Torque - this depends on how far down the middle of the edge the
+        // force is being applied at.
+        // Torque is applied at most as half the actual torque when along the
+        // middle of the edge, and 0 torque at the very corners.
+        if edgeRatio > 0 && edgeRatio < 1 {
+            var torqueF = (body.derivedPos - position) • force.perpendicular()
+            torqueF = 1 - abs(1 - edgeRatio * 2)
+            body.applyTorque(of: torqueF)
+        }
     }
 }
