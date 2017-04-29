@@ -246,8 +246,8 @@ struct VertexBuffer {
     }
     
     mutating func applyTransformation(_ matrix: float4x4) {
-        for (i, vert) in vertices.enumerated() {
-            var vert = vert
+        for i in 0..<vertices.count {
+            var vert = vertices[i]
             let result = float4(vert.position.x, vert.position.y, vert.position.z, 1) * matrix
             vert.position = float3(x: result.x, y: result.y, z: result.z)
             
