@@ -20,7 +20,18 @@ public struct InternalSpring {
     
     /// Rest distance of the spring, or the distance the spring tries to
     /// maintain
-    public var distance: JFloat = 0
+    public var restDistance: RestDistance = 0
+    
+    /// Rest distance of the spring, or the distance the spring tries to
+    /// maintain
+    public var distance: JFloat {
+        get {
+            return restDistance.maximumDistance
+        }
+        set {
+            restDistance = .fixed(newValue)
+        }
+    }
     
     /// The spring coefficient
     public var coefficient: JFloat = 0
@@ -28,11 +39,21 @@ public struct InternalSpring {
     /// The spring damping
     public var damping: JFloat = 0
     
+    @available(*, deprecated, message: "Use self.init(_:PointMass,_:PointMass,_:RestDistance,_:JFloat,_:JFloat) instead")
     public init(_ pmA: PointMass, _ pmB: PointMass, _ distance: JFloat = 0,
                 _ springK: JFloat, _ springD: JFloat) {
         pointMassA = pmA
         pointMassB = pmB
         self.distance = distance
+        coefficient = springK
+        damping = springD
+    }
+    
+    public init(_ pmA: PointMass, _ pmB: PointMass, _ distance: RestDistance = 0,
+                _ springK: JFloat, _ springD: JFloat) {
+        pointMassA = pmA
+        pointMassB = pmB
+        self.restDistance = distance
         coefficient = springK
         damping = springD
     }
