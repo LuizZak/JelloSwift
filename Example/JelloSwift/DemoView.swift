@@ -412,16 +412,23 @@ class DemoView: UIView, CollisionObserver
             return
         }
         
-        var bodyBuffer = VertexBuffer()
-        bodyBuffer.currentColor = 0x7DFFFFFF
-        
-        for vert in vertices {
-            bodyBuffer.addVertex(x: vert.x, y: vert.y)
-        }
-        
-        // Add vertex index triplets
-        for i in 0..<indices.count / 3 {
-            bodyBuffer.addTriangleAtIndexes(indices[i * 3], indices[i * 3 + 1], indices[i * 3 + 2])
+        // Helper lazy body fill drawing inner function
+        func drawBodyFill() {
+            let start = vao.buffer.vertices.count
+            
+            let prev = vao.buffer.currentColor
+            vao.buffer.currentColor = 0x7DFFFFFF
+            
+            for vert in vertices {
+                vao.buffer.addVertex(x: vert.x, y: vert.y)
+            }
+            
+            vao.buffer.currentColor = prev
+            
+            // Add vertex index triplets
+            for i in 0..<indices.count / 3 {
+                vao.buffer.addTriangleAtIndexes(start + indices[i * 3], start + indices[i * 3 + 1], start + indices[i * 3 + 2])
+            }
         }
         
         let shapePoints = body.vertices
@@ -429,7 +436,7 @@ class DemoView: UIView, CollisionObserver
         if(!useDetailedRender)
         {
             // Don't do any other rendering other than the body's buffer
-            vao.buffer.merge(with: bodyBuffer)
+            drawBodyFill()
             return
         }
         
@@ -457,8 +464,7 @@ class DemoView: UIView, CollisionObserver
         }
         
         // Draw the body now
-        
-        vao.buffer.merge(with: bodyBuffer)
+        drawBodyFill()
         drawPolyOutline(shapePoints, color: 0xFF000000)
         
         // Draw the body axis
