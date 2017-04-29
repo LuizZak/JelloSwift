@@ -29,11 +29,8 @@ class DemoView: UIView, CollisionObserver
         return CAEAGLLayer.self
     }
     
-    /// OpenGL VAO for the objects on screen
-    var bufferVertices: [VertexBuffer] = []
-    
     /// Main OpenGL VAO in which all bodies will be rendered on
-    var vao: VertexArrayObject = VertexArrayObject(vao: 0, buffer: VertexBuffer())
+    var vao = VertexArrayObject(vao: 0, buffer: VertexBuffer())
     
     var viewportMatrix = Vector2.matrix(scalingBy: 1.0 / (renderingScale / 2), translatingBy: renderingOffset)
     
@@ -256,17 +253,13 @@ class DemoView: UIView, CollisionObserver
         
         let normal = (start - end).normalized().perpendicular() / 15
         
-        var buffer = VertexBuffer(capacity: 16)
+        let i0 = vao.buffer.addVertex(start + normal / 2, color: color)
+        let i1 = vao.buffer.addVertex(end + normal / 2, color: color)
+        let i2 = vao.buffer.addVertex(end - normal / 2, color: color)
+        let i3 = vao.buffer.addVertex(start - normal / 2, color: color)
         
-        buffer.addVertex(start + normal / 2, color: color)
-        buffer.addVertex(end + normal / 2, color: color)
-        buffer.addVertex(end - normal / 2, color: color)
-        buffer.addVertex(start - normal / 2, color: color)
-        
-        buffer.addTriangleAtIndexes(0, 1, 2)
-        buffer.addTriangleAtIndexes(2, 3, 0)
-        
-        bufferVertices.append(buffer)
+        vao.buffer.addTriangleAtIndexes(i0, i1, i2)
+        vao.buffer.addTriangleAtIndexes(i2, i3, i0)
     }
     
     func drawPolyOutline(_ points: [Vector2], color: UInt = 0xFFFFFFFF) {
@@ -420,6 +413,7 @@ class DemoView: UIView, CollisionObserver
         }
         
         var bodyBuffer = VertexBuffer()
+        bodyBuffer.currentColor = 0x7DFFFFFF
         
         for vert in vertices {
             bodyBuffer.addVertex(x: vert.x, y: vert.y)
@@ -430,14 +424,12 @@ class DemoView: UIView, CollisionObserver
             bodyBuffer.addTriangleAtIndexes(indices[i * 3], indices[i * 3 + 1], indices[i * 3 + 2])
         }
         
-        bodyBuffer.setVerticesColor(0x7DFFFFFF)
-        
         let shapePoints = body.vertices
         
         if(!useDetailedRender)
         {
             // Don't do any other rendering other than the body's buffer
-            bufferVertices.append(bodyBuffer)
+            vao.buffer.merge(with: bodyBuffer)
             return
         }
         
@@ -466,7 +458,7 @@ class DemoView: UIView, CollisionObserver
         
         // Draw the body now
         
-        bufferVertices.append(bodyBuffer)
+        vao.buffer.merge(with: bodyBuffer)
         drawPolyOutline(shapePoints, color: 0xFF000000)
         
         // Draw the body axis
@@ -511,8 +503,8 @@ class DemoView: UIView, CollisionObserver
         // The two first arguments are the indexes of the point masses to link, the next two are the spring constants,
         // and the last one is the distance the spring will try to mantain the two point masses at.
         // Specifying the distance as -1 sets it as the current distance between the specified point masses
-        springComp?.addInternalSpring(body, pointA: 0, pointB: 2, springK: 100, damping: 10, dist: nil)
-        springComp?.addInternalSpring(body, pointA: 1, pointB: 3, springK: 100, damping: 10, dist: nil)
+        springComp?.addInternalSpring(body, pointA: 0, pointB: 2, springK: 100, damping: 10)
+        springComp?.addInternalSpring(body, pointA: 1, pointB: 3, springK: 100, damping: 10)
         
         return body
     }
@@ -704,20 +696,12 @@ extension DemoView {
         
         glViewport(0, 0, GLint(bounds.size.width), GLint(bounds.size.height))
         
-        vao.buffer.clearVertices()
-        
         // Matrix to transform JelloSwift's coordinates into proper coordinates
         // for OpenGL
         let mat = Vector2.matrix(scalingBy: renderingScale, rotatingBy: 0, translatingBy: renderingOffset).matrix4x4()
         
-        /// Merge buffers
-        for buffer in bufferVertices {
-            // Convert point to screen coordinates
-            var buffer = buffer
-            buffer.applyTransformation(mat)
-            
-            vao.buffer.merge(with: buffer)
-        }
+        // Convert point to screen coordinates
+        vao.buffer.applyTransformation(mat)
         
         // Update VAO before rendering
         context.updateVAO(for: vao)
@@ -740,7 +724,8 @@ extension DemoView {
         
         glBindVertexArrayOES(0)
         
-        bufferVertices.removeAll(keepingCapacity: true)
+        // Clear after rendering
+        vao.buffer.clearVertices()
     }
 }
 

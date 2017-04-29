@@ -129,6 +129,10 @@ struct VertexBuffer {
     var indexBuffer: GLuint = 0
     var vertexBuffer: GLuint = 0
     
+    /// current color that will be added to all vertices that do not specify a
+    /// color of their own
+    var currentColor: UInt = 0xFFFFFFFF
+    
     var vertices: [Vertex]
     var indices: [GLuint]
     
@@ -197,28 +201,39 @@ struct VertexBuffer {
         indices.append(contentsOf: newIndices)
     }
     
-    /// Adds a new vertex to this vertex buffer, with a white color component.
-    mutating func addVertex(x: CGFloat, y: CGFloat) {
-        self.addVertex(x: x, y: y, color: 0xFFFFFFFF) // white color
+    /// Adds a new vertex to this vertex buffer, with the current color component.
+    @discardableResult
+    mutating func addVertex(x: CGFloat, y: CGFloat) -> Int {
+        return self.addVertex(x: x, y: y, color: currentColor)
     }
     
-    /// Adds a new vertex to this vertex buffer, with a white color component.
-    mutating func addVertex(x: JFloat, y: JFloat) {
-        self.addVertex(x: CGFloat(x), y: CGFloat(y), color: 0xFFFFFFFF) // white color
-    }
-    
-    /// Adds a new vertex, specifying the color component to go along with it.
-    mutating func addVertex(x: CGFloat, y: CGFloat, color: UInt) {
-        self.addVertex(Vector2(x: x, y: y), color: color)
+    /// Adds a new vertex to this vertex buffer, with the current color component.
+    @discardableResult
+    mutating func addVertex(x: JFloat, y: JFloat) -> Int {
+        return self.addVertex(x: CGFloat(x), y: CGFloat(y), color: currentColor)
     }
     
     /// Adds a new vertex, specifying the color component to go along with it.
-    mutating func addVertex(x: JFloat, y: JFloat, color: UInt) {
-        self.addVertex(Vector2(x: CGFloat(x), y: CGFloat(y)), color: color)
+    @discardableResult
+    mutating func addVertex(x: CGFloat, y: CGFloat, color: UInt) -> Int {
+        return addVertex(Vector2(x: x, y: y), color: color)
     }
     
     /// Adds a new vertex, specifying the color component to go along with it.
-    mutating func addVertex(_ vec: Vector2, color: UInt = 0xFFFFFFFF) {
+    @discardableResult
+    mutating func addVertex(x: JFloat, y: JFloat, color: UInt) -> Int {
+        return addVertex(Vector2(x: CGFloat(x), y: CGFloat(y)), color: color)
+    }
+    
+    /// Adds a new vertex, specifying the color component to go along with it.
+    @discardableResult
+    mutating func addVertex(_ vec: Vector2) -> Int {
+        return addVertex(vec, color: currentColor)
+    }
+    
+    /// Adds a new vertex, specifying the color component to go along with it.
+    @discardableResult
+    mutating func addVertex(_ vec: Vector2, color: UInt) -> Int {
         let a = (color >> 24) & 0xff
         let r = (color >> 16) & 0xff
         let g = (color >> 8) & 0xff
@@ -227,6 +242,7 @@ struct VertexBuffer {
         let color = Color4(r: CFloat(r) / 255, g: CFloat(g) / 255, b: CFloat(b) / 255, a: CFloat(a) / 255)
         
         vertices.append(Vertex(position: Vector3(x: CFloat(vec.x), y: CFloat(vec.y), z: 0), color: color))
+        return vertices.count - 1
     }
     
     mutating func applyTransformation(_ matrix: float4x4) {

@@ -62,6 +62,7 @@ class Triangulate
         var v = nv-1
         
         var indices: [Int] = []
+        indices.reserveCapacity(polygon.count * 3) // Reserve some capacity to stop high reallocation
         
         while nv > 2 {
             /* if we loop, it is probably a non-simple polygon */
