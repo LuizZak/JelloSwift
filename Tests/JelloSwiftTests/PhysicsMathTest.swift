@@ -54,7 +54,7 @@ class PhysicsMathTest: XCTestCase
         let vec2 = Vector2(x: 9, y: 7)
         
         XCTAssert(abs((vec1 • vec2) - JFloat(4 * 9 + 6 * 7)) <= delta, "DOT product test failed!")
-        XCTAssert(abs((vec1 =/ vec2) - JFloat(4 * 9 - 6 * 7)) <= delta, "CROSS product test failed!")
+        XCTAssert(abs((vec1 =/ vec2) - JFloat(4 * 7 - 6 * 9)) <= delta, "CROSS product test failed!")
     }
     
     func testVector2Rotate()
