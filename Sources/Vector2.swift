@@ -285,7 +285,7 @@ extension Vector2 {
     
     @inline(__always)
     static public func *(lhs: Vector2, rhs: JFloat) -> Vector2 {
-        return Vector2(lhs.theVector * Vector2.NativeVectorType(rhs))
+        return Vector2(lhs.theVector * rhs)
     }
     
     @inline(__always)
