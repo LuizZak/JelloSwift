@@ -17,12 +17,20 @@ class PhysicsMathTest: XCTestCase
         ("testVector2Math", testVector2Math)
     ]
     
+    // Precision delta
+    
+    #if arch(x86_64) || arch(arm64)
+        let delta: JFloat = 0.00000000000001
+    #else
+        let delta: JFloat = 0.000001
+    #endif
+    
     func testVector2Perp()
     {
         let vec1 = Vector2(x: 0, y: 1)
         let vecPerp = vec1.perpendicular()
         
-        XCTAssert(vecPerp.x == -vec1.y && vecPerp.y == vec1.x, "Pass")
+        XCTAssert(abs(vecPerp.x - -vec1.y) <= delta && abs(vecPerp.y - vec1.x) <= delta, "Pass")
     }
     
     func testVector2Dist()
@@ -36,8 +44,8 @@ class PhysicsMathTest: XCTestCase
         let dis = vec1.distance(to: vec2)
         let dissq = vec1.distanceSquared(to: vec2)
         let sss = sqrt((dx * dx) + (dy * dy))
-        XCTAssert(dis == sss, "Pass")
-        XCTAssert(dissq == (dx * dx) + (dy * dy), "Pass")
+        XCTAssert(abs(dis - sss) <= delta, "Pass")
+        XCTAssert(abs(dissq - ((dx * dx) + (dy * dy))) <= delta, "Pass")
     }
     
     func testVector2Math()
@@ -45,8 +53,8 @@ class PhysicsMathTest: XCTestCase
         let vec1 = Vector2(x: 4, y: 6)
         let vec2 = Vector2(x: 9, y: 7)
         
-        XCTAssert((vec1 • vec2) == JFloat(4 * 9 + 6 * 7), "DOT product test failed!")
-        XCTAssert((vec1 =/ vec2) == JFloat(4 * 9 - 6 * 7), "CROSS product test failed!")
+        XCTAssert(abs((vec1 • vec2) - JFloat(4 * 9 + 6 * 7)) <= delta, "DOT product test failed!")
+        XCTAssert(abs((vec1 =/ vec2) - JFloat(4 * 9 - 6 * 7)) <= delta, "CROSS product test failed!")
     }
     
     func testVector2Rotate()
