@@ -1,4 +1,4 @@
-**_Current stable release: v0.8.0_**
+**_Current stable release: v0.9.0_**
 
 #### Develop trunk changelog:
 
@@ -6,6 +6,14 @@
 
 ## Stable Releases
 ---
+
+## v0.9.0:
+
+This release affects behavior of simulations, specially ones using EdgeJointLinks!
+
+- Allowing rest distance of internal body springs to be expressed using RestDistance, same way as body joints.
+- Correcting implementation of edge link to properly calculate the mass of the link, and to apply proper torque on links that lie exactly half-way across the edge.
+  This makes the edge act in a more natural way by applying proper torque to the affected body, as well as making it behave exactly as a PointJointLink when set at edge ratio 0 or 1.
 
 ## v0.8.0:
 
