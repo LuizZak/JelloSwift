@@ -32,7 +32,6 @@
 //#include "tesos.h"
 #include <stddef.h>
 #include <assert.h>
-#include <simd/simd.h>
 #include "mesh.h"
 #include "geom.h"
 #include "bucketalloc.h"
@@ -261,9 +260,7 @@ TESShalfEdge *tessMeshMakeEdge( TESSmesh *mesh )
 	TESSvertex *newVertex2 = (TESSvertex*)bucketAlloc(mesh->vertexBucket);
 	TESSface *newFace = (TESSface*)bucketAlloc(mesh->faceBucket);
 	TESShalfEdge *e;
-    
-    newVertex1->coords = vector3(0.0f, 0.0f, 0.0f);
-    
+
 	/* if any one is null then all get freed */
 	if (newVertex1 == NULL || newVertex2 == NULL || newFace == NULL) {
 		if (newVertex1 != NULL) bucketFree( mesh->vertexBucket, newVertex1 );

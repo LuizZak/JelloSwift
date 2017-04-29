@@ -45,18 +45,43 @@ public enum ContourOrientation {
 }
 
 /// Wraps the low-level C libtess2 library in a nice interface for Swift
-public class TessC {
+open class TessC {
     
+    /// Memory pooler - simple struct that is used as `userData` by the `TESSalloc`
+    /// methods.
+    /// Nil, if not using memory pooling.
     var memoryPool: MemPool?
+    /// Pointer to raw memory buffer used for memory pool - nil, if not using 
+    /// memory pooling.
     var mem: UnsafeMutablePointer<UInt8>?
+    /// Allocator - nil, if not using memory pooling.
     var ma: TESSalloc?
     
     /// TESStesselator* tess
-    var tess: UnsafeMutablePointer<Tesselator>
+    var _tess: UnsafeMutablePointer<Tesselator>
+    
+    /// The pointer to the Tesselator struct that represents the underlying
+    /// libtess2 tesselator.
+    ///
+    /// This pointer wraps the dynamically allocated underlying pointer, and is
+    /// automatically deallocated on deinit, so you don't need to (nor should!)
+    /// manually deallocate it, or keep it alive externally longer than the life
+    /// time of a `TessC` instance.
+    ///
+    /// If you want to manually manage a libtess2's tesselator lifetime, use
+    /// `Tesselator.create(allocator:)` and `Tesselator.destroy(_:Tesselator)` 
+    /// instead.
+    public var tess: UnsafePointer<Tesselator> {
+        return UnsafePointer(_tess)
+    }
     
     /// List of vertices tesselated.
-    /// Is nil, until a tesselation is performed.
+    /// Is nil, until a tesselation (CVector3-variant) is performed.
     public var vertices: [CVector3]?
+    
+    /// Raw list of vertices tesselated.
+    /// Is nil, until a tesselation (any variant) is performed.
+    public var verticesRaw: [TESSreal]?
     
     /// List of elements tesselated.
     /// Is nil, until a tesselation is performed.
@@ -98,7 +123,7 @@ public class TessC {
                 return nil
             }
             
-            self.tess = tess
+            self._tess = tess
         } else {
             guard let tess = Tesselator.create(allocator: nil) else {
                 // Tesselator failed to initialize
@@ -106,61 +131,98 @@ public class TessC {
                 return nil
             }
             
-            self.tess = tess
+            self._tess = tess
         }
     }
     
     deinit {
         // Free tesselator
-        tess.pointee.destroy()
+        _tess.pointee.destroy()
         if let mem = mem {
             free(mem)
         }
     }
     
-    public func addContour(_ vertices: [CVector3], _ forceOrientation: ContourOrientation = .original) {
+    /// A raw access to libtess2's tessAddContour, providing the contour from
+    /// a specified array, containing raw indexes.
+    ///
+    /// Stride of contour that is passed down is:
+    ///
+    ///     MemoryLayout<T>.size * vertexSize
+    ///
+    /// (`vertexSize` is 3 for `.vertex3`, 2 for `.vertex2`).
+    ///
+    /// - Parameters:
+    ///   - vertices: Raw vertices to add
+    ///   - vertexSize: Size of vertices. This will change the size of the stride
+    /// when adding the contour, as well.
+    open func addContourRaw(_ vertices: [TESSreal], vertexSize: VertexSize) {
+        if(vertices.count % vertexSize.rawValue != 0) {
+            print("Warning: Vertices array provided has wrong count! Expected multiple of \(vertexSize.rawValue), received \(vertices.count).")
+        }
+        
+        _tess.pointee.addContour(size: Int32(vertexSize.rawValue),
+                                 pointer: vertices,
+                                 stride: CInt(MemoryLayout<TESSreal>.size * vertexSize.rawValue),
+                                 count: CInt(vertices.count / vertexSize.rawValue))
+    }
+    
+    /// Adds a new contour using a specified set of 3D points.
+    ///
+    /// - Parameters:
+    ///   - vertices: Vertices to add to the tesselator buffer.
+    ///   - forceOrientation: Whether to force orientation of contour in some way.
+    /// Defaults to `.original`, which adds contour as-is with no modifications
+    /// to orientation.
+    open func addContour(_ vertices: [CVector3], _ forceOrientation: ContourOrientation = .original) {
         var vertices = vertices
         
-        var reverse = false
-        if (forceOrientation != ContourOrientation.original) {
+        // Re-orientation
+        if (forceOrientation != .original) {
             let area = signedArea(vertices)
-            reverse = (forceOrientation == ContourOrientation.clockwise && area < 0.0) || (forceOrientation == ContourOrientation.counterClockwise && area > 0.0)
+            if (forceOrientation == .clockwise && area < 0.0) || (forceOrientation == .counterClockwise && area > 0.0) {
+                vertices = vertices.reversed()
+            }
         }
         
-        if(reverse) {
-            vertices = vertices.reversed()
-        }
-        
-        tess.pointee.addContour(size: 3, pointer: vertices, stride: CInt(MemoryLayout<CVector3>.size), count: CInt(vertices.count))
+        _tess.pointee.addContour(size: 3, pointer: vertices, stride: CInt(MemoryLayout<CVector3>.size), count: CInt(vertices.count))
     }
     
     /// Tesselates a given series of points, and returns the final vector
     /// representation and its indices.
     /// Can throw errors, in case tesselation failed.
+    ///
+    /// This variant of `tesselate` returns the raw set of vertices on `vertices`.
+    /// `vertices` will always be `% vertexSize` count of elements.
+    ///
+    /// - Parameters:
+    ///   - windingRule: Winding rule for tesselation.
+    ///   - elementType: Type of elements contained in the contours buffer.
+    ///   - polySize: Defines maximum vertices per polygons if output is polygons.
+    ///   - vertexSize: Defines the vertex size to fetch with the output. Specifying
+    /// .vertex2 on inputs that have 3 coordinates will zero 'z' values of all
+    /// coordinates.
     @discardableResult
-    public func tessellate(windingRule: WindingRule, elementType: ElementType, polySize: Int) throws -> (vertices: [CVector3], indices: [Int]) {
+    open func tessellateRaw(windingRule: WindingRule, elementType: ElementType, polySize: Int, vertexSize: VertexSize = .vertex3) throws -> (vertices: [TESSreal], indices: [Int]) {
         
-        if(tess.pointee.tesselate(windingRule: Int32(windingRule.rawValue), elementType: Int32(elementType.rawValue), polySize: Int32(polySize), vertexSize: 3, normal: nil) == 0) {
+        if(_tess.pointee.tesselate(windingRule: Int32(windingRule.rawValue), elementType: Int32(elementType.rawValue), polySize: Int32(polySize), vertexSize: Int32(vertexSize.rawValue), normal: nil) == 0) {
             throw TessError.tesselationFailed
         }
         
         // Fetch tesselation out
-        tessGetElements(tess)
-        let verts = tess.pointee.vertices!
-        let elems = tess.pointee.elements!
-        let nverts = Int(tess.pointee.vertexCount)
-        let nelems = Int(tess.pointee.elementCount)
+        tessGetElements(_tess)
+        let verts = _tess.pointee.vertices!
+        let elems = _tess.pointee.elements!
+        let nverts = Int(_tess.pointee.vertexCount)
+        let nelems = Int(_tess.pointee.elementCount)
         
-        var output: [CVector3] = []
-        var indicesOut: [Int] = []
+        let stride: Int = vertexSize.rawValue
         
-        for i in 0..<nverts {
-            let x = verts[i * 3]
-            let y = verts[i * 3 + 1]
-            let z = verts[i * 3 + 2]
-            
-            output.append(CVector3(x: x, y: y, z: z))
+        var output: [TESSreal] = Array(repeating: 0, count: nverts * stride)
+        output.withUnsafeMutableBufferPointer { body -> Void in
+            body.baseAddress?.assign(from: verts, count: nverts * stride)
         }
+        var indicesOut: [Int] = []
         
         for i in 0..<nelems {
             let p = elems.advanced(by: i * polySize)
@@ -169,13 +231,49 @@ public class TessC {
             }
         }
         
+        verticesRaw = output
         vertexCount = nverts
         elementCount = nelems
         
-        vertices = output
         elements = indicesOut
         
         return (output, indicesOut)
+    }
+    
+    /// Tesselates a given series of points, and returns the final vector
+    /// representation and its indices.
+    /// Can throw errors, in case tesselation failed.
+    ///
+    /// This variant of `tesselate` automatically compacts vertices into an array
+    /// of CVector3 values before returning.
+    ///
+    /// - Parameters:
+    ///   - windingRule: Winding rule for tesselation.
+    ///   - elementType: Type of elements contained in the contours buffer.
+    ///   - polySize: Defines maximum vertices per polygons if output is polygons.
+    ///   - vertexSize: Defines the vertex size to fetch with the output. Specifying
+    /// .vertex2 on inputs that have 3 coordinates will zero 'z' values of all
+    /// coordinates.
+    @discardableResult
+    open func tessellate(windingRule: WindingRule, elementType: ElementType, polySize: Int, vertexSize: VertexSize = .vertex3) throws -> (vertices: [CVector3], indices: [Int]) {
+        
+        let (verts, i) = try tessellateRaw(windingRule: windingRule, elementType: elementType, polySize: polySize, vertexSize: vertexSize)
+        
+        var output: [CVector3] = []
+        output.reserveCapacity(vertexCount)
+        
+        let stride: Int = vertexSize.rawValue
+        for i in 0..<vertexCount {
+            let x = verts[i * stride]
+            let y = verts[i * stride + 1]
+            let z = vertexSize == .vertex3 ? verts[i * stride + 2] : 0
+            
+            output.append(CVector3(x: x, y: y, z: z))
+        }
+        
+        vertices = output
+        
+        return (output, i)
     }
     
     private func signedArea(_ vertices: [CVector3]) -> TESSreal {
@@ -195,5 +293,14 @@ public class TessC {
     public enum TessError: Error {
         /// Error when a tessTesselate() call fails
         case tesselationFailed
+    }
+    
+    /// Used to specify vertex sizing to underlying tesselator.
+    ///
+    /// - vertex2: Vertices have 2 coordinates.
+    /// - vertex3: Vertices have 3 coordinates.
+    public enum VertexSize: Int {
+        case vertex2 = 2
+        case vertex3 = 3
     }
 }

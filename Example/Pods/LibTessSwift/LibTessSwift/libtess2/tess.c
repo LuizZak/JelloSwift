@@ -37,9 +37,7 @@
 #include "mesh.h"
 #include "sweep.h"
 #include "geom.h"
-#include <mm_malloc.h>
 #include <string.h>
-#include <simd/simd.h>
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -453,29 +451,19 @@ int tessMeshSetWindingNumber( TESSmesh *mesh, int value,
 void* heapAlloc( void* userData, size_t size )
 {
 	TESS_NOTUSED( userData );
-	//return malloc( size );
-    
-    return _mm_malloc(size, 16);
+	return malloc( size );
 }
 
 void heapFree( void* userData, void* ptr );
 void* heapRealloc( void *userData, void* ptr, size_t size )
 {
-	TESS_NOTUSED( userData );
-    void *new = heapAlloc(userData, size);
-    memcpy(new, ptr, size);
-    
-    heapFree(userData, ptr);
-    
-    return new;
-	//return realloc( ptr, size );
+	return realloc( ptr, size );
 }
 
 void heapFree( void* userData, void* ptr )
 {
 	TESS_NOTUSED( userData );
-	//free( ptr );
-    _mm_free(ptr);
+	free( ptr );
 }
 
 static TESSalloc defaulAlloc =
@@ -858,11 +846,12 @@ void tessAddContour( TESStesselator *tess, int size, const void* vertices,
 			e = e->Lnext;
 		}
         
-        if ( size > 2 ) {
-            e->Org->coords = vector3(coords[0], coords[1], coords[2]);
-        } else {
-            e->Org->coords = vector3(coords[0], coords[1], 0.0f);
-        }
+        e->Org->coords[0] = coords[0];
+        e->Org->coords[1] = coords[1];
+        if ( size > 2 )
+            e->Org->coords[2] = coords[2];
+        else
+            e->Org->coords[2] = 0;
         
 		/* Store the insertion number so that the vertex can be later recognized. */
 		e->Org->idx = tess->vertexIndexCounter++;
