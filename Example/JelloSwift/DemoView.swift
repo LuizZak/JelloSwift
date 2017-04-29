@@ -54,10 +54,6 @@ class DemoView: UIView, CollisionObserver
     var physicsTimeLabel: UILabel
     var renderTimeLabel: UILabel
     
-    /// A semaphore for accessing the world object.
-    /// Used to dispatch update loop in a different thread, and synchronize on rendering
-    var worldSemaphore: DispatchSemaphore = DispatchSemaphore(value: 1)
-    
     /// Whether to perform a detailed render of the scene. Detailed rendering
     /// renders, along with the body shape, the body's normals, global shape and axis
     var useDetailedRender = true
@@ -251,12 +247,12 @@ class DemoView: UIView, CollisionObserver
     
     func drawLine(from start: Vector2, to end: Vector2, color: UInt = 0xFFFFFFFF) {
         
-        let normal = (start - end).normalized().perpendicular() / 15
+        let normal = ((start - end).normalized().perpendicular() / 15) * 0.5
         
-        let i0 = vao.buffer.addVertex(start + normal / 2, color: color)
-        let i1 = vao.buffer.addVertex(end + normal / 2, color: color)
-        let i2 = vao.buffer.addVertex(end - normal / 2, color: color)
-        let i3 = vao.buffer.addVertex(start - normal / 2, color: color)
+        let i0 = vao.buffer.addVertex(start + normal, color: color)
+        let i1 = vao.buffer.addVertex(end + normal, color: color)
+        let i2 = vao.buffer.addVertex(end - normal, color: color)
+        let i3 = vao.buffer.addVertex(start - normal, color: color)
         
         vao.buffer.addTriangleAtIndexes(i0, i1, i2)
         vao.buffer.addTriangleAtIndexes(i2, i3, i0)
