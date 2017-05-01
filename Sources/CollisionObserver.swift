@@ -12,7 +12,14 @@ public protocol CollisionObserver: class {
     /// Called by the World to notify of a body collision
     ///
     /// - Parameter info: The information for the collision
+    @available(*, deprecated, message: "Use bodiesDidCollide(_:[BodyCollisionInformation]) instead.")
     func bodiesDidCollide(_ info: BodyCollisionInformation)
+    
+    /// Called by the World to notify of a complete set of body collisions in a
+    /// single world update.
+    ///
+    /// - Parameter infos: The information for the collisions
+    func bodiesDidCollide(_ infos: [BodyCollisionInformation])
     
     /// Called to notify that the given body collision information has exceeded
     /// a minimum specified penetration threshold.
@@ -24,6 +31,10 @@ public protocol CollisionObserver: class {
 public extension CollisionObserver {
     
     public func bodiesDidCollide(_ info: BodyCollisionInformation) {
+        
+    }
+    
+    public func bodiesDidCollide(_ infos: [BodyCollisionInformation]) {
         
     }
     

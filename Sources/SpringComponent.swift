@@ -56,7 +56,7 @@ public final class SpringComponent: BodyComponent {
     }
     
     /// Adds an internal spring to this body
-    @available(*, deprecated, message: "Use addInternalSpring(:Body:Int:Int:JFloat:JFloat:RestDistance?) instead.")
+    @available(*, deprecated, message: "Use addInternalSpring(:Body:Int:Int:JFloat:JFloat:RestDistance) instead.")
     @discardableResult
     public func addInternalSpring(_ body: Body, pointA: Int, pointB: Int,
                                   springK: JFloat, damping: JFloat,

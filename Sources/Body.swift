@@ -102,8 +102,7 @@ public final class Body: Equatable {
     public var isKinematic = false
     
     /// Whether this body is pinned - pinned bodies rotate around their axis,
-    /// but try to remain in place,
-    /// like a kinematic body.
+    /// but try to remain in place, like a kinematic body.
     public var isPined = false
     
     /// Whether the body is able to rotate while moving
@@ -114,6 +113,7 @@ public final class Body: Equatable {
     public var objectTag: Any? = nil
     
     /// Whether to render this body
+    @available(*, deprecated, message: "Will be removed in the future")
     public var render = true
     
     /// The colision bitmask for this body
@@ -138,7 +138,6 @@ public final class Body: Equatable {
         material = 0
         isStatic = false
         isKinematic = kinematic
-        render = true
         setShape(shape)
         
         var points = pointMasses

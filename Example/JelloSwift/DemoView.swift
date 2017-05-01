@@ -174,14 +174,13 @@ class DemoView: UIView, CollisionObserver
         createBox(toWorldCoords(Vector2(x: size.width * 0.5, y: 16)), size: Vector2(x: 34, y: 1), isStatic: true)
         
         // Create the ground box
-        var box = ClosedShape()
-        box.begin()
-        box.addVertex(Vector2(x: -10, y:   1))
-        box.addVertex(Vector2(x:  0,  y: 0.6)) // A little inward slope
-        box.addVertex(Vector2(x:  10, y:   1))
-        box.addVertex(Vector2(x:  10, y:  -1))
-        box.addVertex(Vector2(x: -10, y:  -1))
-        box.finish()
+        let box = ClosedShape.create { box in
+            box.addVertex(x: -10, y:   1)
+            box.addVertex(x:  0,  y: 0.6) // A little inward slope
+            box.addVertex(x:  10, y:   1)
+            box.addVertex(x:  10, y:  -1)
+            box.addVertex(x: -10, y:  -1)
+        }
         
         let platform = Body(world: world, shape: box, pointMasses: [JFloat.infinity], position: toWorldCoords(Vector2(x: size.width / 2, y: 150)))
         platform.isStatic = true
@@ -244,30 +243,6 @@ class DemoView: UIView, CollisionObserver
     }
     
     // MARK: - Drawing
-    
-    func drawLine(from start: Vector2, to end: Vector2, color: UInt = 0xFFFFFFFF) {
-        
-        let normal = ((start - end).normalized().perpendicular() / 15) * 0.5
-        
-        let i0 = vao.buffer.addVertex(start + normal, color: color)
-        let i1 = vao.buffer.addVertex(end + normal, color: color)
-        let i2 = vao.buffer.addVertex(end - normal, color: color)
-        let i3 = vao.buffer.addVertex(start - normal, color: color)
-        
-        vao.buffer.addTriangleAtIndexes(i0, i1, i2)
-        vao.buffer.addTriangleAtIndexes(i2, i3, i0)
-    }
-    
-    func drawPolyOutline(_ points: [Vector2], color: UInt = 0xFFFFFFFF) {
-        guard var last = points.last else {
-            return
-        }
-        
-        for point in points {
-            drawLine(from: point, to: last, color: color)
-            last = point
-        }
-    }
     
     func render()
     {  
@@ -367,110 +342,13 @@ class DemoView: UIView, CollisionObserver
         p.applyForce(of: dragForce)
     }
     
-    func bodiesDidCollide(_ info: BodyCollisionInformation)
+    func bodiesDidCollide(_ infos: [BodyCollisionInformation])
     {
-        collisions.append(info)
+        collisions.append(contentsOf: infos)
     }
     
     func bodyCollision(_ info: BodyCollisionInformation, didExceedPenetrationThreshold penetrationThreshold: JFloat) {
         print("penetration above Penetration Threshold!!  penetration = \(info.penetration), threshold = \(penetrationThreshold), difference = \(info.penetration-penetrationThreshold)")
-    }
-    
-    // MARK: - Rendering Utils
-    
-    /// Renders the dragging shape line
-    func drawDrag()
-    {
-        // Dragging point
-        guard let p = draggingPoint , inputMode == InputMode.dragBody else {
-            return
-        }
-        
-        // Create the path to draw
-        let lineStart = p.position
-        let lineEnd = fingerLocation
-        
-        drawLine(from: lineStart, to: lineEnd, color: 0xFF00DD00)
-    }
-    
-    func drawJoint(_ joint: BodyJoint)
-    {
-        let start = joint.bodyLink1.position
-        let end = joint.bodyLink2.position
-        
-        drawLine(from: start, to: end, color: joint.enabled ? 0xFFEEEEEE : 0xFFCCCCCC)
-    }
-    
-    func drawBody(_ body: Body) throws
-    {
-        // Triangulate body's polygon
-        guard let (vertices, indices) = try LibTessTriangulate.process(polygon: body.vertices) else {
-            return
-        }
-        
-        // Helper lazy body fill drawing inner function
-        func drawBodyFill() {
-            let start = vao.buffer.vertices.count
-            
-            let prev = vao.buffer.currentColor
-            vao.buffer.currentColor = 0x7DFFFFFF
-            
-            for vert in vertices {
-                vao.buffer.addVertex(x: vert.x, y: vert.y)
-            }
-            
-            vao.buffer.currentColor = prev
-            
-            // Add vertex index triplets
-            for i in 0..<indices.count / 3 {
-                vao.buffer.addTriangleAtIndexes(start + indices[i * 3], start + indices[i * 3 + 1], start + indices[i * 3 + 2])
-            }
-        }
-        
-        let shapePoints = body.vertices
-        
-        if(!useDetailedRender)
-        {
-            // Don't do any other rendering other than the body's buffer
-            drawBodyFill()
-            return
-        }
-        
-        // Draw normals, for pressure bodies
-        if body.component(ofType: PressureComponent.self) != nil
-        {
-            for (i, normal) in body.pointNormals.enumerated()
-            {
-                let p = shapePoints[i]
-                
-                drawLine(from: p, to: p + normal / 3, color: 0xFFEC33EC)
-            }
-        }
-        
-        // Draw the body's global shape
-        drawPolyOutline(body.globalShape, color: 0xFF777777)
-        
-        // Draw lines going from the body's outer points to the global shape indices
-        for (globalShape, p) in zip(body.globalShape, shapePoints)
-        {
-            let start = p
-            let end = globalShape
-            
-            drawLine(from: start, to: end, color: 0xFF449944)
-        }
-        
-        // Draw the body now
-        drawBodyFill()
-        drawPolyOutline(shapePoints, color: 0xFF000000)
-        
-        // Draw the body axis
-        let axisUp    = [body.derivedPos, body.derivedPos + Vector2(x: 0, y: 0.6).rotated(by: body.derivedAngle)]
-        let axisRight = [body.derivedPos, body.derivedPos + Vector2(x: 0.6, y: 0).rotated(by: body.derivedAngle)]
-        
-        // Rep Up vector
-        drawLine(from: axisUp[0], to: axisUp[1], color: 0xFFED0000)
-        // Green Right vector
-        drawLine(from: axisRight[0], to: axisRight[1], color: 0xFF00ED00)
     }
     
     // MARK: - Helper body creation methods
@@ -728,6 +606,128 @@ extension DemoView {
         
         // Clear after rendering
         vao.buffer.clearVertices()
+    }
+}
+
+// MARK: - Rendering
+extension DemoView {
+    func drawLine(from start: Vector2, to end: Vector2, color: UInt = 0xFFFFFFFF) {
+        
+        let normal = ((start - end).normalized().perpendicular() / 15) * 0.5
+        
+        let i0 = vao.buffer.addVertex(start + normal, color: color)
+        let i1 = vao.buffer.addVertex(end + normal, color: color)
+        let i2 = vao.buffer.addVertex(end - normal, color: color)
+        let i3 = vao.buffer.addVertex(start - normal, color: color)
+        
+        vao.buffer.addTriangleAtIndexes(i0, i1, i2)
+        vao.buffer.addTriangleAtIndexes(i2, i3, i0)
+    }
+    
+    func drawPolyOutline(_ points: [Vector2], color: UInt = 0xFFFFFFFF) {
+        guard var last = points.last else {
+            return
+        }
+        
+        for point in points {
+            drawLine(from: point, to: last, color: color)
+            last = point
+        }
+    }
+    
+    /// Renders the dragging shape line
+    func drawDrag()
+    {
+        // Dragging point
+        guard let p = draggingPoint, inputMode == InputMode.dragBody else {
+            return
+        }
+        
+        // Create the path to draw
+        let lineStart = p.position
+        let lineEnd = fingerLocation
+        
+        drawLine(from: lineStart, to: lineEnd, color: 0xFF00DD00)
+    }
+    
+    func drawJoint(_ joint: BodyJoint)
+    {
+        let start = joint.bodyLink1.position
+        let end = joint.bodyLink2.position
+        
+        drawLine(from: start, to: end, color: joint.enabled ? 0xFFEEEEEE : 0xFFCCCCCC)
+    }
+    
+    func drawBody(_ body: Body) throws
+    {
+        // Helper lazy body fill drawing inner function
+        func drawBodyFill() throws {
+            // Triangulate body's polygon
+            guard let (vertices, indices) = try LibTessTriangulate.process(polygon: body.vertices) else {
+                return
+            }
+            
+            let start = vao.buffer.vertices.count
+            
+            let prev = vao.buffer.currentColor
+            vao.buffer.currentColor = 0x7DFFFFFF
+            
+            for vert in vertices {
+                vao.buffer.addVertex(x: vert.x, y: vert.y)
+            }
+            
+            vao.buffer.currentColor = prev
+            
+            // Add vertex index triplets
+            for i in 0..<indices.count / 3 {
+                vao.buffer.addTriangleAtIndexes(start + indices[i * 3], start + indices[i * 3 + 1], start + indices[i * 3 + 2])
+            }
+        }
+        
+        let shapePoints = body.vertices
+        
+        if(!useDetailedRender)
+        {
+            // Don't do any other rendering other than the body's buffer
+            try drawBodyFill()
+            return
+        }
+        
+        // Draw normals, for pressure bodies
+        if body.component(ofType: PressureComponent.self) != nil
+        {
+            for (i, normal) in body.pointNormals.enumerated()
+            {
+                let p = shapePoints[i]
+                
+                drawLine(from: p, to: p + normal / 3, color: 0xFFEC33EC)
+            }
+        }
+        
+        // Draw the body's global shape
+        drawPolyOutline(body.globalShape, color: 0xFF777777)
+        
+        // Draw lines going from the body's outer points to the global shape indices
+        for (globalShape, p) in zip(body.globalShape, shapePoints)
+        {
+            let start = p
+            let end = globalShape
+            
+            drawLine(from: start, to: end, color: 0xFF449944)
+        }
+        
+        // Draw the body now
+        try drawBodyFill()
+        drawPolyOutline(shapePoints, color: 0xFF000000)
+        
+        // Draw the body axis
+        let axisUp    = [body.derivedPos, body.derivedPos + Vector2(x: 0, y: 0.6).rotated(by: body.derivedAngle)]
+        let axisRight = [body.derivedPos, body.derivedPos + Vector2(x: 0.6, y: 0).rotated(by: body.derivedAngle)]
+        
+        // Rep Up vector
+        drawLine(from: axisUp[0], to: axisUp[1], color: 0xFFED0000)
+        // Green Right vector
+        drawLine(from: axisRight[0], to: axisRight[1], color: 0xFF00ED00)
     }
 }
 

@@ -306,7 +306,8 @@ public final class World {
     /// This method performs body point mass force/velocity/position simulation,
     /// and collision detection & resolving.
     ///
-    /// - Parameter elapsed: The elapsed time to update by, usually in seconds
+    /// - Parameter elapsed: The elapsed time to update by, usually in 1/60ths
+    /// of a second.
     public func update(_ elapsed: JFloat) {
         // Update the bodies
         for body in bodies {
@@ -387,6 +388,7 @@ public final class World {
             for collision in collisionList {
                 observer.bodiesDidCollide(collision)
             }
+            observer.bodiesDidCollide(collisionList)
         }
         
         handleCollisions()
