@@ -19,6 +19,7 @@
 		A003857C1E63713200546EB8 /* Shader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A003857B1E63713200546EB8 /* Shader.swift */; };
 		A003857F1E6374EB00546EB8 /* SimpleFragment.glsl in Resources */ = {isa = PBXBuildFile; fileRef = A003857D1E6374EB00546EB8 /* SimpleFragment.glsl */; };
 		A00385801E6374EB00546EB8 /* SimpleVertex.glsl in Resources */ = {isa = PBXBuildFile; fileRef = A003857E1E6374EB00546EB8 /* SimpleVertex.glsl */; };
+		A02BE1F51ED72BCC00B2404D /* WorldTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A02BE1F41ED72BCC00B2404D /* WorldTests.swift */; };
 		A05EE0D91E578637007978E6 /* Vector2Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05EE0D81E578637007978E6 /* Vector2Tests.swift */; };
 		A097789A1E66582B0095D4A7 /* LibTessTriangulate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A09778991E66582B0095D4A7 /* LibTessTriangulate.swift */; };
 		A097789F1E6687810095D4A7 /* Vertex.swift in Sources */ = {isa = PBXBuildFile; fileRef = A097789E1E6687810095D4A7 /* Vertex.swift */; };
@@ -65,6 +66,7 @@
 		A003857B1E63713200546EB8 /* Shader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Shader.swift; sourceTree = "<group>"; };
 		A003857D1E6374EB00546EB8 /* SimpleFragment.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SimpleFragment.glsl; sourceTree = "<group>"; };
 		A003857E1E6374EB00546EB8 /* SimpleVertex.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SimpleVertex.glsl; sourceTree = "<group>"; };
+		A02BE1F41ED72BCC00B2404D /* WorldTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorldTests.swift; sourceTree = "<group>"; };
 		A05EE0D81E578637007978E6 /* Vector2Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Vector2Tests.swift; sourceTree = "<group>"; };
 		A09778991E66582B0095D4A7 /* LibTessTriangulate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibTessTriangulate.swift; sourceTree = "<group>"; };
 		A097789E1E6687810095D4A7 /* Vertex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Vertex.swift; sourceTree = "<group>"; };
@@ -172,6 +174,7 @@
 				A0CD1AED1E5363B600D41938 /* PointMassTests.swift */,
 				A05EE0D81E578637007978E6 /* Vector2Tests.swift */,
 				A0DBAE281E6243C500D630B2 /* BodyTests.swift */,
+				A02BE1F41ED72BCC00B2404D /* WorldTests.swift */,
 				607FACE91AFB9204008FA782 /* Supporting Files */,
 			);
 			name = Tests;
@@ -460,6 +463,7 @@
 				A0DBAE291E6243C500D630B2 /* BodyTests.swift in Sources */,
 				A0CD1AF01E5363B600D41938 /* GeomUtilsTests.swift in Sources */,
 				A0CD1AF21E5363B600D41938 /* PhysicsMathTest.swift in Sources */,
+				A02BE1F51ED72BCC00B2404D /* WorldTests.swift in Sources */,
 				A05EE0D91E578637007978E6 /* Vector2Tests.swift in Sources */,
 				A0CD1AF31E5363B600D41938 /* PointMassTests.swift in Sources */,
 			);

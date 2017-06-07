@@ -23,13 +23,12 @@ public final class PressureComponent: BodyComponent {
     /// Higher values result in higher expansion and resistance to compression.
     public var gasAmmount: JFloat = 0
     
-    override public func prepare(_ body: Body) {
+    /// Initializes a new instance of the BodyComponent class
+    public init(body: Body) {
         
     }
     
-    override public func accumulateInternalForces(in body: Body) {
-        super.accumulateInternalForces(in: body)
-        
+    public func accumulateInternalForces(in body: Body) {
         if(body.pointMasses.count < 1) {
             volume = 0
             return

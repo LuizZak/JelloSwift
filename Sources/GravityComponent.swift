@@ -13,13 +13,16 @@ public final class GravityComponent: BodyComponent {
     /// The gravity vector to apply to the body
     public var gravity = Vector2(x: 0, y: -9.8)
     
+    /// Initializes a new instance of the BodyComponent class
+    public init(body: Body) {
+        
+    }
+    
     /// Accumulates the force of gravity by applying a unified force downwards.
     /// This force ignores mass by multiplying the gravity component by mass
     /// before applying the force, resulting in uniform velocity application in
     /// all bodies.
-    override public func accumulateExternalForces(on body: Body) {
-        super.accumulateExternalForces(on: body)
-        
+    public func accumulateExternalForces(on body: Body) {
         for point in body.pointMasses {
             point.applyForce(of: gravity * point.mass)
         }

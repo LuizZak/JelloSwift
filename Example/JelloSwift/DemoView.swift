@@ -209,23 +209,7 @@ class DemoView: UIView, CollisionObserver
             let location = touch.location(in: self)
             fingerLocation = toWorldCoords(Vector2(x: location.x, y: location.y))
             
-            var closest: PointMass? = nil
-            var closestD = JFloat.greatestFiniteMagnitude
-            
-            for body in world.bodies
-            {
-                for p in body.pointMasses
-                {
-                    let dist = p.position.distance(to: fingerLocation)
-                    if(closest == nil || dist < closestD)
-                    {
-                        closest = p
-                        closestD = dist
-                    }
-                }
-            }
-            
-            draggingPoint = closest
+            draggingPoint = world.closestPointMass(to: fingerLocation)?.1
         }
     }
     

@@ -6,10 +6,10 @@
 //  Copyright (c) 2014 Luiz Fernando Silva. All rights reserved.
 //
 
-#if os(Linux)
-    import Glibc
-#else
+#if os(macOS) || os(iOS)
     import Darwin.C
+#elseif os(Linux)
+    import Glibc
 #endif
 
 /// Contains a set of points that is equivalent as the internal shape of a soft
@@ -135,6 +135,7 @@ extension ClosedShape {
     public func transformVertices(_ target: inout [Vector2], worldPos: Vector2,
                                   angleInRadians: JFloat,
                                   localScale: Vector2 = Vector2.unit) {
+        assert(target.count == localVertices.count)
         
         let m = Vector2.matrix(scalingBy: localScale, rotatingBy: angleInRadians, translatingBy: worldPos)
         
@@ -149,6 +150,8 @@ extension ClosedShape {
     ///     vertices as this closed shape.
     public func transformVertices(_ target: inout [Vector2],
                                   matrix: Vector2.NativeMatrixType) {
+        assert(target.count == localVertices.count)
+        
         for i in 0..<target.count {
             target[i] = localVertices[i] * matrix
         }

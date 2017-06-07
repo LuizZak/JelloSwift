@@ -6,10 +6,10 @@
 //  Copyright (c) 2015 Luiz Fernando Silva. All rights reserved.
 //
 
-#if os(Linux)
-    import Glibc
-#else
+#if os(macOS) || os(iOS)
     import Darwin.C
+#elseif os(Linux)
+    import Glibc
 #endif
 
 /// Represents a joint link that links to multiple point masses of a body

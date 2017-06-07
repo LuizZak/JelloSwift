@@ -100,10 +100,8 @@ class Triangulate
                 indices.append(c)
                 
                 /* remove v from remaining polygon */
-                //var s = v
                 for t in v+1..<nv {
-                    vertexIndices[t-1] = vertexIndices[t]
-                    //s += 1
+                    vertexIndices[t - 1] = vertexIndices[t]
                 }
                 
                 nv -= 1
@@ -173,8 +171,6 @@ class Triangulate
     // (Ax,Ay) (Bx,By) (Cx,Cy)
     public static func InsideTriangle(A: Vector2, B: Vector2, C: Vector2, P: Vector2) -> Bool {
         
-        var cCROSSap: JFloat, bCROSScp: JFloat, aCROSSbp: JFloat
-        
         let a = C - B
         let b = A - C
         let c = B - A
@@ -182,9 +178,9 @@ class Triangulate
         let bp = P - B
         let cp = P - C
         
-        aCROSSbp = a.x * bp.y - a.y * bp.x
-        cCROSSap = c.x * ap.y - c.y * ap.x
-        bCROSScp = b.x * cp.y - b.y * cp.x
+        let aCROSSbp = a =/ bp
+        let cCROSSap = c =/ ap
+        let bCROSScp = b =/ cp
         
         return ((aCROSSbp >= 0.0) && (bCROSScp >= 0.0) && (cCROSSap >= 0.0))
     }

@@ -22,19 +22,19 @@ open class BodyJoint: Equatable {
     
     /// Whether to allow collisions between the two objects joined by this
     /// BodyJoint.
-    /// Defaults to false
+    /// Defaults to false.
     open var allowCollisions = false
     
     /// Controls whether this valubody joint is enabled.
     /// Disabling body joints disables all of the physics of the joint.
     /// Note that collisions between bodies are still governed by
-    /// .allowCollisions even if the joint is disabled
+    /// `.allowCollisions` even if the joint is disabled.
     open var enabled = true
     
     /// Gets or sets the rest distance for this joint
     /// In case the rest distance represents a ranged distance 
-    /// (RestDistance.ranged), the joint only applies forces if the distance
-    /// between the links is dist > restDistance.min && dist < restDistance.max
+    /// (`RestDistance.ranged`), the joint only applies forces if the distance
+    /// between the links is `dist > restDistance.min && dist < restDistance.max`.
     open var restDistance: RestDistance
     
     /// Initializes a body joint on a given world, linking the two given links.

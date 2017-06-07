@@ -6,12 +6,6 @@
 //  Copyright (c) 2014 Luiz Fernando Silva. All rights reserved.
 //
 
-#if os(Linux)
-    import Glibc
-#else
-    import Darwin.C
-#endif
-
 /// Represents a simulation world, containing soft bodies and the code utilized
 /// to make them interact with each other
 public final class World {
@@ -21,9 +15,18 @@ public final class World {
     public private(set) var joints: ContiguousArray<BodyJoint> = []
     
     // PRIVATE VARIABLES
-    fileprivate var worldLimits = AABB()
-    fileprivate var worldSize = Vector2.zero
-    fileprivate var worldGridStep = Vector2.zero
+    fileprivate(set) public var worldLimits = AABB()
+    fileprivate(set) public var worldSize = Vector2.zero
+    fileprivate var worldGridStep = Vector2.zero {
+        didSet {
+            invWorldGridStep = 1 / worldGridStep
+        }
+    }
+    fileprivate var worldGridSubdivision: Int = MemoryLayout<UInt>.size * 8
+    
+    /// Inverse of `worldGridStep`, for multiplication over coordinates when
+    /// projecting AABBs into the world grid.
+    fileprivate var invWorldGridStep = Vector2.zero
     
     /// The threshold at which penetrations are ignored, since they are far too
     /// deep to be resolved without applying unreasonable forces that will 
@@ -86,9 +89,9 @@ public final class World {
         
         worldSize = max - min
         
-        // Divide the world into 1024 boxes (32 x 32) for broad-phase collision
+        // Divide the world into (by default) 4096 boxes (64 x 64) for broad-phase collision
         // detection
-        worldGridStep = worldSize / 32
+        worldGridStep = worldSize / JFloat(worldGridSubdivision)
     }
     
     /// MATERIALS
@@ -239,11 +242,15 @@ public final class World {
         
         let queryShape = closedShape.transformedBy(translatingBy: worldPos)
         let shapeAABB = AABB(points: queryShape.localVertices)
+        let shapeBitmask = bitmask(for: shapeAABB)
         
         var results = ContiguousArray<Body>()
         
         for body in bodies {
-            if(!shapeAABB.intersects(body.aabb)) {
+            if !bitmasksIntersect(shapeBitmask, (body.bitmaskX, body.bitmaskY)) {
+                continue
+            }
+            if !shapeAABB.intersects(body.aabb) {
                 continue
             }
             
@@ -251,7 +258,7 @@ public final class World {
             var last = queryShape.localVertices[queryShape.localVertices.count - 1]
             for point in queryShape.localVertices {
                 
-                if(body.intersectsLine(from: last, to: point)) {
+                if body.intersectsLine(from: last, to: point) {
                     results.append(body)
                     break
                 }
@@ -281,9 +288,14 @@ public final class World {
     /// ray, if it hit any body, or nil if it hit nothing.
     public func rayCast(from start: Vector2, to end: Vector2, bitmask: Bitmask = 0, ignoring ignoreList: [Body] = []) -> (retPt: Vector2, body: Body)? {
         var aabb = AABB(points: [start, end])
+        var aabbBitmask = self.bitmask(for: aabb)
         var result: (Vector2, Body)?
         
         for body in bodies {
+            if !bitmasksIntersect(aabbBitmask, (body.bitmaskX, body.bitmaskY)) {
+                continue
+            }
+            
             guard (bitmask == 0 || (body.bitmask & bitmask) != 0) && !ignoreList.contains(body) else {
                 continue
             }
@@ -292,10 +304,12 @@ public final class World {
                 continue
             }
             
+            // If we hit the body, shorten the length of the ray and keep iterating
             if let ret = body.raycast(from: start, to: end) {
                 result = (ret, body)
                 
                 aabb = AABB(points: [start, ret])
+                aabbBitmask = self.bitmask(for: aabb)
             }
         }
         
@@ -464,12 +478,12 @@ public final class World {
             if (found && (closestAway > penetrationThreshold) && (closestSame < closestAway)) {
                 assert(infoSame.bodyBpmA > -1 && infoSame.bodyBpmB > -1)
                 
-                infoSame.penetration = sqrt(infoSame.penetration)
+                infoSame.penetration = infoSame.penetration.squareRoot()
                 collisionList.append(infoSame)
             } else {
                 assert(infoAway.bodyBpmA > -1 && infoAway.bodyBpmB > -1)
                 
-                infoAway.penetration = sqrt(infoAway.penetration)
+                infoAway.penetration = infoAway.penetration.squareRoot()
                 collisionList.append(infoAway)
             }
         }
@@ -539,8 +553,6 @@ public final class World {
                 B2.position -= info.normal * (Bmove * b2inf)
             }
             
-            // TODO: Re-evaluate this block to clarify names, or check if they
-            // are term-of-art in physics
             if(relDot <= 0.0001 && (A.mass.isFinite || b2MassSum.isFinite)) {
                 let AinvMass: JFloat = A.mass.isInfinite ? 0 : 1.0 / A.mass
                 let BinvMass: JFloat = b2MassSum.isInfinite ? 0 : 1.0 / b2MassSum
@@ -572,31 +584,57 @@ public final class World {
         collisionList.removeAll(keepingCapacity: true)
     }
     
+    /// Returns if two grid bitmasks intersect.
+    /// Returns `true` iff `((b1.x & b2.x) != 0) && ((b1.y & b2.y) != 0)`
+    fileprivate func bitmasksIntersect(_ b1: (Bitmask, Bitmask), _ b2: (Bitmask, Bitmask)) -> Bool {
+        return ((b1.0 & b2.1) != 0) && ((b1.0 & b2.1) != 0)
+    }
+    
     /// Update bodies' bitmask for early collision filtering
     fileprivate func updateBodyBitmask(_ body: Body) {
-        let box = body.aabb
+        (body.bitmaskX, body.bitmaskY) = bitmask(for: body.aabb)
+    }
+    
+    /// Returns a set of X and Y bitmasks for filtering collision with objects
+    /// on the current world grid.
+    ///
+    /// Returns 0 if any axis of the AABB projected on the grid turn into NaN.
+    ///
+    /// - Parameter aabb: AABB to bitmask on.
+    /// - Returns: Horizontal and vertical bitmasks for the AABB on the current
+    /// world grid.
+    func bitmask(for aabb: AABB) -> (bitmaskX: Bitmask, bitmaskY: Bitmask) {
+        // In case the AABB represents invalid boundaries, return 0-ed out bitmasks
+        // that do not intersect any range
+        if(aabb.minimum.x.isNaN || aabb.minimum.y.isNaN || aabb.maximum.x.isNaN || aabb.maximum.y.isNaN) {
+            return (0, 0)
+        }
         
-        let minVec = max(Vector2.zero, min(Vector2(x: 32, y: 32), (box.minimum - worldLimits.minimum) / worldGridStep))
-        let maxVec = max(Vector2.zero, min(Vector2(x: 32, y: 32), (box.maximum - worldLimits.minimum) / worldGridStep))
+        let subdiv = JFloat(worldGridSubdivision)
         
-        assert(minVec.x >= 0 && minVec.x <= 32 && minVec.y >= 0 && minVec.y <= 32)
-        assert(maxVec.x >= 0 && maxVec.x <= 32 && maxVec.y >= 0 && maxVec.y <= 32)
+        let minVec = max(.zero, min(Vector2(x: subdiv, y: subdiv), (aabb.minimum - worldLimits.minimum) * invWorldGridStep))
+        let maxVec = max(.zero, min(Vector2(x: subdiv, y: subdiv), (aabb.maximum - worldLimits.minimum) * invWorldGridStep))
         
-        body.bitmaskX = 0
-        body.bitmaskY = 0
+        assert(minVec.x >= 0 && minVec.x <= subdiv && minVec.y >= 0 && minVec.y <= subdiv)
+        assert(maxVec.x >= 0 && maxVec.x <= subdiv && maxVec.y >= 0 && maxVec.y <= subdiv)
         
-        // In case the body is contained within an invalid bound, disable 
-        // collision completely
+        var bitmaskX: Bitmask = 0
+        var bitmaskY: Bitmask = 0
+        
+        // In case the AABB is contained within invalid boundaries, return 0-ed
+        // out bitmasks that do not intersect any range
         if(minVec.x.isNaN || minVec.y.isNaN || maxVec.x.isNaN || maxVec.y.isNaN) {
-            return
+            return (0, 0)
         }
         
         for i in Int(minVec.x)...Int(maxVec.x) {
-            body.bitmaskX.setBitOn(atIndex: i)
+            bitmaskX.setBitOn(atIndex: i)
         }
         
         for i in Int(minVec.y)...Int(maxVec.y) {
-            body.bitmaskY.setBitOn(atIndex: i)
+            bitmaskY.setBitOn(atIndex: i)
         }
+        
+        return (bitmaskX, bitmaskY)
     }
 }

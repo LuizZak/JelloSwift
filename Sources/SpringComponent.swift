@@ -35,7 +35,11 @@ public final class SpringComponent: BodyComponent {
     /// shape matching is off
     fileprivate var shapeSpringDamp: JFloat = 10
     
-    override public func prepare(_ body: Body) {
+    public init(body: Body) {
+        
+    }
+    
+    public func prepare(_ body: Body) {
         clearAllSprings(body)
     }
     
@@ -165,9 +169,7 @@ public final class SpringComponent: BodyComponent {
         return springs[body.pointMasses.count + springID].damping
     }
     
-    override public func accumulateInternalForces(in body: Body) {
-        super.accumulateInternalForces(in: body)
-        
+    public func accumulateInternalForces(in body: Body) {
         for s in springs {
             let p1 = s.pointMassA
             let p2 = s.pointMassB

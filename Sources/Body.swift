@@ -6,10 +6,10 @@
 //  Copyright (c) 2014 Luiz Fernando Silva. All rights reserved.
 //
 
-#if os(Linux)
-    import Glibc
-#else
+#if os(macOS) || os(iOS)
     import Darwin.C
+#elseif os(Linux)
+    import Glibc
 #endif
 
 /// Performs a reference-equality against two Body instances.
@@ -158,7 +158,7 @@ public final class Body: Equatable {
     
     /// Adds a body component to this body
     @discardableResult
-    public func addComponent<T: BodyComponent>(ofType componentType: T.Type) -> T {
+    public func addComponent(ofType componentType: BodyComponent.Type) -> BodyComponent {
         let instance = componentType.init(body: self)
         
         components.append(instance)
