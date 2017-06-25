@@ -63,7 +63,7 @@ extension BodyComponent {
 
 /// Used to create body components into the body
 public protocol BodyComponentCreator {
-    var bodyComponentClass: BodyComponent.Type { get }
+    static var bodyComponentClass: BodyComponent.Type { get }
     
     /// Creates and attaches the component to a given body
     func attach(to body: Body)
@@ -76,7 +76,7 @@ public protocol BodyComponentCreator {
 public extension BodyComponentCreator {
     /// Creates and attaches the component to a given body
     public func attach(to body: Body) {
-        body.addComponent(ofType: bodyComponentClass)
+        body.addComponent(ofType: type(of: self).bodyComponentClass)
         
         prepareBodyAfterComponent(body)
     }

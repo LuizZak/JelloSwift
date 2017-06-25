@@ -16,7 +16,7 @@ class WorldTests: XCTestCase {
     // MARK: Bitmask tests
     
     func testBitmaskSetRange() {
-        AssertBitmasksMatch(Bitmask(withOneBitsFromOffset: 0, count: Int(bitmaskBitSize)), ~Bitmask.allZeros)
+        AssertBitmasksMatch(Bitmask(withOneBitsFromOffset: 0, count: Int(bitmaskBitSize)), ~0)
         AssertBitmasksMatch(Bitmask(withOneBitsFromOffset: 1, count: 1), 0b01)
         AssertBitmasksMatch(Bitmask(withOneBitsFromOffset: 1, count: 2), 0b11)
         AssertBitmasksMatch(Bitmask(withOneBitsFromOffset: 10, count: 2), 0b00000110_00000000)
@@ -64,8 +64,8 @@ class WorldTests: XCTestCase {
         let aabb = AABB(min: world.worldLimits.minimum, max: world.worldLimits.maximum)
         let bitmasks = world.bitmask(for: aabb)
         
-        AssertBitmasksMatch(bitmasks.bitmaskX, ~UInt.allZeros)
-        AssertBitmasksMatch(bitmasks.bitmaskY, ~UInt.allZeros)
+        AssertBitmasksMatch(bitmasks.bitmaskX, ~0)
+        AssertBitmasksMatch(bitmasks.bitmaskY, ~0)
     }
     
     func testGenerateBitmaskQuarter() {
@@ -140,7 +140,7 @@ class WorldTests: XCTestCase {
         XCTAssertEqual(bitmasks.bitmaskY, 0)
     }
     
-    fileprivate func AssertBitmasksMatch(_ actual: Bitmask, _ expected: Bitmask, file: String = #file, line: UInt = #line) {
+    fileprivate func AssertBitmasksMatch(_ actual: Bitmask, _ expected: Bitmask, file: String = #file, line: Int = #line) {
         if actual != expected {
             let message = "Bitmasks do not match, expected:\n\(formatBinary(expected))\nfound:\n\(formatBinary(actual))"
             

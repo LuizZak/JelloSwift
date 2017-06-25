@@ -8,7 +8,7 @@
 
 /// Represents an axis-aligned bounding box, utilized to figure out the AABB of
 /// soft-bodies
-public struct AABB {
+public struct AABB: Codable {
     /// Returns an empty, invalid AABB
     static let empty = AABB()
     
@@ -161,7 +161,7 @@ public struct AABB {
 /// Specifies the point validity for a whole AABB.
 /// AABBs of PointValidity.invalid type should not be considered
 /// valid during checks of containment.
-public enum PointValidity {
+public enum PointValidity: Int, Codable {
     case valid
     case invalid
 }

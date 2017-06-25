@@ -74,6 +74,37 @@ public enum RestDistance: ExpressibleByFloatLiteral, ExpressibleByIntegerLiteral
     }
 }
 
+extension RestDistance: Codable {
+    public init(from decoder: Decoder) throws {
+        var container = try decoder.unkeyedContainer()
+        
+        let caseNum = try container.decode(Int.self)
+        
+        switch caseNum {
+        case 0:
+            self = try .fixed(container.decode(JFloat.self))
+        case 1:
+            self = try .ranged(min: container.decode(JFloat.self), max: container.decode(JFloat.self))
+        default:
+            throw DecodingError.dataCorrupted(DecodingError.Context(codingPath: [nil], debugDescription: "Unrecognized enum payload case '\(caseNum)'"))
+        }
+    }
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.unkeyedContainer()
+        
+        switch self {
+        case .fixed(let value):
+            try container.encode(0)
+            try container.encode(value)
+        case let .ranged(min, max):
+            try container.encode(1)
+            try container.encode(min)
+            try container.encode(max)
+        }
+    }
+}
+
 /// Helper operator for creating a rest distance
 @available(*, deprecated, message: "use <-> instead")
 public func ...(lhs: JFloat, rhs: JFloat) -> RestDistance {

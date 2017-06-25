@@ -18,7 +18,7 @@ extension Bitmask {
     ///   - count: Number of bits starting from `offset` to set to 1, including
     /// the bit at `offset` itself.
     public init(withOneBitsFromOffset offset: Int, count: Int) {
-        self = .allZeros
+        self = 0
         self.setBitsOn(offset: offset, count: count)
     }
     
@@ -31,7 +31,7 @@ extension Bitmask {
     ///   - count: Number of bits starting from `offset` to set to 1, including
     /// the bit at `offset` itself.
     public mutating func setBitsOn(offset: Int, count: Int) {
-        let mask = (~Bitmask.allZeros) >> Bitmask(MemoryLayout<Bitmask>.size * 8 - count)
+        let mask = Bitmask(bitPattern: ~0) >> Bitmask(MemoryLayout<Bitmask>.size * 8 - count)
         
         self = mask << Bitmask(offset > 0 ? offset - 1 : 0)
     }

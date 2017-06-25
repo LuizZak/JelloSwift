@@ -89,7 +89,7 @@ public protocol JointLinkType {
 }
 
 /// The type of joint link of a BodyJointLink class
-public enum LinkType {
+public enum LinkType: Int, Codable {
     /// Specifies that the joint links at the whole body, relative to the center
     case body
     /// Specifies that the joint links at a body's point

@@ -269,7 +269,7 @@ class DemoView: UIView, CollisionObserver
     
     // MARK: - Update Loop (CADisplayLink)
     
-    func gameLoop()
+    @objc func gameLoop()
     {
         update()
         render()
@@ -736,17 +736,17 @@ extension Vector2.NativeMatrixType {
     func glFloatMatrix4x4() -> [GLfloat] {
         var matrix: [GLfloat] = [GLfloat](repeating: 0, count: 16)
         
-        matrix[0] = GLfloat(cmatrix.columns.0.x)
-        matrix[4] = GLfloat(cmatrix.columns.0.y)
-        matrix[12] = GLfloat(cmatrix.columns.0.z)
+        matrix[0] = GLfloat(columns.0.x)
+        matrix[4] = GLfloat(columns.0.y)
+        matrix[12] = GLfloat(columns.0.z)
         
-        matrix[1] = GLfloat(cmatrix.columns.1.x)
-        matrix[5] = GLfloat(cmatrix.columns.1.y)
-        matrix[13] = GLfloat(cmatrix.columns.1.z)
+        matrix[1] = GLfloat(columns.1.x)
+        matrix[5] = GLfloat(columns.1.y)
+        matrix[13] = GLfloat(columns.1.z)
         
-        matrix[2] = GLfloat(cmatrix.columns.2.x)
-        matrix[6] = GLfloat(cmatrix.columns.2.y)
-        matrix[14] = GLfloat(cmatrix.columns.2.z)
+        matrix[2] = GLfloat(columns.2.x)
+        matrix[6] = GLfloat(columns.2.y)
+        matrix[14] = GLfloat(columns.2.z)
         
         matrix[15] = 1
         

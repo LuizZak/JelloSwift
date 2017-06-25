@@ -39,8 +39,9 @@ public final class GravityComponent: BodyComponent {
 }
 
 /// Component that can be added to bodies to add a gravity-like constant force
-public struct GravityComponentCreator: BodyComponentCreator {
-    public var bodyComponentClass: BodyComponent.Type = GravityComponent.self
+public struct GravityComponentCreator: BodyComponentCreator, Codable {
+    
+    public static var bodyComponentClass: BodyComponent.Type = GravityComponent.self
     
     public var vector: Vector2
     

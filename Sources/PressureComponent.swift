@@ -52,9 +52,9 @@ public final class PressureComponent: BodyComponent {
 }
 
 // Creator for the Spring component
-public struct PressureComponentCreator : BodyComponentCreator {
+public struct PressureComponentCreator: BodyComponentCreator, Codable {
     
-    public var bodyComponentClass: BodyComponent.Type = PressureComponent.self
+    public static var bodyComponentClass: BodyComponent.Type = PressureComponent.self
     
     /// The gass pressure coefficient for the pressure component.
     /// Higher values result in higher resistance to compression and higher

@@ -234,9 +234,9 @@ public final class SpringComponent: BodyComponent {
 }
 
 /// Creator for the Spring component
-public struct SpringComponentCreator : BodyComponentCreator {
+public struct SpringComponentCreator: BodyComponentCreator, Codable {
     
-    public var bodyComponentClass: BodyComponent.Type = SpringComponent.self
+    public static var bodyComponentClass: BodyComponent.Type = SpringComponent.self
     
     /// Whether the shape matching is on - turning on shape matching will make
     /// the soft body try to mantain its original shape as specified by its
@@ -296,7 +296,7 @@ public struct SpringComponentCreator : BodyComponentCreator {
 }
 
 /// Specifies a template for an inner spring
-public struct SpringComponentInnerSpring {
+public struct SpringComponentInnerSpring: Codable {
     
     /// Index of the first point mass of the spring, in the `pointMasses` 
     /// property of the target body

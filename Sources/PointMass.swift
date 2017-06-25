@@ -7,7 +7,7 @@
 //
 
 /// Specifies a point mass that composes a body
-public final class PointMass: VectorRepresentable {
+public final class PointMass: Codable, VectorRepresentable {
     /// The mass of this point mass.
     /// Leave this value always `> 0` to maintain consistency on the simulation,
     /// unless the point is supposed to be fixed.
