@@ -9,12 +9,14 @@
 import XCTest
 @testable import JelloSwift
 
+let bitmaskBitSize = Bitmask(MemoryLayout<Bitmask>.size * 8)
+
 class WorldTests: XCTestCase {
     
     // MARK: Bitmask tests
     
     func testBitmaskSetRange() {
-        AssertBitmasksMatch(Bitmask(withOneBitsFromOffset: 0, count: 64), ~Bitmask.allZeros)
+        AssertBitmasksMatch(Bitmask(withOneBitsFromOffset: 0, count: Int(bitmaskBitSize)), ~Bitmask.allZeros)
         AssertBitmasksMatch(Bitmask(withOneBitsFromOffset: 1, count: 1), 0b01)
         AssertBitmasksMatch(Bitmask(withOneBitsFromOffset: 1, count: 2), 0b11)
         AssertBitmasksMatch(Bitmask(withOneBitsFromOffset: 10, count: 2), 0b00000110_00000000)
@@ -40,8 +42,8 @@ class WorldTests: XCTestCase {
         let aabb = AABB(min: world.worldLimits.maximum, max: world.worldLimits.maximum)
         let bitmasks = world.bitmask(for: aabb)
         
-        AssertBitmasksMatch(bitmasks.bitmaskX, 1 << 63)
-        AssertBitmasksMatch(bitmasks.bitmaskY, 1 << 63)
+        AssertBitmasksMatch(bitmasks.bitmaskX, Bitmask(1 << (bitmaskBitSize - 1)))
+        AssertBitmasksMatch(bitmasks.bitmaskY, Bitmask(1 << (bitmaskBitSize - 1)))
     }
     
     func testGenerateBitmaskCenter() {
@@ -51,8 +53,8 @@ class WorldTests: XCTestCase {
         let aabb = AABB(min: .zero, max: .zero)
         let bitmasks = world.bitmask(for: aabb)
         
-        AssertBitmasksMatch(bitmasks.bitmaskX, 1 << 31) // Approximately half-way
-        AssertBitmasksMatch(bitmasks.bitmaskY, 1 << 31)
+        AssertBitmasksMatch(bitmasks.bitmaskX, 1 << (bitmaskBitSize / 2 - 1)) // Approximately half-way
+        AssertBitmasksMatch(bitmasks.bitmaskY, 1 << (bitmaskBitSize / 2 - 1))
     }
     
     func testGenerateBitmaskFilling() {
@@ -73,8 +75,13 @@ class WorldTests: XCTestCase {
         let aabb = AABB(min: .zero, max: world.worldLimits.maximum)
         let bitmasks = world.bitmask(for: aabb)
         
-        AssertBitmasksMatch(bitmasks.bitmaskX, 0b11111111_11111111_11111111_11111111_10000000_00000000_00000000_00000000)
-        AssertBitmasksMatch(bitmasks.bitmaskY, 0b11111111_11111111_11111111_11111111_10000000_00000000_00000000_00000000)
+        #if arch(x86_64) || arch(arm64)
+            AssertBitmasksMatch(bitmasks.bitmaskX, 0b11111111_11111111_11111111_11111111_10000000_00000000_00000000_00000000)
+            AssertBitmasksMatch(bitmasks.bitmaskY, 0b11111111_11111111_11111111_11111111_10000000_00000000_00000000_00000000)
+        #else
+            AssertBitmasksMatch(bitmasks.bitmaskX, 0b11111111_11111111_10000000_00000000)
+            AssertBitmasksMatch(bitmasks.bitmaskY, 0b11111111_11111111_10000000_00000000)
+        #endif
     }
     
     func testGenerateBitmaskSmallRect() {
@@ -84,8 +91,13 @@ class WorldTests: XCTestCase {
         let aabb = AABB(min: Vector2(value: -4), max: Vector2(value: 0))
         let bitmasks = world.bitmask(for: aabb)
         
-        AssertBitmasksMatch(bitmasks.bitmaskX, 0x0000_0000_FF00_0000)
-        AssertBitmasksMatch(bitmasks.bitmaskY, 0x0000_0000_FF00_0000)
+        #if arch(x86_64) || arch(arm64)
+            AssertBitmasksMatch(bitmasks.bitmaskX, 0x0000_0000_FF00_0000)
+            AssertBitmasksMatch(bitmasks.bitmaskY, 0x0000_0000_FF00_0000)
+        #else
+            AssertBitmasksMatch(bitmasks.bitmaskX, 0x0000_F800)
+            AssertBitmasksMatch(bitmasks.bitmaskY, 0x0000_F800)
+        #endif
     }
     
     func testGenerateBitmaskLimitBounds() {
@@ -95,16 +107,26 @@ class WorldTests: XCTestCase {
         // Test maximum limits
         var aabb = AABB(min: Vector2(value: 30), max: Vector2(value: 32))
         var bitmasks = world.bitmask(for: aabb)
-        
-        AssertBitmasksMatch(bitmasks.bitmaskX, 0x8000_0000_0000_0000)
-        AssertBitmasksMatch(bitmasks.bitmaskY, 0x8000_0000_0000_0000)
+
+        #if arch(x86_64) || arch(arm64)
+            AssertBitmasksMatch(bitmasks.bitmaskX, 0x8000_0000_0000_0000)
+            AssertBitmasksMatch(bitmasks.bitmaskY, 0x8000_0000_0000_0000)
+        #else
+            AssertBitmasksMatch(bitmasks.bitmaskX, 0x8000_0000)
+            AssertBitmasksMatch(bitmasks.bitmaskY, 0x8000_0000)
+        #endif
         
         // Test minimum limits
         aabb = AABB(min: Vector2(value: -33), max: Vector2(value: -32))
         bitmasks = world.bitmask(for: aabb)
         
-        AssertBitmasksMatch(bitmasks.bitmaskX, 0x0000_0000_0000_0001)
-        AssertBitmasksMatch(bitmasks.bitmaskY, 0x0000_0000_0000_0001)
+        #if arch(x86_64) || arch(arm64)
+            AssertBitmasksMatch(bitmasks.bitmaskX, 0x0000_0000_0000_0001)
+            AssertBitmasksMatch(bitmasks.bitmaskY, 0x0000_0000_0000_0001)
+        #else
+            AssertBitmasksMatch(bitmasks.bitmaskX, 0x0000_0001)
+            AssertBitmasksMatch(bitmasks.bitmaskY, 0x0000_0001)
+        #endif
     }
     
     func testGenerateBitmaskNaN() {
@@ -136,7 +158,7 @@ fileprivate func formatBinary(_ value: Bitmask) -> String {
     
     // Inject separators every 8 bits
     var result: String = ""
-    for bit in stride(from: 0, to: 64, by: 8) {
+    for bit in stride(from: 0, to: lengthInBits, by: 8) {
         let sliceStart = resultPreSpace.index(resultPreSpace.startIndex, offsetBy: bit)
         let sliceEnd = resultPreSpace.index(sliceStart, offsetBy: 8)
         
