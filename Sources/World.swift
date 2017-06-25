@@ -28,6 +28,8 @@ public final class World {
     /// projecting AABBs into the world grid.
     fileprivate var invWorldGridStep = Vector2.zero
     
+    fileprivate var relaxing: Bool = false
+    
     /// The threshold at which penetrations are ignored, since they are far too
     /// deep to be resolved without applying unreasonable forces that will 
     /// destabilize the simulation.
@@ -323,6 +325,11 @@ public final class World {
     /// - Parameter elapsed: The elapsed time to update by, usually in 1/60ths
     /// of a second.
     public func update(_ elapsed: JFloat) {
+        update(elapsed, withBodies: bodies, joints: joints)
+    }
+    
+    /// Internal updating method
+    fileprivate func update(_ elapsed: JFloat, withBodies bodies: ContiguousArray<Body>, joints: ContiguousArray<BodyJoint>) {
         // Update the bodies
         for body in bodies {
             body.derivePositionAndAngle(elapsed)
@@ -333,8 +340,8 @@ public final class World {
                 body.updateEdgesAndNormals()
             }
             
-            body.accumulateExternalForces()
-            body.accumulateInternalForces()
+            body.accumulateExternalForces(relaxing: relaxing)
+            body.accumulateInternalForces(relaxing: relaxing)
             
             body.integrate(elapsed)
             body.updateEdgesAndNormals()
@@ -397,12 +404,14 @@ public final class World {
             }
         }
         
-        // Notify collisions that will happen
-        if let observer = collisionObserver {
-            for collision in collisionList {
-                observer.bodiesDidCollide(collision)
+        if(!relaxing) { // Disabled during relaxation
+            // Notify collisions that will happen
+            if let observer = collisionObserver {
+                for collision in collisionList {
+                    observer.bodiesDidCollide(collision)
+                }
+                observer.bodiesDidCollide(collisionList)
             }
-            observer.bodiesDidCollide(collisionList)
         }
         
         handleCollisions()
@@ -636,5 +645,97 @@ public final class World {
         }
         
         return (bitmaskX, bitmaskY)
+    }
+}
+
+// MARK: - Relaxation
+public extension World {
+    
+    /// Relaxes all bodies in this simulation so they match a more approximate
+    /// rest shape once simulation starts.
+    ///
+    /// This will move/change the position of each body after iterations are done.
+    ///
+    /// Performs collisions and joint resolving, and resets the velocities to 0
+    /// before finishing.
+    ///
+    /// All body joints/velocities/components are executed (except body components
+    /// w/ `relaxable == false`).
+    ///
+    /// - Parameters:
+    ///   - iterations: The number of iterations of relaxation to apply.
+    ///   - timestep: The timestep (in seconds) of each iteration.
+    ///
+    /// - Precondition: `iterations` > 0
+    public func relaxWorld(timestep: JFloat, iterations: Int = 100) {
+        relaxing = true
+        
+        for _ in 0...iterations {
+            update(timestep)
+        }
+        
+        relaxing = false
+        
+        // Reset all velocities
+        for body in bodies {
+            for pointMass in body.pointMasses {
+                pointMass.velocity = .zero
+            }
+        }
+    }
+    
+    /// Relaxes a list of bodies in this simulation so they match a more approximate
+    /// rest shape once simulation starts.
+    ///
+    /// This will move/change the position of each body after iterations are done.
+    ///
+    /// Performs collisions and joint resolving of only the bodies/joints that
+    /// are related to the `bodies` array, and resets the velocities to 0 before
+    /// finishing.
+    ///
+    /// Only Body Joints that involve bodies contained within the passed body
+    /// list are executed.
+    ///
+    /// All body joints/velocities/components are executed (except body components
+    /// w/ `relaxable == false`).
+    ///
+    /// - Parameters:
+    ///   - bodies: List of bodies to relax, Joints that involve a body within
+    /// this list and another body that is not are not resolved during relaxation.
+    ///   - iterations: The number of iterations of relaxation to apply.
+    ///   - timestep: The timestep (in seconds) of each iteration.
+    ///
+    /// - Precondition: `iterations` > 0
+    public func relaxBodies(in bodies: [Body], timestep: JFloat, iterations: Int = 100) {
+        relaxing = true
+        
+        // Find all joints for the bodies
+        var joints: ContiguousArray<BodyJoint> = []
+        let existingJoints =
+            bodies.flatMap {
+                $0.joints
+            }.filter {
+                bodies.contains($0.bodyLink1.body) && bodies.contains($0.bodyLink2.body)
+            }
+        
+        // Gather joints
+        for joint in existingJoints {
+            if(!joints.contains(joint)) {
+                joints.append(joint)
+            }
+        }
+        
+        for _ in 0...iterations {
+            update(timestep, withBodies: ContiguousArray(bodies), joints: joints)
+        }
+        
+        relaxing = false
+        
+        // Reset all velocities
+        for body in bodies {
+            for pointMass in body.pointMasses {
+                pointMass.velocity = .zero
+            }
+        }
     }
 }

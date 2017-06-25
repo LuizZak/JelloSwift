@@ -465,8 +465,8 @@ public final class Body: Equatable {
     /// This function should add all internal forces to the Force member
     /// variable of each PointMass in the body.
     /// These should be forces that try to maintain the shape of the body.
-    public func accumulateInternalForces() {
-        for component in components {
+    public func accumulateInternalForces(relaxing: Bool = false) {
+        for component in components where !relaxing || component.relaxable {
             component.accumulateInternalForces(in: self)
         }
     }
@@ -475,8 +475,8 @@ public final class Body: Equatable {
     /// variable of each PointMass in the body.
     /// These are external forces acting on the PointMasses, such as gravity,
     /// etc.
-    public func accumulateExternalForces() {
-        for component in components {
+    public func accumulateExternalForces(relaxing: Bool = false) {
+        for component in components where !relaxing || component.relaxable {
             component.accumulateExternalForces(on: self)
         }
     }

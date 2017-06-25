@@ -9,6 +9,21 @@
 /// Represents a component that can be added to a body to change it's physical
 /// characteristics
 public protocol BodyComponent {
+    
+    /// Whether this body component can be applied when relaxing bodies in a
+    /// simulation using `World.relaxWorld()`.
+    ///
+    /// Usually body components that apply forces that tend torwards resting over
+    /// time (e.g. Spring/Pressure components) are ideal to relax, where others
+    /// that accumulate energy indefinitely (e.g. Gravity pulling bodies down)
+    /// are suggested to not be relaxable.
+    ///
+    /// This can be configured per-component after creation by changing this
+    /// variable's value directly.
+    ///
+    /// Defaults to 'true'
+    var relaxable: Bool { get }
+    
     /// Initializes a new instance of the BodyComponent class
     init(body: Body)
     
@@ -29,6 +44,10 @@ public protocol BodyComponent {
 }
 
 extension BodyComponent {
+    public var relaxable: Bool {
+        return true
+    }
+    
     public func prepare(_ body: Body) {
         
     }

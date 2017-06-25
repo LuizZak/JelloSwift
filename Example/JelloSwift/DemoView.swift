@@ -184,6 +184,9 @@ class DemoView: UIView, CollisionObserver
         
         let platform = Body(world: world, shape: box, pointMasses: [JFloat.infinity], position: toWorldCoords(Vector2(x: size.width / 2, y: 150)))
         platform.isStatic = true
+        
+        // Relax the world a bit to reduce 'popping'
+        world.relaxWorld(timestep: 1.0 / 600, iterations: 120 * 3)
     }
     
     // MARK: - Touch
@@ -426,6 +429,10 @@ class DemoView: UIView, CollisionObserver
         let l2 = EdgeJointLink(body: b2, edgeIndex: 2, edgeRatio: 0.5)
         
         world.addJoint(SpringBodyJoint(on: world, link1: l1, link2: l2, coefficient: 100, damping: 20))
+        
+        // Allow relaxation of bodies
+        b1.component(ofType: GravityComponent.self)?.relaxable = true
+        b2.component(ofType: GravityComponent.self)?.relaxable = true
     }
     
     /// Creates a pinned box with two balls attached to one of its edges
@@ -455,6 +462,14 @@ class DemoView: UIView, CollisionObserver
         
         world.addJoint(joint1)
         world.addJoint(joint2)
+        
+        // Allow relaxation of bodies
+        b1.component(ofType: GravityComponent.self)?.relaxable = true
+        b2.component(ofType: GravityComponent.self)?.relaxable = true
+        b3.component(ofType: GravityComponent.self)?.relaxable = true
+        
+        // Relax these bodies a bit
+        world.relaxBodies(in: [b1, b2, b3], timestep: 1 / 600.0, iterations: 120 * 8)
     }
     
     /// Creates a car structure

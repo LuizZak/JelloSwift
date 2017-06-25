@@ -13,6 +13,8 @@ public final class GravityComponent: BodyComponent {
     /// The gravity vector to apply to the body
     public var gravity = Vector2(x: 0, y: -9.8)
     
+    public var relaxable: Bool = false
+    
     /// Initializes a new instance of the BodyComponent class
     public init(body: Body) {
         
