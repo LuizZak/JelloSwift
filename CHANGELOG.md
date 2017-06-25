@@ -2,7 +2,8 @@
 
 #### Develop trunk changelog:
 
-- Trunk is clean!
+- Adding `World.relaxWorld()` and `World.relaxBodies()` that allows relaxing all/a set of bodies into a more proper rest shape that will not 'pop' into their rest shape when starting to simulate. Can be called at any time during simulaton.
+- Making `BodyComponent` a protocol instead of a class.
 
 ## Stable Releases
 ---
@@ -18,7 +19,7 @@ This release affects behavior of simulations, specially ones using EdgeJointLink
 ## v0.8.0:
 
 - Replacing '...' operator for ranged resting distance for body constraints with '<->' operator.
-- Marking Vector2's inlineable implementations with @inline(__always) instead of @_transparent (easier to debug, as well).
+- Marking Vector2's inlineable implementations with `@inline(__always)` instead of `@_transparent` (easier to debug, as well).
 
 ## v0.5.1:
 
