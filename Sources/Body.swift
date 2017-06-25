@@ -321,6 +321,7 @@ public final class Body: Equatable {
         
         if(baseShape.localVertices.count != pointMasses.count) {
             pointMasses = []
+            pointMasses.reserveCapacity(baseShape.localVertices.count)
             for i in 0..<baseShape.localVertices.count {
                 pointMasses.append(PointMass(mass: 0.0, position: globalShape[i]))
             }

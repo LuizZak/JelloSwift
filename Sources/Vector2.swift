@@ -460,16 +460,32 @@ extension Vector2 {
     }
 }
 
+// MARK: Misc math
+extension Vector2 {
+    
+    /// Returns the vector that lies within this and another vector's ratio line
+    /// projected at a specified ratio along the line created by the vectors.
+    ///
+    /// A vector on ratio of 0 is the same as this vector's position, and 1 is the
+    /// same as the other vector's position.
+    ///
+    /// Values beyond 0 - 1 range project the point across the limits of the line.
+    ///
+    /// - Parameters:
+    ///   - ratio: A ratio (usually 0 through 1) between this and the second vector.
+    ///   - other: The second vector to form the line that will have the point
+    /// projected onto.
+    /// - Returns: A vector that lies within the line created by the two vectors.
+    public func ratio(_ ratio: JFloat, to other: Vector2) -> Vector2 {
+        return self + (other - self) * ratio
+    }
+}
+
 extension Collection where Iterator.Element: VectorRepresentable, IndexDistance == Int {
     /// Averages this collection of vectors into one Vector2 point
+    @inline(__always)
     public func averageVector() -> Vector2 {
-        var average = Vector2.zero
-        
-        for vec in self {
-            average += vec.vector
-        }
-        
-        return average / JFloat(count)
+        return reduce(Vector2.zero) { $0 + $1.vector } / JFloat(count)
     }
 }
 

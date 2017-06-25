@@ -33,16 +33,7 @@ open class ShapeJointLink: JointLinkType {
     /// Gets the position, in world coordinates, at which this joint links with 
     /// the underlying body
     open var position: Vector2 {
-        var center = Vector2.zero
-        
-        for p in _pointMasses {
-            center += p.position
-        }
-        
-        center /= JFloat(_pointMasses.count)
-        center += offsetPosition
-        
-        return center
+        return PointMass.averagePosition(of: _pointMasses) + offsetPosition
     }
     
     /// Offset position, calculated based on the owning body's angle
@@ -56,38 +47,18 @@ open class ShapeJointLink: JointLinkType {
     
     /// Gets the velocity of the object this joint links to
     open var velocity: Vector2 {
-        var totalVel = Vector2.zero
-        
-        for p in _pointMasses {
-            totalVel += p.velocity
-        }
-        
-        totalVel /= JFloat(_pointMasses.count)
-        
-        return totalVel
+        return PointMass.averageVelocity(of: _pointMasses)
     }
     
     /// Gets the total mass of the subject of this joint link
     open var mass: JFloat {
-        var sum: JFloat = 0
-        
-        for p in _pointMasses {
-            sum += p.mass
-        }
-        
-        return sum
+        return _pointMasses.reduce(0) { $0 + $1.mass }
     }
     
     /// Gets a value specifying whether the object referenced by this 
     /// JointLinkType is static
     open var isStatic: Bool {
-        for p in _pointMasses {
-            if(p.mass.isFinite) {
-                return false
-            }
-        }
-        
-        return true
+        return _pointMasses.any { $0.mass.isInfinite }
     }
     
     /// Inits a new point joint link with the specified parameters
