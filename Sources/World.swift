@@ -407,9 +407,6 @@ public final class World {
         if(!relaxing) { // Disabled during relaxation
             // Notify collisions that will happen
             if let observer = collisionObserver {
-                for collision in collisionList {
-                    observer.bodiesDidCollide(collision)
-                }
                 observer.bodiesDidCollide(collisionList)
             }
         }
