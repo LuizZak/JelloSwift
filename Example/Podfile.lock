@@ -1,5 +1,5 @@
 PODS:
-  - JelloSwift (0.8.0)
+  - JelloSwift (0.10.0)
   - LibTessSwift (0.6.2)
 
 DEPENDENCIES:
@@ -11,7 +11,7 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  JelloSwift: d1a05e7cc16e2c7ed9417ff7565ec42120b6e107
+  JelloSwift: 71044458abb1ecc36b60907246a932f2b92d371b
   LibTessSwift: 340c50726f38731243c2e4435945472f6675ebcd
 
 PODFILE CHECKSUM: 157e1cd318c111530b306b0f1d82a8a2800e79fa
