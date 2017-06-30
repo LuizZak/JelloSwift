@@ -73,6 +73,10 @@ struct Color4 {
         vector = Vector4()
     }
     
+    init(vector: Vector4) {
+        self.vector = vector
+    }
+    
     init(r: Int, g: Int, b: Int, a: Int) {
         vector = Vector4(x: r, y: g, z: b, w: a)
     }
@@ -102,6 +106,29 @@ struct Color4 {
     
     func toUIColor() -> UIColor {
         return UIColor(red: CGFloat(r), green: CGFloat(g), blue: CGFloat(b), alpha: CGFloat(a))
+    }
+    
+    static func fromUIntARGB(_ color: UInt) -> Color4 {
+        var r: CGFloat = 0
+        var g: CGFloat = 0
+        var b: CGFloat = 0
+        var a: CGFloat = 0
+        
+        a = CGFloat((color >> 24) & 0xff) / 255.0;
+        r = CGFloat((color >> 16) & 0xff) / 255.0;
+        g = CGFloat((color >> 8) & 0xff) / 255.0;
+        b = CGFloat((color) & 0xff) / 255.0;
+        
+        return Color4(r: r, g: g, b: b, a: a)
+    }
+    
+    func toUIntARGB() -> UInt {
+        let ru: UInt = UInt(r * 255.0)
+        let gu: UInt = UInt(g * 255.0)
+        let bu: UInt = UInt(b * 255.0)
+        let au: UInt = UInt(a * 255.0)
+        
+        return (au << 24) | (ru << 16) | (gu << 8) | bu
     }
 }
 
