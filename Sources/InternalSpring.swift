@@ -12,11 +12,11 @@ public struct InternalSpring {
     
     /// First point-mass of the spring.
     /// It's contained in the same body as `pointMassB`.
-    public let pointMassA: PointMass
+    public let pointMassA: Int
     
     /// Second point-mass of the spring.
     /// It's contained in the same body as `pointMassA`.
-    public let pointMassB: PointMass
+    public let pointMassB: Int
     
     /// Rest distance of the spring, or the distance the spring tries to
     /// maintain
@@ -40,7 +40,7 @@ public struct InternalSpring {
     public var damping: JFloat = 0
     
     @available(*, deprecated, message: "Use self.init(_:PointMass,_:PointMass,_:RestDistance,_:JFloat,_:JFloat) instead")
-    public init(_ pmA: PointMass, _ pmB: PointMass, _ distance: JFloat = 0,
+    public init(_ pmA: Int, _ pmB: Int, _ distance: JFloat = 0,
                 _ springK: JFloat, _ springD: JFloat) {
         pointMassA = pmA
         pointMassB = pmB
@@ -49,7 +49,7 @@ public struct InternalSpring {
         damping = springD
     }
     
-    public init(_ pmA: PointMass, _ pmB: PointMass, _ distance: RestDistance = 0,
+    public init(_ pmA: Int, _ pmB: Int, _ distance: RestDistance = 0,
                 _ springK: JFloat, _ springD: JFloat) {
         pointMassA = pmA
         pointMassB = pmB
