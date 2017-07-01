@@ -42,11 +42,8 @@ public final class PressureComponent: BodyComponent {
         for e in body.edges {
             let pressureV = (invVolume * e.length * gasAmmount)
             
-            let pointStart = body.pointMasses[e.startPointIndex]
-            let pointEnd = body.pointMasses[e.endPointIndex]
-            
-            pointStart.applyForce(of: body.pointNormals[e.startPointIndex] * pressureV)
-            pointEnd.applyForce(of: body.pointNormals[e.endPointIndex] * pressureV)
+            body.applyForce(body.pointNormals[e.startPointIndex] * pressureV, toPointMassAt: e.startPointIndex)
+            body.applyForce(body.pointNormals[e.endPointIndex] * pressureV, toPointMassAt: e.endPointIndex)
         }
     }
 }

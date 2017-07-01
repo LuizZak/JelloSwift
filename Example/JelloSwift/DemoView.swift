@@ -57,7 +57,7 @@ class DemoView: UIView, CollisionObserver
     var inputMode = InputMode.dragBody
     
     // The current point being dragged around
-    var draggingPoint: PointMass? = nil
+    var draggingPoint: (Body, Int)? = nil
     
     // The location of the user's finger, in physics world coordinates
     var fingerLocation = Vector2.zero
@@ -246,7 +246,7 @@ class DemoView: UIView, CollisionObserver
             let location = touch.location(in: self)
             fingerLocation = Vector2(x: location.x, y: location.y).inWorldCoords
             
-            draggingPoint = world.closestPointMass(to: fingerLocation)?.1
+            draggingPoint = world.closestPointMass(to: fingerLocation)
         }
     }
     
@@ -371,13 +371,15 @@ class DemoView: UIView, CollisionObserver
     func updateDrag()
     {
         // Dragging point
-        guard let p = draggingPoint , inputMode == InputMode.dragBody else {
+        guard let (body, pIndex) = draggingPoint, inputMode == InputMode.dragBody else {
             return
         }
         
+        let p = body.pointMasses[pIndex]
+        
         let dragForce = calculateSpringForce(posA: p.position, velA: p.velocity, posB: fingerLocation, velB: Vector2.zero, distance: 0, springK: 700, springD: 20)
         
-        p.applyForce(of: dragForce)
+        body.applyForce(dragForce, toPointMassAt: pIndex)
     }
     
     func bodiesDidCollide(_ infos: [BodyCollisionInformation])
@@ -735,12 +737,12 @@ extension DemoView {
     func drawDrag()
     {
         // Dragging point
-        guard let p = draggingPoint, inputMode == InputMode.dragBody else {
+        guard let (body, index) = draggingPoint, inputMode == InputMode.dragBody else {
             return
         }
         
         // Create the path to draw
-        let lineStart = p.position
+        let lineStart = body.pointMasses[index].position
         let lineEnd = fingerLocation
         
         drawLine(from: lineStart, to: lineEnd, color: 0xFF00DD00)

@@ -25,8 +25,8 @@ public final class GravityComponent: BodyComponent {
     /// before applying the force, resulting in uniform velocity application in
     /// all bodies.
     public func accumulateExternalForces(on body: Body) {
-        for point in body.pointMasses {
-            point.applyForce(of: gravity * point.mass)
+        for i in 0..<body.pointMasses.count {
+            body.applyForce(gravity * body.pointMasses[i].mass, toPointMassAt: i)
         }
     }
     

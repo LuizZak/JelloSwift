@@ -7,7 +7,7 @@
 //
 
 /// Specifies a point mass that composes a body
-public final class PointMass: VectorRepresentable {
+public struct PointMass: VectorRepresentable {
     /// The mass of this point mass.
     /// Leave this value always `> 0` to maintain consistency on the simulation,
     /// unless the point is supposed to be fixed.
@@ -36,7 +36,7 @@ public final class PointMass: VectorRepresentable {
     ///
     /// - parameter elapsed: The elapsed time to integrate by, usually in 
     /// seconds
-    public func integrate(_ elapsed: JFloat) {
+    public mutating func integrate(_ elapsed: JFloat) {
         if (mass.isFinite) {
             let elapMass = elapsed / mass
             
@@ -49,7 +49,7 @@ public final class PointMass: VectorRepresentable {
     }
     
     // Applies the given force vector to this point mass
-    public func applyForce(of force: Vector2) {
+    public mutating func applyForce(of force: Vector2) {
         self.force += force
     }
     

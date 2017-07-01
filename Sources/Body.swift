@@ -21,13 +21,13 @@ public func ==(lhs: Body, rhs: Body) -> Bool {
 /// Represents a soft body on the world
 public final class Body: Equatable {
     /// List of edges on the body
-    internal(set) public var edges: [BodyEdge] = []
+    fileprivate(set) public var edges: [BodyEdge] = []
     
     /// List of point normals
-    internal(set) public var pointNormals: [Vector2] = []
+    fileprivate(set) public var pointNormals: [Vector2] = []
     
     /// List of body joints this body participates in
-    public internal(set) var joints: ContiguousArray<BodyJoint> = []
+    internal(set) public var joints: ContiguousArray<BodyJoint> = []
     
     /// The base shape for the body
     public var baseShape = ClosedShape()
@@ -37,7 +37,7 @@ public final class Body: Equatable {
     public var globalShape: [Vector2] = []
     
     /// The array of point masses for the body
-    public fileprivate(set) var pointMasses: ContiguousArray<PointMass> = []
+    fileprivate(set) public var pointMasses: [PointMass] = []
     
     /// The scale for this body's shape
     public var scale = Vector2.unit
@@ -208,33 +208,14 @@ public final class Body: Equatable {
             edges = .init(repeating: BodyEdge(), count: c)
         }
         
-        // Use unsafeBufferPointer for iteration because Swift still plucks in
-        // unnecessary retain/release calls
-        // FIXME: Remove and go back to traditional loop once ARC gets smarter
-        // about retain/releases.
-        pointMasses.withUnsafeBufferPointer { pointer -> Void in
-            // Update edges
-            for i in 0..<c {
-                let j = (i &+ 1) % c
-                let curP = pointer[i].position
-                let nextP = pointer[j].position
-                
-                edges[i] = BodyEdge(edgeIndex: i, startPointIndex: i,
-                                    endPointIndex: j, start: curP,
-                                    end: nextP)
-            }
-        }
-        
-        /*
         for (i, curP) in pointMasses.enumerated() {
             let j = (i &+ 1) % c
-            unowned(unsafe) let nextP = pointMasses[j]
+            let nextP = pointMasses[j]
             
             edges[i] = BodyEdge(edgeIndex: i, startPointIndex: i,
                                 endPointIndex: j, start: curP.position,
                                 end: nextP.position)
         }
-        */
     }
     
     /// Updates the point normals of the body
@@ -337,7 +318,9 @@ public final class Body: Equatable {
     
     /// Sets the mass for all the PointMass objects in this body
     public func setMassAll(_ mass: JFloat) {
-        pointMasses.forEach { $0.mass = mass }
+        for i in 0..<pointMasses.count {
+            pointMasses[i].mass = mass
+        }
         
         isStatic = mass.isInfinite
     }
@@ -355,8 +338,8 @@ public final class Body: Equatable {
     /// sets up to the count of masses in the array, if larger, it sets the
     /// matching masses for all point masses, and ignores the rest of the array
     public func setMass(fromList masses: [JFloat]) {
-        for (mass, pointMass) in zip(masses, pointMasses) {
-            pointMass.mass = mass
+        for (mass, i) in zip(masses, 0..<pointMasses.count) {
+            pointMasses[i].mass = mass
         }
         
         // Re-evaluate whether body is static
@@ -371,8 +354,8 @@ public final class Body: Equatable {
         
         baseShape.transformVertices(&globalShape, matrix: matrix)
         
-        for (global, pm) in zip(globalShape, pointMasses) {
-            pm.position = global
+        for (global, i) in zip(globalShape, 0..<pointMasses.count) {
+            pointMasses[i].position = global
         }
         
         updateEdges()
@@ -494,8 +477,8 @@ public final class Body: Equatable {
             return
         }
         
-        for pointMass in pointMasses {
-            pointMass.integrate(elapsed)
+        for i in 0..<pointMasses.count {
+            pointMasses[i].integrate(elapsed)
         }
     }
     
@@ -506,8 +489,10 @@ public final class Body: Equatable {
             return
         }
         
-        for pointMass in pointMasses {
-            pointMass.velocity -= (pointMass.velocity - (pointMass.velocity * velDamping)) * (elapsed * 200)
+        for (i, pointMass) in pointMasses.enumerated() {
+            //pointMass.velocity -= (pointMass.velocity - (pointMass.velocity * velDamping)) * (elapsed * 200)
+            
+            applyVelocity(-(pointMass.velocity - (pointMass.velocity * velDamping)) * (elapsed * 200), toPointMassAt: i)
         }
     }
     
@@ -519,10 +504,10 @@ public final class Body: Equatable {
         }
         
         // Accelerate the body
-        for pm in pointMasses {
+        for (i, pm) in pointMasses.enumerated() {
             let diff = (pm.position - derivedPos).normalized().perpendicular()
             
-            pm.applyForce(of: diff * force)
+            applyForce(diff * force, toPointMassAt: i)
         }
     }
     
@@ -537,10 +522,10 @@ public final class Body: Equatable {
         }
         
         // Accelerate the body
-        for pm in pointMasses {
+        for (i, pm) in pointMasses.enumerated() {
             let diff = (pm.position - derivedPos).normalized().perpendicular()
             
-            pm.velocity = derivedVel + diff * vel
+            setVelocity(derivedVel + diff * vel, ofPointMassAt: i)
         }
     }
     
@@ -551,10 +536,10 @@ public final class Body: Equatable {
         }
         
         // Accelerate the body
-        for pm in pointMasses {
+        for (i, pm) in pointMasses.enumerated() {
             let diff = (pm.position - derivedPos).normalized().perpendicular()
             
-            pm.velocity += diff * vel
+            applyVelocity(diff * vel, toPointMassAt: i)
         }
     }
     
@@ -824,21 +809,20 @@ public final class Body: Equatable {
     /// [0-1] inclusive
     ///     - **edgePoint1**: The first point mass on the edge
     ///     - **edgePoint2**: The second point mass on the edge
-    public func closestEdge(to pt: Vector2, withTolerance tolerance: JFloat = JFloat.infinity) -> (edgePosition: Vector2, edgeRatio: JFloat, edgePoint1: PointMass, edgePoint2: PointMass)? {
+    public func closestEdge(to pt: Vector2, withTolerance tolerance: JFloat = JFloat.infinity) -> (edgePosition: Vector2, edgeRatio: JFloat, edgePoint1: Int, edgePoint2: Int)? {
         if(pointMasses.count == 0) {
             return nil
         }
         
         var found = false
-        var closestP1 = pointMasses[0]
-        var closestP2 = closestP1
+        var closestP1 = 0// pointMasses[0]
+        var closestP2 = 0// closestP1
         var edgePosition = Vector2.zero
         var edgeRatio: JFloat = 0
         var closestD = JFloat.infinity
         
         for edge in edges {
             let pm = pointMasses[edge.startPointIndex]
-            let pm2 = pointMasses[edge.endPointIndex]
             
             let adotb = ((pm.position - pt) • edge.difference).clamped(minimum: 0, maximum: edge.length)
             
@@ -853,8 +837,8 @@ public final class Body: Equatable {
             
             if(curD < closestD && curD < tolerance) {
                 found = true
-                closestP1 = pm
-                closestP2 = pm2
+                closestP1 = edge.startPointIndex
+                closestP2 = edge.endPointIndex
                 edgePosition = pm.position - d
                 edgeRatio = adotb / edge.length
                 closestD = curD
@@ -870,18 +854,18 @@ public final class Body: Equatable {
     
     /// Find the closest PointMass index in this body, given a global point
     /// - precondition: There is at least one point mass in this body
-    public func closestPointMass(to pos: Vector2) -> (point: PointMass, distance: JFloat) {
+    public func closestPointMass(to pos: Vector2) -> (point: Int, distance: JFloat) {
         assert(pointMasses.count > 0)
         
         var closestSQD = JFloat.greatestFiniteMagnitude
-        var closest: PointMass!
+        var closest: Int!
         
-        for point in pointMasses {
+        for (i, point) in pointMasses.enumerated() {
             let thisD = pos.distanceSquared(to: point.position)
             
             if(thisD < closestSQD) {
                 closestSQD = thisD
-                closest = point
+                closest = i
             }
         }
         
@@ -906,10 +890,10 @@ public final class Body: Equatable {
         
         let torqueF = (derivedPos - pt) • force.perpendicular()
         
-        for point in pointMasses {
+        for (i, point) in pointMasses.enumerated() {
             let tempR = (point.position - pt).perpendicular()
             
-            point.applyForce(of: force + tempR * torqueF)
+            applyForce(force + tempR * torqueF, toPointMassAt: i)
         }
     }
     
@@ -923,8 +907,8 @@ public final class Body: Equatable {
             return
         }
         
-        for pointMass in pointMasses {
-            pointMass.velocity += velocity
+        for i in 0..<pointMasses.count {
+            applyVelocity(velocity, toPointMassAt: i)
         }
     }
     
@@ -940,9 +924,29 @@ public final class Body: Equatable {
             return
         }
         
-        for pointMass in pointMasses {
+        for (i, pointMass) in pointMasses.enumerated() {
             let diff = pointMass.velocity - derivedVel
-            pointMass.velocity = velocity + diff
+            
+            setVelocity(velocity + diff, ofPointMassAt: i)
         }
+    }
+}
+
+extension Body {
+    
+    public func applyForce(_ force: Vector2, toPointMassAt index: Int) {
+        pointMasses[index].applyForce(of: force)
+    }
+    
+    public func applyVelocity(_ velocity: Vector2, toPointMassAt index: Int) {
+        pointMasses[index].velocity += velocity
+    }
+    
+    public func setVelocity(_ velocity: Vector2, ofPointMassAt index: Int) {
+        pointMasses[index].velocity = velocity
+    }
+    
+    public func setPosition(_ position: Vector2, ofPointMassAt index: Int) {
+        pointMasses[index].position = position
     }
 }
