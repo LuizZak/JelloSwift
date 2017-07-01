@@ -225,6 +225,35 @@ extension Vector2 {
         return lhs.theVector.x == rhs.theVector.x && lhs.theVector.y == rhs.theVector.y
     }
     
+    /// Compares two vectors and returns if `lhs` is greater than `rhs`.
+    ///
+    /// Performs `lhs.x > rhs.x && lhs.y > rhs.y`
+    static public func >(lhs: Vector2, rhs: Vector2) -> Bool {
+        return lhs.theVector.x > rhs.theVector.x && lhs.theVector.y > rhs.theVector.y
+    }
+    
+    /// Compares two vectors and returns if `lhs` is greater than or equal to
+    /// `rhs`.
+    ///
+    /// Performs `lhs.x >= rhs.x && lhs.y >= rhs.y`
+    static public func >=(lhs: Vector2, rhs: Vector2) -> Bool {
+        return lhs.theVector.x >= rhs.theVector.x && lhs.theVector.y >= rhs.theVector.y
+    }
+    
+    /// Compares two vectors and returns if `lhs` is less than `rhs`.
+    ///
+    /// Performs `lhs.x < rhs.x && lhs.y < rhs.y`
+    static public func <(lhs: Vector2, rhs: Vector2) -> Bool {
+        return lhs.theVector.x < rhs.theVector.x && lhs.theVector.y < rhs.theVector.y
+    }
+    
+    /// Compares two vectors and returns if `lhs` is less than or equal to `rhs`.
+    ///
+    /// Performs `lhs.x <= rhs.x && lhs.y <= rhs.y`
+    static public func <=(lhs: Vector2, rhs: Vector2) -> Bool {
+        return lhs.theVector.x <= rhs.theVector.x && lhs.theVector.y <= rhs.theVector.y
+    }
+    
     // Unary operators
     @inline(__always)
     static public prefix func -(lhs: Vector2) -> Vector2 {
