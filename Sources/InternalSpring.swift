@@ -8,7 +8,7 @@
 
 /// Represents an internal spring inside a soft body object, and keeps points
 /// close together
-public struct InternalSpring {
+public struct InternalSpring: Codable {
     
     /// First point-mass of the spring.
     /// It's contained in the same body as `pointMassB`.
