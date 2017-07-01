@@ -10,13 +10,29 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
+    @IBOutlet weak var btnRenderingMode: UIButton!
+    
+    var demo: DemoView!
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
         
         self.view.backgroundColor = UIColor(white: 0.7, alpha: 1)
         
-        let demo = DemoView(frame: view.frame)
-        view.addSubview(demo)
+        btnRenderingMode.layer.cornerRadius = 5
+        btnRenderingMode.layer.borderWidth = 2
+        btnRenderingMode.layer.borderColor = UIColor(white: 0, alpha: 0.5).cgColor
+        btnRenderingMode.imageEdgeInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
+        btnRenderingMode.backgroundColor = UIColor(white: 0.7, alpha: 1)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        // Must be created on viewDidAppear to ensure view controller is sized
+        // correctly by now
+        demo = DemoView(frame: view.frame)
+        view.insertSubview(demo, at: 0)
         
         view.addConstraints(
             NSLayoutConstraint.constraints(withVisualFormat: "H:|[demo]|",
@@ -31,5 +47,15 @@ class ViewController: UIViewController {
                                            metrics: nil,
                                            views: ["demo": demo])
         )
+    }
+    
+    @IBAction func didTapRenderingMode(_ sender: UIButton) {
+        demo.useDetailedRender = !demo.useDetailedRender
+        
+        if(!demo.useDetailedRender) {
+            btnRenderingMode.setImage(UIImage(named: "img_detailed"), for: .normal)
+        } else {
+            btnRenderingMode.setImage(UIImage(named: "img_simple"), for: .normal)
+        }
     }
 }

@@ -68,34 +68,18 @@ class DemoView: UIView, CollisionObserver
     /// Whether to perform a detailed render of the scene. Detailed rendering
     /// renders, along with the body shape, the body's normals, global shape and
     /// axis, and collision normals
-    var useDetailedRender = false
+    var useDetailedRender = true
     
     var collisions: [BodyCollisionInformation] = []
     
-    override init(frame: CGRect)
-    {
+    override init(frame: CGRect) {
         physicsTimeLabel = UILabel()
         renderTimeLabel = UILabel()
         
         super.init(frame: frame)
         
         initLabels()
-        
-        // Do any additional setup after loading the view.
-        timer = CADisplayLink(target: self, selector: #selector(DemoView.gameLoop))
-        timer.add(to: RunLoop.main, forMode: RunLoopMode.defaultRunLoopMode)
-        
-        initializeLevel()
-        
-        viewportMatrix = Vector2.matrix(scalingBy: 1.0 / renderingScale)
-        
-        renderingOffset = Vector2(x: 300, y: frame.size.height)
-        renderingScale = Vector2(x: renderingScale.x, y: -renderingScale.y)
-        
-        isOpaque = false
-        
-        world.collisionObserver = self
-        
+        initSettings()
         initOpenGL()
     }
     
@@ -105,19 +89,36 @@ class DemoView: UIView, CollisionObserver
         renderTimeLabel = UILabel()
         
         super.init(coder: aDecoder)
-        
-        initLabels()
-        
-        initOpenGL()
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        context.resetContext()
+        if(context != nil) {
+            context.resetContext()
+        }
+        
+        renderingOffset = Vector2(x: 300, y: frame.height)
         
         physicsTimeLabel.frame = CGRect(x: 20, y: 20, width: self.bounds.width - 40, height: 20)
         renderTimeLabel.frame = CGRect(x: 20, y: 37, width: self.bounds.width - 40, height: 20)
+    }
+    
+    func initSettings() {
+        // Do any additional setup after loading the view.
+        timer = CADisplayLink(target: self, selector: #selector(DemoView.gameLoop))
+        timer.add(to: RunLoop.main, forMode: RunLoopMode.defaultRunLoopMode)
+        
+        initializeLevel()
+        
+        viewportMatrix = Vector2.matrix(scalingBy: 1.0 / renderingScale)
+        
+        renderingOffset = Vector2(x: 300, y: frame.height)
+        renderingScale = Vector2(x: renderingScale.x, y: -renderingScale.y)
+        
+        isOpaque = false
+        
+        world.collisionObserver = self
     }
     
     func initOpenGL() {
@@ -226,7 +227,7 @@ class DemoView: UIView, CollisionObserver
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?)
     {
         /* Called when a touch begins */
-        if(inputMode == InputMode.createBall)
+        if(inputMode == .createBall)
         {
             for touch: AnyObject in touches
             {
@@ -237,7 +238,7 @@ class DemoView: UIView, CollisionObserver
                 createBouncyBall(vecLoc)
             }
         }
-        else if(inputMode == InputMode.dragBody)
+        else if(inputMode == .dragBody)
         {
             // Select the closest point-mass to drag
             let touch: UITouch = touches.first!
