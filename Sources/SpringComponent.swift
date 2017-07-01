@@ -47,10 +47,10 @@ public final class SpringComponent: BodyComponent {
     @discardableResult
     public func addInternalSpring(_ body: Body, pointA: Int, pointB: Int,
                                   springK: JFloat, damping: JFloat) -> InternalSpring {
-        let pointA = body.pointMasses[pointA]
-        let pointB = body.pointMasses[pointB]
+        let pA = body.pointMasses[pointA]
+        let pB = body.pointMasses[pointB]
         
-        let dist = RestDistance.fixed(pointA.position.distance(to: pointB.position))
+        let dist = RestDistance.fixed(pA.position.distance(to: pB.position))
         
         let spring = InternalSpring(pointA, pointB, dist, springK, damping)
         
@@ -65,9 +65,6 @@ public final class SpringComponent: BodyComponent {
     public func addInternalSpring(_ body: Body, pointA: Int, pointB: Int,
                                   springK: JFloat, damping: JFloat,
                                   dist: JFloat) -> InternalSpring {
-        let pointA = body.pointMasses[pointA]
-        let pointB = body.pointMasses[pointB]
-        
         let spring = InternalSpring(pointA, pointB, dist, springK, damping)
         
         springs.append(spring)
@@ -80,9 +77,6 @@ public final class SpringComponent: BodyComponent {
     public func addInternalSpring(_ body: Body, pointA: Int, pointB: Int,
                                   springK: JFloat, damping: JFloat,
                                   dist: RestDistance) -> InternalSpring {
-        let pointA = body.pointMasses[pointA]
-        let pointB = body.pointMasses[pointB]
-        
         let dist = dist
         
         let spring = InternalSpring(pointA, pointB, dist, springK, damping)
@@ -171,8 +165,8 @@ public final class SpringComponent: BodyComponent {
     
     public func accumulateInternalForces(in body: Body) {
         for s in springs {
-            let p1 = s.pointMassA
-            let p2 = s.pointMassB
+            let p1 = body.pointMasses[s.pointMassA]
+            let p2 = body.pointMasses[s.pointMassB]
             
             let force: Vector2
             

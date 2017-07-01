@@ -2,12 +2,22 @@
 
 #### Develop trunk changelog:
 
+- Trunk is clean!
+
+## Stable Releases
+---
+
+## v0.10.0:
+
+This is a breaking release. See bellow `BodyComponent` and `CollisionObserver` changes.
+
 - Adding `World.relaxWorld()` and `World.relaxBodies()` that allows relaxing all/a set of bodies into a more proper rest shape that will not 'pop' into their rest shape when starting to simulate. Can be called at any time during simulaton.
 - Making `BodyComponent` a protocol instead of a class.
 - Removing deprecated `CollisionObserver.bodiesDidCollide(_ info: BodyCollisionInformation)` protocol method.
 
-## Stable Releases
----
+## v0.9.1:
+
+- Adding macOS to supported platforms.
 
 ## v0.9.0:
 

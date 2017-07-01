@@ -127,13 +127,7 @@ public struct AABB: Codable {
             return false
         }
         
-        if(point.x >= minimum.x && point.y >= minimum.y) {
-            if(point.x <= maximum.x && point.y <= maximum.y) {
-                return true
-            }
-        }
-        
-        return false
+        return point >= minimum && point <= maximum
     }
     
     /// Returns whether this AABB intersects the given AABB instance.
@@ -146,15 +140,7 @@ public struct AABB: Codable {
             return false
         }
         
-        // X overlap check.
-        if((minimum.x <= box.maximum.x) && (maximum.x >= box.minimum.x)) {
-            // Y overlap check
-            if((minimum.y <= box.maximum.y) && (maximum.y >= box.minimum.y)) {
-                return true
-            }
-        }
-        
-        return false
+        return minimum <= box.maximum && maximum >= box.minimum
     }
 }
 

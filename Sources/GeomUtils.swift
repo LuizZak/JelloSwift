@@ -13,7 +13,7 @@ public func polygonArea<T: BidirectionalCollection>(of points: T) -> JFloat wher
     
     if var v2 = points.last {
         for p in points {
-            area += (v2.vector.x + p.vector.x) * (v2.vector.y - p.vector.y)
+            area -= v2.vector.cross(p.vector)
             v2 = p
         }
     }
@@ -29,7 +29,7 @@ public func lineIntersect(lineA: (start: Vector2, end: Vector2),
     let denom = ((lineB.end.y - lineB.start.y) * (lineA.end.x - lineA.start.x)) - ((lineB.end.x - lineB.start.x) * (lineA.end.y - lineA.start.y))
     
     // if denom == 0, lines are parallel - being a bit generous on this one..
-    if (abs(denom) < JFloat.leastNonzeroMagnitude) {
+    if (abs(denom) < .leastNonzeroMagnitude) {
         return nil
     }
     
@@ -55,7 +55,7 @@ public func calculateSpringForce(posA: Vector2, velA: Vector2, posB: Vector2, ve
     var dist = posA.distance(to: posB)
     
     if (dist <= 0.0000005) {
-        return Vector2.zero
+        return .zero
     }
     
     let BtoA = (posA - posB) / dist

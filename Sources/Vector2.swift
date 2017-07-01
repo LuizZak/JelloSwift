@@ -21,7 +21,7 @@ public protocol VectorRepresentable {
 ///
 /// Currently: Double
 public typealias JFloat = Double
-#else
+#elseif arch(i386) || arch(arm)
 /// Represents the standard floating point type used by JelloSwift.
 /// It is a double precision floating point in 64-bits platforms, and
 /// single-precision in 32-bit platforms.
@@ -39,6 +39,10 @@ public struct Vector2: VectorRepresentable, Equatable, CustomStringConvertible, 
     /// An unit-valued Vector2
     public static let unit = Vector2(x: 1, y: 1)
     
+    /// An unit-valued Vector2.
+    /// Aliast for 'unit'.
+    public static let one = unit
+    
     #if arch(x86_64) || arch(arm64)
     /// Used to match `JFloat`'s native type
     public typealias NativeVectorType = double2
@@ -49,7 +53,7 @@ public struct Vector2: VectorRepresentable, Equatable, CustomStringConvertible, 
     
     /// This is used during affine transformation
     public typealias HomogenousVectorType = double3
-    #else
+    #elseif arch(i386) || arch(arm)
     ///Used to match `JFloat`'s native type
     public typealias NativeVectorType = float2
     
@@ -213,6 +217,35 @@ extension Vector2 {
     @inline(__always)
     static public func ==(lhs: Vector2, rhs: Vector2) -> Bool {
         return lhs.theVector.x == rhs.theVector.x && lhs.theVector.y == rhs.theVector.y
+    }
+    
+    /// Compares two vectors and returns if `lhs` is greater than `rhs`.
+    ///
+    /// Performs `lhs.x > rhs.x && lhs.y > rhs.y`
+    static public func >(lhs: Vector2, rhs: Vector2) -> Bool {
+        return lhs.theVector.x > rhs.theVector.x && lhs.theVector.y > rhs.theVector.y
+    }
+    
+    /// Compares two vectors and returns if `lhs` is greater than or equal to
+    /// `rhs`.
+    ///
+    /// Performs `lhs.x >= rhs.x && lhs.y >= rhs.y`
+    static public func >=(lhs: Vector2, rhs: Vector2) -> Bool {
+        return lhs.theVector.x >= rhs.theVector.x && lhs.theVector.y >= rhs.theVector.y
+    }
+    
+    /// Compares two vectors and returns if `lhs` is less than `rhs`.
+    ///
+    /// Performs `lhs.x < rhs.x && lhs.y < rhs.y`
+    static public func <(lhs: Vector2, rhs: Vector2) -> Bool {
+        return lhs.theVector.x < rhs.theVector.x && lhs.theVector.y < rhs.theVector.y
+    }
+    
+    /// Compares two vectors and returns if `lhs` is less than or equal to `rhs`.
+    ///
+    /// Performs `lhs.x <= rhs.x && lhs.y <= rhs.y`
+    static public func <=(lhs: Vector2, rhs: Vector2) -> Bool {
+        return lhs.theVector.x <= rhs.theVector.x && lhs.theVector.y <= rhs.theVector.y
     }
     
     // Unary operators

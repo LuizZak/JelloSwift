@@ -446,8 +446,7 @@ public final class Body: Equatable {
     
         derivedAngle = angle
         
-        // now calculate the derived Omega, based on change in angle over
-        // time.
+        // now calculate the derived Omega, based on change in angle over time.
         var angleChange = (derivedAngle - lastAngle)
     
         if ((angleChange < 0 ? -angleChange : angleChange) >= .pi) {
@@ -523,6 +522,9 @@ public final class Body: Equatable {
     
     /// Sets the angular velocity for this body.
     /// Ignored, if body is static.
+    ///
+    /// The method keeps the average velocity of the point masses the same during
+    /// the proceedure.
     public func setAngularVelocity(_ vel: JFloat) {
         if(isStatic) {
             return
@@ -532,7 +534,7 @@ public final class Body: Equatable {
         for pm in pointMasses {
             let diff = (pm.position - derivedPos).normalized().perpendicular()
             
-            pm.velocity = diff * vel
+            pm.velocity = derivedVel + diff * vel
         }
     }
     
@@ -859,8 +861,10 @@ public final class Body: Equatable {
     }
     
     /// Find the closest PointMass index in this body, given a global point
-    /// - note: **Pre condition:** There is at least one point mass in this body
+    /// - precondition: There is at least one point mass in this body
     public func closestPointMass(to pos: Vector2) -> (point: PointMass, distance: JFloat) {
+        assert(pointMasses.count > 0)
+        
         var closestSQD = JFloat.greatestFiniteMagnitude
         var closest: PointMass!
         
@@ -913,6 +917,24 @@ public final class Body: Equatable {
         
         for pointMass in pointMasses {
             pointMass.velocity += velocity
+        }
+    }
+    
+    /// Modifies the average velocity of all point masses to a certain value.
+    /// The method keeps the individual difference of velocity between the point
+    /// masses and the average body velocity while making the operation.
+    /// Does nothing, if body is static.
+    ///
+    /// - Parameter velocity: The velocity to set. Set as `.zero` to reset average
+    /// velocity of the body to 0.
+    public func setAverageVelocity(_ velocity: Vector2) {
+        if(isStatic) {
+            return
+        }
+        
+        for pointMass in pointMasses {
+            let diff = pointMass.velocity - derivedVel
+            pointMass.velocity = velocity + diff
         }
     }
 }

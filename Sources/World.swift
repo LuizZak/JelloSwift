@@ -110,7 +110,7 @@ public final class World {
             materialPairs.append([])
             
             for j in 0..<materialCount {
-                if ((i < (materialCount - 1)) && (j < (materialCount - 1))) {
+                if ((i < materialCount - 1) && (j < materialCount - 1)) {
                     materialPairs[i].append(old[i][j])
                 } else {
                     materialPairs[i].append(defaultMatPair)
@@ -338,10 +338,10 @@ public final class World {
             // components
             if(body.componentCount > 0) {
                 body.updateEdgesAndNormals()
+                
+                body.accumulateExternalForces(relaxing: relaxing)
+                body.accumulateInternalForces(relaxing: relaxing)
             }
-            
-            body.accumulateExternalForces(relaxing: relaxing)
-            body.accumulateInternalForces(relaxing: relaxing)
             
             body.integrate(elapsed)
             body.updateEdgesAndNormals()
