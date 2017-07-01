@@ -278,17 +278,17 @@ public final class World {
     /// - Parameters:
     ///   - start: The start point to cast the ray from, in world coordinates
     ///   - end: The end point to end the ray cast at, in world coordinates
-    ///   - bitmask: An optional collision bitmask that filters the
-    /// bodies to collide using a bitwise AND (|) operation.
+    ///   - bitmask: An optional collision bitmask that filters the bodies to
+    /// collide using a bitwise AND (|) operation.
     /// If the value specified is 0, collision filtering is ignored and all
     /// bodies are considered for collision
-    ///   - ignoreList: A custom list of bodies that will be ignored during
-    /// collision checking. Provide an empty list to consider all bodies in
-    /// the world
+    ///   - ignoreTest: Optional closure that will be called for each body along
+    /// the way (not guaranteed to execute in order of farthest to closest body)
+    /// that tests whether the body should be ignored during ray casting.
     /// - Returns: An optional tuple containing the farthest point reached by
     /// the ray, and a Body value specifying the body that was closest to the
     /// ray, if it hit any body, or nil if it hit nothing.
-    public func rayCast(from start: Vector2, to end: Vector2, bitmask: Bitmask = 0, ignoring ignoreList: [Body] = []) -> (retPt: Vector2, body: Body)? {
+    public func rayCast(from start: Vector2, to end: Vector2, bitmask: Bitmask = 0, ignoreTest: ((Body) -> Bool)?) -> (retPt: Vector2, body: Body)? {
         var aabb = AABB(points: [start, end])
         var aabbBitmask = self.bitmask(for: aabb)
         var result: (Vector2, Body)?
@@ -298,7 +298,11 @@ public final class World {
                 continue
             }
             
-            guard (bitmask == 0 || (body.bitmask & bitmask) != 0) && !ignoreList.contains(body) else {
+            guard (bitmask == 0 || (body.bitmask & bitmask) != 0) else {
+                continue
+            }
+            // Test body ignore
+            if ignoreTest?(body) == true {
                 continue
             }
             
