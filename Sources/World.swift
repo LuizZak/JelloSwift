@@ -294,29 +294,28 @@ public final class World {
         var result: (Vector2, Body)?
         
         for body in bodies {
-            if !bitmasksIntersect(aabbBitmask, (body.bitmaskX, body.bitmaskY)) {
-                continue
-            }
-            
             guard (bitmask == 0 || (body.bitmask & bitmask) != 0) else {
                 continue
             }
-            // Test body ignore
-            if ignoreTest?(body) == true {
+            guard bitmasksIntersect(aabbBitmask, (body.bitmaskX, body.bitmaskY)) else {
                 continue
             }
-            
-            if !body.aabb.intersects(aabb) {
+            guard body.aabb.intersects(aabb) else {
+                continue
+            }
+            guard ignoreTest?(body) != true else {
                 continue
             }
             
             // If we hit the body, shorten the length of the ray and keep iterating
-            if let ret = body.raycast(from: start, to: end) {
-                result = (ret, body)
-                
-                aabb = AABB(points: [start, ret])
-                aabbBitmask = self.bitmask(for: aabb)
+            guard let ret = body.raycast(from: start, to: end) else {
+                continue
             }
+            
+            result = (ret, body)
+            
+            aabb = AABB(points: [start, ret])
+            aabbBitmask = self.bitmask(for: aabb)
         }
         
         return result
