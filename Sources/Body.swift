@@ -417,15 +417,18 @@ public final class Body: Equatable {
         var originalAngle: JFloat = 0
         
         let c = pointMasses.count
-        for (i, pm) in pointMasses.enumerated() {
-            let baseNorm = baseShape[i].normalized()
+        var first = true
+        for (base, pm) in zip(baseShape, pointMasses) {
+            let baseNorm = base.normalized()
             let curNorm  = (pm.position - meanPos).normalized()
             
             var thisAngle = atan2(baseNorm.x * curNorm.y - baseNorm.y * curNorm.x, baseNorm • curNorm)
             
-            if (i == 0) {
+            if (first) {
                 originalSign = (thisAngle >= 0.0) ? 1 : -1
                 originalAngle = thisAngle
+                
+                first = false
             } else {
                 let diff = (thisAngle - originalAngle)
                 let thisSign = (thisAngle >= 0.0) ? 1 : -1
@@ -638,7 +641,7 @@ public final class Body: Equatable {
     /// body
     public func intersectsLine(from start: Vector2, to end: Vector2) -> Bool {
         // Create and test against a temporary line AABB
-        if(!aabb.intersects(AABB(points: [start, end]))) {
+        if(!aabb.intersects(AABB(min: min(start, end), max: max(start, end)))) {
             return false
         }
         

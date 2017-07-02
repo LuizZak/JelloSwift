@@ -785,10 +785,8 @@ extension DemoView {
         // Draw normals, for pressure bodies
         if body.component(ofType: PressureComponent.self) != nil
         {
-            for (i, normal) in body.pointNormals.enumerated()
+            for (p, normal) in zip(shapePoints, body.pointNormals)
             {
-                let p = shapePoints[i]
-                
                 drawLine(from: p, to: p + normal / 3, color: 0xFFEC33EC)
             }
         }
