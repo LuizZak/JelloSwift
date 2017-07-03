@@ -124,6 +124,9 @@ public final class Body: Equatable {
     /// The Y-axis bitmask for the body - used for collision filtering
     public var bitmaskY: Bitmask = 0
     
+    /// Whether this body's bitmaskX & bitmaskY are stale
+    internal var _bitmasksStale: Bool = true
+    
     public init(world: World?, shape: ClosedShape, pointMasses: [JFloat] = [1],
                 position: Vector2 = Vector2.zero, angle: JFloat = 0,
                 scale: Vector2 = Vector2.unit, kinematic: Bool = false,

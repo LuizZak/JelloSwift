@@ -220,7 +220,15 @@ public final class World {
     
     /// Returns a vector of bodies intersecting with the given line.
     public func bodiesIntersecting(lineFrom start: Vector2, to end: Vector2, bitmask: Bitmask = 0) -> [Body] {
-        return bodies.filter { (bitmask == 0 || ($0.bitmask & bitmask) != 0) && $0.intersectsLine(from: start, to: end) }
+        return bodies.filter { body -> Bool in
+            if(body._bitmasksStale) {
+                updateBodyBitmask(body)
+            }
+            
+            return
+                (bitmask == 0 || (body.bitmask & bitmask) != 0) &&
+                    body.intersectsLine(from: start, to: end)
+        }
     }
     
     /// Returns all bodies that overlap a given closed shape, on a given point
@@ -228,16 +236,18 @@ public final class World {
     ///
     /// - Parameters:
     ///   - closedShape: A closed shape that represents the segments to query.
-    ///                  Should contain at least 2 points.
-    ///
-    ///   - worldPos: The location in world coordinates to put the closed
-    ///               shape's center at when performing the query. For closed
-    ///               shapes that have absolute coordinates, this parameter must
-    ///               be `Vector2.zero`.
+    /// Should contain at least 2 points.
+    ///   - worldPos: The location in world coordinates to put the closed shape's
+    /// center at when performing the query. For closed shapes that have absolute
+    /// coordinates, this parameter must be `Vector2.zero`.
+    ///   - ignoreTest: An optional closure applied to every body intersecting 
+    /// the line to filter out results. If the closure return `true`, the body
+    /// is ignored in the results list.
+    /// Defaults to nil.
     ///
     /// - Returns: All bodies that intersect with the closed shape. If closed
     ///            shape contains less than 2 points, returns empty.
-    public func bodiesIntersecting(closedShape: ClosedShape, at worldPos: Vector2) -> ContiguousArray<Body> {
+    public func bodiesIntersecting(closedShape: ClosedShape, at worldPos: Vector2, ignoreTest: ((Body) -> Bool)? = nil) -> ContiguousArray<Body> {
         if(closedShape.localVertices.count < 2) {
             return []
         }
@@ -249,6 +259,10 @@ public final class World {
         var results = ContiguousArray<Body>()
         
         for body in bodies {
+            if(body._bitmasksStale) {
+                updateBodyBitmask(body)
+            }
+            
             if !bitmasksIntersect(shapeBitmask, (body.bitmaskX, body.bitmaskY)) {
                 continue
             }
@@ -259,8 +273,11 @@ public final class World {
             // Try line-by-line intersection
             var last = queryShape.localVertices[queryShape.localVertices.count - 1]
             for point in queryShape.localVertices {
-                
                 if body.intersectsLine(from: last, to: point) {
+                    if(ignoreTest?(body) == true) {
+                        break
+                    }
+                    
                     results.append(body)
                     break
                 }
@@ -270,7 +287,6 @@ public final class World {
         
         return results
     }
-    
     
     /// Casts a ray between the given points and returns the first body it comes
     /// in contact with
@@ -288,7 +304,7 @@ public final class World {
     /// - Returns: An optional tuple containing the farthest point reached by
     /// the ray, and a Body value specifying the body that was closest to the
     /// ray, if it hit any body, or nil if it hit nothing.
-    public func rayCast(from start: Vector2, to end: Vector2, bitmask: Bitmask = 0, ignoreTest: ((Body) -> Bool)?) -> (retPt: Vector2, body: Body)? {
+    public func rayCast(from start: Vector2, to end: Vector2, bitmask: Bitmask = 0, ignoreTest: ((Body) -> Bool)? = nil) -> (retPt: Vector2, body: Body)? {
         var aabb = AABB(points: [start, end])
         var aabbBitmask = self.bitmask(for: aabb)
         var result: (Vector2, Body)?
@@ -297,6 +313,11 @@ public final class World {
             guard (bitmask == 0 || (body.bitmask & bitmask) != 0) else {
                 continue
             }
+            
+            if(body._bitmasksStale) {
+                updateBodyBitmask(body)
+            }
+            
             guard bitmasksIntersect(aabbBitmask, (body.bitmaskX, body.bitmaskY)) else {
                 continue
             }
@@ -371,8 +392,9 @@ public final class World {
                 
                 // another early-out - both bodies are static.
                 if ((body1.isStatic && body2.isStatic) ||
-                    ((body1.bitmaskX & body2.bitmaskX) == 0) &&
-                    ((body1.bitmaskY & body2.bitmaskY) == 0)) {
+                    !bitmasksIntersect((body1.bitmaskX, body1.bitmaskY),
+                                       (body2.bitmaskX, body2.bitmaskY)))
+                {
                     continue
                 }
                 
@@ -595,13 +617,14 @@ public final class World {
     
     /// Returns if two grid bitmasks intersect.
     /// Returns `true` iff `((b1.x & b2.x) != 0) && ((b1.y & b2.y) != 0)`
-    fileprivate func bitmasksIntersect(_ b1: (Bitmask, Bitmask), _ b2: (Bitmask, Bitmask)) -> Bool {
-        return ((b1.0 & b2.1) != 0) && ((b1.0 & b2.1) != 0)
+    internal func bitmasksIntersect(_ b1: (Bitmask, Bitmask), _ b2: (Bitmask, Bitmask)) -> Bool {
+        return ((b1.0 & b2.0) != 0) && ((b1.1 & b2.1) != 0)
     }
     
     /// Update bodies' bitmask for early collision filtering
     fileprivate func updateBodyBitmask(_ body: Body) {
         (body.bitmaskX, body.bitmaskY) = bitmask(for: body.aabb)
+        body._bitmasksStale = false
     }
     
     /// Returns a set of X and Y bitmasks for filtering collision with objects
