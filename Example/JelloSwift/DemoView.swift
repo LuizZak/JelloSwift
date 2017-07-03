@@ -59,6 +59,9 @@ class DemoView: UIView, CollisionObserver
     // The current point being dragged around
     var draggingPoint: PointMass? = nil
     
+    /// A body that does raycasting outwards out of every point normal.
+    var rayBody: Body?
+    
     // The location of the user's finger, in physics world coordinates
     var fingerLocation = Vector2.zero
     
@@ -145,7 +148,7 @@ class DemoView: UIView, CollisionObserver
         // Create basic shapes
         let vec = (Vector2(x: size.width, y: 400) / 2).inWorldCoords
         
-        createBouncyBall(vec)
+        rayBody = createBouncyBall(vec)
         
         for i in 0..<6
         {
@@ -270,6 +273,19 @@ class DemoView: UIView, CollisionObserver
         
         world.joints.forEach(drawJoint)
         try? world.bodies.forEach(drawBody)
+        
+        // Render rays from ray body
+        if let rayBody = rayBody {
+            for (vertex, normal) in zip(rayBody.vertices, rayBody.pointNormals) {
+                let start = vertex - normal * 0.1
+                let end = vertex + normal
+                
+                let pt = world.rayCast(from: start, to: end, ignoreTest: { $0 == rayBody })?.retPt ?? end
+                
+                drawLine(from: start, to: pt, color: 0xFFFF0000)
+                try? drawCircle(center: pt, radius: 0.1, color: 0xFFFF0000)
+            }
+        }
         
         drawDrag()
         
@@ -671,6 +687,35 @@ extension DemoView {
         
         vao.buffer.addTriangleAtIndexes(i0, i1, i2)
         vao.buffer.addTriangleAtIndexes(i2, i3, i0)
+    }
+    
+    func drawCircle(center point: Vector2, radius: JFloat, sides: Int = 10, color: UInt = 0xFFFFFFFF) throws {
+        let shape =
+            ClosedShape
+                .circle(ofRadius: radius, pointCount: 10)
+                .transformedBy(translatingBy: point)
+        
+        // Triangulate body's polygon
+        guard let (vertices, indices) = try LibTessTriangulate.process(polygon: shape.localVertices) else {
+            return
+        }
+        
+        let start = vao.buffer.vertices.count
+        
+        let prev = vao.buffer.currentColor
+        vao.buffer.currentColor = color
+        
+        // Color
+        for vert in vertices {
+            vao.buffer.addVertex(x: vert.x, y: vert.y)
+        }
+        
+        vao.buffer.currentColor = prev
+        
+        // Add vertex index triplets
+        for i in 0..<indices.count / 3 {
+            vao.buffer.addTriangleAtIndexes(start + indices[i * 3], start + indices[i * 3 + 1], start + indices[i * 3 + 2])
+        }
     }
     
     func drawPolyOutline(_ points: [Vector2], color: UInt = 0xFFFFFFFF) {
