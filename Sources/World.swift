@@ -624,6 +624,10 @@ public final class World {
     
     /// Update bodies' bitmask for early collision filtering
     fileprivate func updateBodyBitmask(_ body: Body) {
+        if(!body._bitmasksStale) {
+            return
+        }
+        
         (body.bitmaskX, body.bitmaskY) = bitmask(for: body.aabb)
         body._bitmasksStale = false
     }

@@ -283,6 +283,8 @@ public final class Body: Equatable {
                 aabb.expand(toInclude: point.position + point.velocity * elapsed)
             }
         }
+        
+        _bitmasksStale = true
     }
     
     /// Sets the shape of this body to a new ClosedShape object.  This function
@@ -314,6 +316,8 @@ public final class Body: Equatable {
         components.forEach { $0.prepare(self) }
         
         updateEdges()
+        
+        _bitmasksStale = true
     }
     
     /// Sets the mass for all the PointMass objects in this body
@@ -367,6 +371,8 @@ public final class Body: Equatable {
         if(isStatic) {
             updateAABB(0, forceUpdate: true)
         }
+        
+        _bitmasksStale = true
     }
     
     /// Derives the global position and angle of this body, based on the average
@@ -480,6 +486,8 @@ public final class Body: Equatable {
         for i in 0..<pointMasses.count {
             pointMasses[i].integrate(elapsed)
         }
+        
+        _bitmasksStale = true
     }
     
     /// Applies the velocity damping to the point masses.
@@ -489,8 +497,8 @@ public final class Body: Equatable {
             return
         }
         
-        for (i, pointMass) in pointMasses.enumerated() {
-            //pointMass.velocity -= (pointMass.velocity - (pointMass.velocity * velDamping)) * (elapsed * 200)
+        for i in 0..<pointMasses.count {
+            let pointMass = pointMasses[i]
             
             applyVelocity(-(pointMass.velocity - (pointMass.velocity * velDamping)) * (elapsed * 200), toPointMassAt: i)
         }
@@ -504,7 +512,8 @@ public final class Body: Equatable {
         }
         
         // Accelerate the body
-        for (i, pm) in pointMasses.enumerated() {
+        for i in 0..<pointMasses.count {
+            let pm = pointMasses[i]
             let diff = (pm.position - derivedPos).normalized().perpendicular()
             
             applyForce(diff * force, toPointMassAt: i)
@@ -890,7 +899,8 @@ public final class Body: Equatable {
         
         let torqueF = (derivedPos - pt) • force.perpendicular()
         
-        for (i, point) in pointMasses.enumerated() {
+        for i in 0..<pointMasses.count {
+            let point = pointMasses[i]
             let tempR = (point.position - pt).perpendicular()
             
             applyForce(force + tempR * torqueF, toPointMassAt: i)
@@ -948,5 +958,7 @@ extension Body {
     
     public func setPosition(_ position: Vector2, ofPointMassAt index: Int) {
         pointMasses[index].position = position
+        
+        _bitmasksStale = true
     }
 }
