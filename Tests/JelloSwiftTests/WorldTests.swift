@@ -140,6 +140,64 @@ class WorldTests: XCTestCase {
         XCTAssertEqual(bitmasks.bitmaskY, 0)
     }
     
+    func testBitmasksIntersect() {
+        let world = World()
+        
+        let bit1: (Bitmask, Bitmask) = (0b1111_0000, 0b0000_1111)
+        let bit2: (Bitmask, Bitmask) = (0b0000_1111, 0b1111_0000)
+        let bit3: (Bitmask, Bitmask) = (0b0001_1110, 0b0111_1000)
+        
+        XCTAssertTrue(world.bitmasksIntersect(bit1, bit1))
+        XCTAssertFalse(world.bitmasksIntersect(bit1, bit2))
+        XCTAssertTrue(world.bitmasksIntersect(bit1, bit3))
+        XCTAssertTrue(world.bitmasksIntersect(bit2, bit3))
+    }
+    
+    func testRayCast() {
+        // Tests raycasting in world. World looks roughly like this:
+        //
+        // (0, 0) ___
+        //       |   |  _____
+        //       |___| |     |
+        //             |_____|
+        //
+        
+        let world = World()
+        world.setWorldLimits(-Vector2(value: 20), Vector2(value: 20))
+        
+        let shape1 = ClosedShape.square(ofSide: 6)
+        let shape2 = ClosedShape.rectangle(ofSides: Vector2(x: 8, y: 6))
+        
+        let body1 = Body(world: world, shape: shape1, position: Vector2(value: 3))
+        _=Body(world: world, shape: shape2, position: Vector2(x: 10, y: 6))
+        
+        guard let (pt, body) = world.rayCast(from: Vector2(x: -10, y: -10), to: Vector2(x: 10, y: 10)) else {
+            XCTFail("Should have found body")
+            return
+        }
+        
+        XCTAssertEqual(body1, body)
+        XCTAssertEqual(.zero, pt)
+    }
+    
+    func testRayCast2() {
+        // Tests another raycasting scenario, w/ a circle this time
+        
+        let world = World()
+        world.setWorldLimits(-Vector2(value: 20), Vector2(value: 20))
+        
+        let shape = ClosedShape.circle(ofRadius: 6, pointCount: 10)
+        
+        let body = Body(world: world, shape: shape, position: Vector2(x: 2, y: 10))
+        
+        guard let (_, bd) = world.rayCast(from: Vector2(x: 0, y: -10), to: Vector2(x: 4, y: 20)) else {
+            XCTFail("Should have found body")
+            return
+        }
+        
+        XCTAssertEqual(body, bd)
+    }
+    
     fileprivate func AssertBitmasksMatch(_ actual: Bitmask, _ expected: Bitmask, file: String = #file, line: Int = #line) {
         if actual != expected {
             let message = "Bitmasks do not match, expected:\n\(formatBinary(expected))\nfound:\n\(formatBinary(actual))"

@@ -124,6 +124,9 @@ public final class Body: Equatable {
     /// The Y-axis bitmask for the body - used for collision filtering
     public var bitmaskY: Bitmask = 0
     
+    /// Whether this body's bitmaskX & bitmaskY are stale
+    internal var _bitmasksStale: Bool = true
+    
     public init(world: World?, shape: ClosedShape, pointMasses: [JFloat] = [1],
                 position: Vector2 = Vector2.zero, angle: JFloat = 0,
                 scale: Vector2 = Vector2.unit, kinematic: Bool = false,
@@ -417,15 +420,18 @@ public final class Body: Equatable {
         var originalAngle: JFloat = 0
         
         let c = pointMasses.count
-        for (i, pm) in pointMasses.enumerated() {
-            let baseNorm = baseShape[i].normalized()
+        var first = true
+        for (base, pm) in zip(baseShape, pointMasses) {
+            let baseNorm = base.normalized()
             let curNorm  = (pm.position - meanPos).normalized()
             
             var thisAngle = atan2(baseNorm.x * curNorm.y - baseNorm.y * curNorm.x, baseNorm • curNorm)
             
-            if (i == 0) {
+            if (first) {
                 originalSign = (thisAngle >= 0.0) ? 1 : -1
                 originalAngle = thisAngle
+                
+                first = false
             } else {
                 let diff = (thisAngle - originalAngle)
                 let thisSign = (thisAngle >= 0.0) ? 1 : -1
@@ -638,7 +644,7 @@ public final class Body: Equatable {
     /// body
     public func intersectsLine(from start: Vector2, to end: Vector2) -> Bool {
         // Create and test against a temporary line AABB
-        if(!aabb.intersects(AABB(points: [start, end]))) {
+        if(!aabb.intersects(AABB(min: min(start, end), max: max(start, end)))) {
             return false
         }
         
@@ -652,25 +658,27 @@ public final class Body: Equatable {
         return false
     }
     
-    /// Returns whether the given ray collides with this Body, changing the
-    /// resulting collision vector before returning
+    /// Tests a ray starting and ending at a given interval, returning the point
+    /// at which the ray intersects this body the closest to `start`.
+    ///
+    /// If the ray does not crosses this body, `nil` is returned, instead.
     public func raycast(from start: Vector2, to end: Vector2) -> Vector2? {
         // Test each edge against the line
         var p1 = Vector2.zero
         var p2 = Vector2.zero
         
-        var farPoint: Vector2?
+        var closestHit: Vector2?
         
         for e in edges {
             p1 = e.start
             p2 = e.end
             
-            if let (p, _, _) = lineIntersect(lineA: (start, farPoint ?? end), lineB: (p1, p2)) {
-                farPoint = p
+            if let (p, _, _) = lineIntersect(lineA: (start, closestHit ?? end), lineB: (p1, p2)) {
+                closestHit = p
             }
         }
         
-        return farPoint
+        return closestHit
     }
     
     /// Given a global point, finds the closest point on an edge of a specified

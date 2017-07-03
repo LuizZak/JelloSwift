@@ -173,24 +173,18 @@ public final class SpringComponent: BodyComponent {
             switch s.restDistance {
             case .fixed(let dist):
                 force =
-                    calculateSpringForce(posA: p1.position,
-                                         velA: p1.velocity,
-                                         posB: p2.position,
-                                         velB: p2.velocity,
+                    calculateSpringForce(posA: p1.position, velA: p1.velocity,
+                                         posB: p2.position, velB: p2.velocity,
                                          distance: dist,
-                                         springK: s.coefficient,
-                                         springD: s.damping)
+                                         springK: s.coefficient, springD: s.damping)
             case .ranged:
                 let dist = p1.position.distance(to: p2.position)
                 
                 force =
-                    calculateSpringForce(posA: p1.position,
-                                         velA: p1.velocity,
-                                         posB: p2.position,
-                                         velB: p2.velocity,
+                    calculateSpringForce(posA: p1.position, velA: p1.velocity,
+                                         posB: p2.position, velB: p2.velocity,
                                          distance: s.restDistance.clamp(value: dist),
-                                         springK: s.coefficient,
-                                         springD: s.damping)
+                                         springK: s.coefficient, springD: s.damping)
             }
             
             p1.applyForce(of: force)
@@ -253,11 +247,9 @@ public struct SpringComponentCreator: BodyComponentCreator, Codable {
     public var innerSprings: [SpringComponentInnerSpring] = []
     
     public init(shapeMatchingOn: Bool = true,
-                         edgeSpringK: JFloat = 50,
-                         edgeSpringDamp: JFloat = 2,
-                         shapeSpringK: JFloat = 200,
-                         shapeSpringDamp: JFloat = 10,
-                         innerSprings: [SpringComponentInnerSpring] = []) {
+                edgeSpringK: JFloat = 50, edgeSpringDamp: JFloat = 2,
+                shapeSpringK: JFloat = 200, shapeSpringDamp: JFloat = 10,
+                innerSprings: [SpringComponentInnerSpring] = []) {
         self.shapeMatchingOn = shapeMatchingOn
         
         self.edgeSpringK = edgeSpringK

@@ -158,6 +158,20 @@ extension ClosedShape {
     }
 }
 
+extension ClosedShape: RandomAccessCollection, MutableCollection {
+    
+    public var startIndex: Int {
+        return localVertices.startIndex
+    }
+    public var endIndex: Int {
+        return localVertices.endIndex
+    }
+    
+    public func index(after i: Int) -> Int {
+        return localVertices.index(after: i)
+    }
+}
+
 /// MARK: - Shape creation methods
 extension ClosedShape {
     
