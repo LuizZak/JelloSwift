@@ -676,9 +676,9 @@ extension DemoView {
 
 // MARK: - Rendering
 extension DemoView {
-    func drawLine(from start: Vector2, to end: Vector2, color: UInt = 0xFFFFFFFF) {
+    func drawLine(from start: Vector2, to end: Vector2, color: UInt = 0xFFFFFFFF, width: JFloat = 0.5) {
         
-        let normal = ((start - end).normalized().perpendicular() / 15) * 0.5
+        let normal = ((start - end).normalized().perpendicular() / 15) * width
         
         let i0 = vao.buffer.addVertex(start + normal, color: color)
         let i1 = vao.buffer.addVertex(end + normal, color: color)
@@ -718,13 +718,13 @@ extension DemoView {
         }
     }
     
-    func drawPolyOutline(_ points: [Vector2], color: UInt = 0xFFFFFFFF) {
+    func drawPolyOutline(_ points: [Vector2], color: UInt = 0xFFFFFFFF, width: JFloat = 0.5) {
         guard var last = points.last else {
             return
         }
         
         for point in points {
-            drawLine(from: point, to: last, color: color)
+            drawLine(from: point, to: last, color: color, width: width)
             last = point
         }
     }
@@ -783,6 +783,17 @@ extension DemoView {
     
     func drawBody(_ body: Body) throws
     {
+        var bodyColor: UInt = 0x7DFFFFFF
+        if let color = body.objectTag as? UInt {
+            bodyColor = color
+        }
+        else if let color = body.objectTag as? Color4 {
+            bodyColor = color.toUIntARGB()
+        }
+        else if let color = body.objectTag as? UIColor {
+            bodyColor = Color4.fromUIColor(color).toUIntARGB()
+        }
+        
         // Helper lazy body fill drawing inner function
         func drawBodyFill() throws {
             // Triangulate body's polygon
@@ -793,18 +804,7 @@ extension DemoView {
             let start = vao.buffer.vertices.count
             
             let prev = vao.buffer.currentColor
-            vao.buffer.currentColor = 0x7DFFFFFF
-            
-            // Color
-            if let color = body.objectTag as? UInt {
-                vao.buffer.currentColor = color
-            }
-            else if let color = body.objectTag as? Color4 {
-                vao.buffer.currentColor = color.toUIntARGB()
-            }
-            else if let color = body.objectTag as? UIColor {
-                vao.buffer.currentColor = Color4.fromUIColor(color).toUIntARGB()
-            }
+            vao.buffer.currentColor = bodyColor
             
             for vert in vertices {
                 vao.buffer.addVertex(x: vert.x, y: vert.y)
@@ -824,6 +824,8 @@ extension DemoView {
         {
             // Don't do any other rendering other than the body's buffer
             try drawBodyFill()
+            let lineColorVec = (Color4.fromUIntARGB(bodyColor).vector * Color4(r: 0.7, g: 0.6, b: 0.8, a: 1).vector)
+            drawPolyOutline(shapePoints, color: Color4(vector: lineColorVec).toUIntARGB(), width: 1)
             return
         }
         
