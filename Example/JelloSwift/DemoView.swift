@@ -59,9 +59,6 @@ class DemoView: UIView, CollisionObserver
     // The current point being dragged around
     var draggingPoint: PointMass? = nil
     
-    /// A body that does raycasting outwards out of every point normal.
-    var rayBody: Body?
-    
     // The location of the user's finger, in physics world coordinates
     var fingerLocation = Vector2.zero
     
@@ -148,7 +145,8 @@ class DemoView: UIView, CollisionObserver
         // Create basic shapes
         let vec = (Vector2(x: size.width, y: 400) / 2).inWorldCoords
         
-        rayBody = createBouncyBall(vec)
+        // Add a Raycasting component
+        createBouncyBall(vec).addComponent(ofType: BodyRayComponent.self)
         
         for i in 0..<6
         {
@@ -274,16 +272,20 @@ class DemoView: UIView, CollisionObserver
         world.joints.forEach(drawJoint)
         try? world.bodies.forEach(drawBody)
         
-        // Render rays from ray body
-        if let rayBody = rayBody {
-            for (vertex, normal) in zip(rayBody.vertices, rayBody.pointNormals) {
+        // Render rays from ray bodies
+        for body in world.bodies {
+            guard let comp = body.component(ofType: BodyRayComponent.self) else {
+                continue
+            }
+            
+            for (vertex, normal) in zip(body.vertices, body.pointNormals) {
                 let start = vertex - normal * 0.1
-                let end = vertex + normal
+                let end = vertex + normal * comp.rayLength
                 
-                let pt = world.rayCast(from: start, to: end, ignoreTest: { $0 == rayBody })?.retPt ?? end
+                let pt = world.rayCast(from: start, to: end, ignoreTest: { $0 == body })?.retPt ?? end
                 
-                drawLine(from: start, to: pt, color: 0xFFFF0000)
-                try? drawCircle(center: pt, radius: 0.1, color: 0xFFFF0000)
+                drawLine(from: vertex, to: pt, color: comp.color.toUIntARGB())
+                try? drawCircle(center: pt, radius: 0.1, color: comp.color.toUIntARGB())
             }
         }
         
@@ -692,7 +694,7 @@ extension DemoView {
     func drawCircle(center point: Vector2, radius: JFloat, sides: Int = 10, color: UInt = 0xFFFFFFFF) throws {
         let shape =
             ClosedShape
-                .circle(ofRadius: radius, pointCount: 10)
+                .circle(ofRadius: radius, pointCount: sides)
                 .transformedBy(translatingBy: point)
         
         // Triangulate body's polygon
@@ -901,3 +903,16 @@ extension Vector2.NativeMatrixType {
         return matrix
     }
 }
+
+final class BodyRayComponent: BodyComponent {
+    
+    unowned let body: Body
+    
+    var color: Color4 = Color4.fromUIntARGB(0xFFFF0000)
+    var rayLength: JFloat = 1
+    
+    init(body: Body) {
+        self.body = body
+    }
+}
+
