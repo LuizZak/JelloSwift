@@ -9,13 +9,15 @@
 /// Returns an approximation of the area of the polygon defined by a given set
 /// of vertices
 public func polygonArea<T: BidirectionalCollection>(of points: T) -> JFloat where T.Iterator.Element: VectorRepresentable {
+    guard var v2 = points.last else {
+        return 0
+    }
+    
     var area: JFloat = 0
     
-    if var v2 = points.last {
-        for p in points {
-            area -= v2.vector.cross(p.vector)
-            v2 = p
-        }
+    for p in points {
+        area -= v2.vector.cross(p.vector)
+        v2 = p
     }
     
     return area / 2

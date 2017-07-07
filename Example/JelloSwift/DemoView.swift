@@ -59,9 +59,6 @@ class DemoView: UIView, CollisionObserver
     // The current point being dragged around
     var draggingPoint: PointMass? = nil
     
-    /// A body that does raycasting outwards out of every point normal.
-    var rayBody: Body?
-    
     // The location of the user's finger, in physics world coordinates
     var fingerLocation = Vector2.zero
     
@@ -148,7 +145,8 @@ class DemoView: UIView, CollisionObserver
         // Create basic shapes
         let vec = (Vector2(x: size.width, y: 400) / 2).inWorldCoords
         
-        rayBody = createBouncyBall(vec)
+        // Add a Raycasting component
+        createBouncyBall(vec).addComponent(ofType: BodyRayComponent.self)
         
         for i in 0..<6
         {
@@ -274,16 +272,20 @@ class DemoView: UIView, CollisionObserver
         world.joints.forEach(drawJoint)
         try? world.bodies.forEach(drawBody)
         
-        // Render rays from ray body
-        if let rayBody = rayBody {
-            for (vertex, normal) in zip(rayBody.vertices, rayBody.pointNormals) {
+        // Render rays from ray bodies
+        for body in world.bodies {
+            guard let comp = body.component(ofType: BodyRayComponent.self) else {
+                continue
+            }
+            
+            for (vertex, normal) in zip(body.vertices, body.pointNormals) {
                 let start = vertex - normal * 0.1
-                let end = vertex + normal
+                let end = vertex + normal * comp.rayLength
                 
-                let pt = world.rayCast(from: start, to: end, ignoreTest: { $0 == rayBody })?.retPt ?? end
+                let pt = world.rayCast(from: start, to: end, ignoreTest: { $0 == body })?.retPt ?? end
                 
-                drawLine(from: start, to: pt, color: 0xFFFF0000)
-                try? drawCircle(center: pt, radius: 0.1, color: 0xFFFF0000)
+                drawLine(from: vertex, to: pt, color: comp.color.toUIntARGB())
+                try? drawCircle(center: pt, radius: 0.1, color: comp.color.toUIntARGB())
             }
         }
         
@@ -676,9 +678,9 @@ extension DemoView {
 
 // MARK: - Rendering
 extension DemoView {
-    func drawLine(from start: Vector2, to end: Vector2, color: UInt = 0xFFFFFFFF) {
+    func drawLine(from start: Vector2, to end: Vector2, color: UInt = 0xFFFFFFFF, width: JFloat = 0.5) {
         
-        let normal = ((start - end).normalized().perpendicular() / 15) * 0.5
+        let normal = ((start - end).normalized().perpendicular() / 15) * width
         
         let i0 = vao.buffer.addVertex(start + normal, color: color)
         let i1 = vao.buffer.addVertex(end + normal, color: color)
@@ -692,7 +694,7 @@ extension DemoView {
     func drawCircle(center point: Vector2, radius: JFloat, sides: Int = 10, color: UInt = 0xFFFFFFFF) throws {
         let shape =
             ClosedShape
-                .circle(ofRadius: radius, pointCount: 10)
+                .circle(ofRadius: radius, pointCount: sides)
                 .transformedBy(translatingBy: point)
         
         // Triangulate body's polygon
@@ -718,13 +720,13 @@ extension DemoView {
         }
     }
     
-    func drawPolyOutline(_ points: [Vector2], color: UInt = 0xFFFFFFFF) {
+    func drawPolyOutline(_ points: [Vector2], color: UInt = 0xFFFFFFFF, width: JFloat = 0.5) {
         guard var last = points.last else {
             return
         }
         
         for point in points {
-            drawLine(from: point, to: last, color: color)
+            drawLine(from: point, to: last, color: color, width: width)
             last = point
         }
     }
@@ -783,6 +785,17 @@ extension DemoView {
     
     func drawBody(_ body: Body) throws
     {
+        var bodyColor: UInt = 0x7DFFFFFF
+        if let color = body.objectTag as? UInt {
+            bodyColor = color
+        }
+        else if let color = body.objectTag as? Color4 {
+            bodyColor = color.toUIntARGB()
+        }
+        else if let color = body.objectTag as? UIColor {
+            bodyColor = Color4.fromUIColor(color).toUIntARGB()
+        }
+        
         // Helper lazy body fill drawing inner function
         func drawBodyFill() throws {
             // Triangulate body's polygon
@@ -793,18 +806,7 @@ extension DemoView {
             let start = vao.buffer.vertices.count
             
             let prev = vao.buffer.currentColor
-            vao.buffer.currentColor = 0x7DFFFFFF
-            
-            // Color
-            if let color = body.objectTag as? UInt {
-                vao.buffer.currentColor = color
-            }
-            else if let color = body.objectTag as? Color4 {
-                vao.buffer.currentColor = color.toUIntARGB()
-            }
-            else if let color = body.objectTag as? UIColor {
-                vao.buffer.currentColor = Color4.fromUIColor(color).toUIntARGB()
-            }
+            vao.buffer.currentColor = bodyColor
             
             for vert in vertices {
                 vao.buffer.addVertex(x: vert.x, y: vert.y)
@@ -824,6 +826,8 @@ extension DemoView {
         {
             // Don't do any other rendering other than the body's buffer
             try drawBodyFill()
+            let lineColorVec = (Color4.fromUIntARGB(bodyColor).vector * Color4(r: 0.7, g: 0.6, b: 0.8, a: 1).vector)
+            drawPolyOutline(shapePoints, color: Color4(vector: lineColorVec).toUIntARGB(), width: 1)
             return
         }
         
@@ -899,3 +903,16 @@ extension Vector2.NativeMatrixType {
         return matrix
     }
 }
+
+final class BodyRayComponent: BodyComponent {
+    
+    unowned let body: Body
+    
+    var color: Color4 = Color4.fromUIntARGB(0xFFFF0000)
+    var rayLength: JFloat = 1
+    
+    init(body: Body) {
+        self.body = body
+    }
+}
+
