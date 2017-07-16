@@ -1,8 +1,8 @@
-**_Current stable release: v0.9.0_**
+**_Current stable release: v0.10.0_**
 
 #### Develop trunk changelog:
 
-- Trunk is clean!
+- Adding method `Body.withComponent<T: BodyComponent>(ofType:, do:)` that fetches a body component of a specified type and passes it to a closure, if it exists within a body.
 
 ## Stable Releases
 ---

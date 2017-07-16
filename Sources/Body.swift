@@ -183,6 +183,18 @@ public final class Body: Equatable {
         return nil
     }
     
+    /// Gets the body component of a specified type in this body and calls a
+    /// closure passing it as its parameter.
+    ///
+    /// Returns without calling the closure, if the body component is not found.
+    public func withComponent<T: BodyComponent>(ofType type: T.Type = T.self, do block: (T) throws -> Void) rethrows {
+        guard let comp = component(ofType: T.self) else {
+            return
+        }
+        
+        try block(comp)
+    }
+    
     /// Removes a component from this body
     public func removeComponent<T: BodyComponent>(ofType componentType: T.Type) {
         for (i, comp) in components.enumerated() {
