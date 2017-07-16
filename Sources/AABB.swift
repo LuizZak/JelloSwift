@@ -130,6 +130,15 @@ public struct AABB {
         return point >= minimum && point <= maximum
     }
     
+    /// Returns whether this AABB completely contain another AABB inside it.
+    public func contains(_ box: AABB) -> Bool {
+        if(validity == .invalid || box.validity == .invalid) {
+            return false
+        }
+        
+        return box.minimum >= minimum && box.maximum <= maximum
+    }
+    
     /// Returns whether this AABB intersects the given AABB instance.
     /// This check is inclusive, so the edges of the bounding box are considered
     /// to intersect the other bounding box's edges as well.

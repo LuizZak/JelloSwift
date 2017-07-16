@@ -14,6 +14,8 @@ public final class World {
     /// The joints contained within this world
     public private(set) var joints: ContiguousArray<BodyJoint> = []
     
+    private var quadTree = QuadTree<Body>(aabb: AABB.empty)
+    
     // PRIVATE VARIABLES
     fileprivate(set) public var worldLimits = AABB()
     fileprivate(set) public var worldSize = Vector2.zero
@@ -52,6 +54,11 @@ public final class World {
     /// Inits an empty world
     public init() {
         self.clear()
+        
+        let min = Vector2(x: -100.0, y: -100.0)
+        let max = Vector2(x:  100.0, y:  100.0)
+        
+        setWorldLimits(min, max)
     }
     
     deinit {
@@ -78,11 +85,6 @@ public final class World {
         
         materialCount = 1
         materialPairs = [[defaultMatPair]]
-        
-        let min = Vector2(x: -20.0, y: -20.0)
-        let max = Vector2(x:  20.0, y:  20.0)
-        
-        setWorldLimits(min, max)
     }
     
     /// WORLD SIZE
@@ -94,6 +96,9 @@ public final class World {
         // Divide the world into (by default) 4096 boxes (64 x 64) for broad-phase collision
         // detection
         worldGridStep = worldSize / JFloat(worldGridSubdivision)
+        
+        // Re-create collisions quad tree
+        quadTree = QuadTree<Body>(aabb: worldLimits)
     }
     
     /// MATERIALS
@@ -354,6 +359,8 @@ public final class World {
     
     /// Internal updating method
     fileprivate func update(_ elapsed: JFloat, withBodies bodies: ContiguousArray<Body>, joints: ContiguousArray<BodyJoint>) {
+        quadTree.clear()
+        
         // Update the bodies
         for body in bodies {
             body.derivePositionAndAngle(elapsed)
@@ -373,6 +380,10 @@ public final class World {
             body.updateAABB(elapsed, forceUpdate: true)
             
             updateBodyBitmask(body)
+            
+            quadTree.insert(body)
+            
+            body._resolvedFlag = false
         }
         
         // Update the joints
@@ -380,6 +391,49 @@ public final class World {
             joint.resolve(elapsed)
         }
         
+#if true
+        for body1 in bodies {
+            quadTree.queryAABB(body1.aabb) { body2 in
+                guard !body2._resolvedFlag && body2 != body1 else {
+                    return
+                }
+                
+                if((body1.bitmask & body2.bitmask) == 0) {
+                    return
+                }
+                
+                if (body1.isStatic && body2.isStatic) {
+                    return
+                }
+                
+                // early out - these bodies materials are set NOT to collide
+                if (!materialPairs[body1.material][body2.material].collide) {
+                    return
+                }
+                
+                // Joints relationship: if one body is joined to another by a 
+                // joint, check the joint's rule for collision
+                for j in body1.joints {
+                    if(j.bodyLink1.body == body1 && j.bodyLink2.body == body2 ||
+                       j.bodyLink2.body == body1 && j.bodyLink1.body == body2) {
+                        if(!j.allowCollisions) {
+                            return
+                        }
+                    }
+                }
+                
+                // okay, the AABB's of these 2 are intersecting. now check for
+                // collision of A against B.
+                bodyCollide(body1, body2)
+                
+                // and the opposite case, B colliding with A
+                bodyCollide(body2, body1)
+            }
+            
+            // Update flag
+            body1._resolvedFlag = true
+        }
+#else
         let c = bodies.count
         for (i, body1) in bodies.enumerated() {
             innerLoop: for j in (i &+ 1)..<c {
@@ -428,6 +482,7 @@ public final class World {
                 bodyCollide(body2, body1)
             }
         }
+#endif
         
         if(!relaxing) { // Disabled during relaxation
             // Notify collisions that will happen

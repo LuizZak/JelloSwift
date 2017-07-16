@@ -87,6 +87,11 @@ public final class Body: Equatable {
     /// the point masses.
     public var aabb = AABB()
     
+    /// Flag used during collision detection passes- is set to `true` of this body
+    /// has already made a round-trip through the collision detection routine,
+    /// and is reset during the next `World.update()` step.
+    internal var _resolvedFlag = false
+    
     /// The index of the material in the world material array to use for this
     /// body
     public var material = 0
