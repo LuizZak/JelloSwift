@@ -381,16 +381,16 @@ public final class World {
             _allAABB.expand(toFit: body.aabb)
         }
         
+        // Update the joints
+        for joint in joints {
+            joint.resolve(elapsed)
+        }
+        
         // Use a quad-tree for resolving body collisions, using the total AABB
         // of all bodies
         var quadTree = QuadTree<Body>(aabb: _allAABB)
         for body in bodies {
             quadTree.insert(body)
-        }
-        
-        // Update the joints
-        for joint in joints {
-            joint.resolve(elapsed)
         }
         
         // Do a breadth-first traversal of the quad-trees, resolving the bodies
