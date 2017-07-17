@@ -368,7 +368,6 @@ public final class World {
             }
             
             body.integrate(elapsed)
-            body.updateEdgesAndNormals()
             
             body.updateAABB(elapsed, forceUpdate: true)
             
