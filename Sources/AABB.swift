@@ -118,6 +118,22 @@ public struct AABB {
         }
     }
     
+    /// Expands this AABB so it fits another AABB, in union-fashion.
+    /// If the second AABB is invalid, nothing is changed.
+    public mutating func expand(toFit aabb: AABB) {
+        if aabb.validity == .invalid {
+            return
+        }
+        
+        if validity == .invalid {
+            self = aabb
+            return
+        }
+        
+        minimum = min(minimum, aabb.minimum)
+        maximum = max(maximum, aabb.maximum)
+    }
+    
     /// Returns whether a given point is contained within this bounding box.
     /// The check is inclusive, so the edges of the bounding box are considered
     /// to contain the point as well.

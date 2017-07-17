@@ -14,8 +14,6 @@ public final class World {
     /// The joints contained within this world
     public private(set) var joints: ContiguousArray<BodyJoint> = []
     
-    private var quadTree = QuadTree<Body>(aabb: AABB.empty)
-    
     // PRIVATE VARIABLES
     fileprivate(set) public var worldLimits = AABB()
     fileprivate(set) public var worldSize = Vector2.zero
@@ -96,9 +94,6 @@ public final class World {
         // Divide the world into (by default) 4096 boxes (64 x 64) for broad-phase collision
         // detection
         worldGridStep = worldSize / JFloat(worldGridSubdivision)
-        
-        // Re-create collisions quad tree
-        quadTree = QuadTree<Body>(aabb: worldLimits)
     }
     
     /// MATERIALS
@@ -359,7 +354,7 @@ public final class World {
     
     /// Internal updating method
     fileprivate func update(_ elapsed: JFloat, withBodies bodies: ContiguousArray<Body>, joints: ContiguousArray<BodyJoint>) {
-        quadTree.clear()
+        var _allAABB = AABB()
         
         // Update the bodies
         for body in bodies {
@@ -381,9 +376,16 @@ public final class World {
             
             updateBodyBitmask(body)
             
-            quadTree.insert(body)
-            
             body._resolvedFlag = false
+            
+            _allAABB.expand(toFit: body.aabb)
+        }
+        
+        // Use a quad-tree for resolving body collisions, using the total AABB
+        // of all bodies
+        var quadTree = QuadTree<Body>(aabb: _allAABB)
+        for body in bodies {
+            quadTree.insert(body)
         }
         
         // Update the joints
@@ -403,16 +405,16 @@ public final class World {
                         return
                     }
                     
-                    if((body1.bitmask & body2.bitmask) == 0) {
+                    if (body1.bitmask & body2.bitmask) == 0 {
                         return
                     }
                     
-                    if (body1.isStatic && body2.isStatic) {
+                    if body1.isStatic && body2.isStatic {
                         return
                     }
                     
                     // early out - these bodies materials are set NOT to collide
-                    if (!materialPairs[body1.material][body2.material].collide) {
+                    if !materialPairs[body1.material][body2.material].collide {
                         return
                     }
                     
@@ -421,7 +423,7 @@ public final class World {
                     for j in body1.joints {
                         if(j.bodyLink1.body == body1 && j.bodyLink2.body == body2 ||
                             j.bodyLink2.body == body1 && j.bodyLink1.body == body2) {
-                            if(!j.allowCollisions) {
+                            if !j.allowCollisions {
                                 return
                             }
                         }
