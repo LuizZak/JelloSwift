@@ -25,7 +25,7 @@ extension Body: QuadTreeItem {
 
 /// A quad-tree that holds objects in a 2D space in recursive fashion, fit for
 /// performing fast AABB queries.
-struct QuadTree<T: QuadTreeItem> {
+struct QuadTree<T: AnyObject & QuadTreeItem> {
     fileprivate(set) var elements: ContiguousArray<T> = []
     fileprivate(set) var subtree: ContiguousArray<QuadTree<T>> = []
     
