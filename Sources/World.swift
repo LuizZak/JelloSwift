@@ -359,7 +359,7 @@ public final class World {
             body.derivePositionAndAngle(elapsed)
             
             // Only update edge and normals pre-accumulation if the body has 
-            // components
+            // components - only components really use this information.
             if(body.componentCount > 0) {
                 body.updateEdgesAndNormals()
                 
