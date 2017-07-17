@@ -299,9 +299,9 @@ public final class Body: Equatable {
     ///     The elapsed time to update by, usually in seconds
     ///
     /// - parameter forceUpdate:
-    ///     Whether to force the update of the body, even if it's a static body
+    ///     Whether to force the update of the body, even if it's a static body.
     public func updateAABB(_ elapsed: JFloat, forceUpdate: Bool) {
-        if(!isStatic && !forceUpdate) {
+        guard !isStatic || forceUpdate else {
             return
         }
         
