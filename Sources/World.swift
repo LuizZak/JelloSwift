@@ -391,7 +391,60 @@ public final class World {
             joint.resolve(elapsed)
         }
         
-#if true
+        // Do a breadth-first traversal of the quad-trees, resolving the bodies
+        // recursively.
+        var qQueue: [QuadTree<Body>] = [quadTree]
+        while let next = qQueue.first {
+            qQueue.removeFirst()
+            
+            for body1 in next.elements {
+                next.queryAABB(body1.aabb) { body2 in
+                    guard !body2._resolvedFlag && body2 != body1 else {
+                        return
+                    }
+                    
+                    if((body1.bitmask & body2.bitmask) == 0) {
+                        return
+                    }
+                    
+                    if (body1.isStatic && body2.isStatic) {
+                        return
+                    }
+                    
+                    // early out - these bodies materials are set NOT to collide
+                    if (!materialPairs[body1.material][body2.material].collide) {
+                        return
+                    }
+                    
+                    // Joints relationship: if one body is joined to another by 
+                    // a joint, check the joint's rule for collision
+                    for j in body1.joints {
+                        if(j.bodyLink1.body == body1 && j.bodyLink2.body == body2 ||
+                            j.bodyLink2.body == body1 && j.bodyLink1.body == body2) {
+                            if(!j.allowCollisions) {
+                                return
+                            }
+                        }
+                    }
+                    
+                    // okay, the AABB's of these 2 are intersecting. now check for
+                    // collision of A against B.
+                    bodyCollide(body1, body2)
+                    
+                    // and the opposite case, B colliding with A
+                    bodyCollide(body2, body1)
+                }
+                
+                // Update flag
+                body1._resolvedFlag = true
+            }
+            
+            for sub in next.subtree {
+                qQueue.append(sub)
+            }
+        }
+        
+#if false
         for body1 in bodies {
             quadTree.queryAABB(body1.aabb) { body2 in
                 guard !body2._resolvedFlag && body2 != body1 else {

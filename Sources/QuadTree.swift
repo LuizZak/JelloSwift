@@ -25,9 +25,9 @@ extension Body: QuadTreeItem {
 
 /// A quad-tree that holds objects in a 2D space in recursive fashion, fit for
 /// performing fast AABB queries.
-class QuadTree<T: QuadTreeItem> {
-    fileprivate(set) var storage: [T] = []
-    fileprivate(set) var subtree: [QuadTree<T>] = []
+struct QuadTree<T: QuadTreeItem> {
+    fileprivate(set) var elements: ContiguousArray<T> = []
+    fileprivate(set) var subtree: ContiguousArray<QuadTree<T>> = []
     
     fileprivate(set) var aabb: AABB
     
@@ -38,42 +38,46 @@ class QuadTree<T: QuadTreeItem> {
         return subtree.reduce(0) { $0 + $1.itemCount }
     }
     
-    convenience init(aabb: AABB) {
+    init(aabb: AABB) {
         self.init(aabb: aabb, depth: 0)
     }
     
     fileprivate init(aabb: AABB, depth: Int) {
         self.aabb = aabb
         self.depth = depth
-        
-        storage.reserveCapacity(maxQuadTreeCount)
     }
     
     /// Adds an item to this AABB- returning a value specifying if the object was
     /// added (it intersects w/ this AABB) or not.
     @discardableResult
-    func insert(_ value: T) -> Bool {
+    mutating func insert(_ value: T) -> Bool {
         if(!aabb.intersects(value.bounds)) {
             return false
         }
         
-        if(storage.count < maxQuadTreeCount || depth >= maxQuadTreeDepth) {
-            storage.append(value)
+        if(elements.count < maxQuadTreeCount || depth >= maxQuadTreeDepth) {
+            elements.append(value)
             return true
         }
         
-        for quad in subdivided() {
-            if(quad.aabb.contains(value.bounds) && quad.insert(value)) {
+        subdivided()
+        for i in 0..<subtree.count {
+            if(!subtree[i].aabb.contains(value.bounds)) {
+                continue
+            }
+            
+            if(subtree[i].insert(value)) {
                 return true
             }
         }
         
-        storage.append(value)
+        elements.append(value)
         
         return true
     }
     
-    func subdivided() -> [QuadTree<T>] {
+    @discardableResult
+    mutating func subdivided() -> ContiguousArray<QuadTree<T>> {
         if subtree.count > 0 {
             return subtree
         }
@@ -97,8 +101,8 @@ class QuadTree<T: QuadTreeItem> {
     }
     
     /// Clears all items/subnodes in this quadtree.
-    func clear() {
-        storage = []
+    mutating func clear() {
+        elements = []
         subtree.removeAll(keepingCapacity: true)
     }
     
@@ -116,7 +120,7 @@ class QuadTree<T: QuadTreeItem> {
             return
         }
         
-        for value in storage {
+        for value in elements {
             if(aabb.intersects(value.bounds)) {
                 out.append(value)
             }
@@ -130,12 +134,12 @@ class QuadTree<T: QuadTreeItem> {
     /// Recursively queries the given AABB, calling the specified closure for every
     /// object intersecting the AABB's bounds.
     func queryAABB(_ aabb: AABB, with closure: (T) -> Void) {
-        if(!self.aabb.intersects(aabb)) {
+        guard self.aabb.intersects(aabb) else {
             return
         }
         
-        for value in storage {
-            if(aabb.intersects(value.bounds)) {
+        for value in elements {
+            if aabb.intersects(value.bounds) {
                 closure(value)
             }
         }
@@ -150,10 +154,10 @@ extension QuadTree where T: Equatable {
     
     /// Removes an item from this quadtree, making sure to flatten sub-trees in
     /// case they can be flattened (item count becomes less than `maxQuadTreeCount`).
-    func remove(_ value: T) -> Bool {
-        for (i, item) in storage.enumerated() {
+    mutating func remove(_ value: T) -> Bool {
+        for (i, item) in elements.enumerated() {
             if(item == value) {
-                storage.remove(at: i)
+                elements.remove(at: i)
                 return true
             }
         }
@@ -164,9 +168,10 @@ extension QuadTree where T: Equatable {
         }
         
         var rem = false
-        for sub in subtree {
-            if(sub.remove(value)) {
+        for i in 0..<subtree.count {
+            if(subtree[i].remove(value)) {
                 rem = true
+                break
             }
         }
         
@@ -186,7 +191,7 @@ extension QuadTree where T: Equatable {
         
         if(itemCount < maxQuadTreeCount) {
             for sub in subtree {
-                storage += sub.storage
+                elements += sub.elements
             }
             
             self.subtree.removeAll(keepingCapacity: true)
