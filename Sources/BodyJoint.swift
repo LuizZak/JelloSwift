@@ -20,6 +20,9 @@ open class BodyJoint: Equatable {
     /// linked by this joint
     public final let bodyLink2: JointLinkType
     
+    /// For island resolving
+    internal var _islandFlag = false
+    
     /// Whether to allow collisions between the two objects joined by this
     /// BodyJoint.
     /// Defaults to false.

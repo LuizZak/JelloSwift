@@ -24,17 +24,17 @@ public final class World {
     }
     fileprivate var worldGridSubdivision: Int = MemoryLayout<UInt>.size * 8
     
+    /// The threshold at which penetrations are ignored, since they are far too
+    /// deep to be resolved without applying unreasonable forces that will
+    /// destabilize the simulation.
+    /// Usually 0.3 is a good default.
+    public var penetrationThreshold: JFloat = 0.3
+    
     /// Inverse of `worldGridStep`, for multiplication over coordinates when
     /// projecting AABBs into the world grid.
     fileprivate var invWorldGridStep = Vector2.zero
     
     fileprivate var relaxing: Bool = false
-    
-    /// The threshold at which penetrations are ignored, since they are far too
-    /// deep to be resolved without applying unreasonable forces that will 
-    /// destabilize the simulation.
-    /// Usually 0.3 is a good default.
-    public var penetrationThreshold: JFloat = 0.3
     
     /// Matrix of material pairs used during collision resolving
     public var materialPairs: [[MaterialPair]] = []
@@ -48,6 +48,8 @@ public final class World {
     
     /// The object to report collisions to
     public weak var collisionObserver: CollisionObserver?
+    
+    private var _quadTree = QuadTree<Body>(aabb: AABB())
     
     /// Inits an empty world
     public init() {
@@ -356,368 +358,98 @@ public final class World {
     fileprivate func update(_ elapsed: JFloat, withBodies bodies: ContiguousArray<Body>, joints: ContiguousArray<BodyJoint>) {
         var _allAABB = AABB()
         
-        // Update the bodies
         for body in bodies {
-            body.derivePositionAndAngle(elapsed)
-            
-            // Only update edge and normals pre-accumulation if the body has 
-            // components - only components really use this information.
-            if(body.componentCount > 0) {
-                body.updateEdgesAndNormals()
-                
-                body.accumulateExternalForces(relaxing: relaxing)
-                body.accumulateInternalForces(relaxing: relaxing)
-            }
-            
-            body.integrate(elapsed)
+            body._islandFlag = false
             
             body.updateAABB(elapsed, forceUpdate: true)
             
-            updateBodyBitmask(body)
-            
-            body._resolvedFlag = false
-            
             _allAABB.expand(toFit: body.aabb)
         }
-        
-        // Update the joints
         for joint in joints {
-            joint.resolve(elapsed)
+            joint._islandFlag = false
         }
         
-        // Use a quad-tree for resolving body collisions, using the total AABB
-        // of all bodies
-        var quadTree = QuadTree<Body>(aabb: _allAABB)
+        // Create collision quad-tree
+        var quad = QuadTree<Body>(aabb: _allAABB)
         for body in bodies {
-            quadTree.insert(body)
+            quad.insert(body)
         }
         
-        // Do a breadth-first traversal of the quad-trees, resolving the bodies
-        // recursively.
-        var qQueue: [QuadTree<Body>] = [quadTree]
-        while let next = qQueue.first {
-            qQueue.removeFirst()
-            
-            for body1 in next.elements {
-                next.queryAABB(body1.aabb) { body2 in
-                    guard !body2._resolvedFlag && body2 != body1 else {
-                        return
-                    }
-                    
-                    if (body1.bitmask & body2.bitmask) == 0 {
-                        return
-                    }
-                    
-                    if body1.isStatic && body2.isStatic {
-                        return
-                    }
-                    
-                    // early out - these bodies materials are set NOT to collide
-                    if !materialPairs[body1.material][body2.material].collide {
-                        return
-                    }
-                    
-                    // Joints relationship: if one body is joined to another by 
-                    // a joint, check the joint's rule for collision
-                    for j in body1.joints {
-                        if(j.bodyLink1.body == body1 && j.bodyLink2.body == body2 ||
-                            j.bodyLink2.body == body1 && j.bodyLink1.body == body2) {
-                            if !j.allowCollisions {
-                                return
-                            }
-                        }
-                    }
-                    
-                    // okay, the AABB's of these 2 are intersecting. now check for
-                    // collision of A against B.
-                    bodyCollide(body1, body2)
-                    
-                    // and the opposite case, B colliding with A
-                    bodyCollide(body2, body1)
-                }
-                
-                // Update flag
-                body1._resolvedFlag = true
-            }
-            
-            for sub in next.subtree {
-                qQueue.append(sub)
-            }
-        }
+        let island = Island(bodyCapacity: bodies.count, jointCapacity: joints.count, world: self)
+        island.penetrationThreshold = penetrationThreshold // Propagate penetration threshold to solver
         
-#if false
-        for body1 in bodies {
-            quadTree.queryAABB(body1.aabb) { body2 in
-                guard !body2._resolvedFlag && body2 != body1 else {
-                    return
-                }
-                
-                if((body1.bitmask & body2.bitmask) == 0) {
-                    return
-                }
-                
-                if (body1.isStatic && body2.isStatic) {
-                    return
-                }
-                
-                // early out - these bodies materials are set NOT to collide
-                if (!materialPairs[body1.material][body2.material].collide) {
-                    return
-                }
-                
-                // Joints relationship: if one body is joined to another by a 
-                // joint, check the joint's rule for collision
-                for j in body1.joints {
-                    if(j.bodyLink1.body == body1 && j.bodyLink2.body == body2 ||
-                       j.bodyLink2.body == body1 && j.bodyLink1.body == body2) {
-                        if(!j.allowCollisions) {
-                            return
-                        }
-                    }
-                }
-                
-                // okay, the AABB's of these 2 are intersecting. now check for
-                // collision of A against B.
-                bodyCollide(body1, body2)
-                
-                // and the opposite case, B colliding with A
-                bodyCollide(body2, body1)
+        for next in bodies {
+            if next._islandFlag {
+                continue
+            }
+            if next.isStatic {
+                continue
             }
             
-            // Update flag
-            body1._resolvedFlag = true
-        }
-#else
-        let c = bodies.count
-        for (i, body1) in bodies.enumerated() {
-            innerLoop: for j in (i &+ 1)..<c {
-                let body2 = bodies[j]
+            next._islandFlag = true
+            
+            island.clear()
+            
+            var stack: ContiguousArray<Body> = [next]
+            
+            while stack.count > 0 {
+                let body = stack.removeFirst()
                 
-                // bitmask filtering
-                if((body1.bitmask & body2.bitmask) == 0) {
+                island.add(body: body)
+                
+                if(body.isStatic) {
                     continue
                 }
                 
-                // another early-out - both bodies are static.
-                if ((body1.isStatic && body2.isStatic) ||
-                    !bitmasksIntersect((body1.bitmaskX, body1.bitmaskY),
-                                       (body2.bitmaskX, body2.bitmaskY)))
-                {
-                    continue
-                }
-                
-                // broad-phase collision via AABB.
-                // early out
-                if(!body1.aabb.intersects(body2.aabb)) {
-                    continue
-                }
-                
-                // early out - these bodies materials are set NOT to collide
-                if (!materialPairs[body1.material][body2.material].collide) {
-                    continue
-                }
-                
-                // Joints relationship: if one body is joined to another by a 
-                // joint, check the joint's rule for collision
-                for j in body1.joints {
-                    if(j.bodyLink1.body == body1 && j.bodyLink2.body == body2 ||
-                       j.bodyLink2.body == body1 && j.bodyLink1.body == body2) {
-                        if(!j.allowCollisions) {
-                            continue innerLoop
-                        }
+                // Query joints
+                for joint in body.joints {
+                    guard !joint._islandFlag else {
+                        continue
                     }
+                    
+                    joint._islandFlag = true
+                    
+                    island.add(joint: joint)
+                    
+                    let b2: Body
+                    if joint.bodyLink1.body == body {
+                        b2 = joint.bodyLink2.body
+                    } else {
+                        b2 = joint.bodyLink1.body
+                    }
+                    
+                    if b2._islandFlag {
+                        continue
+                    }
+                    
+                    b2._islandFlag = true
+                    stack.append(b2)
                 }
                 
-                // okay, the AABB's of these 2 are intersecting. now check for
-                // collision of A against B.
-                bodyCollide(body1, body2)
-                
-                // and the opposite case, B colliding with A
-                bodyCollide(body2, body1)
+                // Query AABB for contacts
+                quad.queryAABB(body.aabb) { other in
+                    if other == body || other._islandFlag {
+                        return
+                    }
+                    
+                    other._islandFlag = true
+                    stack.append(other)
+                }
+            }
+            
+            island.resolve(elapsed: elapsed, relaxing: relaxing)
+            
+            // Post solve cleanup
+            // Allow static bodies to participate in other islands
+            for body in island.bodies where body.isStatic {
+                body._islandFlag = false
             }
         }
-#endif
         
         if(!relaxing) { // Disabled during relaxation
             // Notify collisions that will happen
             if let observer = collisionObserver {
                 observer.bodiesDidCollide(collisionList)
-            }
-        }
-        
-        handleCollisions()
-        
-        for body in bodies {
-            body.dampenVelocity(elapsed)
-        }
-    }
-    
-    /// Checks collision between two bodies, and store the collision information
-    /// if they do
-    fileprivate func bodyCollide(_ bA: Body, _ bB: Body) {
-        let bBpCount = bB.pointMasses.count
-        
-        for (i, pmA) in bA.pointMasses.enumerated() {
-            let pt = pmA.position
-            
-            if (!bB.contains(pt)) {
-                continue
-            }
-            
-            let ptNorm = bA.pointNormals[i]
-            
-            // this point is inside the other body.  now check if the edges on
-            // either side intersect with and edges on bodyB.
-            var closestAway = JFloat.infinity
-            var closestSame = JFloat.infinity
-            
-            var infoAway = BodyCollisionInformation(bodyA: bA, bodyApm: i, bodyB: bB)
-            var infoSame = infoAway
-            
-            var found = false
-            
-            for j in 0..<bBpCount {
-                let b1 = j
-                let b2 = (j &+ 1) % (bBpCount)
-                
-                // test against this edge.
-                let (hitPt, normal, edgeD, dist) = bB.closestPointSquared(to: pt, onEdge: j)
-                
-                // only perform the check if the normal for this edge is facing
-                // AWAY from the point normal.
-                let dot = ptNorm • normal
-                
-                if (dot <= 0.0) {
-                    if dist < closestAway {
-                        closestAway = dist
-                    
-                        infoAway.bodyBpmA = b1
-                        infoAway.bodyBpmB = b2
-                        infoAway.edgeD = edgeD
-                        infoAway.hitPt = hitPt
-                        infoAway.normal = normal
-                        infoAway.penetration = dist
-                        found = true
-                    }
-                } else {
-                    if (dist < closestSame) {
-                        closestSame = dist
-                
-                        infoSame.bodyBpmA = b1
-                        infoSame.bodyBpmB = b2
-                        infoSame.edgeD = edgeD
-                        infoSame.hitPt = hitPt
-                        infoSame.normal = normal
-                        infoSame.penetration = dist
-                    }
-                }
-            }
-            
-            // we've checked all edges on BodyB.  add the collision info to the
-            // stack.
-            if (found && (closestAway > penetrationThreshold) && (closestSame < closestAway)) {
-                assert(infoSame.bodyBpmA > -1 && infoSame.bodyBpmB > -1)
-                
-                infoSame.penetration = infoSame.penetration.squareRoot()
-                collisionList.append(infoSame)
-            } else {
-                assert(infoAway.bodyBpmA > -1 && infoAway.bodyBpmB > -1)
-                
-                infoAway.penetration = infoAway.penetration.squareRoot()
-                collisionList.append(infoAway)
-            }
-        }
-    }
-    
-    /// Solves the collisions between bodies
-    fileprivate func handleCollisions() {
-        for info in collisionList {
-            let bodyA = info.bodyA
-            let bodyB = info.bodyB
-            
-            let A = bodyA.pointMasses[info.bodyApm]
-            let B1 = bodyB.pointMasses[info.bodyBpmA]
-            let B2 = bodyB.pointMasses[info.bodyBpmB]
-            
-            // Velocity changes as a result of collision
-            let bVel = (B1.velocity + B2.velocity) / 2
-            
-            let relVel = A.velocity - bVel
-            let relDot = relVel • info.normal
-            
-            let material = materialPairs[bodyA.material][bodyB.material]
-            
-            if(!material.collisionFilter(info, relDot)) {
-                continue
-            }
-            
-            // Check exceeding point-mass penetration - we ignore the collision,
-            // then.
-            if(info.penetration > penetrationThreshold) {
-                self.collisionObserver?.bodyCollision(info, didExceedPenetrationThreshold: penetrationThreshold)
-                continue
-            }
-            
-            let b1inf = 1.0 - info.edgeD
-            let b2inf = info.edgeD
-            
-            let b2MassSum = B1.mass + B2.mass
-            
-            let massSum = A.mass + b2MassSum
-            
-            // Amount to move each party of the collision
-            let Amove: JFloat
-            let Bmove: JFloat
-            
-            // Static detection - when one of the parties is static, the other
-            // should move the total amount of the penetration
-            if(A.mass.isInfinite) {
-                Amove = 0
-                Bmove = info.penetration + 0.001
-            } else if(b2MassSum.isInfinite) {
-                Amove = info.penetration + 0.001
-                Bmove = 0
-            } else {
-                Amove = info.penetration * (b2MassSum / massSum)
-                Bmove = info.penetration * (A.mass / massSum)
-            }
-            
-            if(A.mass.isFinite) {
-                A.position += info.normal * Amove
-            }
-            
-            if(B1.mass.isFinite) {
-                B1.position -= info.normal * (Bmove * b1inf)
-            }
-            if(B2.mass.isFinite) {
-                B2.position -= info.normal * (Bmove * b2inf)
-            }
-            
-            if(relDot <= 0.0001 && (A.mass.isFinite || b2MassSum.isFinite)) {
-                let AinvMass: JFloat = A.mass.isInfinite ? 0 : 1.0 / A.mass
-                let BinvMass: JFloat = b2MassSum.isInfinite ? 0 : 1.0 / b2MassSum
-                
-                let jDenom: JFloat = AinvMass + BinvMass
-                let elas: JFloat = 1 + material.elasticity
-                
-                let j: JFloat = -((relVel * elas) • info.normal) / jDenom
-                
-                let tangent: Vector2 = info.normal.perpendicular()
-                
-                let friction: JFloat = material.friction
-                let f: JFloat = (relVel • tangent) * friction / jDenom
-                
-                if(A.mass.isFinite) {
-                    A.velocity += (info.normal * (j / A.mass)) - (tangent * (f / A.mass))
-                }
-                
-                if(b2MassSum.isFinite) {
-                    let jComp = info.normal * j / b2MassSum
-                    let fComp = tangent * (f * b2MassSum)
-                    
-                    B1.velocity -= (jComp * b1inf) - (fComp * b1inf)
-                    B2.velocity -= (jComp * b2inf) - (fComp * b2inf)
-                }
             }
         }
         
@@ -821,9 +553,9 @@ public extension World {
     ///
     /// This will move/change the position of each body after iterations are done.
     ///
-    /// Performs collisions and joint resolving of only the bodies/joints that
-    /// are related to the `bodies` array, and resets the velocities to 0 before
-    /// finishing.
+    /// Performs collisions and joint resolving only of bodies in the provided
+    /// list, and other bodies that come in direct contact with them, resetting
+    /// the velocities to 0 before finishing.
     ///
     /// Only Body Joints that involve bodies contained within the passed body
     /// list are executed.
@@ -869,5 +601,307 @@ public extension World {
                 pointMass.velocity = .zero
             }
         }
+    }
+}
+
+/// Specifies a collection of bodies that are connected by either constraints or
+/// contacts, forming a singular 'island' that is isolated and doesn't interact
+/// with other 'islands'.
+///
+/// Island solving is inspired by Box2D's implementation, by Erin Catto.
+final class Island {
+    
+    var collisionList: [BodyCollisionInformation] = []
+    var bodies: ContiguousArray<Body> = []
+    var joints: ContiguousArray<BodyJoint> = []
+    
+    var world: World
+    
+    /// The threshold at which penetrations are ignored, since they are far too
+    /// deep to be resolved without applying unreasonable forces that will
+    /// destabilize the simulation.
+    /// Usually 0.3 is a good default.
+    public var penetrationThreshold: JFloat = 0.3
+    
+    init(bodyCapacity: Int, jointCapacity: Int, world: World) {
+        collisionList.reserveCapacity(Int(Float(bodyCapacity) * 1.5))
+        bodies.reserveCapacity(bodyCapacity)
+        joints.reserveCapacity(jointCapacity)
+        self.world = world
+    }
+    
+    func clear() {
+        collisionList.removeAll(keepingCapacity: true)
+        bodies.removeAll(keepingCapacity: true)
+        joints.removeAll(keepingCapacity: true)
+    }
+    
+    func resolve(elapsed: JFloat, relaxing: Bool) {
+        
+        // Update the bodies
+        for body in bodies {
+            body.derivePositionAndAngle(elapsed)
+            
+            // Only update edge and normals pre-accumulation if the body has
+            // components - only components really use this information.
+            if(body.componentCount > 0) {
+                body.updateEdgesAndNormals()
+                
+                body.accumulateExternalForces(relaxing: relaxing)
+                body.accumulateInternalForces(relaxing: relaxing)
+            }
+            
+            body.integrate(elapsed)
+            
+            body.updateAABB(elapsed, forceUpdate: true)
+        }
+        
+        // Update the joints
+        for joint in joints {
+            joint.resolve(elapsed)
+        }
+        
+        let c = bodies.count
+        for (i, body1) in bodies.enumerated() {
+            innerLoop: for j in (i &+ 1)..<c {
+                let body2 = bodies[j]
+                
+                // bitmask filtering
+                if (body1.bitmask & body2.bitmask) == 0 {
+                    continue
+                }
+                
+                // another early-out - both bodies are static.
+                if body1.isStatic && body2.isStatic
+                {
+                    continue
+                }
+                
+                // broad-phase collision via AABB.
+                // early out
+                if !body1.aabb.intersects(body2.aabb) {
+                    continue
+                }
+                
+                // early out - these bodies materials are set NOT to collide
+                if !world.materialPairs[body1.material][body2.material].collide {
+                    continue
+                }
+                
+                // Joints relationship: if one body is joined to another by a
+                // joint, check the joint's rule for collision
+                for j in body1.joints {
+                    if(j.bodyLink1.body == body1 && j.bodyLink2.body == body2 ||
+                        j.bodyLink2.body == body1 && j.bodyLink1.body == body2) {
+                        if(!j.allowCollisions) {
+                            continue innerLoop
+                        }
+                    }
+                }
+                
+                // okay, the AABB's of these 2 are intersecting. now check for
+                // collision of A against B.
+                bodyCollide(body1, body2)
+                
+                // and the opposite case, B colliding with A
+                bodyCollide(body2, body1)
+            }
+        }
+        
+        handleCollisions()
+        
+        for body in bodies {
+            body.dampenVelocity(elapsed)
+        }
+        
+        collisionList.removeAll(keepingCapacity: true)
+    }
+    
+    /// Checks collision between two bodies, and store the collision information
+    /// if they do.
+    /// Returns if any collisions have been detected between the two bodies.
+    @discardableResult
+    func bodyCollide(_ bA: Body, _ bB: Body) -> Bool {
+        let bBpCount = bB.pointMasses.count
+        
+        var hasCollision = false
+        for (i, pmA) in bA.pointMasses.enumerated() {
+            let pt = pmA.position
+            
+            if (!bB.contains(pt)) {
+                continue
+            }
+            
+            hasCollision = true
+            
+            let ptNorm = bA.pointNormals[i]
+            
+            // this point is inside the other body.  now check if the edges on
+            // either side intersect with and edges on bodyB.
+            var closestAway = JFloat.infinity
+            var closestSame = JFloat.infinity
+            
+            var infoAway = BodyCollisionInformation(bodyA: bA, bodyApm: i, bodyB: bB)
+            var infoSame = infoAway
+            
+            var found = false
+            
+            for j in 0..<bBpCount {
+                let b1 = j
+                let b2 = (j &+ 1) % (bBpCount)
+                
+                // test against this edge.
+                let (hitPt, normal, edgeD, dist) = bB.closestPointSquared(to: pt, onEdge: j)
+                
+                // only perform the check if the normal for this edge is facing
+                // AWAY from the point normal.
+                let dot = ptNorm • normal
+                
+                if (dot <= 0.0) {
+                    if dist < closestAway {
+                        closestAway = dist
+                    
+                        infoAway.bodyBpmA = b1
+                        infoAway.bodyBpmB = b2
+                        infoAway.edgeD = edgeD
+                        infoAway.hitPt = hitPt
+                        infoAway.normal = normal
+                        infoAway.penetration = dist
+                        found = true
+                    }
+                } else {
+                    if (dist < closestSame) {
+                        closestSame = dist
+                
+                        infoSame.bodyBpmA = b1
+                        infoSame.bodyBpmB = b2
+                        infoSame.edgeD = edgeD
+                        infoSame.hitPt = hitPt
+                        infoSame.normal = normal
+                        infoSame.penetration = dist
+                    }
+                }
+            }
+            
+            // we've checked all edges on BodyB.  add the collision info to the
+            // stack.
+            if (found && (closestAway > penetrationThreshold) && (closestSame < closestAway)) {
+                assert(infoSame.bodyBpmA > -1 && infoSame.bodyBpmB > -1)
+                
+                infoSame.penetration = infoSame.penetration.squareRoot()
+                collisionList.append(infoSame)
+            } else {
+                assert(infoAway.bodyBpmA > -1 && infoAway.bodyBpmB > -1)
+                
+                infoAway.penetration = infoAway.penetration.squareRoot()
+                collisionList.append(infoAway)
+            }
+        }
+        
+        return hasCollision
+    }
+    
+    /// Solves the collisions between bodies
+    fileprivate func handleCollisions() {
+        for info in collisionList {
+            let bodyA = info.bodyA
+            let bodyB = info.bodyB
+            
+            let A = bodyA.pointMasses[info.bodyApm]
+            let B1 = bodyB.pointMasses[info.bodyBpmA]
+            let B2 = bodyB.pointMasses[info.bodyBpmB]
+            
+            // Velocity changes as a result of collision
+            let bVel = (B1.velocity + B2.velocity) / 2
+            
+            let relVel = A.velocity - bVel
+            let relDot = relVel • info.normal
+            
+            let material = world.materialPairs[bodyA.material][bodyB.material]
+            
+            if(!material.collisionFilter(info, relDot)) {
+                continue
+            }
+            
+            // Check exceeding point-mass penetration - we ignore the collision,
+            // then.
+            if(info.penetration > penetrationThreshold) {
+                world.collisionObserver?.bodyCollision(info, didExceedPenetrationThreshold: penetrationThreshold)
+                continue
+            }
+            
+            let b1inf = 1.0 - info.edgeD
+            let b2inf = info.edgeD
+            
+            let b2MassSum = B1.mass + B2.mass
+            
+            let massSum = A.mass + b2MassSum
+            
+            // Amount to move each party of the collision
+            let Amove: JFloat
+            let Bmove: JFloat
+            
+            // Static detection - when one of the parties is static, the other
+            // should move the total amount of the penetration
+            if(A.mass.isInfinite) {
+                Amove = 0
+                Bmove = info.penetration + 0.001
+            } else if(b2MassSum.isInfinite) {
+                Amove = info.penetration + 0.001
+                Bmove = 0
+            } else {
+                Amove = info.penetration * (b2MassSum / massSum)
+                Bmove = info.penetration * (A.mass / massSum)
+            }
+            
+            if(A.mass.isFinite) {
+                A.position += info.normal * Amove
+            }
+            
+            if(B1.mass.isFinite) {
+                B1.position -= info.normal * (Bmove * b1inf)
+            }
+            if(B2.mass.isFinite) {
+                B2.position -= info.normal * (Bmove * b2inf)
+            }
+            
+            if(relDot <= 0.0001 && (A.mass.isFinite || b2MassSum.isFinite)) {
+                let AinvMass: JFloat = A.mass.isInfinite ? 0 : 1.0 / A.mass
+                let BinvMass: JFloat = b2MassSum.isInfinite ? 0 : 1.0 / b2MassSum
+                
+                let jDenom: JFloat = AinvMass + BinvMass
+                let elas: JFloat = 1 + material.elasticity
+                
+                let j: JFloat = -((relVel * elas) • info.normal) / jDenom
+                
+                let tangent: Vector2 = info.normal.perpendicular()
+                
+                let friction: JFloat = material.friction
+                let f: JFloat = (relVel • tangent) * friction / jDenom
+                
+                if(A.mass.isFinite) {
+                    A.velocity += (info.normal * (j / A.mass)) - (tangent * (f / A.mass))
+                }
+                
+                if(b2MassSum.isFinite) {
+                    let jComp = info.normal * j / b2MassSum
+                    let fComp = tangent * (f * b2MassSum)
+                    
+                    B1.velocity -= (jComp * b1inf) - (fComp * b1inf)
+                    B2.velocity -= (jComp * b2inf) - (fComp * b2inf)
+                }
+            }
+        }
+        
+        world.collisionList.append(contentsOf: collisionList)
+    }
+    
+    func add(body: Body) {
+        assert(!bodies.contains(body))
+        bodies.append(body)
+    }
+
+    func add(joint: BodyJoint) {
+        joints.append(joint)
     }
 }

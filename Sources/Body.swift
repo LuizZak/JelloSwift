@@ -29,6 +29,9 @@ public final class Body: Equatable {
     /// List of body joints this body participates in
     public internal(set) var joints: ContiguousArray<BodyJoint> = []
     
+    /// For island resolving
+    internal var _islandFlag = false
+    
     /// The base shape for the body
     public var baseShape = ClosedShape()
     
@@ -349,7 +352,7 @@ public final class Body: Equatable {
         
         components.forEach { $0.prepare(self) }
         
-        updateEdges()
+        updateEdgesAndNormals()
     }
     
     /// Sets the mass for all the PointMass objects in this body
