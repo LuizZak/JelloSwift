@@ -365,6 +365,9 @@ public final class World {
                 
                 body.accumulateExternalForces(relaxing: relaxing)
                 body.accumulateInternalForces(relaxing: relaxing)
+            } else {
+                // We need these for the collision detection
+                body.updateNormals()
             }
             
             body.integrate(elapsed)
