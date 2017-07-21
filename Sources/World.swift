@@ -351,14 +351,16 @@ public final class World {
     /// - Parameter elapsed: The elapsed time to update by, usually in 1/60ths
     /// of a second.
     public func update(_ elapsed: JFloat) {
-        update(elapsed, withBodies: bodies, joints: joints)
+        update(elapsed, withBodies: bodies)
     }
     
     /// Internal updating method
-    fileprivate func update(_ elapsed: JFloat, withBodies bodies: ContiguousArray<Body>, joints: ContiguousArray<BodyJoint>) {
+    /// The update may end up updating other bodies/joints that are not listed,
+    /// as it sees fit (colliding/connected/etc.)
+    fileprivate func update(_ elapsed: JFloat, withBodies bodies: ContiguousArray<Body>) {
         var _allAABB = AABB()
         
-        for body in bodies {
+        for body in self.bodies {
             body._islandFlag = false
             
             body.updateAABB(elapsed, forceUpdate: true)
@@ -371,7 +373,7 @@ public final class World {
         
         // Create collision quad-tree
         var quad = QuadTree<Body>(aabb: _allAABB)
-        for body in bodies {
+        for body in self.bodies {
             quad.insert(body)
         }
         
@@ -401,7 +403,7 @@ public final class World {
                     continue
                 }
                 
-                // Query joints
+                // Traverse joints
                 for joint in body.joints {
                     guard !joint._islandFlag else {
                         continue
@@ -432,6 +434,29 @@ public final class World {
                         return
                     }
                     
+                    // bitmask filtering
+                    if body.bitmask & other.bitmask == 0 {
+                        return
+                    }
+                    
+                    // early out - these bodies materials are set NOT to collide
+                    if !materialPairs[body.material][other.material].collide {
+                        return
+                    }
+                    
+                    // Joints relationship: if one body is joined to another by a
+                    // joint, check the joint's rule for collision
+                    for j in body.joints {
+                        if j.bodyLink1.body == body && j.bodyLink2.body == other ||
+                            j.bodyLink2.body == body && j.bodyLink1.body == other {
+                            if !j.allowCollisions {
+                                return
+                            }
+                        }
+                    }
+                    
+                    // Maybe these bodies are intersecting in some fashion
+                    // Add it to the solving island
                     other._islandFlag = true
                     stack.append(other)
                 }
@@ -573,30 +598,14 @@ public extension World {
     public func relaxBodies(in bodies: [Body], timestep: JFloat, iterations: Int = 100) {
         relaxing = true
         
-        // Find all joints for the bodies
-        var joints: ContiguousArray<BodyJoint> = []
-        let existingJoints =
-            bodies.flatMap {
-                $0.joints
-            }.filter {
-                bodies.contains($0.bodyLink1.body) && bodies.contains($0.bodyLink2.body)
-            }
-        
-        // Gather joints
-        for joint in existingJoints {
-            if(!joints.contains(joint)) {
-                joints.append(joint)
-            }
-        }
-        
         for _ in 0...iterations {
-            update(timestep, withBodies: ContiguousArray(bodies), joints: joints)
+            update(timestep, withBodies: ContiguousArray(bodies))
         }
         
         relaxing = false
         
         // Reset all velocities
-        for body in bodies {
+        for body in self.bodies {
             for pointMass in body.pointMasses {
                 pointMass.velocity = .zero
             }
@@ -661,50 +670,12 @@ final class Island {
             joint.resolve(elapsed)
         }
         
-        let c = bodies.count
-        for (i, body1) in bodies.enumerated() {
-            innerLoop: for j in (i &+ 1)..<c {
+        for (i, body) in bodies.enumerated() {
+            for j in i + 1..<bodies.count {
                 let body2 = bodies[j]
                 
-                // bitmask filtering
-                if (body1.bitmask & body2.bitmask) == 0 {
-                    continue
-                }
-                
-                // another early-out - both bodies are static.
-                if body1.isStatic && body2.isStatic
-                {
-                    continue
-                }
-                
-                // broad-phase collision via AABB.
-                // early out
-                if !body1.aabb.intersects(body2.aabb) {
-                    continue
-                }
-                
-                // early out - these bodies materials are set NOT to collide
-                if !world.materialPairs[body1.material][body2.material].collide {
-                    continue
-                }
-                
-                // Joints relationship: if one body is joined to another by a
-                // joint, check the joint's rule for collision
-                for j in body1.joints {
-                    if(j.bodyLink1.body == body1 && j.bodyLink2.body == body2 ||
-                        j.bodyLink2.body == body1 && j.bodyLink1.body == body2) {
-                        if(!j.allowCollisions) {
-                            continue innerLoop
-                        }
-                    }
-                }
-                
-                // okay, the AABB's of these 2 are intersecting. now check for
-                // collision of A against B.
-                bodyCollide(body1, body2)
-                
-                // and the opposite case, B colliding with A
-                bodyCollide(body2, body1)
+                bodyCollide(body, body2)
+                bodyCollide(body2, body)
             }
         }
         
@@ -720,19 +691,15 @@ final class Island {
     /// Checks collision between two bodies, and store the collision information
     /// if they do.
     /// Returns if any collisions have been detected between the two bodies.
-    @discardableResult
-    func bodyCollide(_ bA: Body, _ bB: Body) -> Bool {
+    func bodyCollide(_ bA: Body, _ bB: Body) {
         let bBpCount = bB.pointMasses.count
         
-        var hasCollision = false
         for (i, pmA) in bA.pointMasses.enumerated() {
             let pt = pmA.position
             
             if (!bB.contains(pt)) {
                 continue
             }
-            
-            hasCollision = true
             
             let ptNorm = bA.pointNormals[i]
             
@@ -760,7 +727,7 @@ final class Island {
                 if (dot <= 0.0) {
                     if dist < closestAway {
                         closestAway = dist
-                    
+                        
                         infoAway.bodyBpmA = b1
                         infoAway.bodyBpmB = b2
                         infoAway.edgeD = edgeD
@@ -772,7 +739,7 @@ final class Island {
                 } else {
                     if (dist < closestSame) {
                         closestSame = dist
-                
+                        
                         infoSame.bodyBpmA = b1
                         infoSame.bodyBpmB = b2
                         infoSame.edgeD = edgeD
@@ -797,8 +764,6 @@ final class Island {
                 collisionList.append(infoAway)
             }
         }
-        
-        return hasCollision
     }
     
     /// Solves the collisions between bodies
