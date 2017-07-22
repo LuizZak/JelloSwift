@@ -359,16 +359,18 @@ public final class World {
             body.derivePositionAndAngle(elapsed)
             
             // Only update edge and normals pre-accumulation if the body has 
-            // components
+            // components - only components really use this information.
             if(body.componentCount > 0) {
                 body.updateEdgesAndNormals()
                 
                 body.accumulateExternalForces(relaxing: relaxing)
                 body.accumulateInternalForces(relaxing: relaxing)
+            } else {
+                // We need these for the collision detection
+                body.updateNormals()
             }
             
             body.integrate(elapsed)
-            body.updateEdgesAndNormals()
             
             body.updateAABB(elapsed, forceUpdate: true)
             
