@@ -33,7 +33,9 @@ public final class GravityComponent: BodyComponent {
     /// Changes the gravity of the bodies on a given world object
     public static func setGravity(on world: World, to vector: Vector2) {
         for b in world.bodies {
-            b.component(ofType: GravityComponent.self)?.gravity = vector
+            b.withComponent(ofType: GravityComponent.self) { component in
+                component.gravity = vector
+            }
         }
     }
 }
@@ -50,6 +52,8 @@ public struct GravityComponentCreator: BodyComponentCreator, Codable {
     }
     
     public func prepareBodyAfterComponent(_ body: Body) {
-        body.component(ofType: GravityComponent.self)?.gravity = vector
+        body.withComponent(ofType: GravityComponent.self) { component in
+            component.gravity = vector
+        }
     }
 }
