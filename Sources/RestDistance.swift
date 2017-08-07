@@ -86,7 +86,7 @@ extension RestDistance: Codable {
         case 1:
             self = try .ranged(min: container.decode(JFloat.self), max: container.decode(JFloat.self))
         default:
-            throw DecodingError.dataCorrupted(DecodingError.Context(codingPath: [nil], debugDescription: "Unrecognized enum payload case '\(caseNum)'"))
+            throw DecodingError.dataCorrupted(DecodingError.Context(codingPath: [], debugDescription: "Unrecognized enum payload case '\(caseNum)'"))
         }
     }
     
