@@ -28,6 +28,7 @@ public struct InternalSpring {
     public var initialRestDistance: RestDistance = 0
     
     /// Specifies the plasticity properties of this spring.
+    /// If `nil`, plasticity is disabled and spring never deforms permanently.
     public var plasticity: Plasticity?
     
     /// Rest distance of the spring, or the distance the spring tries to
@@ -111,7 +112,10 @@ public struct InternalSpring {
         }
     }
     
-    /// Specifies plasticity properties of a spring
+    /// Specifies plasticity properties of a spring.
+    ///
+    /// Plasticity permanently affects a spring's rest length by modifying it
+    /// when its length is stretched beyond a certain limit.
     public struct Plasticity {
         /// Ratio (of resting distance vs actual length) before plasticity starts
         /// to change the resting length of the spring, deforming it permanently.
@@ -126,14 +130,15 @@ public struct InternalSpring {
         /// e.g. given a spring with a resting distance `R = 10`, a plasticity
         /// rate `P = 0.5`, a yield ratio of `Y = 0.5`, and an actual length `L`,
         /// if `L / R > Y` or `R / L < 1 / Y`, the resting length will be updated
-        /// to be `R = L / R * P`.
+        /// to be `R += P * (L - R - (Y * R))` (for `L > R`) or `R -= P * (R - (Y * R) - L)`
+        /// (for `L < R`).
         public var rate: JFloat = 0.5
         
         /// A factor limit at which the plasticity stops affecting the rest length
         /// of the spring beyond its initial rest length.
         ///
-        /// If the rest length of a spring goes `RL > IL * limit` (with `IL` being
-        /// the initial length), or `RL < IL / limit`, the plasticity does not
+        /// If the rest length of a spring goes `R > IL * limit` (with `IL` being
+        /// the initial length), or `R < IL / limit`, the plasticity does not
         /// take effect.
         public var limit: JFloat = 2
     }
