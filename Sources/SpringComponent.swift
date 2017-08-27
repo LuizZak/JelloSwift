@@ -163,12 +163,14 @@ public final class SpringComponent: BodyComponent {
         return springs[body.pointMasses.count + springID].damping
     }
     
-    public func accumulateInternalForces(in body: Body) {
-        for s in springs {
+    public func accumulateInternalForces(in body: Body, relaxing: Bool) {
+        for (i, s) in springs.enumerated() {
             let p1 = body.pointMasses[s.pointMassA]
             let p2 = body.pointMasses[s.pointMassB]
             
             let force: Vector2
+            
+            let actDist = p1.position.distance(to: p2.position)
             
             switch s.restDistance {
             case .fixed(let dist):
@@ -178,17 +180,22 @@ public final class SpringComponent: BodyComponent {
                                          distance: dist,
                                          springK: s.coefficient, springD: s.damping)
             case .ranged:
-                let dist = p1.position.distance(to: p2.position)
-                
                 force =
                     calculateSpringForce(posA: p1.position, velA: p1.velocity,
                                          posB: p2.position, velB: p2.velocity,
-                                         distance: s.restDistance.clamp(value: dist),
+                                         distance: s.restDistance.clamp(value: actDist),
                                          springK: s.coefficient, springD: s.damping)
             }
             
             p1.applyForce(of: force)
             p2.applyForce(of: -force)
+            
+            if !relaxing {
+                // Apply plasticity
+                var s = s
+                s.updatePlasticity(distance: actDist)
+                springs[i] = s
+            }
         }
         
         if(shapeMatchingOn && shapeSpringK > 0) {

@@ -28,7 +28,7 @@ public final class PressureComponent: BodyComponent {
         
     }
     
-    public func accumulateInternalForces(in body: Body) {
+    public func accumulateInternalForces(in body: Body, relaxing: Bool) {
         if(body.pointMasses.count < 1) {
             volume = 0
             return

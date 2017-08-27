@@ -42,23 +42,6 @@ public struct InternalSpring {
         }
     }
     
-    /*
-     mSpringStrength = springStrength;
-     //std::cout << "restLengthPRE: " << mRestLength << "\n";
-     ci::Vec2f dir = particleA->mPos - particleB->mPos;
-     float dirLength = dir.length();
-     float dirLengthSqrd = dir.lengthSquared();
-     
-     
-     float d = mYieldRatio * mRestLength;
-     if ( dirLength > mRestLength + d ){
-     mRestLength += mPlasticityConstant * ( dirLength - mRestLength - d );
-     }
-     else if ( dirLength < mRestLength - d ){
-     mRestLength -= mPlasticityConstant * ( mRestLength - d - dirLength );
-     }
- */
-    
     /// The spring coefficient
     public var coefficient: JFloat = 0
     
@@ -85,11 +68,54 @@ public struct InternalSpring {
         damping = springD
     }
     
+    /// Updates the plasticity settings of this spring.
+    /// Does nothing, if plasticity is not configured.
+    ///
+    /// - Parameters:
+    ///   - distance: The current distance between the points
+    public mutating func updatePlasticity(distance: JFloat) {
+        guard let plas = plasticity else {
+            return
+        }
+        
+        if restDistance.inRange(value: distance) { // Exact distance - no plasticity changes
+            return
+        }
+        
+        // Based on source code found at:
+        // https://github.com/justincouch/cinderFluid/blob/a07cc282d36c37d1bd782a36d6ffaf4c801334eb/Fluid/xcode/Spring.cpp#L46
+        //
+        if distance > restDistance.maximumDistance {
+            
+            let d = plas.yieldRatio * restDistance.maximumDistance
+            
+            if distance > restDistance.maximumDistance + d {
+                restDistance.maximumDistance += plas.rate * (distance - restDistance.maximumDistance - d)
+                
+                if restDistance.maximumDistance > initialRestDistance.maximumDistance * plas.limit {
+                    restDistance.maximumDistance = initialRestDistance.maximumDistance * plas.limit
+                }
+            }
+            
+        } else if distance < restDistance.minimumDistance {
+            
+            let d = plas.yieldRatio * restDistance.minimumDistance
+            
+            if distance < restDistance.minimumDistance - d {
+                restDistance.minimumDistance -= plas.rate * (restDistance.minimumDistance - d - distance)
+                
+                if restDistance.minimumDistance < initialRestDistance.minimumDistance / plas.limit {
+                    restDistance.minimumDistance = initialRestDistance.minimumDistance / plas.limit
+                }
+            }
+        }
+    }
+    
     /// Specifies plasticity properties of a spring
     public struct Plasticity {
         /// Ratio (of resting distance vs actual length) before plasticity starts
         /// to change the resting length of the spring, deforming it permanently.
-        public var yieldRatio: JFloat = 0
+        public var yieldRatio: JFloat = 0.3
         
         /// Plasticity rate for the spring.
         /// When the rest distance of a spring goes past its yield limit, the
@@ -102,5 +128,13 @@ public struct InternalSpring {
         /// if `L / R > Y` or `R / L < 1 / Y`, the resting length will be updated
         /// to be `R = L / R * P`.
         public var rate: JFloat = 0.5
+        
+        /// A factor limit at which the plasticity stops affecting the rest length
+        /// of the spring beyond its initial rest length.
+        ///
+        /// If the rest length of a spring goes `RL > IL * limit` (with `IL` being
+        /// the initial length), or `RL < IL / limit`, the plasticity does not
+        /// take effect.
+        public var limit: JFloat = 2
     }
 }

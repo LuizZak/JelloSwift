@@ -19,23 +19,49 @@ public enum RestDistance: ExpressibleByFloatLiteral, ExpressibleByIntegerLiteral
     
     /// Returns the minimum distance for this rest distance.
     /// If the current value is .fixed, this method always returns the rest
-    /// distance it represents, if .ranged, it returns its min value
+    /// distance it represents, if .ranged, it returns its min value.
+    ///
+    /// Setting this value updates the `.fixed` value, or in case of `.ranged`
+    /// it updates the minimum distance value.
     public var minimumDistance: JFloat {
-        switch(self) {
-        case .fixed(let value),
-             .ranged(let value, _):
-            return value
+        get {
+            switch(self) {
+            case .fixed(let value),
+                 .ranged(let value, _):
+                return value
+            }
+        }
+        set {
+            switch self {
+            case .fixed:
+                self = .fixed(newValue)
+            case .ranged(_, let max):
+                self = .ranged(min: newValue, max: max)
+            }
         }
     }
     
     /// Returns the maximum distance for this rest distance.
     /// If the current value is .fixed, this method always returns the rest
     /// distance it represents, if .ranged, it returns its max value
+    ///
+    /// Setting this value updates the `.fixed` value, or in case of `.ranged`
+    /// it updates the maximum distance value.
     public var maximumDistance: JFloat {
-        switch(self) {
-        case .fixed(let value),
-             .ranged(_, let value):
-            return value
+        get {
+            switch(self) {
+            case .fixed(let value),
+                 .ranged(_, let value):
+                return value
+            }
+        }
+        set {
+            switch self {
+            case .fixed:
+                self = .fixed(newValue)
+            case .ranged(let min, _):
+                self = .ranged(min: min, max: newValue)
+            }
         }
     }
     
