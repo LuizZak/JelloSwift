@@ -123,7 +123,7 @@ public final class SpringComponent: BodyComponent {
     /// Sets the spring constant for the given spring index.
     /// The spring index starts from pointMasses.count and onwards, so the first
     /// spring will not be the first edge spring.
-    public func setSpringConstants(_ body: Body, springID: Int,
+    public func setSpringConstants(forSpringIndex springID: Int, in body: Body,
                                    _ springK: JFloat, _ springDamp: JFloat) {
         // index is for all internal springs, AFTER the default internal springs.
         let index = body.pointMasses.count + springID
@@ -135,7 +135,7 @@ public final class SpringComponent: BodyComponent {
     /// Sets the rest distance for the givne spring index.
     /// The spring index starts from pointMasses.count and onwards, so the first
     /// spring will not be the first edge spring.
-    public func setSpringRestDistance(_ body: Body, _ springID: Int, _ dist: RestDistance) {
+    public func setSpringRestDistance(forSpringIndex springID: Int, in body: Body, _ dist: RestDistance) {
         // index is for all internal springs, AFTER the default internal springs.
         let index = body.pointMasses.count + springID
         
@@ -145,7 +145,7 @@ public final class SpringComponent: BodyComponent {
     /// Gets the rest distance for the givne spring index.
     /// This ignores the default edge springs, so the index is always
     /// `+ body.pointMasses.count`
-    public func springRestDistance(_ springID: Int, in body: Body) -> RestDistance {
+    public func springRestDistance(forSpringIndex springID: Int, in body: Body) -> RestDistance {
         return springs[body.pointMasses.count + springID].restDistance
     }
     
@@ -161,6 +161,24 @@ public final class SpringComponent: BodyComponent {
     /// `+ body.pointMasses.count`
     public func springDamping(forSpringIndex springID: Int, in body: Body) -> JFloat {
         return springs[body.pointMasses.count + springID].damping
+    }
+    
+    /// Gets the current plasticity settings of a spring, or nil, if no plasticity
+    /// is set.
+    /// This ignores the default edge springs, so the index is always
+    /// `+ body.pointMasses.count`
+    public func springPlasticity(forSpringIndex springID: Int, in body: Body) -> InternalSpring.Plasticity? {
+        return springs[body.pointMasses.count + springID].plasticity
+    }
+    
+    /// Sets the current plasticity settings of a spring, or disables it, if `nil`
+    /// is passed.
+    ///
+    /// This ignores the default edge springs, so the index is always
+    /// `+ body.pointMasses.count`
+    public func setSpringPlasticity(forSpringIndex springID: Int, in body: Body,
+                                    plasticity: InternalSpring.Plasticity?) {
+        springs[body.pointMasses.count + springID].plasticity = plasticity
     }
     
     public func accumulateInternalForces(in body: Body, relaxing: Bool) {
