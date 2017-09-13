@@ -123,7 +123,7 @@ public final class SpringComponent: BodyComponent {
     /// Sets the spring constant for the given spring index.
     /// The spring index starts from pointMasses.count and onwards, so the first
     /// spring will not be the first edge spring.
-    public func setSpringConstants(_ body: Body, springID: Int,
+    public func setSpringConstants(forSpringIndex springID: Int, in body: Body,
                                    _ springK: JFloat, _ springDamp: JFloat) {
         // index is for all internal springs, AFTER the default internal springs.
         let index = body.pointMasses.count + springID
@@ -135,7 +135,7 @@ public final class SpringComponent: BodyComponent {
     /// Sets the rest distance for the givne spring index.
     /// The spring index starts from pointMasses.count and onwards, so the first
     /// spring will not be the first edge spring.
-    public func setSpringRestDistance(_ body: Body, _ springID: Int, _ dist: RestDistance) {
+    public func setSpringRestDistance(forSpringIndex springID: Int, in body: Body, _ dist: RestDistance) {
         // index is for all internal springs, AFTER the default internal springs.
         let index = body.pointMasses.count + springID
         
@@ -145,7 +145,7 @@ public final class SpringComponent: BodyComponent {
     /// Gets the rest distance for the givne spring index.
     /// This ignores the default edge springs, so the index is always
     /// `+ body.pointMasses.count`
-    public func springRestDistance(_ springID: Int, in body: Body) -> RestDistance {
+    public func springRestDistance(forSpringIndex springID: Int, in body: Body) -> RestDistance {
         return springs[body.pointMasses.count + springID].restDistance
     }
     
@@ -163,12 +163,32 @@ public final class SpringComponent: BodyComponent {
         return springs[body.pointMasses.count + springID].damping
     }
     
-    public func accumulateInternalForces(in body: Body) {
-        for s in springs {
+    /// Gets the current plasticity settings of a spring, or nil, if no plasticity
+    /// is set.
+    /// This ignores the default edge springs, so the index is always
+    /// `+ body.pointMasses.count`
+    public func springPlasticity(forSpringIndex springID: Int, in body: Body) -> InternalSpring.Plasticity? {
+        return springs[body.pointMasses.count + springID].plasticity
+    }
+    
+    /// Sets the current plasticity settings of a spring, or disables it, if `nil`
+    /// is passed.
+    ///
+    /// This ignores the default edge springs, so the index is always
+    /// `+ body.pointMasses.count`
+    public func setSpringPlasticity(forSpringIndex springID: Int, in body: Body,
+                                    plasticity: InternalSpring.Plasticity?) {
+        springs[body.pointMasses.count + springID].plasticity = plasticity
+    }
+    
+    public func accumulateInternalForces(in body: Body, relaxing: Bool) {
+        for (i, s) in springs.enumerated() {
             let p1 = body.pointMasses[s.pointMassA]
             let p2 = body.pointMasses[s.pointMassB]
             
             let force: Vector2
+            
+            let actDist = p1.position.distance(to: p2.position)
             
             switch s.restDistance {
             case .fixed(let dist):
@@ -178,17 +198,22 @@ public final class SpringComponent: BodyComponent {
                                          distance: dist,
                                          springK: s.coefficient, springD: s.damping)
             case .ranged:
-                let dist = p1.position.distance(to: p2.position)
-                
                 force =
                     calculateSpringForce(posA: p1.position, velA: p1.velocity,
                                          posB: p2.position, velB: p2.velocity,
-                                         distance: s.restDistance.clamp(value: dist),
+                                         distance: s.restDistance.clamp(value: actDist),
                                          springK: s.coefficient, springD: s.damping)
             }
             
             p1.applyForce(of: force)
             p2.applyForce(of: -force)
+            
+            if !relaxing {
+                // Apply plasticity
+                var s = s
+                s.updatePlasticity(distance: actDist)
+                springs[i] = s
+            }
         }
         
         if(shapeMatchingOn && shapeSpringK > 0) {

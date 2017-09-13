@@ -24,7 +24,11 @@ public final class GravityComponent: BodyComponent {
     /// This force ignores mass by multiplying the gravity component by mass
     /// before applying the force, resulting in uniform velocity application in
     /// all bodies.
-    public func accumulateExternalForces(on body: Body) {
+    public func accumulateExternalForces(on body: Body, relaxing: Bool) {
+        if relaxing && !relaxable {
+            return
+        }
+        
         for point in body.pointMasses {
             point.applyForce(of: gravity * point.mass)
         }
