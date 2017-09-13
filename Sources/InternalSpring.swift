@@ -116,7 +116,7 @@ public struct InternalSpring: Codable {
     ///
     /// Plasticity permanently affects a spring's rest length by modifying it
     /// when its length is stretched beyond a certain limit.
-    public struct Plasticity {
+    public struct Plasticity: Codable {
         /// Ratio (of resting distance vs actual length) before plasticity starts
         /// to change the resting length of the spring, deforming it permanently.
         public var yieldRatio: JFloat = 0.3
