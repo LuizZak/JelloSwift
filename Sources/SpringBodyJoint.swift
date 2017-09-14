@@ -10,10 +10,18 @@
 open class SpringBodyJoint: BodyJoint {
     
     /// The spring coefficient for this spring body joint
-    var springCoefficient: JFloat
+    public var springCoefficient: JFloat
     
     /// The spring damping for this spring body joint
-    var springDamping: JFloat
+    public var springDamping: JFloat
+    
+    /// Optional plasticity information.
+    /// If not provided, spring body joint does not undergo plasticity deformations.
+    public var plasticity: SpringPlasticity?
+    
+    /// In case spring plasticity is available, this is used to limit plasticity
+    /// effects.
+    var initialRestDistance: RestDistance
     
     /// Inits a new spring body joint witht he specified parameters. Leave the 
     /// distance nil to calculate the distance automatically from the current
@@ -23,8 +31,11 @@ open class SpringBodyJoint: BodyJoint {
                 distance: RestDistance? = nil) {
         self.springCoefficient = coefficient
         self.springDamping = damping
+        self.initialRestDistance = 0
         
         super.init(on: world, link1: link1, link2: link2, distance: distance)
+        
+        self.initialRestDistance = restDistance
     }
     
     /// Resolves this joint
@@ -63,6 +74,14 @@ open class SpringBodyJoint: BodyJoint {
             bodyLink1.applyForce(of: force)
         } else if(!bodyLink2.isStatic && bodyLink1.isStatic) {
             bodyLink2.applyForce(of: -force)
+        }
+        
+        // Apply plasticity, if present.
+        if let plasticity = plasticity {
+            restDistance =
+                calculatePlasticity(distance: dist, restDistance: restDistance,
+                                    initialRestDistance: initialRestDistance,
+                                    plasticity: plasticity)
         }
     }
 }

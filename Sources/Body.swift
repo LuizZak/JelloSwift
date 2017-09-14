@@ -112,10 +112,6 @@ public final class Body: Equatable {
     /// instance
     public var objectTag: Any? = nil
     
-    /// Whether to render this body
-    @available(*, deprecated, message: "Will be removed in the future")
-    public var render = true
-    
     /// The colision bitmask for this body
     public var bitmask: Bitmask = 0xFFFFFFFF
     

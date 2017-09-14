@@ -7,8 +7,8 @@
 //
 
 /// Specifies a rest distance for a body joint or sprint.
-/// Distances can either by fixed by a distance, or ranged so the relevant forces
-/// only applies within a specified range
+/// Distances can either be fixed by a distance, or ranged so forces only apply
+/// when distance is outside a tolerance range.
 public enum RestDistance: ExpressibleByFloatLiteral, ExpressibleByIntegerLiteral {
     
     /// Fixed distance
@@ -98,12 +98,6 @@ public enum RestDistance: ExpressibleByFloatLiteral, ExpressibleByIntegerLiteral
             return Swift.max(min, Swift.min(max, value))
         }
     }
-}
-
-/// Helper operator for creating a rest distance
-@available(*, deprecated, message: "use <-> instead")
-public func ...(lhs: JFloat, rhs: JFloat) -> RestDistance {
-    return .ranged(min: lhs, max: rhs)
 }
 
 /// An operator for forming ranged rest distances with
