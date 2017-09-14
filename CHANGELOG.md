@@ -1,4 +1,4 @@
-**_Current stable release: v0.11.0_**
+**_Current stable release: v0.12.0_**
 
 #### Develop trunk changelog:
 
@@ -6,6 +6,10 @@ Trunk is clean!
 
 ## Stable Releases
 ---
+
+## v0.12.0:
+
+- Fixing me meddling w/ pushed tags gone wrong ‌‌ఠి.ఠిన 
 
 ## v0.11.0:
 
