@@ -1,15 +1,24 @@
-**_Current stable release: v0.10.0_**
+**_Current stable release: v0.12.0_**
 
 #### Develop trunk changelog:
 
-- Adding optional plasticity settings to internal springs.
+Trunk is clean!
+
+## Stable Releases
+---
+
+## v0.12.0:
+
+- Fixing me meddling w/ pushed tags gone wrong ‌‌ఠి.ఠిన 
+
+## v0.11.0:
+
+- Deprecated methods where removed.
+- Adding optional plasticity settings to internal springs and spring body joints. Plasticity permanently deforms a spring's resting distance over time as it stretches past a limiting yield. Plasticity is disabled by default.
 - Correcting parameter lables/orderings in `SpringComponent`.
 - Adding method `Body.withComponent<T: BodyComponent>(ofType:, do:)` that fetches a body component of a specified type and passes it to a closure, if it exists within a body.
 - Fixing `Body.updateAABB()` w/ non-static bodies w/ `forceUpdate` flag set to `false`.
 - Fixing `World.update()` calling `Body.updateEdgesAndNormals()` one more time than necessary.
-
-## Stable Releases
----
 
 ## v0.10.0:
 

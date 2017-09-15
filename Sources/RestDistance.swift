@@ -7,8 +7,8 @@
 //
 
 /// Specifies a rest distance for a body joint or sprint.
-/// Distances can either by fixed by a distance, or ranged so the relevant forces
-/// only applies within a specified range
+/// Distances can either be fixed by a distance, or ranged so forces only apply
+/// when distance is outside a tolerance range.
 public enum RestDistance: ExpressibleByFloatLiteral, ExpressibleByIntegerLiteral {
     
     /// Fixed distance

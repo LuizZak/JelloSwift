@@ -32,6 +32,7 @@
 		964AB1092601A4C3B4A35EB0EB8AD343 /* SpringComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 599E24AA2B7187FD7A7C80469A58D4C7 /* SpringComponent.swift */; };
 		96633FF1B21FF926FFB45BF9EDAE9855 /* LibTessSwift-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 0DBF3C648D79A5ABFBE8341E1498337F /* LibTessSwift-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9F1C14C714AA2EDDEF534046EACE7C91 /* Pods-JelloSwift_Example-JelloSwift_Tests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 60E464D64C96034E5F9D11A218DAE45B /* Pods-JelloSwift_Example-JelloSwift_Tests-dummy.m */; };
+		A0C3CA231F69E07200EAE22D /* PhysicsUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C3CA221F69E07200EAE22D /* PhysicsUtils.swift */; };
 		A36AE9FCC6169BDE139F44010768CF8B /* PressureComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C55B3C2AB7C8CCBE5A7206F355B305CD /* PressureComponent.swift */; };
 		AA40641E5ACC5E2F633F180C6653D505 /* tess.h in Headers */ = {isa = PBXBuildFile; fileRef = E191D245AF79050986F0D88A6780E28B /* tess.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		AB61A08F8D0898F74EF6BA12ACADD697 /* PointMass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A21569D8D27B6E53BCCC34222D0C2DA /* PointMass.swift */; };
@@ -149,6 +150,7 @@
 		97CDDE852E8A65B32BEFDF7B9784E7F2 /* Bitmask.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Bitmask.swift; sourceTree = "<group>"; };
 		9994AED363DCEECB7ACDA105770FF6CE /* World.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = World.swift; sourceTree = "<group>"; };
 		9B95C7968D366E89BA3C519ECAD284F1 /* objc-clang.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "objc-clang.h"; path = "LibTessSwift/libtess2/objc-clang.h"; sourceTree = "<group>"; };
+		A0C3CA221F69E07200EAE22D /* PhysicsUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhysicsUtils.swift; sourceTree = "<group>"; };
 		A13D0B3034AD91B3232BDDF7BAF4FD4A /* JelloSwift.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = JelloSwift.xcconfig; sourceTree = "<group>"; };
 		A2AF54F09DBB9CFBF389BD19301153D2 /* mesh.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = mesh.c; path = LibTessSwift/libtess2/mesh.c; sourceTree = "<group>"; };
 		A5F475B4E8D26795890510F3D840F205 /* Pods-JelloSwift_Example-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-JelloSwift_Example-dummy.m"; sourceTree = "<group>"; };
@@ -296,6 +298,7 @@
 				B69B9D5A5179084D43709ED154E54E2F /* GravityComponent.swift */,
 				942606946C49951201FEAD836935CAE1 /* InternalSpring.swift */,
 				D078E327B2996153A142A224DE24718F /* MaterialPair.swift */,
+				A0C3CA221F69E07200EAE22D /* PhysicsUtils.swift */,
 				50C7B338F4A43AC521CC8E0CDC5DE939 /* PointJointLink.swift */,
 				1A21569D8D27B6E53BCCC34222D0C2DA /* PointMass.swift */,
 				C55B3C2AB7C8CCBE5A7206F355B305CD /* PressureComponent.swift */,
@@ -609,6 +612,7 @@
 				AFC91F4679BC7F064D9F242557B3EF0E /* Body.swift in Sources */,
 				C3F30B5C60E49105337C9CC6D0E7C23D /* BodyCollisionInformation.swift in Sources */,
 				234DA2C4626332BE62D8DA2F94BCD9DE /* BodyComponent.swift in Sources */,
+				A0C3CA231F69E07200EAE22D /* PhysicsUtils.swift in Sources */,
 				18495D869BA349DCF7920D51BA6B6F78 /* BodyEdge.swift in Sources */,
 				2BD4C9DF3D86D4B02FF939375D0DC1EC /* BodyJoint.swift in Sources */,
 				F28681EBBB5119F7018AA592A47FFF35 /* BodyJointLink.swift in Sources */,

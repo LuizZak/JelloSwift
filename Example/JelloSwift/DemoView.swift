@@ -467,7 +467,9 @@ class DemoView: UIView, CollisionObserver
         let l1 = BodyJointLink(body: b1)
         let l2 = BodyJointLink(body: b2)
         
-        world.addJoint(SpringBodyJoint(on: world, link1: l1, link2: l2, coefficient: 100, damping: 20))
+        let joint = SpringBodyJoint(on: world, link1: l1, link2: l2, coefficient: 100, damping: 20)
+        
+        world.addJoint(joint)
         
         return (b1, b2)
     }
