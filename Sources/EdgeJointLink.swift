@@ -70,7 +70,7 @@ open class EdgeJointLink: JointLinkType {
         
         // Torque - this depends on how far down the middle of the edge the
         // force is being applied at.
-        // Torque is applied at most as half the actual torque when along the
+        // Torque is applied maximally as half the actual torque when along the
         // middle of the edge, and 0 torque at the very corners.
         if edgeRatio > 0 && edgeRatio < 1 {
             var torqueF = (body.derivedPos - position) • force.perpendicular()

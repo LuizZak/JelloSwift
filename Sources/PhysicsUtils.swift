@@ -7,7 +7,10 @@
 
 /// Calculates a spring force, given position, velocity, spring constant, and
 /// damping factor
-public func calculateSpringForce(posA: Vector2, velA: Vector2, posB: Vector2, velB: Vector2, distance: JFloat, springK: JFloat, springD: JFloat) -> Vector2 {
+public func calculateSpringForce(posA: Vector2, velA: Vector2, posB: Vector2,
+                                 velB: Vector2, distance: JFloat, springK: JFloat,
+                                 springD: JFloat) -> Vector2
+{
     var dist = posA.distance(to: posB)
     
     if (dist <= 0.0000005) {
@@ -35,7 +38,8 @@ public func calculateSpringForce(posA: Vector2, velA: Vector2, posB: Vector2, ve
 ///   - plasticity: The plasticity coefficients
 /// - Returns: The new rest distance to the spring, after plasticity is applied.
 public func calculatePlasticity(distance: JFloat, restDistance: RestDistance,
-                                initialRestDistance: RestDistance, plasticity: SpringPlasticity) -> RestDistance
+                                initialRestDistance: RestDistance,
+                                plasticity: SpringPlasticity) -> RestDistance
 {
     if restDistance.inRange(value: distance) { // Exact distance - no plasticity changes
         return restDistance

@@ -4,13 +4,14 @@
 
 osx_image: xcode9
 language: objective-c
-xcode_sdk: iphonesimulator10.2 # this SDK features iPhone 5, which compiles into 32-bit binaries
+xcode_sdk: iphonesimulator11.0
 # cache: cocoapods
 # podfile: Example/Podfile
 before_install:
 - gem install cocoapods # Since Travis is not always on latest version
 - pod update --project-directory=Example
 script:
-- set -o pipefail && xcodebuild test -workspace Example/JelloSwift.xcworkspace -scheme JelloSwift-Example -sdk iphonesimulator10.2 ONLY_ACTIVE_ARCH=NO -destination 'platform=iOS Simulator,id=DEF54A5A-0DB7-4752-B2B5-836A924C1960,OS=10.2' | xcpretty # DEF54A5A-0DB7-4752-B2B5-836A924C1960 = iPhone 5
-- set -o pipefail && xcodebuild test -workspace Example/JelloSwift.xcworkspace -scheme JelloSwift-Example -sdk iphonesimulator10.2 ONLY_ACTIVE_ARCH=NO -destination 'platform=iOS Simulator,name=iPad Air 2,OS=10.2' | xcpretty
+# Disabling 32-bit target tests for now; 32-bit seems to be rare on latest Xcode's
+# - set -o pipefail && xcodebuild test -workspace Example/JelloSwift.xcworkspace -scheme JelloSwift-Example -sdk iphonesimulator11.0 ONLY_ACTIVE_ARCH=NO -destination 'platform=iOS Simulator,id=DEF54A5A-0DB7-4752-B2B5-836A924C1960,OS=10.2' | xcpretty # DEF54A5A-0DB7-4752-B2B5-836A924C1960 = iPhone 5
+- set -o pipefail && xcodebuild test -workspace Example/JelloSwift.xcworkspace -scheme JelloSwift-Example -sdk iphonesimulator11.0 ONLY_ACTIVE_ARCH=NO -destination 'platform=iOS Simulator,name=iPad Air 2,OS=11.0' | xcpretty
 - pod lib lint
