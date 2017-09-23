@@ -511,8 +511,9 @@ extension Vector2 {
 extension Collection where Iterator.Element: VectorRepresentable, IndexDistance == Int {
     /// Averages this collection of vectors into one Vector2 point
     @inline(__always)
+    @_specialize(where Self == Array<Vector2>)
     public func averageVector() -> Vector2 {
-        return reduce(Vector2.zero) { $0 + $1.vector } / JFloat(count)
+        return reduce(.zero) { $0 + $1.vector } / JFloat(count)
     }
 }
 
@@ -565,7 +566,6 @@ public func abs(_ x: Vector2) -> Vector2 {
 
 // MARK: - Codable Conformance
 extension Vector2.NativeVectorType: Codable {
-    
     public init(from decoder: Decoder) throws {
         var container = try decoder.unkeyedContainer()
         
@@ -581,7 +581,6 @@ extension Vector2.NativeVectorType: Codable {
 }
 
 extension Vector2.HomogenousVectorType: Codable {
-    
     public init(from decoder: Decoder) throws {
         var container = try decoder.unkeyedContainer()
         
@@ -598,7 +597,6 @@ extension Vector2.HomogenousVectorType: Codable {
 }
 
 extension Vector2.NativeMatrixType: Codable {
-    
     public init(from decoder: Decoder) throws {
         var container = try decoder.unkeyedContainer()
         
@@ -617,4 +615,3 @@ extension Vector2.NativeMatrixType: Codable {
         try container.encode(self.columns.2)
     }
 }
-

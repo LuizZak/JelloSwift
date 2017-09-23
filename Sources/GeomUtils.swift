@@ -8,6 +8,8 @@
 
 /// Returns an approximation of the area of the polygon defined by a given set
 /// of vertices
+@_specialize(where T == Array<Vector2>)
+@_specialize(where T == ContiguousArray<PointMass>)
 public func polygonArea<T: BidirectionalCollection>(of points: T) -> JFloat where T.Iterator.Element: VectorRepresentable {
     guard var v2 = points.last else {
         return 0

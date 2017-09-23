@@ -54,11 +54,15 @@ public final class PointMass: Codable, VectorRepresentable {
     }
     
     /// Averages a list of point mass positions into one normalized Vector2 point
+    @_specialize(where T == Array<PointMass>)
+    @_specialize(where T == ContiguousArray<PointMass>)
     public static func averagePosition<T: Collection>(of pointMasses: T) -> Vector2 where T.Iterator.Element == PointMass, T.IndexDistance == Int {
         return pointMasses.averageVector()
     }
     
     /// Averages a list of point mass velocities into one normalized Vector2 point
+    @_specialize(where T == Array<PointMass>)
+    @_specialize(where T == ContiguousArray<PointMass>)
     public static func averageVelocity<T: Collection>(of pointMasses: T) -> Vector2 where T.Iterator.Element == PointMass, T.IndexDistance == Int {
         return pointMasses.reduce(Vector2.zero) { $0 + $1.velocity } / JFloat(pointMasses.count)
     }
