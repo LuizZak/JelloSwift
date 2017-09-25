@@ -23,9 +23,6 @@ public final class Body: Equatable {
     /// List of edges on the body
     internal(set) public var edges: [BodyEdge] = []
     
-    /// List of point normals
-    internal(set) public var pointNormals: [Vector2] = []
-    
     /// List of body joints this body participates in
     public internal(set) var joints: ContiguousArray<BodyJoint> = []
     
@@ -247,12 +244,6 @@ public final class Body: Equatable {
     
     /// Updates the point normals of the body
     public func updateNormals() {
-        let c = pointMasses.count
-        
-        if(pointNormals.count != c) {
-            pointNormals = .init(repeating: Vector2.zero, count: c)
-        }
-        
         guard var prev = edges.last else { return }
         
         for (i, curEdge) in edges.enumerated() {
@@ -264,9 +255,9 @@ public final class Body: Equatable {
             // Edges are exactly 180º to each other - normal should be the first
             // edge's vector, then
             if(sum == .zero) {
-                pointNormals[i] = edge1N
+                pointMasses[i].normal = edge1N
             } else {
-                pointNormals[i] = sum.perpendicular().normalized()
+                pointMasses[i].normal = sum.perpendicular().normalized()
             }
         
             prev = curEdge

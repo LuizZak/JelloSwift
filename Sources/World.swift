@@ -457,7 +457,7 @@ public final class World {
                 continue
             }
             
-            let ptNorm = bA.pointNormals[i]
+            let ptNorm = pmA.normal
             
             // this point is inside the other body.  now check if the edges on
             // either side intersect with and edges on bodyB.

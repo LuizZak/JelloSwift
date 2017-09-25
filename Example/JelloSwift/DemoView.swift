@@ -278,7 +278,10 @@ class DemoView: UIView, CollisionObserver
                 continue
             }
             
-            for (vertex, normal) in zip(body.vertices, body.pointNormals) {
+            for point in body.pointMasses {
+                let vertex = point.position
+                let normal = point.normal
+                
                 let start = vertex - normal * 0.1
                 let end = vertex + normal * comp.rayLength
                 
@@ -836,9 +839,9 @@ extension DemoView {
         // Draw normals, for pressure bodies
         if body.component(ofType: PressureComponent.self) != nil
         {
-            for (p, normal) in zip(shapePoints, body.pointNormals)
+            for point in body.pointMasses
             {
-                drawLine(from: p, to: p + normal / 3, color: 0xFFEC33EC)
+                drawLine(from: point.position, to: point.position + point.normal / 3, color: 0xFFEC33EC)
             }
         }
         
@@ -846,9 +849,9 @@ extension DemoView {
         drawPolyOutline(body.globalShape, color: 0xFF777777)
         
         // Draw lines going from the body's outer points to the global shape indices
-        for (globalShape, p) in zip(body.globalShape, shapePoints)
+        for (globalShape, p) in zip(body.globalShape, body.pointMasses)
         {
-            let start = p
+            let start = p.position
             let end = globalShape
             
             drawLine(from: start, to: end, color: 0xFF449944)

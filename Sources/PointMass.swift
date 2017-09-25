@@ -22,6 +22,10 @@ public final class PointMass: Codable, VectorRepresentable {
     /// The global force of the point mass
     public var force = Vector2.zero
     
+    /// Normal of this point pointing outwards from the center of the body it's
+    /// attached to
+    public var normal = Vector2.zero
+    
     /// For VectorRepresentable conformance - returns `self.position`
     public var vector: Vector2 {
         return position

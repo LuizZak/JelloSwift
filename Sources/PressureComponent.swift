@@ -45,8 +45,8 @@ public final class PressureComponent: BodyComponent {
             let pointStart = body.pointMasses[e.startPointIndex]
             let pointEnd = body.pointMasses[e.endPointIndex]
             
-            pointStart.applyForce(of: body.pointNormals[e.startPointIndex] * pressureV)
-            pointEnd.applyForce(of: body.pointNormals[e.endPointIndex] * pressureV)
+            pointStart.applyForce(of: pointStart.normal * pressureV)
+            pointEnd.applyForce(of: pointEnd.normal * pressureV)
         }
     }
 }
