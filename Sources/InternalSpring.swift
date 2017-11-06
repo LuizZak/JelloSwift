@@ -92,11 +92,14 @@ public struct SpringPlasticity: Codable {
     /// by adapting the resting length to be the resulting factor between the
     /// rest length and the actual length, times this rate.
     ///
-    /// e.g. given a spring with a resting distance `R = 10`, a plasticity
-    /// rate `P = 0.5`, a yield ratio of `Y = 0.5`, and an actual length `L`,
     /// if `L / R > Y` or `R / L < 1 / Y`, the resting length will be updated
     /// to be `R += P * (L - R - (Y * R))` (for `L > R`) or `R -= P * (R - (Y * R) - L)`
     /// (for `L < R`).
+    ///
+    /// e.g. given a spring with a resting distance `R = 10`, a plasticity
+    /// rate `P = 0.5`, a yield ratio of `Y = 0.3`, and an actual length `L = 15`,
+    /// the resulting `R` would be `R = 10 + (0.5 * (15 - 10 - (0.3 * 10)))` ->
+    /// `R = 10 + 1` -> `R = 11`.
     public var rate: JFloat = 0.5
     
     /// A factor limit at which the plasticity stops affecting the rest length

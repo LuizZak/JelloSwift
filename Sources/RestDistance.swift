@@ -73,8 +73,7 @@ public enum RestDistance: ExpressibleByFloatLiteral, ExpressibleByIntegerLiteral
         self = .fixed(JFloat(value))
     }
     
-    /// Returns whether a given range is within the range of this rest
-    /// distance.
+    /// Returns whether a given range is within the range of this rest distance.
     /// If the current value is .fixed, this does an exact equality
     /// operation, if .ranged, it performs `value > min && value < max`
     public func inRange(value: JFloat) -> Bool {
