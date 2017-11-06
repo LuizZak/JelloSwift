@@ -662,6 +662,11 @@ public final class Body: Equatable {
     ///
     /// If the ray does not crosses this body, `nil` is returned, instead.
     public func raycast(from start: Vector2, to end: Vector2) -> Vector2? {
+        // Test against minimal ray AABB
+        if !aabb.intersects(AABB(of: start, end)) {
+            return nil
+        }
+        
         // Test each edge against the line
         var p1 = Vector2.zero
         var p2 = Vector2.zero
@@ -683,6 +688,8 @@ public final class Body: Equatable {
     /// Given a global point, finds the closest point on an edge of a specified
     /// index, returning the squared distance to the edge found
     ///
+    /// - Precondition: Body has `pointMass.count > 0`.
+    ///
     /// - Parameters:
     ///   - pt: The point to get the closest edge of, in world coordinates
     ///   - edgeNum: The index of the edge to search
@@ -695,6 +702,8 @@ public final class Body: Equatable {
     /// [0-1] inclusive
     ///      - **distance**: The squared distance to the closest edge found
     public func closestPointSquared(to pt: Vector2, onEdge edgeNum: Int) -> (hitPoint: Vector2, normal: Vector2, edgeD: JFloat, distance: JFloat) {
+        assert(pointMasses.count > 0)
+        
         var hitPt: Vector2 = .zero
         var normal: Vector2 = .zero
         var edgeD: JFloat = 0
@@ -743,6 +752,8 @@ public final class Body: Equatable {
     /// Given a global point, finds the closest point on an edge of a specified
     /// index, returning the distance to the edge found
     ///
+    /// - Precondition: Body has `pointMass.count > 0`.
+    ///
     /// - Parameters:
     ///   - pt: The point to get the closest edge of, in world coordinates
     ///   - edgeNum: The index of the edge to search
@@ -764,6 +775,8 @@ public final class Body: Equatable {
     /// given global point, and if it's an edge, information about the edge it
     /// resides on
     ///
+    /// - Precondition: Body has `pointMass.count > 0`.
+    ///
     /// - Parameter pt: The point to get the closest edge of, in world coordinates
     /// - Returns:  A tuple containing the results of the test, with fields:
     ///      - **hitPoint**: The closest point in the edge to the global
@@ -776,6 +789,8 @@ public final class Body: Equatable {
     /// [0-1] inclusive
     ///      - **distance**: The distance to the closest edge found
     public func closestPoint(to pt: Vector2) -> (hitPoint: Vector2, normal: Vector2, pointA: Int, pointB: Int, edgeD: JFloat, distance: JFloat) {
+        assert(pointMasses.count > 0)
+        
         var pointA = -1
         var pointB = -1
         var edgeD: JFloat = 0
@@ -808,8 +823,8 @@ public final class Body: Equatable {
     /// The position must be in world coordinates
     /// The tolerance is the distance to the edge that will be ignored if larget
     /// than that
-    /// Returns nil if no edge found (no points on the shape), or a tuple of the
-    /// parameters that can be used to track down the shape's edge
+    /// Returns nil if boy has no edges, or a tuple of the parameters that can be
+    /// used to track down the shape's edge.
     ///
     /// - Parameters:
     ///   - pt: The point to get the closest edge of, in world coordinates
@@ -824,7 +839,7 @@ public final class Body: Equatable {
     ///     - **edgePoint1**: The first point mass on the edge
     ///     - **edgePoint2**: The second point mass on the edge
     public func closestEdge(to pt: Vector2, withTolerance tolerance: JFloat = JFloat.infinity) -> (edgePosition: Vector2, edgeRatio: JFloat, edgePoint1: PointMass, edgePoint2: PointMass)? {
-        if(pointMasses.count == 0) {
+        if edges.count == 0 || pointMasses.count == 0 {
             return nil
         }
         
@@ -850,7 +865,7 @@ public final class Body: Equatable {
             // Test the distances
             let curD = dis.magnitude
             
-            if(curD < closestD && curD < tolerance) {
+            if curD < closestD && curD < tolerance {
                 found = true
                 closestP1 = pm
                 closestP2 = pm2
@@ -860,7 +875,7 @@ public final class Body: Equatable {
             }
         }
         
-        if(found) {
+        if found {
             return (edgePosition, edgeRatio, closestP1, closestP2)
         }
         
@@ -868,6 +883,9 @@ public final class Body: Equatable {
     }
     
     /// Find the closest PointMass index in this body, given a global point
+    ///
+    /// - Precondition: Body has `pointMass.count > 0`.
+    ///
     /// - precondition: There is at least one point mass in this body
     public func closestPointMass(to pos: Vector2) -> (point: PointMass, distance: JFloat) {
         assert(pointMasses.count > 0)
@@ -899,7 +917,7 @@ public final class Body: Equatable {
     /// Specify .derivedPos to apply a force at the exact center of the body
     ///   - pt: The force to apply to the point masses in this body
     public func applyForce(_ force: Vector2, atGlobalPoint pt: Vector2) {
-        if(isStatic) {
+        if isStatic {
             return
         }
         
@@ -918,7 +936,7 @@ public final class Body: Equatable {
     /// - Parameter velocity: The velocity to add to all the point masses in this
     /// body
     public func addVelocity(_ velocity: Vector2) {
-        if(isStatic) {
+        if isStatic {
             return
         }
         
@@ -935,7 +953,7 @@ public final class Body: Equatable {
     /// - Parameter velocity: The velocity to set. Set as `.zero` to reset average
     /// velocity of the body to 0.
     public func setAverageVelocity(_ velocity: Vector2) {
-        if(isStatic) {
+        if isStatic {
             return
         }
         
