@@ -58,6 +58,14 @@ public struct AABB: Codable {
         
     }
     
+    /// Initializes an AABB containing the minimum area capable of containing all
+    /// supplied points.
+    ///
+    /// If no points are supplied, an invalid AABB is created instead.
+    public init(of points: Vector2...) {
+        self = AABB(points: points)
+    }
+    
     /// Initializes a valid AABB instance out of the given minimum and maximum
     /// coordinates.
     /// The coordinates are not checked for ordering, and will be directly
