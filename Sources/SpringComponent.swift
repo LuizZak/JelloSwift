@@ -195,7 +195,7 @@ public final class SpringComponent: BodyComponent {
             p1.applyForce(of: force)
             p2.applyForce(of: -force)
             
-            if !relaxing {
+            if !relaxing && s.plasticity != nil {
                 // Apply plasticity
                 var s = s
                 s.updatePlasticity(distance: actDist)

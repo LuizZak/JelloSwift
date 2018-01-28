@@ -473,6 +473,22 @@ public final class World {
                 let b1 = j
                 let b2 = (j &+ 1) % (bBpCount)
                 
+                let pt1 = bB.pointMasses[b1].position
+                let pt2 = bB.pointMasses[b2].position
+                
+                // quick test of distance to each point on the edge, if both are
+                // greater than current mins, we can skip!
+                let distToA = pt1.distanceSquared(to: pt)
+                let distToB = pt2.distanceSquared(to: pt)
+                let edgeLen = bB.edges[j].lengthSquared
+                
+                if (edgeLen < distToA && edgeLen < distToB &&
+                    (distToA > closestAway) && (distToA > closestSame) &&
+                    (distToB > closestAway) && (distToB > closestSame))
+                {
+                    continue
+                }
+                
                 // test against this edge.
                 let (hitPt, normal, edgeD, dist) = bB.closestPointSquared(to: pt, onEdge: j)
                 

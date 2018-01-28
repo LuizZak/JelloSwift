@@ -120,7 +120,26 @@ public final class Body: Equatable {
     /// Whether this body's bitmaskX & bitmaskY are stale
     internal var _bitmasksStale: Bool = true
     
-    public init(world: World?, shape: ClosedShape, pointMasses: [JFloat] = [1],
+    /// Initializes a new Body instance with a given set of properties.
+    ///
+    /// - Parameters:
+    ///   - world: World to add this body to. Can be omitted to not add it to any
+    /// world yet.
+    ///   - shape: Closed shape that represents this body's rest shape.
+    ///   - pointMasses: An array of masses for each point mass created from the
+    /// provided `shape` parameter. If an array of `.count == 1` is provided, that
+    /// one mass value is used for all point masses; otherwise length must be
+    /// the same as `shape.localVertices.count`, otherwise remaining point masses
+    /// will have a default mass of 1.
+    ///   - position: Center position for body's shape.
+    ///   - angle: Angle - in radians - to initially rotate body with.
+    ///   - scale: Scale of body`s rest shape. Is applied on `shape` value to
+    /// calculate final rest shape of the body. Defaults to 1.
+    ///   - kinematic: Whether this body is kinematic; that is, whether it can
+    /// have its base shape move around. If false, only point masses move around
+    /// the body's center, but this center remains static in place.
+    ///   - components: Array of body component creators to add to this body.
+    public init(world: World? = nil, shape: ClosedShape, pointMasses: [JFloat] = [1],
                 position: Vector2 = Vector2.zero, angle: JFloat = 0,
                 scale: Vector2 = Vector2.unit, kinematic: Bool = false,
                 components: [BodyComponentCreator] = []) {

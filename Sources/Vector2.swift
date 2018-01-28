@@ -512,8 +512,18 @@ extension Collection where Iterator.Element: VectorRepresentable, IndexDistance 
     /// Averages this collection of vectors into one Vector2 point
     @inline(__always)
     @_specialize(where Self == Array<Vector2>)
+    @_specialize(where Self == ContiguousArray<PointMass>)
     public func averageVector() -> Vector2 {
-        return reduce(.zero) { $0 + $1.vector } / JFloat(count)
+        return reduce(into: .zero) { $0 += $1.vector } / JFloat(count)
+    }
+}
+
+extension Collection where Iterator.Element == Vector2, IndexDistance == Int {
+    /// Averages this collection of vectors into one Vector2 point
+    @inline(__always)
+    @_specialize(where Self == Array<Vector2>)
+    public func averageVector() -> Vector2 {
+        return reduce(into: .zero) { $0 += $1.vector } / JFloat(count)
     }
 }
 
