@@ -1,3 +1,4 @@
+swift_version = '4.1'
 use_frameworks!
 
 target 'JelloSwift_Example' do

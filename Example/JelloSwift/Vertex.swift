@@ -179,12 +179,12 @@ struct VertexBuffer {
     
     /// The memory size of this vertex buffer's vertexBuffer property
     var vertexBufferSize: Int {
-        return MemoryLayout<Vertex>.size * vertices.count
+        return MemoryLayout<Vertex>.stride * vertices.count
     }
     
     /// The memory size of this vertex buffer's indices property
     var indexBufferSize: Int {
-        return MemoryLayout<GLuint>.size * indices.count
+        return MemoryLayout<GLuint>.stride * indices.count
     }
     
     /// Gets or sets the vertex at a given index

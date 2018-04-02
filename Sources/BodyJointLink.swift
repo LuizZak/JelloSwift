@@ -7,7 +7,7 @@
 //
 
 /// Represents a joint link that links to a while body
-open class BodyJointLink: JointLinkType {
+open class BodyJointLink: JointLink {
     // Like the PointJointLink, this is a very straightforward implementation,
     // delegating most of the methods to the underlying body object
     

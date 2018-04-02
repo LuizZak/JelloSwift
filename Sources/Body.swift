@@ -174,7 +174,7 @@ public final class Body: Equatable {
     /// Adds a body component to this body
     @discardableResult
     public func addComponent(ofType componentType: BodyComponent.Type) -> BodyComponent {
-        let instance = componentType.init(body: self)
+        let instance = componentType.init()
         
         components.append(instance)
         

@@ -2,7 +2,10 @@
 
 #### Develop trunk changelog:
 
-Trunk is clean!
+- Bumped target Swift version to 4.1.
+- Renamed `JointLinkType` to `JointLink`.
+- Removed body parameter from init from body component classes. 
+
 
 ## Stable Releases
 ---

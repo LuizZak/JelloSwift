@@ -7,7 +7,7 @@
 //
 
 /// Represents a joint link that links directly to a point mass of a body
-open class PointJointLink: JointLinkType {
+open class PointJointLink: JointLink {
     // This is a very straightforward implementation, it basically delegates the
     // calls to the underlying point mass
     

@@ -11,7 +11,7 @@
 public protocol BodyComponent {
     
     /// Initializes a new instance of the BodyComponent class
-    init(body: Body)
+    init()
     
     /// Makes the body component prepare itself after it has been added to a 
     /// body

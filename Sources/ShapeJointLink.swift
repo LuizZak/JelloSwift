@@ -13,7 +13,7 @@
 #endif
 
 /// Represents a joint link that links to multiple point masses of a body
-open class ShapeJointLink: JointLinkType {
+open class ShapeJointLink: JointLink {
     /// The point masses this joint is linked to
     fileprivate let _pointMasses: [PointMass]
     

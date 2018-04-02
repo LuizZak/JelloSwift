@@ -23,8 +23,7 @@ public final class PressureComponent: BodyComponent {
     /// Higher values result in higher expansion and resistance to compression.
     public var gasAmmount: JFloat = 0
     
-    /// Initializes a new instance of the BodyComponent class
-    public init(body: Body) {
+    public init() {
         
     }
     

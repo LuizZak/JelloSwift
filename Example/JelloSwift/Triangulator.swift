@@ -21,16 +21,17 @@ class Triangulate
     ///
     /// Returns nil, if the operation failed.
     public static func process(polygon: [Vector2]) -> (vertices: [Vector2], indices: [Int])? {
-        
-        if let indices = processIndices(polygon: polygon) {
-            var points: [Vector2] = []
-            for ind in indices {
-                points.append(polygon[ind])
-            }
-            return (points, indices)
+        guard let indices = processIndices(polygon: polygon) else {
+            return nil
         }
         
-        return nil
+        var points: [Vector2] = []
+        points.reserveCapacity(indices.count)
+        for ind in indices {
+            points.append(polygon[ind])
+        }
+        
+        return (points, indices)
     }
     
     /// Triangulates a contour/polygon, returning the resulting index triplets
@@ -40,7 +41,7 @@ class Triangulate
     public static func processIndices(polygon: [Vector2]) -> [Int]? {
         
         let pointCount = polygon.count
-        if (pointCount < 3) {
+        if pointCount < 3 {
             return nil
         }
         
@@ -48,7 +49,7 @@ class Triangulate
         
         /* we want a counter-clockwise polygon in V */
         
-        if (0 < Area(polygon)) {
+        if 0 < area(polygon) {
             vertexIndices = Array(0..<pointCount)
         } else {
             vertexIndices = Array(0..<pointCount).reversed()
@@ -66,7 +67,7 @@ class Triangulate
         
         while nv > 2 {
             /* if we loop, it is probably a non-simple polygon */
-            if (0 >= count) {
+            if 0 >= count {
                 //** Triangulate: ERROR - probable bad polygon!
                 return nil
             }
@@ -75,21 +76,21 @@ class Triangulate
             
             /* three consecutive vertices in current polygon, <u,v,w> */
             var u = v
-            if (nv <= u) { /* previous */
+            if nv <= u { /* previous */
                 u = 0
             }
             
             v = u + 1
-            if (nv <= v) { /* new v    */
+            if nv <= v { /* new v    */
                 v = 0
             }
             
             var w = v + 1
-            if (nv <= w) { /* next     */
+            if nv <= w { /* next     */
                 w = 0
             }
             
-            if (Snip(contour: polygon, u: u, v: v, w: w, n: nv, V: vertexIndices)) {
+            if snip(contour: polygon, u: u, v: v, w: w, n: nv, V: vertexIndices) {
                 /* true names of the vertices */
                 let a = vertexIndices[u]
                 let b = vertexIndices[v]
@@ -115,7 +116,7 @@ class Triangulate
     }
 
     // compute area of a contour/polygon
-    public static func Area(_ contour: [Vector2]) -> JFloat {
+    public static func area(_ contour: [Vector2]) -> JFloat {
         var area: JFloat = 0.0
         var prev = contour.count - 1
         
@@ -127,49 +128,10 @@ class Triangulate
         
         return area * 0.5
     }
-
-    // decide if point Px/Py is inside triangle defined by
-    // (Ax,Ay) (Bx,By) (Cx,Cy)
-    public static func InsideTriangle(Ax: JFloat, Ay: JFloat,
-                                      Bx: JFloat, By: JFloat,
-                                      Cx: JFloat, Cy: JFloat,
-                                      Px: JFloat, Py: JFloat) -> Bool {
-        
-        
-        var ax: JFloat, ay: JFloat, bx: JFloat, by: JFloat, cx: JFloat,
-            cy: JFloat, apx: JFloat, apy: JFloat, bpx: JFloat,
-            bpy: JFloat, cpx: JFloat, cpy: JFloat
-        
-        var cCROSSap: JFloat, bCROSScp: JFloat, aCROSSbp: JFloat
-        
-        ax = Cx - Bx
-        ay = Cy - By
-        
-        bx = Ax - Cx
-        by = Ay - Cy
-        
-        cx = Bx - Ax
-        cy = By - Ay
-        
-        apx = Px - Ax
-        apy = Py - Ay
-        
-        bpx = Px - Bx
-        bpy = Py - By
-        
-        cpx = Px - Cx
-        cpy = Py - Cy
-        
-        aCROSSbp = ax*bpy - ay*bpx
-        cCROSSap = cx*apy - cy*apx
-        bCROSScp = bx*cpy - by*cpx
-        
-        return ((aCROSSbp >= 0.0) && (bCROSScp >= 0.0) && (cCROSSap >= 0.0))
-    }
     
     // decide if point Px/Py is inside triangle defined by
     // (Ax,Ay) (Bx,By) (Cx,Cy)
-    public static func InsideTriangle(A: Vector2, B: Vector2, C: Vector2, P: Vector2) -> Bool {
+    private static func insideTriangle(A: Vector2, B: Vector2, C: Vector2, P: Vector2) -> Bool {
         
         let a = C - B
         let b = A - C
@@ -185,23 +147,23 @@ class Triangulate
         return ((aCROSSbp >= 0.0) && (bCROSScp >= 0.0) && (cCROSSap >= 0.0))
     }
     
-    public static func Snip(contour: [Vector2], u: Int, v: Int, w: Int, n: Int, V: [Int]) -> Bool {
+    private static func snip(contour: [Vector2], u: Int, v: Int, w: Int, n: Int, V: [Int]) -> Bool {
         
         let A = contour[V[u]]
         let B = contour[V[v]]
         let C = contour[V[w]]
         
-        if (((B.x - A.x) * (C.y - A.y)) - ((B.y - A.y) * (C.x - A.x)) < JFloat.leastNonzeroMagnitude) {
+        if ((B.x - A.x) * (C.y - A.y)) - ((B.y - A.y) * (C.x - A.x)) < JFloat.leastNonzeroMagnitude {
             return false
         }
         
         for p in 0..<n {
-            if((p == u) || (p == v) || (p == w)) {
+            if (p == u) || (p == v) || (p == w) {
                 continue
             }
             
             let P = contour[V[p]]
-            if (InsideTriangle(A: A, B: B, C: C, P: P)) {
+            if insideTriangle(A: A, B: B, C: C, P: P) {
                 return false
             }
         }

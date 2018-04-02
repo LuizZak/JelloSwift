@@ -7,7 +7,7 @@
 //
 
 /// Represents a joint link that links to an edge of a body
-open class EdgeJointLink: JointLinkType {
+open class EdgeJointLink: JointLink {
     /// The first point mass this joint is linked to
     fileprivate let _pointMass1: PointMass
     /// The second point mass this joint is linked to

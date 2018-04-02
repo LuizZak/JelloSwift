@@ -508,7 +508,7 @@ extension Vector2 {
     }
 }
 
-extension Collection where Iterator.Element: VectorRepresentable, IndexDistance == Int {
+extension Collection where Iterator.Element: VectorRepresentable {
     /// Averages this collection of vectors into one Vector2 point
     @inline(__always)
     @_specialize(where Self == Array<Vector2>)
@@ -518,7 +518,7 @@ extension Collection where Iterator.Element: VectorRepresentable, IndexDistance 
     }
 }
 
-extension Collection where Iterator.Element == Vector2, IndexDistance == Int {
+extension Collection where Iterator.Element == Vector2 {
     /// Averages this collection of vectors into one Vector2 point
     @inline(__always)
     @_specialize(where Self == Array<Vector2>)

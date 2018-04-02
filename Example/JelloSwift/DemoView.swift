@@ -911,13 +911,11 @@ extension Vector2.NativeMatrixType {
 
 final class BodyRayComponent: BodyComponent {
     
-    unowned let body: Body
-    
     var color: Color4 = Color4.fromUIntARGB(0xFFFF0000)
     var rayLength: JFloat = 1
     
-    init(body: Body) {
-        self.body = body
+    public init() {
+        
     }
 }
 

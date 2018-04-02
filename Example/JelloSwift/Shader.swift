@@ -6,7 +6,8 @@
 //  Copyright © 2017 Luiz Fernando Silva. All rights reserved.
 //
 
-import UIKit
+import Foundation
+import OpenGLES
 
 func compileShader(_ shaderName: String, shaderType: GLenum) -> GLuint {
     
@@ -23,9 +24,9 @@ func compileShader(_ shaderName: String, shaderType: GLenum) -> GLuint {
     
     // Conver shader string to CString and call glShaderSource to give OpenGL the source for the shader.
     let cString = shaderString.utf8CString
-    shaderString.withCString { (pointer: UnsafePointer<Int8>) -> Void in
-        pointer.withMemoryRebound(to: GLchar.self, capacity: cString.count) { (p: UnsafePointer<GLchar>) -> Void in
-            var p: UnsafePointer<GLchar>? = p
+    cString.withUnsafeBufferPointer { (pointer) -> Void in
+        pointer.withMemoryRebound(to: GLchar.self) { (p: UnsafeBufferPointer<GLchar>) -> Void in
+            var p: UnsafePointer<GLchar>? = p.baseAddress
             var shaderStringLength: GLint = GLint(Int32(shaderString.utf8CString.count))
             glShaderSource(shaderHandle, 1, &p, &shaderStringLength)
             
@@ -36,8 +37,11 @@ func compileShader(_ shaderName: String, shaderType: GLenum) -> GLuint {
             var compileSuccess: GLint = GLint()
             glGetShaderiv(shaderHandle, GLenum(GL_COMPILE_STATUS), &compileSuccess)
             if (compileSuccess == GL_FALSE) {
-                print("Failed to compile shader!")
-                // TODO: Actually output the error that we can get from the glGetShaderInfoLog function.
+                var buffer: [GLchar] = Array(repeating: 0, count: 1024)
+                var length: GLsizei = 0
+                glGetShaderInfoLog(shaderHandle, GLsizei(buffer.count), &length, &buffer)
+                print("Failed to compile shader: \(String(cString: buffer))")
+                
                 exit(1)
             }
         }

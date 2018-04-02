@@ -15,8 +15,7 @@ public final class GravityComponent: BodyComponent {
     
     public var relaxable: Bool = false
     
-    /// Initializes a new instance of the BodyComponent class
-    public init(body: Body) {
+    public init() {
         
     }
     

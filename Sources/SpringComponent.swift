@@ -35,7 +35,7 @@ public final class SpringComponent: BodyComponent {
     /// shape matching is off
     fileprivate var shapeSpringDamp: JFloat = 10
     
-    public init(body: Body) {
+    public init() {
         
     }
     
