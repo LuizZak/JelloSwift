@@ -1,14 +1,17 @@
-**_Current stable release: v0.12.0_**
+**_Current stable release: v0.13.0_**
 
 #### Develop trunk changelog:
+
+- Trunk's clean!
+
+## Stable Releases
+---
+
+## v0.13.0:
 
 - Bumped target Swift version to 4.1.
 - Renamed `JointLinkType` to `JointLink`.
 - Removed body parameter from init from body component classes. 
-
-
-## Stable Releases
----
 
 ## v0.12.0:
 
