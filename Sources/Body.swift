@@ -85,10 +85,10 @@ public final class Body: Equatable {
     public var aabb = AABB()
     
     /// The index of the material in the world material array to use for this
-    /// body
+    /// body.
     public var material = 0
     
-    /// Whether this body is static
+    /// Whether this body is static.
     public var isStatic = false
     
     /// Whether this body is kinematic - kinematic bodies do not rotate or move
@@ -102,22 +102,23 @@ public final class Body: Equatable {
     /// but try to remain in place, like a kinematic body.
     public var isPined = false
     
-    /// Whether the body is able to rotate while moving
+    /// Whether the body is able to rotate while moving.
     public var freeRotate = true
     
     /// A free field that can be used to attach custom objects to a soft body
-    /// instance
+    /// instance.
     public var objectTag: Any? = nil
     
-    /// The colision bitmask for this body
+    /// The colision bitmask for this body.
     public var bitmask: Bitmask = 0xFFFFFFFF
     
-    /// The X-axis bitmask for the body - used for collision filtering
+    /// The X-axis bitmask for the body - used for collision filtering.
     public var bitmaskX: Bitmask = 0
-    /// The Y-axis bitmask for the body - used for collision filtering
+    /// The Y-axis bitmask for the body - used for collision filtering.
     public var bitmaskY: Bitmask = 0
     
-    /// Whether this body's bitmaskX & bitmaskY are stale
+    /// Whether this body's bitmaskX & bitmaskY are stale.
+    /// Used to avoid recalculating bitmasks
     internal var _bitmasksStale: Bool = true
     
     /// Initializes a new Body instance with a given set of properties.
@@ -171,7 +172,7 @@ public final class Body: Equatable {
         components.forEach { $0.attach(to: self) }
     }
     
-    /// Adds a body component to this body
+    /// Adds a body component to this body.
     @discardableResult
     public func addComponent(ofType componentType: BodyComponent.Type) -> BodyComponent {
         let instance = componentType.init()
@@ -184,7 +185,8 @@ public final class Body: Equatable {
     }
     
     /// Gets a component on this body that matches the given component type.
-    /// If no matching components are found, nil is returned instead
+    ///
+    /// If no matching components are found, `nil` is returned instead.
     public func component<T: BodyComponent>(ofType componentType: T.Type) -> T? {
         for comp in components {
             if(comp is T) {
@@ -207,7 +209,7 @@ public final class Body: Equatable {
         try block(comp)
     }
     
-    /// Removes a component from this body
+    /// Removes a component from this body.
     public func removeComponent<T: BodyComponent>(ofType componentType: T.Type) {
         for (i, comp) in components.enumerated() {
             if(comp is T) {
@@ -217,13 +219,13 @@ public final class Body: Equatable {
         }
     }
     
-    /// Updates the edges and normals of this body
+    /// Updates the edges and normals of this body.
     public func updateEdgesAndNormals() {
         updateEdges()
         updateNormals()
     }
     
-    /// Updates the cached edge information of the body
+    /// Updates the cached edge information of the body.
     public func updateEdges() {
         let c = pointMasses.count
         
@@ -261,7 +263,7 @@ public final class Body: Equatable {
         */
     }
     
-    /// Updates the point normals of the body
+    /// Updates the point normals of the body.
     public func updateNormals() {
         guard var prev = edges.last else { return }
         
@@ -283,7 +285,7 @@ public final class Body: Equatable {
         }
     }
     
-    /// Updates a single edge in this body
+    /// Updates a single edge in this body.
     public func updateEdge(_ edgeIndex: Int) {
         let j = (edgeIndex &+ 1) % pointMasses.count
         
@@ -298,8 +300,9 @@ public final class Body: Equatable {
     
     /// Updates the AABB for this body, including padding for velocity given a
     /// timestep.
-    /// This function is called by the World object on Update(), so the user
-    /// should not need this in most cases.
+    ///
+    /// This function is called by `World.update()`, so the user should not need
+    /// this in most cases.
     /// 
     /// - parameter elapsed:
     ///     The elapsed time to update by, usually in seconds
@@ -353,14 +356,14 @@ public final class Body: Equatable {
         updateEdges()
     }
     
-    /// Sets the mass for all the PointMass objects in this body
+    /// Sets the mass for all the PointMass objects in this body.
     public func setMassAll(_ mass: JFloat) {
         pointMasses.forEach { $0.mass = mass }
         
         isStatic = mass.isInfinite
     }
     
-    /// Sets the mass for a single PointMass individually
+    /// Sets the mass for a single PointMass individually.
     public func setMassForPointMass(atIndex index: Int, mass: JFloat) {
         pointMasses[index].mass = mass
         
@@ -371,7 +374,7 @@ public final class Body: Equatable {
     /// Sets the mass for all the point masses from a list of masses.
     /// In case the array count is bigger than the point mass count, it only
     /// sets up to the count of masses in the array, if larger, it sets the
-    /// matching masses for all point masses, and ignores the rest of the array
+    /// matching masses for all point masses, and ignores the rest of the array.
     public func setMass(fromList masses: [JFloat]) {
         for (mass, pointMass) in zip(masses, pointMasses) {
             pointMass.mass = mass
@@ -382,8 +385,9 @@ public final class Body: Equatable {
     }
     
     /// Sets the position and angle of the body manually.
+    ///
     /// Setting the position and angle resets the current shape to the original
-    /// base shape of the object
+    /// base shape of the object.
     public func setPositionAngle(_ pos: Vector2, angle: JFloat, scale: Vector2) {
         let matrix = Vector2.matrix(scalingBy: scale, rotatingBy: angle, translatingBy: pos)
         
@@ -406,11 +410,13 @@ public final class Body: Equatable {
     
     /// Derives the global position and angle of this body, based on the average
     /// of all the points.
+    ///
     /// This updates the DerivedPosision, DerivedAngle, and DerivedVelocity
     /// properties.
-    /// This is called by the World object each Update(), so usually a user does
-    /// not need to call this. Instead you can juse access the DerivedPosition,
-    /// DerivedAngle, DerivedVelocity, and DerivedOmega properties.
+    ///
+    /// This is called by `World.update()`, so usually a user does not need to
+    /// call this. Instead you can juse access the `derivedPosition`, `DerivedAngle`,
+    /// `derivedVelocity`, and `derivedOmega` properties.
     public func derivePositionAndAngle(_ elapsed: JFloat) {
         // No need if this is a static body, or kinematically controlled.
         if (isStatic || isKinematic) {
@@ -488,6 +494,7 @@ public final class Body: Equatable {
     
     /// This function should add all internal forces to the Force member
     /// variable of each PointMass in the body.
+    ///
     /// These should be forces that try to maintain the shape of the body.
     public func accumulateInternalForces(relaxing: Bool = false) {
         for component in components {
@@ -497,6 +504,7 @@ public final class Body: Equatable {
     
     /// This function should add all external forces to the Force member
     /// variable of each PointMass in the body.
+    ///
     /// These are external forces acting on the PointMasses, such as gravity,
     /// etc.
     public func accumulateExternalForces(relaxing: Bool = false) {
@@ -576,7 +584,7 @@ public final class Body: Equatable {
         }
     }
     
-    /// Returns whether a global point is inside this body
+    /// Returns whether a global point is inside this body.
     public func contains(_ pt: Vector2) -> Bool {
         // Check if the point is inside the AABB
         if(!aabb.contains(pt)) {
@@ -659,7 +667,7 @@ public final class Body: Equatable {
     }
     
     /// Returns whether the given line consisting of two points intersects this
-    /// body
+    /// body.
     public func intersectsLine(from start: Vector2, to end: Vector2) -> Bool {
         // Create and test against a temporary line AABB
         if(!aabb.intersects(AABB(min: min(start, end), max: max(start, end)))) {
@@ -705,7 +713,7 @@ public final class Body: Equatable {
     }
     
     /// Given a global point, finds the closest point on an edge of a specified
-    /// index, returning the squared distance to the edge found
+    /// index, returning the squared distance to the edge found.
     ///
     /// - Precondition: Body has `pointMass.count > 0`.
     ///
@@ -769,7 +777,7 @@ public final class Body: Equatable {
     }
     
     /// Given a global point, finds the closest point on an edge of a specified
-    /// index, returning the distance to the edge found
+    /// index, returning the distance to the edge found.
     ///
     /// - Precondition: Body has `pointMass.count > 0`.
     ///
@@ -792,7 +800,7 @@ public final class Body: Equatable {
     
     /// Given a global point, finds the point on this body that is closest to the
     /// given global point, and if it's an edge, information about the edge it
-    /// resides on
+    /// resides on.
     ///
     /// - Precondition: Body has `pointMass.count > 0`.
     ///
@@ -838,10 +846,13 @@ public final class Body: Equatable {
     
     
     /// Returns the closest point to the given position on an edge of the body's
-    /// shape
-    /// The position must be in world coordinates
+    /// shape.
+    ///
+    /// The position must be in world coordinates.
+    ///
     /// The tolerance is the distance to the edge that will be ignored if larget
-    /// than that
+    /// than that.
+    ///
     /// Returns nil if boy has no edges, or a tuple of the parameters that can be
     /// used to track down the shape's edge.
     ///
@@ -904,8 +915,6 @@ public final class Body: Equatable {
     /// Find the closest PointMass index in this body, given a global point
     ///
     /// - Precondition: Body has `pointMass.count > 0`.
-    ///
-    /// - precondition: There is at least one point mass in this body
     public func closestPointMass(to pos: Vector2) -> (point: PointMass, distance: JFloat) {
         assert(pointMasses.count > 0)
         
@@ -926,9 +935,11 @@ public final class Body: Equatable {
     
     /// Applies a global force to all the point masses in this body at the
     /// specified point, in world coordinates.
+    ///
     /// Applying a force with any position off-center of the body (different than
     /// `derivedPos`) will result in an additional torque being applied to the
     /// body, making it spin.
+    ///
     /// Ignored, if body is static.
     ///
     /// - Parameters:
