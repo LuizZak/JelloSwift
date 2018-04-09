@@ -158,7 +158,7 @@ public final class Body: Equatable {
         
         var points = pointMasses
         
-        if(points.count == 1) {
+        if points.count == 1 {
             points = .init(repeating: pointMasses[0], count: self.pointMasses.count)
         }
         
@@ -189,8 +189,8 @@ public final class Body: Equatable {
     /// If no matching components are found, `nil` is returned instead.
     public func component<T: BodyComponent>(ofType componentType: T.Type) -> T? {
         for comp in components {
-            if(comp is T) {
-                return comp as? T
+            if let comp = comp as? T {
+                return comp
             }
         }
         
@@ -212,7 +212,7 @@ public final class Body: Equatable {
     /// Removes a component from this body.
     public func removeComponent<T: BodyComponent>(ofType componentType: T.Type) {
         for (i, comp) in components.enumerated() {
-            if(comp is T) {
+            if comp is T {
                 components.remove(at: i)
                 break
             }
@@ -230,7 +230,7 @@ public final class Body: Equatable {
         let c = pointMasses.count
         
         // Maintain the edge count the same as the point mass count
-        if(edges.count != c) {
+        if edges.count != c {
             edges = .init(repeating: BodyEdge(), count: c)
         }
         
@@ -275,7 +275,7 @@ public final class Body: Equatable {
             
             // Edges are exactly 180º to each other - normal should be the first
             // edge's vector, then
-            if(sum == .zero) {
+            if sum == .zero {
                 pointMasses[i].normal = edge1N
             } else {
                 pointMasses[i].normal = sum.perpendicular().normalized()
@@ -319,7 +319,7 @@ public final class Body: Equatable {
         for point in pointMasses {
             aabb.expand(toInclude: point.position)
             
-            if(!isStatic) {
+            if !isStatic {
                 aabb.expand(toInclude: point.position + point.velocity * elapsed)
             }
         }
@@ -343,7 +343,7 @@ public final class Body: Equatable {
         
         baseShape.transformVertices(&globalShape, matrix: matrix)
         
-        if(baseShape.localVertices.count != pointMasses.count) {
+        if baseShape.localVertices.count != pointMasses.count {
             pointMasses = []
             pointMasses.reserveCapacity(baseShape.localVertices.count)
             for i in 0..<baseShape.localVertices.count {
@@ -403,7 +403,7 @@ public final class Body: Equatable {
         derivedAngle = angle
         
         // Forcefully update the AABB when changing shapes
-        if(isStatic) {
+        if isStatic {
             updateAABB(0, forceUpdate: true)
         }
     }
@@ -419,19 +419,19 @@ public final class Body: Equatable {
     /// `derivedVelocity`, and `derivedOmega` properties.
     public func derivePositionAndAngle(_ elapsed: JFloat) {
         // No need if this is a static body, or kinematically controlled.
-        if (isStatic || isKinematic) {
+        if isStatic || isKinematic {
             return
         }
         
         let currentDerivedPosition = PointMass.averagePosition(of: pointMasses)
         
-        if(!isPined) {
+        if !isPined {
             // Find the geometric center and average velocity
             derivedPos = currentDerivedPosition
             derivedVel = PointMass.averageVelocity(of: pointMasses)
         }
             
-        if(!freeRotate) {
+        if !freeRotate {
             return
         }
         
@@ -451,7 +451,7 @@ public final class Body: Equatable {
             
             var thisAngle = atan2(baseNorm.x * curNorm.y - baseNorm.y * curNorm.x, baseNorm • curNorm)
             
-            if (first) {
+            if first {
                 originalSign = (thisAngle >= 0.0) ? 1 : -1
                 originalAngle = thisAngle
                 
@@ -460,8 +460,8 @@ public final class Body: Equatable {
                 let diff = (thisAngle - originalAngle)
                 let thisSign = (thisAngle >= 0.0) ? 1 : -1
                 
-                if (abs(diff) > .pi && (thisSign != originalSign)) {
-                    if(thisSign == -1) {
+                if abs(diff) > .pi && (thisSign != originalSign) {
+                    if thisSign == -1 {
                         thisAngle = .pi + (.pi + thisAngle)
                     } else {
                         thisAngle = (.pi - thisAngle) - .pi
@@ -479,7 +479,7 @@ public final class Body: Equatable {
         // now calculate the derived Omega, based on change in angle over time.
         var angleChange = (derivedAngle - lastAngle)
     
-        if ((angleChange < 0 ? -angleChange : angleChange) >= .pi) {
+        if (angleChange < 0 ? -angleChange : angleChange) >= .pi {
             if (angleChange < 0) {
                 angleChange = angleChange + (.pi * 2)
             } else {
@@ -516,7 +516,7 @@ public final class Body: Equatable {
     /// Integrates the point masses for this Body.
     /// Ignored, if body is static.
     public func integrate(_ elapsed: JFloat) {
-        if(isStatic) {
+        if isStatic {
             return
         }
         
@@ -528,7 +528,7 @@ public final class Body: Equatable {
     /// Applies the velocity damping to the point masses.
     /// Ignored, if body is static.
     public func dampenVelocity(_ elapsed: JFloat) {
-        if(isStatic) {
+        if isStatic {
             return
         }
         
@@ -540,7 +540,7 @@ public final class Body: Equatable {
     /// Applies a rotational clockwise torque of a given force on this body.
     /// Ignored, if body is static.
     public func applyTorque(of force: JFloat) {
-        if(isStatic) {
+        if isStatic {
             return
         }
         
@@ -558,7 +558,7 @@ public final class Body: Equatable {
     /// The method keeps the average velocity of the point masses the same during
     /// the proceedure.
     public func setAngularVelocity(_ vel: JFloat) {
-        if(isStatic) {
+        if isStatic {
             return
         }
         
@@ -572,7 +572,7 @@ public final class Body: Equatable {
     
     /// Accumulates the angular velocity for this body
     public func addAngularVelocity(_ vel: JFloat) {
-        if(isStatic) {
+        if isStatic {
             return
         }
         
@@ -587,7 +587,7 @@ public final class Body: Equatable {
     /// Returns whether a global point is inside this body.
     public func contains(_ pt: Vector2) -> Bool {
         // Check if the point is inside the AABB
-        if(!aabb.contains(pt)) {
+        if !aabb.contains(pt) {
             return false
         }
         
@@ -607,7 +607,7 @@ public final class Body: Equatable {
         // ammount of edges to test against.
         // This basic assumption may not hold for every body, but for most
         // bodies (specially round), this may hold true most of the time.
-        if(pt.x < aabb.midX) {
+        if pt.x < aabb.midX {
             endPt = Vector2(x: aabb.minimum.x - 0.1, y: pt.y)
             
             for e in edges {
@@ -617,13 +617,13 @@ public final class Body: Equatable {
                 // perform check now...
                 
                 // The edge lies completely to the right of our imaginary line
-                if(edgeSt.x > pt.x && edgeEnd.x > pt.x) {
+                if edgeSt.x > pt.x && edgeEnd.x > pt.x {
                     continue
                 }
                 
                 // Check if the edge crosses the imaginary horizontal line from
                 // top to bottom or bottom to top
-                if (((edgeSt.y <= pt.y) && (edgeEnd.y > pt.y)) || ((edgeSt.y > pt.y) && (edgeEnd.y <= pt.y))) {
+                if ((edgeSt.y <= pt.y) && (edgeEnd.y > pt.y)) || ((edgeSt.y > pt.y) && (edgeEnd.y <= pt.y)) {
                     // this line crosses the test line at some point... does it 
                     // do so within our test range?
                     let slope = (edgeEnd.x - edgeSt.x) / (edgeEnd.y - edgeSt.y)
@@ -644,13 +644,13 @@ public final class Body: Equatable {
                 // perform check now...
                 
                 // The edge lies completely to the left of our imaginary line
-                if(edgeSt.x < pt.x && edgeEnd.x < pt.x) {
+                if edgeSt.x < pt.x && edgeEnd.x < pt.x {
                     continue
                 }
                 
                 // Check if the edge crosses the imaginary horizontal line from
                 // top to bottom or bottom to top
-                if (((edgeSt.y <= pt.y) && (edgeEnd.y > pt.y)) || ((edgeSt.y > pt.y) && (edgeEnd.y <= pt.y))) {
+                if ((edgeSt.y <= pt.y) && (edgeEnd.y > pt.y)) || ((edgeSt.y > pt.y) && (edgeEnd.y <= pt.y)) {
                     // this line crosses the test line at some point... does it
                     // do so within our test range?
                     let slope = (edgeEnd.x - edgeSt.x) / (edgeEnd.y - edgeSt.y)
@@ -670,13 +670,13 @@ public final class Body: Equatable {
     /// body.
     public func intersectsLine(from start: Vector2, to end: Vector2) -> Bool {
         // Create and test against a temporary line AABB
-        if(!aabb.intersects(AABB(min: min(start, end), max: max(start, end)))) {
+        if !aabb.intersects(AABB(min: min(start, end), max: max(start, end))) {
             return false
         }
         
         // Test each edge against the line
         for edge in edges {
-            if(lineIntersect(lineA: (start, end), lineB: (edge.start, edge.end)) != nil) {
+            if lineIntersect(lineA: (start, end), lineB: (edge.start, edge.end)) != nil {
                 return true
             }
         }
@@ -830,7 +830,7 @@ public final class Body: Equatable {
         for i in 0..<c {
             let (tempHit, tempNorm, tempEdgeD, dist) = closestPointSquared(to: pt, onEdge: i)
             
-            if(dist < closestD) {
+            if dist < closestD {
                 closestD = dist
                 pointA = i
                 pointB = (i &+ 1) % c
@@ -924,7 +924,7 @@ public final class Body: Equatable {
         for point in pointMasses {
             let thisD = pos.distanceSquared(to: point.position)
             
-            if(thisD < closestSQD) {
+            if thisD < closestSQD {
                 closestSQD = thisD
                 closest = point
             }

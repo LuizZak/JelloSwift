@@ -417,7 +417,7 @@ extension Vector2 {
         
         matrix *= cScale
         
-        if(angle != 0) {
+        if angle != 0 {
             let c = cos(-angle)
             let s = sin(-angle)
             
@@ -473,10 +473,10 @@ extension Vector2 {
         let remainder =
             angleInRadians.truncatingRemainder(dividingBy: .pi * 2)
         
-        if(remainder == 0) {
+        if remainder == 0 {
             return vec
         }
-        if(remainder == .pi) {
+        if remainder == .pi {
             return -vec
         }
         

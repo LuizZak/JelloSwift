@@ -38,7 +38,7 @@ open class ShapeJointLink: JointLink {
     
     /// Offset position, calculated based on the owning body's angle
     fileprivate var offsetPosition: Vector2 {
-        if(offset == Vector2.zero) {
+        if offset == Vector2.zero {
             return Vector2.zero
         }
         
@@ -100,15 +100,15 @@ open class ShapeJointLink: JointLink {
             
             var thisAngle = atan2(baseNorm.x * curNorm.y - baseNorm.y * curNorm.x, baseNorm • curNorm)
             
-            if (i == 0) {
+            if i == 0 {
                 originalSign = (thisAngle >= 0.0) ? 1 : -1
                 originalAngle = thisAngle
             } else {
                 let diff = (thisAngle - originalAngle)
                 let thisSign = (thisAngle >= 0.0) ? 1 : -1
                 
-                if (abs(diff) > .pi && (thisSign != originalSign)) {
-                    if(thisSign == -1) {
+                if abs(diff) > .pi && (thisSign != originalSign) {
+                    if thisSign == -1 {
                         thisAngle = .pi + (.pi + thisAngle)
                     } else {
                         thisAngle = (.pi - thisAngle) - .pi

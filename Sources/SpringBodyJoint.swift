@@ -42,7 +42,7 @@ open class SpringBodyJoint: BodyJoint {
     ///
     /// - Parameter dt: The delta time to update the resolve on
     open override func resolve(_ dt: JFloat) {
-        if(!enabled) {
+        if !enabled {
             return
         }
         
@@ -51,7 +51,7 @@ open class SpringBodyJoint: BodyJoint {
         
         let dist = pos1.distance(to: pos2)
         // Affordable distance
-        if(restDistance.inRange(value: dist)) {
+        if restDistance.inRange(value: dist) {
             return
         }
         
@@ -63,16 +63,16 @@ open class SpringBodyJoint: BodyJoint {
                                          springK: springCoefficient,
                                          springD: springDamping)
         
-        if(!bodyLink1.isStatic && !bodyLink2.isStatic) {
+        if !bodyLink1.isStatic && !bodyLink2.isStatic {
             let mass1 = bodyLink1.mass
             let mass2 = bodyLink2.mass
             let massSum = mass1 + mass2
             
             bodyLink1.applyForce(of:  force * (massSum / mass1))
             bodyLink2.applyForce(of: -force * (massSum / mass2))
-        } else if(!bodyLink1.isStatic && bodyLink2.isStatic) { // Static bodies:
+        } else if !bodyLink1.isStatic && bodyLink2.isStatic { // Static bodies:
             bodyLink1.applyForce(of: force)
-        } else if(!bodyLink2.isStatic && bodyLink1.isStatic) {
+        } else if !bodyLink2.isStatic && bodyLink1.isStatic {
             bodyLink2.applyForce(of: -force)
         }
         

@@ -30,7 +30,7 @@ extension Sequence {
     func last(where compute: (Iterator.Element) -> Bool) -> Iterator.Element? {
         var last: Iterator.Element?
         for item in self {
-            if(compute(item)) {
+            if compute(item) {
                 last = item
             }
         }
@@ -45,7 +45,7 @@ extension Sequence {
     /// Succeeds fast on the first item that returns true
     func any(where compute: (Iterator.Element) -> Bool) -> Bool {
         for item in self {
-            if(compute(item)) {
+            if compute(item) {
                 return true
             }
         }
@@ -58,7 +58,7 @@ extension Sequence {
     /// Fails fast on the first item that returns false
     func all(where compute: (Iterator.Element) -> Bool) -> Bool {
         for item in self {
-            if(!compute(item)) {
+            if !compute(item) {
                 return false
             }
         }
@@ -73,10 +73,10 @@ extension RangeReplaceableCollection where Iterator.Element: Equatable {
     mutating func remove(_ object: Iterator.Element) {
         var index = startIndex
         
-        while(index != endIndex) {
+        while index != endIndex {
             index = self.index(after: index)
             
-            if(self[index] == object) {
+            if self[index] == object {
                 remove(at: index)
                 return
             }
@@ -89,10 +89,10 @@ extension RangeReplaceableCollection {
     mutating func remove(where compute: (Iterator.Element) throws -> Bool) rethrows {
         var index = startIndex
         
-        while(index != endIndex) {
+        while index != endIndex {
             index = self.index(after: index)
             
-            if(try compute(self[index])) {
+            if try compute(self[index]) {
                 remove(at: index)
                 return
             }

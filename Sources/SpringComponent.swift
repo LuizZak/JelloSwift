@@ -203,7 +203,7 @@ public final class SpringComponent: BodyComponent {
             }
         }
         
-        if(shapeMatchingOn && shapeSpringK > 0) {
+        if shapeMatchingOn && shapeSpringK > 0 {
             applyShapeMatching(on: body)
         }
     }

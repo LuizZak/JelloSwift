@@ -94,7 +94,7 @@ class DemoView: UIView, CollisionObserver
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        if(context != nil) {
+        if context != nil {
             context.resetContext()
         }
         
@@ -228,7 +228,7 @@ class DemoView: UIView, CollisionObserver
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?)
     {
         /* Called when a touch begins */
-        if(inputMode == .createBall)
+        if inputMode == .createBall
         {
             for touch: AnyObject in touches
             {
@@ -239,7 +239,7 @@ class DemoView: UIView, CollisionObserver
                 createBouncyBall(vecLoc)
             }
         }
-        else if(inputMode == .dragBody)
+        else if inputMode == .dragBody
         {
             // Select the closest point-mass to drag
             let touch: UITouch = touches.first!
@@ -294,7 +294,7 @@ class DemoView: UIView, CollisionObserver
         
         drawDrag()
         
-        if(useDetailedRender)
+        if useDetailedRender
         {
             // Draw collisions
             for info in collisions
@@ -338,7 +338,7 @@ class DemoView: UIView, CollisionObserver
         let time = sw.stop() * 1000
         
         intervals.append(time)
-        if(intervals.count > 200) {
+        if intervals.count > 200 {
             intervals = Array(intervals.dropFirst(intervals.count - 200))
         }
         
@@ -396,8 +396,10 @@ class DemoView: UIView, CollisionObserver
     
     /// Creates a box at the specified world coordinates with the specified size
     @discardableResult
-    func createBox(_ pos: Vector2, size: Vector2, pinned: Bool = false, kinematic: Bool = false, isStatic: Bool = false, angle: JFloat = 0, mass: JFloat = 0.5) -> Body
-    {
+    func createBox(_ pos: Vector2, size: Vector2, pinned: Bool = false,
+                   kinematic: Bool = false, isStatic: Bool = false,
+                   angle: JFloat = 0, mass: JFloat = 0.5) -> Body {
+        
         // Create the closed shape for the box's physics body
         let shape = ClosedShape
                         .rectangle(ofSides: size)
@@ -409,7 +411,7 @@ class DemoView: UIView, CollisionObserver
         // forces that holds a body together
         comps.append(SpringComponentCreator(shapeMatchingOn: true, edgeSpringK: 600, edgeSpringDamp: 20, shapeSpringK: 100, shapeSpringDamp: 60))
         
-        if(!pinned)
+        if !pinned
         {
             // Add a gravity component that will pull the body down
             comps.append(GravityComponentCreator())
@@ -761,13 +763,13 @@ extension DemoView {
         // Color joint a different shade depending on how far from rest shape
         // its bodies are (from gray at 0% off to light-red at >100% off)
         let distance = start.distance(to: end)
-        if(!joint.restDistance.inRange(value: distance)) {
+        if !joint.restDistance.inRange(value: distance) {
             let clamped = joint.restDistance.clamp(value: distance)
             
-            if(clamped > 0) {
+            if clamped > 0 {
                 var overhead: JFloat
                 
-                if(distance < clamped) {
+                if distance < clamped {
                     overhead = distance / clamped
                 } else {
                     overhead = clamped / distance
@@ -827,7 +829,7 @@ extension DemoView {
         
         let shapePoints = body.vertices
         
-        if(!useDetailedRender)
+        if !useDetailedRender
         {
             // Don't do any other rendering other than the body's buffer
             try drawBodyFill()

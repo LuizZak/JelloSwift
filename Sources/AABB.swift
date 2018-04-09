@@ -93,7 +93,7 @@ public struct AABB: Codable {
     /// point, if not, it fits the point, expanding the bounding box to fit the
     /// point, if necessary.
     public mutating func expand(toInclude point: Vector2) {
-        if(validity == .invalid) {
+        if validity == .invalid {
             minimum = point
             maximum = point
             
@@ -109,11 +109,11 @@ public struct AABB: Codable {
     /// Same as calling `expand(toInclude:Vector2)` over each point.
     /// If the array is empty, nothing is done.
     public mutating func expand(toInclude points: [Vector2]) {
-        if(points.count == 0) {
+        if points.count == 0 {
             return
         }
         
-        if(validity == .invalid) {
+        if validity == .invalid {
             minimum = points[0]
             maximum = points[0]
             
@@ -131,7 +131,7 @@ public struct AABB: Codable {
     /// to contain the point as well.
     /// Returns false, if this AABB is invalid.
     public func contains(_ point: Vector2) -> Bool {
-        if(validity == .invalid) {
+        if validity == .invalid {
             return false
         }
         
@@ -144,7 +144,7 @@ public struct AABB: Codable {
     /// If either this, or the other bounding box are invalid, false is 
     /// returned.
     public func intersects(_ box: AABB) -> Bool {
-        if(validity == .invalid || box.validity == .invalid) {
+        if validity == .invalid || box.validity == .invalid {
             return false
         }
         

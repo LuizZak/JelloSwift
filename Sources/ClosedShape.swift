@@ -60,7 +60,7 @@ public struct ClosedShape: Codable, ExpressibleByArrayLiteral {
     /// Finishes constructing this closed shape, optionally converting them to 
     /// local space (by default)
     public mutating func finish(recentering recenter: Bool = true) {
-        if(recenter) {
+        if recenter {
             self.recenter()
         }
     }
