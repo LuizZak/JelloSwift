@@ -7,7 +7,7 @@
 //
 
 /// Contains information about the edge of a body
-public struct BodyEdge {
+public struct BodyEdge: Codable {
     
     /// The index of the edge on the body
     public var edgeIndex = 0

@@ -59,7 +59,7 @@ class PhysicsMathTest: XCTestCase
     
     func testVector2Rotate()
     {
-        //var vec = Vector2(x: 0, y: 1)
+//        var vec = Vector2(x: 0, y: 1)
         
 //        XCTAssertEqual(rotateVector(vec, PI * 2), vec, "Vector rotation test failed!")
 //        XCTAssertEqual(rotateVector(vec, PI / 2), Vector2(-1,  0), "Vector rotation test failed!")

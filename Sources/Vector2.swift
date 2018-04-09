@@ -31,7 +31,7 @@ public typealias JFloat = Float
 #endif
 
 /// Represents a 2D vector
-public struct Vector2: VectorRepresentable, Equatable, CustomStringConvertible {
+public struct Vector2: VectorRepresentable, Equatable, CustomStringConvertible, Codable {
     
     /// A zeroed-value Vector2
     public static let zero = Vector2(x: 0, y: 0)
@@ -51,9 +51,6 @@ public struct Vector2: VectorRepresentable, Equatable, CustomStringConvertible {
     /// multiplying on this Vector2
     public typealias NativeMatrixType = double3x3
     
-    /// C matrix type
-    public typealias NativeCMatrixType = matrix_double3x3
-    
     /// This is used during affine transformation
     public typealias HomogenousVectorType = double3
     #elseif arch(i386) || arch(arm)
@@ -63,9 +60,6 @@ public struct Vector2: VectorRepresentable, Equatable, CustomStringConvertible {
     /// The 3x3 matrix type that can be used to apply transformations by
     /// multiplying on this Vector2
     public typealias NativeMatrixType = float3x3
-    
-    /// C matrix type
-    public typealias NativeCMatrixType = matrix_float3x3
     
     /// This is used during affine transformation
     public typealias HomogenousVectorType = float3
@@ -416,33 +410,33 @@ extension Vector2 {
         // |   0       0     1 |
         
         let cScale =
-            Vector2.NativeCMatrixType(columns:
+            Vector2.NativeMatrixType(columns:
                 (Vector2.HomogenousVectorType(scale.theVector.x, 0, 0),
                  Vector2.HomogenousVectorType(0, scale.theVector.y, 0),
                  Vector2.HomogenousVectorType(0, 0, 1)))
         
-        matrix *= Vector2.NativeMatrixType(cScale)
+        matrix *= cScale
         
-        if(angle != 0) {
+        if angle != 0 {
             let c = cos(-angle)
             let s = sin(-angle)
             
             let cRotation =
-                Vector2.NativeCMatrixType(columns:
+                Vector2.NativeMatrixType(columns:
                     (Vector2.HomogenousVectorType(c, s, 0),
                      Vector2.HomogenousVectorType(-s, c, 0),
                      Vector2.HomogenousVectorType(0, 0, 1)))
             
-            matrix *= Vector2.NativeMatrixType(cRotation)
+            matrix *= cRotation
         }
     
         let cTranslation =
-            Vector2.NativeCMatrixType(columns:
+            Vector2.NativeMatrixType(columns:
                 (Vector2.HomogenousVectorType(1, 0, translate.theVector.x),
                  Vector2.HomogenousVectorType(0, 1, translate.theVector.y),
                  Vector2.HomogenousVectorType(0, 0, 1)))
         
-        matrix *= Vector2.NativeMatrixType(cTranslation)
+        matrix *= cTranslation
         
         return matrix
     }
@@ -479,10 +473,10 @@ extension Vector2 {
         let remainder =
             angleInRadians.truncatingRemainder(dividingBy: .pi * 2)
         
-        if(remainder == 0) {
+        if remainder == 0 {
             return vec
         }
-        if(remainder == .pi) {
+        if remainder == .pi {
             return -vec
         }
         
@@ -514,11 +508,22 @@ extension Vector2 {
     }
 }
 
-extension Collection where Iterator.Element: VectorRepresentable, IndexDistance == Int {
+extension Collection where Iterator.Element: VectorRepresentable {
     /// Averages this collection of vectors into one Vector2 point
     @inline(__always)
+    @_specialize(where Self == Array<Vector2>)
+    @_specialize(where Self == ContiguousArray<PointMass>)
     public func averageVector() -> Vector2 {
-        return reduce(Vector2.zero) { $0 + $1.vector } / JFloat(count)
+        return reduce(into: .zero) { $0 += $1.vector } / JFloat(count)
+    }
+}
+
+extension Collection where Iterator.Element == Vector2 {
+    /// Averages this collection of vectors into one Vector2 point
+    @inline(__always)
+    @_specialize(where Self == Array<Vector2>)
+    public func averageVector() -> Vector2 {
+        return reduce(into: .zero) { $0 += $1.vector } / JFloat(count)
     }
 }
 
@@ -567,4 +572,56 @@ public func floor(_ x: Vector2) -> Vector2 {
 @inline(__always)
 public func abs(_ x: Vector2) -> Vector2 {
     return Vector2(abs(x.theVector))
+}
+
+// MARK: - Codable Conformance
+extension Vector2.NativeVectorType: Codable {
+    public init(from decoder: Decoder) throws {
+        var container = try decoder.unkeyedContainer()
+        
+        try self.init(container.decode(JFloat.self), container.decode(JFloat.self))
+    }
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.unkeyedContainer()
+        
+        try container.encode(x)
+        try container.encode(y)
+    }
+}
+
+extension Vector2.HomogenousVectorType: Codable {
+    public init(from decoder: Decoder) throws {
+        var container = try decoder.unkeyedContainer()
+        
+        try self.init(container.decode(JFloat.self), container.decode(JFloat.self), container.decode(JFloat.self))
+    }
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.unkeyedContainer()
+        
+        try container.encode(x)
+        try container.encode(y)
+        try container.encode(z)
+    }
+}
+
+extension Vector2.NativeMatrixType: Codable {
+    public init(from decoder: Decoder) throws {
+        var container = try decoder.unkeyedContainer()
+        
+        try self.init([
+            container.decode(Vector2.HomogenousVectorType.self),
+            container.decode(Vector2.HomogenousVectorType.self),
+            container.decode(Vector2.HomogenousVectorType.self)
+            ])
+    }
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.unkeyedContainer()
+        
+        try container.encode(self.columns.0)
+        try container.encode(self.columns.1)
+        try container.encode(self.columns.2)
+    }
 }

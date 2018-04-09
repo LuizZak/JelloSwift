@@ -23,13 +23,12 @@ public final class PressureComponent: BodyComponent {
     /// Higher values result in higher expansion and resistance to compression.
     public var gasAmmount: JFloat = 0
     
-    /// Initializes a new instance of the BodyComponent class
-    public init(body: Body) {
+    public init() {
         
     }
     
-    public func accumulateInternalForces(in body: Body) {
-        if(body.pointMasses.count < 1) {
+    public func accumulateInternalForces(in body: Body, relaxing: Bool) {
+        if body.pointMasses.count < 1 {
             volume = 0
             return
         }
@@ -42,16 +41,16 @@ public final class PressureComponent: BodyComponent {
         for e in body.edges {
             let pressureV = (invVolume * e.length * gasAmmount)
             
-            body.applyForce(body.pointNormals[e.startPointIndex] * pressureV, toPointMassAt: e.startPointIndex)
-            body.applyForce(body.pointNormals[e.endPointIndex] * pressureV, toPointMassAt: e.endPointIndex)
+            body.applyForce(body.pointMasses[e.startPointIndex].normal * pressureV, toPointMassAt: e.startPointIndex)
+            body.applyForce(body.pointMasses[e.endPointIndex].normal * pressureV, toPointMassAt: e.endPointIndex)
         }
     }
 }
 
 // Creator for the Spring component
-public struct PressureComponentCreator : BodyComponentCreator {
+public struct PressureComponentCreator: BodyComponentCreator, Codable {
     
-    public var bodyComponentClass: BodyComponent.Type = PressureComponent.self
+    public static var bodyComponentClass: BodyComponent.Type = PressureComponent.self
     
     /// The gass pressure coefficient for the pressure component.
     /// Higher values result in higher resistance to compression and higher

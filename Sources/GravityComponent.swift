@@ -15,8 +15,7 @@ public final class GravityComponent: BodyComponent {
     
     public var relaxable: Bool = false
     
-    /// Initializes a new instance of the BodyComponent class
-    public init(body: Body) {
+    public init() {
         
     }
     
@@ -24,7 +23,11 @@ public final class GravityComponent: BodyComponent {
     /// This force ignores mass by multiplying the gravity component by mass
     /// before applying the force, resulting in uniform velocity application in
     /// all bodies.
-    public func accumulateExternalForces(on body: Body) {
+    public func accumulateExternalForces(on body: Body, relaxing: Bool) {
+        if relaxing && !relaxable {
+            return
+        }
+        
         for i in 0..<body.pointMasses.count {
             body.applyForce(gravity * body.pointMasses[i].mass, toPointMassAt: i)
         }
@@ -41,8 +44,9 @@ public final class GravityComponent: BodyComponent {
 }
 
 /// Component that can be added to bodies to add a gravity-like constant force
-public struct GravityComponentCreator: BodyComponentCreator {
-    public var bodyComponentClass: BodyComponent.Type = GravityComponent.self
+public struct GravityComponentCreator: BodyComponentCreator, Codable {
+    
+    public static var bodyComponentClass: BodyComponent.Type = GravityComponent.self
     
     public var vector: Vector2
     

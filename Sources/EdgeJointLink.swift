@@ -7,7 +7,7 @@
 //
 
 /// Represents a joint link that links to an edge of a body
-open class EdgeJointLink: JointLinkType {
+open class EdgeJointLink: JointLink {
     /// The first point mass this joint is linked to
     fileprivate let _pointMass1: Int
     /// The second point mass this joint is linked to
@@ -82,7 +82,7 @@ open class EdgeJointLink: JointLinkType {
         
         // Torque - this depends on how far down the middle of the edge the
         // force is being applied at.
-        // Torque is applied at most as half the actual torque when along the
+        // Torque is applied maximally as half the actual torque when along the
         // middle of the edge, and 0 torque at the very corners.
         if edgeRatio > 0 && edgeRatio < 1 {
             var torqueF = (body.derivedPos - position) • force.perpendicular()

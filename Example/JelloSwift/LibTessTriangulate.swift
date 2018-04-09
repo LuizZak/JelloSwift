@@ -30,7 +30,8 @@ class LibTessTriangulate {
         
         tess.addContour(contour)
         
-        try tess.tessellate(windingRule: .evenOdd, elementType: .polygons, polySize: polySize)
+        try tess.tessellate(windingRule: .evenOdd, elementType: .polygons,
+                            polySize: polySize)
         
         var result: [Vector2] = []
         var indices: [Int] = []

@@ -19,11 +19,11 @@ typealias Vector3 = float3
 extension Vector3 {
     
     init(x: CGFloat, y: CGFloat, z: CGFloat) {
-        self = float3(x: Float(x), y: Float(y), z: Float(z))
+        self.init(x: Float(x), y: Float(y), z: Float(z))
     }
     
     init(x: Double, y: Double, z: Double) {
-        self = float3(x: Float(x), y: Float(y), z: Float(z))
+        self.init(x: Float(x), y: Float(y), z: Float(z))
     }
 }
 
@@ -132,6 +132,20 @@ struct Color4 {
     }
 }
 
+extension Color4 {
+    static let white = Color4(r: 1, g: 1, b: 1, a: 1)
+    static let black = Color4(r: 0, g: 0, b: 0, a: 1)
+    
+    static let red = Color4(r: 1, g: 0, b: 0, a: 1)
+    static let green = Color4(r: 0, g: 1, b: 0, a: 1)
+    static let blue = Color4(r: 0, g: 0, b: 1, a: 1)
+    
+    static let yellow = Color4(r: 1, g: 1, b: 0, a: 1)
+    static let purple = Color4(r: 1, g: 0, b: 1, a: 1)
+    
+    static let cyan = Color4(r: 0, g: 1, b: 1, a: 1)
+}
+
 // MARK: -
 
 /// Represents a Vertex of a 3D model.
@@ -165,12 +179,12 @@ struct VertexBuffer {
     
     /// The memory size of this vertex buffer's vertexBuffer property
     var vertexBufferSize: Int {
-        return MemoryLayout<Vertex>.size * vertices.count
+        return MemoryLayout<Vertex>.stride * vertices.count
     }
     
     /// The memory size of this vertex buffer's indices property
     var indexBufferSize: Int {
-        return MemoryLayout<GLuint>.size * indices.count
+        return MemoryLayout<GLuint>.stride * indices.count
     }
     
     /// Gets or sets the vertex at a given index
@@ -266,9 +280,13 @@ struct VertexBuffer {
         let g = (color >> 8) & 0xff
         let b = color & 0xff
         
+        let position = Vector3(x: vec.x, y: vec.y, z: 0)
         let color = Color4(r: CFloat(r) / 255, g: CFloat(g) / 255, b: CFloat(b) / 255, a: CFloat(a) / 255)
         
-        vertices.append(Vertex(position: Vector3(x: CFloat(vec.x), y: CFloat(vec.y), z: 0), color: color))
+        let vertex = Vertex(position: position, color: color)
+        
+        vertices.append(vertex)
+        
         return vertices.count - 1
     }
     
@@ -291,9 +309,9 @@ struct VertexBuffer {
     /// Make sure the provided values are within the bounds of the vertices
     /// array.
     mutating func addTriangleAtIndexes(_ a: Int, _ b: Int, _ c: Int) {
-        indices.append(GLuint(a))
-        indices.append(GLuint(b))
-        indices.append(GLuint(c))
+        addIndice(a)
+        addIndice(b)
+        addIndice(c)
     }
     
     /// Clears all the vertices and indices from this vertex buffer
@@ -305,8 +323,9 @@ struct VertexBuffer {
     /// Creates a vertex buffer from a given set of vectors
     static func fromVectors(_ vectors: [Vector2]) -> VertexBuffer {
         
-        let vertexes = vectors.map {
-            Vertex(position: Vector3(x: CFloat($0.x), y: CFloat($0.y), z: 0), color: Color4(r: 1, g: 1, b: 1, a: 1))
+        let vertexes = vectors.map { vec -> Vertex in
+            let pos = Vector3(x: vec.x, y: vec.y, z: 0)
+            return Vertex(position: pos, color: .white)
         }
         
         let indices = Array(0..<GLuint(vectors.count))
@@ -314,3 +333,4 @@ struct VertexBuffer {
         return VertexBuffer(vertices: vertexes, indices: indices)
     }
 }
+

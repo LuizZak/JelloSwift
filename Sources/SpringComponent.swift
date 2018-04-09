@@ -35,7 +35,7 @@ public final class SpringComponent: BodyComponent {
     /// shape matching is off
     fileprivate var shapeSpringDamp: JFloat = 10
     
-    public init(body: Body) {
+    public init() {
         
     }
     
@@ -52,19 +52,6 @@ public final class SpringComponent: BodyComponent {
         
         let dist = RestDistance.fixed(pA.position.distance(to: pB.position))
         
-        let spring = InternalSpring(pointA, pointB, dist, springK, damping)
-        
-        springs.append(spring)
-        
-        return spring
-    }
-    
-    /// Adds an internal spring to this body
-    @available(*, deprecated, message: "Use addInternalSpring(:Body:Int:Int:JFloat:JFloat:RestDistance) instead.")
-    @discardableResult
-    public func addInternalSpring(_ body: Body, pointA: Int, pointB: Int,
-                                  springK: JFloat, damping: JFloat,
-                                  dist: JFloat) -> InternalSpring {
         let spring = InternalSpring(pointA, pointB, dist, springK, damping)
         
         springs.append(spring)
@@ -123,7 +110,7 @@ public final class SpringComponent: BodyComponent {
     /// Sets the spring constant for the given spring index.
     /// The spring index starts from pointMasses.count and onwards, so the first
     /// spring will not be the first edge spring.
-    public func setSpringConstants(_ body: Body, springID: Int,
+    public func setSpringConstants(forSpringIndex springID: Int, in body: Body,
                                    _ springK: JFloat, _ springDamp: JFloat) {
         // index is for all internal springs, AFTER the default internal springs.
         let index = body.pointMasses.count + springID
@@ -135,7 +122,7 @@ public final class SpringComponent: BodyComponent {
     /// Sets the rest distance for the givne spring index.
     /// The spring index starts from pointMasses.count and onwards, so the first
     /// spring will not be the first edge spring.
-    public func setSpringRestDistance(_ body: Body, _ springID: Int, _ dist: RestDistance) {
+    public func setSpringRestDistance(forSpringIndex springID: Int, in body: Body, _ dist: RestDistance) {
         // index is for all internal springs, AFTER the default internal springs.
         let index = body.pointMasses.count + springID
         
@@ -145,7 +132,7 @@ public final class SpringComponent: BodyComponent {
     /// Gets the rest distance for the givne spring index.
     /// This ignores the default edge springs, so the index is always
     /// `+ body.pointMasses.count`
-    public func springRestDistance(_ springID: Int, in body: Body) -> RestDistance {
+    public func springRestDistance(forSpringIndex springID: Int, in body: Body) -> RestDistance {
         return springs[body.pointMasses.count + springID].restDistance
     }
     
@@ -163,12 +150,32 @@ public final class SpringComponent: BodyComponent {
         return springs[body.pointMasses.count + springID].damping
     }
     
-    public func accumulateInternalForces(in body: Body) {
-        for s in springs {
+    /// Gets the current plasticity settings of a spring, or nil, if no plasticity
+    /// is set.
+    /// This ignores the default edge springs, so the index is always
+    /// `+ body.pointMasses.count`
+    public func springPlasticity(forSpringIndex springID: Int, in body: Body) -> SpringPlasticity? {
+        return springs[body.pointMasses.count + springID].plasticity
+    }
+    
+    /// Sets the current plasticity settings of a spring, or disables it, if `nil`
+    /// is passed.
+    ///
+    /// This ignores the default edge springs, so the index is always
+    /// `+ body.pointMasses.count`
+    public func setSpringPlasticity(forSpringIndex springID: Int, in body: Body,
+                                    plasticity: SpringPlasticity?) {
+        springs[body.pointMasses.count + springID].plasticity = plasticity
+    }
+    
+    public func accumulateInternalForces(in body: Body, relaxing: Bool) {
+        for (i, s) in springs.enumerated() {
             let p1 = body.pointMasses[s.pointMassA]
             let p2 = body.pointMasses[s.pointMassB]
             
             let force: Vector2
+            
+            let actDist = p1.position.distance(to: p2.position)
             
             switch s.restDistance {
             case .fixed(let dist):
@@ -178,20 +185,25 @@ public final class SpringComponent: BodyComponent {
                                          distance: dist,
                                          springK: s.coefficient, springD: s.damping)
             case .ranged:
-                let dist = p1.position.distance(to: p2.position)
-                
                 force =
                     calculateSpringForce(posA: p1.position, velA: p1.velocity,
                                          posB: p2.position, velB: p2.velocity,
-                                         distance: s.restDistance.clamp(value: dist),
+                                         distance: s.restDistance.clamp(value: actDist),
                                          springK: s.coefficient, springD: s.damping)
             }
             
             body.applyForce(force, toPointMassAt: s.pointMassA)
             body.applyForce(-force, toPointMassAt: s.pointMassB)
+            
+            if !relaxing && s.plasticity != nil {
+                // Apply plasticity
+                var s = s
+                s.updatePlasticity(distance: actDist)
+                springs[i] = s
+            }
         }
         
-        if(shapeMatchingOn && shapeSpringK > 0) {
+        if shapeMatchingOn && shapeSpringK > 0 {
             applyShapeMatching(on: body)
         }
     }
@@ -223,9 +235,9 @@ public final class SpringComponent: BodyComponent {
 }
 
 /// Creator for the Spring component
-public struct SpringComponentCreator : BodyComponentCreator {
+public struct SpringComponentCreator: BodyComponentCreator, Codable {
     
-    public var bodyComponentClass: BodyComponent.Type = SpringComponent.self
+    public static var bodyComponentClass: BodyComponent.Type = SpringComponent.self
     
     /// Whether the shape matching is on - turning on shape matching will make
     /// the soft body try to mantain its original shape as specified by its
@@ -245,12 +257,12 @@ public struct SpringComponentCreator : BodyComponentCreator {
     public var shapeSpringDamp: JFloat = 10
     
     /// An array of inner springs for a body
-    public var innerSprings: [SpringComponentInnerSpring] = []
+    public var innerSprings: [InternalSpring] = []
     
     public init(shapeMatchingOn: Bool = true,
                 edgeSpringK: JFloat = 50, edgeSpringDamp: JFloat = 2,
                 shapeSpringK: JFloat = 200, shapeSpringDamp: JFloat = 10,
-                innerSprings: [SpringComponentInnerSpring] = []) {
+                innerSprings: [InternalSpring] = []) {
         self.shapeMatchingOn = shapeMatchingOn
         
         self.edgeSpringK = edgeSpringK
@@ -273,74 +285,11 @@ public struct SpringComponentCreator : BodyComponentCreator {
         comp.setShapeMatchingConstants(shapeSpringK, shapeSpringDamp)
         
         for element in innerSprings {
-            comp.addInternalSpring(body, pointA: element.indexA,
-                                   pointB: element.indexB,
+            comp.addInternalSpring(body, pointA: element.pointMassA,
+                                   pointB: element.pointMassB,
                                    springK: element.coefficient,
                                    damping: element.damping,
                                    dist: element.restDistance)
         }
-    }
-}
-
-/// Specifies a template for an inner spring
-public struct SpringComponentInnerSpring {
-    
-    /// Index of the first point mass of the spring, in the `pointMasses` 
-    /// property of the target body
-    public var indexA = 0
-    /// Index of the second point mass of the spring, in the `pointMasses` 
-    /// property of the target body
-    public var indexB = 0
-    
-    /// The spring coefficient for this spring
-    public var coefficient: JFloat = 0
-    /// Damping coefficient for this spring
-    public var damping: JFloat = 0
-    
-    /// The rest distance for this spring, as in, the distance this spring will
-    /// try to mantain between the two point masses.
-    public var restDistance: RestDistance = .fixed(-1)
-    
-    /// The rest distance for this spring, as in, the distance this spring will
-    /// try to mantain between the two point masses.
-    @available(*, deprecated, message: "Use SpringComponentInnerSpring.restDistance instead")
-    public var dist: JFloat {
-        get {
-            return restDistance.maximumDistance
-        }
-        set {
-            restDistance = .fixed(newValue)
-        }
-    }
-    
-    public init(a: Int, b: Int, coefficient: JFloat, damping: JFloat) {
-        indexA = a
-        indexB = b
-        
-        self.coefficient = coefficient
-        self.damping = damping
-    }
-    
-    @available(*, deprecated, message: "Use init(a:b:coefficient:damping:restDistance:) instead")
-    public init(a: Int, b: Int, coefficient: JFloat, damping: JFloat,
-                dist: JFloat) {
-        indexA = a
-        indexB = b
-        
-        self.coefficient = coefficient
-        self.damping = damping
-        
-        self.restDistance = .fixed(dist)
-    }
-    
-    public init(a: Int, b: Int, coefficient: JFloat, damping: JFloat,
-                restDistance: RestDistance = -1) {
-        indexA = a
-        indexB = b
-        
-        self.coefficient = coefficient
-        self.damping = damping
-        
-        self.restDistance = restDistance
     }
 }

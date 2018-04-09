@@ -24,10 +24,6 @@ public protocol CollisionObserver: class {
 
 public extension CollisionObserver {
     
-    public func bodiesDidCollide(_ info: BodyCollisionInformation) {
-        
-    }
-    
     public func bodiesDidCollide(_ infos: [BodyCollisionInformation]) {
         
     }

@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'JelloSwift'
-  s.version          = '0.10.0'
+  s.version          = '0.13.0'
   s.summary          = 'Swift soft body physics engine.'
 
 # This description is used to generate tags and improve search results.

@@ -8,6 +8,8 @@
 
 /// Returns an approximation of the area of the polygon defined by a given set
 /// of vertices
+@_specialize(where T == Array<Vector2>)
+@_specialize(where T == ContiguousArray<PointMass>)
 public func polygonArea<T: BidirectionalCollection>(of points: T) -> JFloat where T.Iterator.Element: VectorRepresentable {
     guard var v2 = points.last else {
         return 0
@@ -49,25 +51,6 @@ public func lineIntersect(lineA: (start: Vector2, end: Vector2),
     }
     
     return nil
-}
-
-/// Calculates a spring force, given position, velocity, spring constant, and
-/// damping factor
-public func calculateSpringForce(posA: Vector2, velA: Vector2, posB: Vector2, velB: Vector2, distance: JFloat, springK: JFloat, springD: JFloat) -> Vector2 {
-    var dist = posA.distance(to: posB)
-    
-    if (dist <= 0.0000005) {
-        return .zero
-    }
-    
-    let BtoA = (posA - posB) / dist
-    
-    dist = distance - dist
-    
-    let relVel = velA - velB
-    let totalRelVel = relVel • BtoA
-    
-    return BtoA * ((dist * springK) - (totalRelVel * springD))
 }
 
 /// Returns a Vector2 that represents a point between vec1 and vec2, with a
