@@ -87,4 +87,12 @@ class Vector2Tests: XCTestCase {
         XCTAssert(diff.x <= delta)
         XCTAssert(diff.y <= delta)
     }
+    
+    func testAverageVectorPerformance() {
+        let input: [Vector2] = (1...1000000).map { Vector2(x: $0, y: $0) }
+        
+        measure {
+            _=input.averageVector()
+        }
+    }
 }

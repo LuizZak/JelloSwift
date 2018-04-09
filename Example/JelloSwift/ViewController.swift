@@ -52,7 +52,7 @@ class ViewController: UIViewController {
     @IBAction func didTapRenderingMode(_ sender: UIButton) {
         demo.useDetailedRender = !demo.useDetailedRender
         
-        if(!demo.useDetailedRender) {
+        if !demo.useDetailedRender {
             btnRenderingMode.setImage(UIImage(named: "img_detailed"), for: .normal)
         } else {
             btnRenderingMode.setImage(UIImage(named: "img_simple"), for: .normal)

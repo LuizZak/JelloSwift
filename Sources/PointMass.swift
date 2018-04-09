@@ -7,7 +7,7 @@
 //
 
 /// Specifies a point mass that composes a body
-public final class PointMass: VectorRepresentable {
+public final class PointMass: Codable, VectorRepresentable {
     /// The mass of this point mass.
     /// Leave this value always `> 0` to maintain consistency on the simulation,
     /// unless the point is supposed to be fixed.
@@ -21,6 +21,10 @@ public final class PointMass: VectorRepresentable {
     public var velocity = Vector2.zero
     /// The global force of the point mass
     public var force = Vector2.zero
+    
+    /// Normal of this point pointing outwards from the center of the body it's
+    /// attached to
+    public var normal = Vector2.zero
     
     /// For VectorRepresentable conformance - returns `self.position`
     public var vector: Vector2 {
@@ -54,12 +58,16 @@ public final class PointMass: VectorRepresentable {
     }
     
     /// Averages a list of point mass positions into one normalized Vector2 point
-    public static func averagePosition<T: Collection>(of pointMasses: T) -> Vector2 where T.Iterator.Element == PointMass, T.IndexDistance == Int {
+    @_specialize(where T == Array<PointMass>)
+    @_specialize(where T == ContiguousArray<PointMass>)
+    public static func averagePosition<T: Collection>(of pointMasses: T) -> Vector2 where T.Iterator.Element == PointMass {
         return pointMasses.averageVector()
     }
     
     /// Averages a list of point mass velocities into one normalized Vector2 point
-    public static func averageVelocity<T: Collection>(of pointMasses: T) -> Vector2 where T.Iterator.Element == PointMass, T.IndexDistance == Int {
+    @_specialize(where T == Array<PointMass>)
+    @_specialize(where T == ContiguousArray<PointMass>)
+    public static func averageVelocity<T: Collection>(of pointMasses: T) -> Vector2 where T.Iterator.Element == PointMass {
         return pointMasses.reduce(Vector2.zero) { $0 + $1.velocity } / JFloat(pointMasses.count)
     }
 }

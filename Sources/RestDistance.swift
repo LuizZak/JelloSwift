@@ -7,8 +7,8 @@
 //
 
 /// Specifies a rest distance for a body joint or sprint.
-/// Distances can either by fixed by a distance, or ranged so the relevant forces
-/// only applies within a specified range
+/// Distances can either be fixed by a distance, or ranged so forces only apply
+/// when distance is outside a tolerance range.
 public enum RestDistance: ExpressibleByFloatLiteral, ExpressibleByIntegerLiteral {
     
     /// Fixed distance
@@ -19,23 +19,49 @@ public enum RestDistance: ExpressibleByFloatLiteral, ExpressibleByIntegerLiteral
     
     /// Returns the minimum distance for this rest distance.
     /// If the current value is .fixed, this method always returns the rest
-    /// distance it represents, if .ranged, it returns its min value
+    /// distance it represents, if .ranged, it returns its min value.
+    ///
+    /// Setting this value updates the `.fixed` value, or in case of `.ranged`
+    /// it updates the minimum distance value.
     public var minimumDistance: JFloat {
-        switch(self) {
-        case .fixed(let value),
-             .ranged(let value, _):
-            return value
+        get {
+            switch(self) {
+            case .fixed(let value),
+                 .ranged(let value, _):
+                return value
+            }
+        }
+        set {
+            switch self {
+            case .fixed:
+                self = .fixed(newValue)
+            case .ranged(_, let max):
+                self = .ranged(min: newValue, max: max)
+            }
         }
     }
     
     /// Returns the maximum distance for this rest distance.
     /// If the current value is .fixed, this method always returns the rest
     /// distance it represents, if .ranged, it returns its max value
+    ///
+    /// Setting this value updates the `.fixed` value, or in case of `.ranged`
+    /// it updates the maximum distance value.
     public var maximumDistance: JFloat {
-        switch(self) {
-        case .fixed(let value),
-             .ranged(_, let value):
-            return value
+        get {
+            switch(self) {
+            case .fixed(let value),
+                 .ranged(_, let value):
+                return value
+            }
+        }
+        set {
+            switch self {
+            case .fixed:
+                self = .fixed(newValue)
+            case .ranged(let min, _):
+                self = .ranged(min: min, max: newValue)
+            }
         }
     }
     
@@ -47,8 +73,7 @@ public enum RestDistance: ExpressibleByFloatLiteral, ExpressibleByIntegerLiteral
         self = .fixed(JFloat(value))
     }
     
-    /// Returns whether a given range is within the range of this rest
-    /// distance.
+    /// Returns whether a given range is within the range of this rest distance.
     /// If the current value is .fixed, this does an exact equality
     /// operation, if .ranged, it performs `value > min && value < max`
     public func inRange(value: JFloat) -> Bool {
@@ -70,6 +95,37 @@ public enum RestDistance: ExpressibleByFloatLiteral, ExpressibleByIntegerLiteral
             return d
         case .ranged(let min, let max):
             return Swift.max(min, Swift.min(max, value))
+        }
+    }
+}
+
+extension RestDistance: Codable {
+    public init(from decoder: Decoder) throws {
+        var container = try decoder.unkeyedContainer()
+        
+        let caseNum = try container.decode(Int.self)
+        
+        switch caseNum {
+        case 0:
+            self = try .fixed(container.decode(JFloat.self))
+        case 1:
+            self = try .ranged(min: container.decode(JFloat.self), max: container.decode(JFloat.self))
+        default:
+            throw DecodingError.dataCorrupted(DecodingError.Context(codingPath: [], debugDescription: "Unrecognized enum payload case '\(caseNum)'"))
+        }
+    }
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.unkeyedContainer()
+        
+        switch self {
+        case .fixed(let value):
+            try container.encode(0)
+            try container.encode(value)
+        case let .ranged(min, max):
+            try container.encode(1)
+            try container.encode(min)
+            try container.encode(max)
         }
     }
 }

@@ -6,19 +6,15 @@
 //  Copyright (c) 2015 Luiz Fernando Silva. All rights reserved.
 //
 
-public func ==(lhs: BodyJoint, rhs: BodyJoint) -> Bool {
-    return lhs === rhs
-}
-
 /// Base class for joints which unites two separate bodies
 open class BodyJoint: Equatable {
     
     /// Gets the first link that contins informationa bout the first body linked
     /// by this joint
-    public final let bodyLink1: JointLinkType
+    public final let bodyLink1: JointLink
     /// Gets the second link that contins informationa bout the first body
     /// linked by this joint
-    public final let bodyLink2: JointLinkType
+    public final let bodyLink2: JointLink
     
     /// For island resolving
     internal var _islandFlag = false
@@ -44,7 +40,7 @@ open class BodyJoint: Equatable {
     /// Optionally provides the distance.
     /// In case the distance was not provided, it will be automatically
     /// calculated based off of the position of each link.
-    public init(on world: World, link1: JointLinkType, link2: JointLinkType, distance: RestDistance? = nil) {
+    public init(on world: World, link1: JointLink, link2: JointLink, distance: RestDistance? = nil) {
         bodyLink1 = link1
         bodyLink2 = link2
         
@@ -59,14 +55,20 @@ open class BodyJoint: Equatable {
     open func resolve(_ dt: JFloat) {
         
     }
+    
+    public static func ==(lhs: BodyJoint, rhs: BodyJoint) -> Bool {
+        return lhs === rhs
+    }
 }
 
 /// Protocol to be implemented by objects that specify the way a joint links
 /// with a body
-public protocol JointLinkType {
+public protocol JointLink {
     
-    /// Gets the body that this joint link is linked to
-    unowned var body: Body { get }
+    /// Gets the body that this joint link is linked to.
+    /// Must be unowned, as to not trigger a retain cycle between the joint link
+    /// and the body it is attached to.
+    var body: Body { get }
     
     /// Gets the type of joint this joint link represents
     var linkType: LinkType { get }
@@ -92,7 +94,7 @@ public protocol JointLinkType {
 }
 
 /// The type of joint link of a BodyJointLink class
-public enum LinkType {
+public enum LinkType: Int, Codable {
     /// Specifies that the joint links at the whole body, relative to the center
     case body
     /// Specifies that the joint links at a body's point

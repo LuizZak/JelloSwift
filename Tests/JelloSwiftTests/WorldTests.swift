@@ -16,7 +16,7 @@ class WorldTests: XCTestCase {
     // MARK: Bitmask tests
     
     func testBitmaskSetRange() {
-        AssertBitmasksMatch(Bitmask(withOneBitsFromOffset: 0, count: Int(bitmaskBitSize)), ~Bitmask.allZeros)
+        AssertBitmasksMatch(Bitmask(withOneBitsFromOffset: 0, count: Int(bitmaskBitSize)), ~0)
         AssertBitmasksMatch(Bitmask(withOneBitsFromOffset: 1, count: 1), 0b01)
         AssertBitmasksMatch(Bitmask(withOneBitsFromOffset: 1, count: 2), 0b11)
         AssertBitmasksMatch(Bitmask(withOneBitsFromOffset: 10, count: 2), 0b00000110_00000000)
@@ -64,8 +64,8 @@ class WorldTests: XCTestCase {
         let aabb = AABB(min: world.worldLimits.minimum, max: world.worldLimits.maximum)
         let bitmasks = world.bitmask(for: aabb)
         
-        AssertBitmasksMatch(bitmasks.bitmaskX, ~UInt.allZeros)
-        AssertBitmasksMatch(bitmasks.bitmaskY, ~UInt.allZeros)
+        AssertBitmasksMatch(bitmasks.bitmaskX, ~0)
+        AssertBitmasksMatch(bitmasks.bitmaskY, ~0)
     }
     
     func testGenerateBitmaskQuarter() {
@@ -198,11 +198,52 @@ class WorldTests: XCTestCase {
         XCTAssertEqual(body, bd)
     }
     
-    fileprivate func AssertBitmasksMatch(_ actual: Bitmask, _ expected: Bitmask, file: String = #file, line: UInt = #line) {
+    func testCollisionSolveSquares() {
+        // Test simple collision detection between two overlapping square-shaped
+        // bodies
+        //
+        // Simulation looks roughly like this:
+        //   ______
+        //  |      | ⟋  ⟍
+        //  |      <       > (that's supposed to be two squares, with the right
+        //  |______| ⟍  ⟋    one twisted 45° counter-clockwise.)
+        //
+        
+        let world = World()
+        let observer = CollisionObserver()
+        world.collisionObserver = observer
+        
+        let shape = ClosedShape.square(ofSide: 10)
+        
+        let bodyA = Body(shape: shape, position: Vector2(x: 0, y: 0))
+        let bodyB = Body(shape: shape, position: Vector2(x: 11, y: 0), angle: JFloat.pi / 4)
+        
+        world.addBody(bodyA)
+        world.addBody(bodyB)
+        
+        world.update(1.0 / 200.0)
+        
+        // Verify collision was reported
+        XCTAssertEqual(observer.collisions.count, 1)
+    }
+    
+    fileprivate func AssertBitmasksMatch(_ actual: Bitmask, _ expected: Bitmask, file: String = #file, line: Int = #line) {
         if actual != expected {
             let message = "Bitmasks do not match, expected:\n\(formatBinary(expected))\nfound:\n\(formatBinary(actual))"
             
             recordFailure(withDescription: message, inFile: file, atLine: line, expected: false)
+        }
+    }
+    
+    class CollisionObserver: JelloSwift.CollisionObserver {
+        var collisions: [BodyCollisionInformation] = []
+        
+        func bodiesDidCollide(_ infos: [BodyCollisionInformation]) {
+            collisions = infos
+        }
+        
+        func bodyCollision(_ info: BodyCollisionInformation, didExceedPenetrationThreshold penetrationThreshold: JFloat) {
+            
         }
     }
 }
@@ -211,7 +252,7 @@ fileprivate func formatBinary(_ value: Bitmask) -> String {
     let base = String(value, radix: 2)
     let lengthInBits = MemoryLayout<Bitmask>.size * 8
     
-    let pad = String(repeating: "0", count: lengthInBits - base.characters.count)
+    let pad = String(repeating: "0", count: lengthInBits - base.count)
     let resultPreSpace = pad + base
     
     // Inject separators every 8 bits

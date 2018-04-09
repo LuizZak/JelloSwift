@@ -38,9 +38,9 @@ class BodyTests: XCTestCase {
         
         body.updateEdgesAndNormals()
         
-        for pointNormal in body.pointNormals {
-            XCTAssertFalse(pointNormal.x.isNaN)
-            XCTAssertFalse(pointNormal.x.isNaN)
+        for point in body.pointMasses {
+            XCTAssertFalse(point.normal.x.isNaN)
+            XCTAssertFalse(point.normal.y.isNaN)
         }
     }
 }

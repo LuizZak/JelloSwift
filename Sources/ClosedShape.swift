@@ -17,7 +17,7 @@
 /// Do note that points must be added in a counter-clockwise fashion, since the
 /// points are represented in an Euclidean space where the y-axis grows upwards,
 /// as oposed to screen space where the y-axis grows down.
-public struct ClosedShape: ExpressibleByArrayLiteral {
+public struct ClosedShape: Codable, ExpressibleByArrayLiteral {
     public typealias Element = Vector2
     
     fileprivate(set) public var localVertices: [Vector2] = []
@@ -60,7 +60,7 @@ public struct ClosedShape: ExpressibleByArrayLiteral {
     /// Finishes constructing this closed shape, optionally converting them to 
     /// local space (by default)
     public mutating func finish(recentering recenter: Bool = true) {
-        if(recenter) {
+        if recenter {
             self.recenter()
         }
     }

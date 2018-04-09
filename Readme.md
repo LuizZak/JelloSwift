@@ -25,7 +25,7 @@ To run the example project, clone the repo, and run `pod install` from the Examp
 
 ## Requirements
 
-To compile this project, you require Xcode 8.0 w/ Swift 3 installed.
+To compile this project, you require Xcode 9.3 w/ Swift 4.1 installed.
 
 ## Installation
 
@@ -49,7 +49,7 @@ let package = Package(
     name: "project_name",
     targets: [],
     dependencies: [
-        .Package(url: "https://github.com/LuizZak/JelloSwift.git", majorVersion: 0, minor: 8)
+        .Package(url: "https://github.com/LuizZak/JelloSwift.git", majorVersion: 0, minor: 13)
     ]
 )
 ```

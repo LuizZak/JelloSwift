@@ -71,7 +71,7 @@ class OpenGLContext {
     
     func setupRenderBuffer() {
         // Destroy previous render buffers
-        if(colorRenderBuffer != 0) {
+        if colorRenderBuffer != 0 {
             glDeleteRenderbuffers(1, &colorRenderBuffer)
             colorRenderBuffer = 0
         }
@@ -84,7 +84,7 @@ class OpenGLContext {
     
     func setupFrameBuffer() {
         // Destroy any previous frame buffer
-        if(frameBuffer != 0) {
+        if frameBuffer != 0 {
             glDeleteFramebuffers(1, &frameBuffer)
             frameBuffer = 0
         }
@@ -95,15 +95,15 @@ class OpenGLContext {
     }
     
     func setupMultisamplingBuffer() {
-        if(sampleFramebuffer != 0) {
+        if sampleFramebuffer != 0 {
             glDeleteFramebuffers(1, &sampleFramebuffer)
             sampleFramebuffer = 0
         }
-        if(sampleColorRenderBuffer != 0) {
+        if sampleColorRenderBuffer != 0 {
             glDeleteRenderbuffers(1, &sampleColorRenderBuffer)
             sampleColorRenderBuffer = 0
         }
-        if(sampleDepthRenderbuffer != 0) {
+        if sampleDepthRenderbuffer != 0 {
             glDeleteRenderbuffers(1, &sampleDepthRenderbuffer)
             sampleDepthRenderbuffer = 0
         }
@@ -132,7 +132,7 @@ class OpenGLContext {
     
     func compileShaders() {
         
-        if(shaderProgram != 0) {
+        if shaderProgram != 0 {
             glDeleteProgram(shaderProgram)
             shaderProgram = 0
         }
@@ -150,7 +150,7 @@ class OpenGLContext {
         // Check for any errors.
         var linkSuccess: GLint = GLint()
         glGetProgramiv(shaderProgram, GLenum(GL_LINK_STATUS), &linkSuccess)
-        if (linkSuccess == GL_FALSE) {
+        if linkSuccess == GL_FALSE {
             print("Failed to create shader program!")
             // TODO: Actually output the error that we can get from the glGetProgramInfoLog function.
             exit(1);
@@ -182,15 +182,15 @@ class OpenGLContext {
     /// Destroys a given vertex array object, and all related buffers
     func destroyVAO(_ vao: inout VertexArrayObject) {
         // Destroy previous references
-        if(vao.vao != 0) {
+        if vao.vao != 0 {
             glDeleteVertexArraysOES(1, &vao.vao)
             vao.vao = 0
         }
-        if(vao.buffer.vertexBuffer != 0) {
+        if vao.buffer.vertexBuffer != 0 {
             glDeleteBuffers(1, &vao.buffer.vertexBuffer)
             vao.buffer.vertexBuffer = 0
         }
-        if(vao.buffer.indexBuffer != 0) {
+        if vao.buffer.indexBuffer != 0 {
             glDeleteBuffers(1, &vao.buffer.indexBuffer)
             vao.buffer.indexBuffer = 0
         }

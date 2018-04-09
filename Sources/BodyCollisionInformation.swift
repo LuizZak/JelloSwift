@@ -7,7 +7,7 @@
 //
 
 // Encapsulates information about a collision between two soft bodies
-public struct BodyCollisionInformation: Equatable {
+public struct BodyCollisionInformation {
     /// First body in collision, and the body that is penetrating the second
     /// body.
     public var bodyA: Body
@@ -50,14 +50,4 @@ public struct BodyCollisionInformation: Equatable {
         self.bodyBpmA = bodyBpmA
         self.bodyBpmB = bodyBpmB
     }
-}
-
-/// Performs an all-field equality comparision between two body collision
-/// information structs
-public func ==(lhs: BodyCollisionInformation, rhs: BodyCollisionInformation) -> Bool {
-    return lhs.bodyA == rhs.bodyA && lhs.bodyApm == rhs.bodyApm &&
-        lhs.bodyB == rhs.bodyB && lhs.bodyBpmA == rhs.bodyBpmA &&
-        lhs.bodyBpmB == rhs.bodyBpmB && lhs.edgeD == rhs.edgeD &&
-        lhs.hitPt == rhs.hitPt && lhs.normal == rhs.normal &&
-        lhs.penetration == rhs.penetration
 }

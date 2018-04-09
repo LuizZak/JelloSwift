@@ -94,7 +94,7 @@ class DemoView: UIView, CollisionObserver
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        if(context != nil) {
+        if context != nil {
             context.resetContext()
         }
         
@@ -228,7 +228,7 @@ class DemoView: UIView, CollisionObserver
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?)
     {
         /* Called when a touch begins */
-        if(inputMode == .createBall)
+        if inputMode == .createBall
         {
             for touch: AnyObject in touches
             {
@@ -239,7 +239,7 @@ class DemoView: UIView, CollisionObserver
                 createBouncyBall(vecLoc)
             }
         }
-        else if(inputMode == .dragBody)
+        else if inputMode == .dragBody
         {
             // Select the closest point-mass to drag
             let touch: UITouch = touches.first!
@@ -278,7 +278,10 @@ class DemoView: UIView, CollisionObserver
                 continue
             }
             
-            for (vertex, normal) in zip(body.vertices, body.pointNormals) {
+            for point in body.pointMasses {
+                let vertex = point.position
+                let normal = point.normal
+                
                 let start = vertex - normal * 0.1
                 let end = vertex + normal * comp.rayLength
                 
@@ -291,7 +294,7 @@ class DemoView: UIView, CollisionObserver
         
         drawDrag()
         
-        if(useDetailedRender)
+        if useDetailedRender
         {
             // Draw collisions
             for info in collisions
@@ -320,7 +323,7 @@ class DemoView: UIView, CollisionObserver
     
     // MARK: - Update Loop (CADisplayLink)
     
-    func gameLoop()
+    @objc func gameLoop()
     {
         update()
         render()
@@ -335,7 +338,7 @@ class DemoView: UIView, CollisionObserver
         let time = sw.stop() * 1000
         
         intervals.append(time)
-        if(intervals.count > 200) {
+        if intervals.count > 200 {
             intervals = Array(intervals.dropFirst(intervals.count - 200))
         }
         
@@ -393,8 +396,10 @@ class DemoView: UIView, CollisionObserver
     
     /// Creates a box at the specified world coordinates with the specified size
     @discardableResult
-    func createBox(_ pos: Vector2, size: Vector2, pinned: Bool = false, kinematic: Bool = false, isStatic: Bool = false, angle: JFloat = 0, mass: JFloat = 0.5) -> Body
-    {
+    func createBox(_ pos: Vector2, size: Vector2, pinned: Bool = false,
+                   kinematic: Bool = false, isStatic: Bool = false,
+                   angle: JFloat = 0, mass: JFloat = 0.5) -> Body {
+        
         // Create the closed shape for the box's physics body
         let shape = ClosedShape
                         .rectangle(ofSides: size)
@@ -406,7 +411,7 @@ class DemoView: UIView, CollisionObserver
         // forces that holds a body together
         comps.append(SpringComponentCreator(shapeMatchingOn: true, edgeSpringK: 600, edgeSpringDamp: 20, shapeSpringK: 100, shapeSpringDamp: 60))
         
-        if(!pinned)
+        if !pinned
         {
             // Add a gravity component that will pull the body down
             comps.append(GravityComponentCreator())
@@ -467,7 +472,9 @@ class DemoView: UIView, CollisionObserver
         let l1 = BodyJointLink(body: b1)
         let l2 = BodyJointLink(body: b2)
         
-        world.addJoint(SpringBodyJoint(on: world, link1: l1, link2: l2, coefficient: 100, damping: 20))
+        let joint = SpringBodyJoint(on: world, link1: l1, link2: l2, coefficient: 100, damping: 20)
+        
+        world.addJoint(joint)
         
         return (b1, b2)
     }
@@ -756,13 +763,13 @@ extension DemoView {
         // Color joint a different shade depending on how far from rest shape
         // its bodies are (from gray at 0% off to light-red at >100% off)
         let distance = start.distance(to: end)
-        if(!joint.restDistance.inRange(value: distance)) {
+        if !joint.restDistance.inRange(value: distance) {
             let clamped = joint.restDistance.clamp(value: distance)
             
-            if(clamped > 0) {
+            if clamped > 0 {
                 var overhead: JFloat
                 
-                if(distance < clamped) {
+                if distance < clamped {
                     overhead = distance / clamped
                 } else {
                     overhead = clamped / distance
@@ -822,7 +829,7 @@ extension DemoView {
         
         let shapePoints = body.vertices
         
-        if(!useDetailedRender)
+        if !useDetailedRender
         {
             // Don't do any other rendering other than the body's buffer
             try drawBodyFill()
@@ -834,9 +841,9 @@ extension DemoView {
         // Draw normals, for pressure bodies
         if body.component(ofType: PressureComponent.self) != nil
         {
-            for (p, normal) in zip(shapePoints, body.pointNormals)
+            for point in body.pointMasses
             {
-                drawLine(from: p, to: p + normal / 3, color: 0xFFEC33EC)
+                drawLine(from: point.position, to: point.position + point.normal / 3, color: 0xFFEC33EC)
             }
         }
         
@@ -844,9 +851,9 @@ extension DemoView {
         drawPolyOutline(body.globalShape, color: 0xFF777777)
         
         // Draw lines going from the body's outer points to the global shape indices
-        for (globalShape, p) in zip(body.globalShape, shapePoints)
+        for (globalShape, p) in zip(body.globalShape, body.pointMasses)
         {
-            let start = p
+            let start = p.position
             let end = globalShape
             
             drawLine(from: start, to: end, color: 0xFF449944)
@@ -873,17 +880,17 @@ extension Vector2.NativeMatrixType {
     func glFloatMatrix4x4() -> [GLfloat] {
         var matrix: [GLfloat] = [GLfloat](repeating: 0, count: 16)
         
-        matrix[0] = GLfloat(cmatrix.columns.0.x)
-        matrix[4] = GLfloat(cmatrix.columns.0.y)
-        matrix[12] = GLfloat(cmatrix.columns.0.z)
+        matrix[0] = GLfloat(columns.0.x)
+        matrix[4] = GLfloat(columns.0.y)
+        matrix[12] = GLfloat(columns.0.z)
         
-        matrix[1] = GLfloat(cmatrix.columns.1.x)
-        matrix[5] = GLfloat(cmatrix.columns.1.y)
-        matrix[13] = GLfloat(cmatrix.columns.1.z)
+        matrix[1] = GLfloat(columns.1.x)
+        matrix[5] = GLfloat(columns.1.y)
+        matrix[13] = GLfloat(columns.1.z)
         
-        matrix[2] = GLfloat(cmatrix.columns.2.x)
-        matrix[6] = GLfloat(cmatrix.columns.2.y)
-        matrix[14] = GLfloat(cmatrix.columns.2.z)
+        matrix[2] = GLfloat(columns.2.x)
+        matrix[6] = GLfloat(columns.2.y)
+        matrix[14] = GLfloat(columns.2.z)
         
         matrix[15] = 1
         
@@ -906,13 +913,11 @@ extension Vector2.NativeMatrixType {
 
 final class BodyRayComponent: BodyComponent {
     
-    unowned let body: Body
-    
     var color: Color4 = Color4.fromUIntARGB(0xFFFF0000)
     var rayLength: JFloat = 1
     
-    init(body: Body) {
-        self.body = body
+    public init() {
+        
     }
 }
 

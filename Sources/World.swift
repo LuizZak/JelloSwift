@@ -112,7 +112,7 @@ public final class World {
             materialPairs.append([])
             
             for j in 0..<materialCount {
-                if ((i < materialCount - 1) && (j < materialCount - 1)) {
+                if (i < materialCount - 1) && (j < materialCount - 1) {
                     materialPairs[i].append(old[i][j])
                 } else {
                     materialPairs[i].append(defaultMatPair)
@@ -125,7 +125,7 @@ public final class World {
     
     /// Enables or disables collision between 2 materials.
     public func setMaterialPairCollide(_ a: Int, b: Int, collide: Bool) {
-        if ((a >= 0) && (a < materialCount) && (b >= 0) && (b < materialCount)) {
+        if (a >= 0) && (a < materialCount) && (b >= 0) && (b < materialCount) {
             materialPairs[a][b].collide = collide
             materialPairs[b][a].collide = collide
         }
@@ -133,7 +133,7 @@ public final class World {
     
     /// Sets the collision response variables for a pair of materials.
     public func setMaterialPairData(_ a: Int, b: Int, friction: JFloat, elasticity: JFloat) {
-        if ((a >= 0) && (a < materialCount) && (b >= 0) && (b < materialCount)) {
+        if (a >= 0) && (a < materialCount) && (b >= 0) && (b < materialCount) {
             materialPairs[a][b].friction = friction
             materialPairs[a][b].elasticity = elasticity
             
@@ -144,7 +144,7 @@ public final class World {
     
     /// Sets a user function to call when 2 bodies of the given materials collide.
     public func setMaterialPairFilterCallback(_ a: Int, b: Int, filter: @escaping (BodyCollisionInformation, JFloat) -> (Bool)) {
-        if ((a >= 0) && (a < materialCount) && (b >= 0) && (b < materialCount)) {
+        if (a >= 0) && (a < materialCount) && (b >= 0) && (b < materialCount) {
             materialPairs[a][b].collisionFilter = filter
             materialPairs[b][a].collisionFilter = filter
         }
@@ -153,7 +153,7 @@ public final class World {
     /// Adds a body to the world. Bodies do this automatically on their 
     /// constructors, you should not need to call this method most of the times.
     public func addBody(_ body: Body) {
-        if(!bodies.contains(body)) {
+        if !bodies.contains(body) {
             bodies.append(body)
         }
     }
@@ -167,7 +167,7 @@ public final class World {
     /// Adds a joint to the world. Joints call this automatically during their
     /// initialization
     public func addJoint(_ joint: BodyJoint) {
-        if(!joints.contains(joint)) {
+        if !joints.contains(joint) {
             joints.append(joint)
             
             // Setup the joint parenthood
@@ -193,7 +193,7 @@ public final class World {
         for body in bodies {
             let (pm, dist) = body.closestPointMass(to: pt)
             
-            if(dist < closestD) {
+            if dist < closestD {
                 closestD = dist
                 ret = (body, pm)
             }
@@ -206,7 +206,7 @@ public final class World {
     /// Useful for picking objects with a cursor, etc.
     public func body(under pt: Vector2, bitmask: Bitmask = 0) -> Body? {
         for body in bodies {
-            if((bitmask == 0 || (body.bitmask & bitmask) != 0) && body.contains(pt)) {
+            if (bitmask == 0 || (body.bitmask & bitmask) != 0) && body.contains(pt) {
                 return body
             }
         }
@@ -223,7 +223,7 @@ public final class World {
     /// Returns a vector of bodies intersecting with the given line.
     public func bodiesIntersecting(lineFrom start: Vector2, to end: Vector2, bitmask: Bitmask = 0) -> [Body] {
         return bodies.filter { body -> Bool in
-            if(body._bitmasksStale) {
+            if body._bitmasksStale {
                 updateBodyBitmask(body)
             }
             
@@ -250,7 +250,7 @@ public final class World {
     /// - Returns: All bodies that intersect with the closed shape. If closed
     ///            shape contains less than 2 points, returns empty.
     public func bodiesIntersecting(closedShape: ClosedShape, at worldPos: Vector2, ignoreTest: ((Body) -> Bool)? = nil) -> ContiguousArray<Body> {
-        if(closedShape.localVertices.count < 2) {
+        if closedShape.localVertices.count < 2 {
             return []
         }
         
@@ -261,7 +261,7 @@ public final class World {
         var results = ContiguousArray<Body>()
         
         for body in bodies {
-            if(body._bitmasksStale) {
+            if body._bitmasksStale {
                 updateBodyBitmask(body)
             }
             
@@ -276,7 +276,7 @@ public final class World {
             var last = queryShape.localVertices[queryShape.localVertices.count - 1]
             for point in queryShape.localVertices {
                 if body.intersectsLine(from: last, to: point) {
-                    if(ignoreTest?(body) == true) {
+                    if ignoreTest?(body) == true {
                         break
                     }
                     
@@ -316,7 +316,7 @@ public final class World {
                 continue
             }
             
-            if(body._bitmasksStale) {
+            if body._bitmasksStale {
                 updateBodyBitmask(body)
             }
             
@@ -351,17 +351,32 @@ public final class World {
     /// - Parameter elapsed: The elapsed time to update by, usually in 1/60ths
     /// of a second.
     public func update(_ elapsed: JFloat) {
-        update(elapsed, withBodies: bodies)
+        update(elapsed, withBodies: bodies, joints: joints)
     }
     
     /// Internal updating method
     /// The update may end up updating other bodies/joints that are not listed,
     /// as it sees fit (colliding/connected/etc.)
-    fileprivate func update(_ elapsed: JFloat, withBodies bodies: ContiguousArray<Body>) {
+    fileprivate func update(_ elapsed: JFloat, withBodies bodies: ContiguousArray<Body>, joints: ContiguousArray<BodyJoint>) {
         var _allAABB = AABB()
         
         for body in self.bodies {
             body._islandFlag = false
+            body.derivePositionAndAngle(elapsed)
+            
+            // Only update edge and normals pre-accumulation if the body has 
+            // components - only components really use this information.
+            if body.componentCount > 0 {
+                body.updateEdgesAndNormals()
+                
+                body.accumulateExternalForces(relaxing: relaxing)
+                body.accumulateInternalForces(relaxing: relaxing)
+            } else {
+                // We need these for the collision detection
+                body.updateNormals()
+            }
+            
+            body.integrate(elapsed)
             
             body.updateAABB(elapsed, forceUpdate: true)
             
@@ -471,7 +486,7 @@ public final class World {
             }
         }
         
-        if(!relaxing) { // Disabled during relaxation
+        if !relaxing { // Disabled during relaxation
             // Notify collisions that will happen
             if let observer = collisionObserver {
                 observer.bodiesDidCollide(collisionList)
@@ -578,9 +593,9 @@ public extension World {
     ///
     /// This will move/change the position of each body after iterations are done.
     ///
-    /// Performs collisions and joint resolving only of bodies in the provided
-    /// list, and other bodies that come in direct contact with them, resetting
-    /// the velocities to 0 before finishing.
+    /// Performs collisions and joint resolving of only the bodies/joints that
+    /// are related to the `bodies` array, and resets the velocities to 0 before
+    /// finishing.
     ///
     /// Only Body Joints that involve bodies contained within the passed body
     /// list are executed.
@@ -598,14 +613,30 @@ public extension World {
     public func relaxBodies(in bodies: [Body], timestep: JFloat, iterations: Int = 100) {
         relaxing = true
         
+        // Find all joints for the bodies
+        var joints: ContiguousArray<BodyJoint> = []
+        let existingJoints =
+            bodies.flatMap {
+                $0.joints
+            }.filter {
+                bodies.contains($0.bodyLink1.body) && bodies.contains($0.bodyLink2.body)
+            }
+        
+        // Gather joints
+        for joint in existingJoints {
+            if !joints.contains(joint) {
+                joints.append(joint)
+            }
+        }
+        
         for _ in 0...iterations {
-            update(timestep, withBodies: ContiguousArray(bodies))
+            update(timestep, withBodies: ContiguousArray(bodies), joints: joints)
         }
         
         relaxing = false
         
         // Reset all velocities
-        for body in self.bodies {
+        for body in bodies {
             for pointMass in body.pointMasses {
                 pointMass.velocity = .zero
             }
@@ -697,11 +728,11 @@ final class Island {
         for (i, pmA) in bA.pointMasses.enumerated() {
             let pt = pmA.position
             
-            if (!bB.contains(pt)) {
+            if !bB.contains(pt) {
                 continue
             }
             
-            let ptNorm = bA.pointNormals[i]
+            let ptNorm = pmA.normal
             
             // this point is inside the other body.  now check if the edges on
             // either side intersect with and edges on bodyB.
@@ -717,6 +748,22 @@ final class Island {
                 let b1 = j
                 let b2 = (j &+ 1) % (bBpCount)
                 
+                let pt1 = bB.pointMasses[b1].position
+                let pt2 = bB.pointMasses[b2].position
+                
+                // quick test of distance to each point on the edge, if both are
+                // greater than current mins, we can skip!
+                let distToA = pt1.distanceSquared(to: pt)
+                let distToB = pt2.distanceSquared(to: pt)
+                let edgeLen = bB.edges[j].lengthSquared
+                
+                if (edgeLen < distToA && edgeLen < distToB &&
+                    (distToA > closestAway) && (distToA > closestSame) &&
+                    (distToB > closestAway) && (distToB > closestSame))
+                {
+                    continue
+                }
+                
                 // test against this edge.
                 let (hitPt, normal, edgeD, dist) = bB.closestPointSquared(to: pt, onEdge: j)
                 
@@ -724,7 +771,7 @@ final class Island {
                 // AWAY from the point normal.
                 let dot = ptNorm • normal
                 
-                if (dot <= 0.0) {
+                if dot <= 0.0 {
                     if dist < closestAway {
                         closestAway = dist
                         
@@ -737,7 +784,7 @@ final class Island {
                         found = true
                     }
                 } else {
-                    if (dist < closestSame) {
+                    if dist < closestSame {
                         closestSame = dist
                         
                         infoSame.bodyBpmA = b1
@@ -752,7 +799,7 @@ final class Island {
             
             // we've checked all edges on BodyB.  add the collision info to the
             // stack.
-            if (found && (closestAway > penetrationThreshold) && (closestSame < closestAway)) {
+            if found && (closestAway > penetrationThreshold) && (closestSame < closestAway) {
                 assert(infoSame.bodyBpmA > -1 && infoSame.bodyBpmB > -1)
                 
                 infoSame.penetration = infoSame.penetration.squareRoot()
@@ -784,7 +831,7 @@ final class Island {
             
             let material = world.materialPairs[bodyA.material][bodyB.material]
             
-            if(!material.collisionFilter(info, relDot)) {
+            if !material.collisionFilter(info, relDot) {
                 continue
             }
             
@@ -808,10 +855,10 @@ final class Island {
             
             // Static detection - when one of the parties is static, the other
             // should move the total amount of the penetration
-            if(A.mass.isInfinite) {
+            if A.mass.isInfinite {
                 Amove = 0
                 Bmove = info.penetration + 0.001
-            } else if(b2MassSum.isInfinite) {
+            } else if b2MassSum.isInfinite {
                 Amove = info.penetration + 0.001
                 Bmove = 0
             } else {
@@ -819,18 +866,18 @@ final class Island {
                 Bmove = info.penetration * (A.mass / massSum)
             }
             
-            if(A.mass.isFinite) {
+            if A.mass.isFinite {
                 A.position += info.normal * Amove
             }
             
-            if(B1.mass.isFinite) {
+            if B1.mass.isFinite {
                 B1.position -= info.normal * (Bmove * b1inf)
             }
-            if(B2.mass.isFinite) {
+            if B2.mass.isFinite {
                 B2.position -= info.normal * (Bmove * b2inf)
             }
             
-            if(relDot <= 0.0001 && (A.mass.isFinite || b2MassSum.isFinite)) {
+            if relDot <= 0.0001 && (A.mass.isFinite || b2MassSum.isFinite) {
                 let AinvMass: JFloat = A.mass.isInfinite ? 0 : 1.0 / A.mass
                 let BinvMass: JFloat = b2MassSum.isInfinite ? 0 : 1.0 / b2MassSum
                 
@@ -844,11 +891,11 @@ final class Island {
                 let friction: JFloat = material.friction
                 let f: JFloat = (relVel • tangent) * friction / jDenom
                 
-                if(A.mass.isFinite) {
+                if A.mass.isFinite {
                     A.velocity += (info.normal * (j / A.mass)) - (tangent * (f / A.mass))
                 }
                 
-                if(b2MassSum.isFinite) {
+                if b2MassSum.isFinite {
                     let jComp = info.normal * j / b2MassSum
                     let fComp = tangent * (f * b2MassSum)
                     
@@ -865,7 +912,6 @@ final class Island {
         assert(!bodies.contains(body))
         bodies.append(body)
     }
-
     func add(joint: BodyJoint) {
         joints.append(joint)
     }

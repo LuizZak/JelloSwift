@@ -8,7 +8,7 @@
 
 /// Represents an axis-aligned bounding box, utilized to figure out the AABB of
 /// soft-bodies
-public struct AABB {
+public struct AABB: Codable {
     /// Returns an empty, invalid AABB
     static let empty = AABB()
     
@@ -58,6 +58,14 @@ public struct AABB {
         
     }
     
+    /// Initializes an AABB containing the minimum area capable of containing all
+    /// supplied points.
+    ///
+    /// If no points are supplied, an invalid AABB is created instead.
+    public init(of points: Vector2...) {
+        self = AABB(points: points)
+    }
+    
     /// Initializes a valid AABB instance out of the given minimum and maximum
     /// coordinates.
     /// The coordinates are not checked for ordering, and will be directly
@@ -85,7 +93,7 @@ public struct AABB {
     /// point, if not, it fits the point, expanding the bounding box to fit the
     /// point, if necessary.
     public mutating func expand(toInclude point: Vector2) {
-        if(validity == .invalid) {
+        if validity == .invalid {
             minimum = point
             maximum = point
             
@@ -101,11 +109,11 @@ public struct AABB {
     /// Same as calling `expand(toInclude:Vector2)` over each point.
     /// If the array is empty, nothing is done.
     public mutating func expand(toInclude points: [Vector2]) {
-        if(points.count == 0) {
+        if points.count == 0 {
             return
         }
         
-        if(validity == .invalid) {
+        if validity == .invalid {
             minimum = points[0]
             maximum = points[0]
             
@@ -139,7 +147,7 @@ public struct AABB {
     /// to contain the point as well.
     /// Returns false, if this AABB is invalid.
     public func contains(_ point: Vector2) -> Bool {
-        if(validity == .invalid) {
+        if validity == .invalid {
             return false
         }
         
@@ -161,7 +169,7 @@ public struct AABB {
     /// If either this, or the other bounding box are invalid, false is 
     /// returned.
     public func intersects(_ box: AABB) -> Bool {
-        if(validity == .invalid || box.validity == .invalid) {
+        if validity == .invalid || box.validity == .invalid {
             return false
         }
         
@@ -172,7 +180,7 @@ public struct AABB {
 /// Specifies the point validity for a whole AABB.
 /// AABBs of PointValidity.invalid type should not be considered
 /// valid during checks of containment.
-public enum PointValidity {
+public enum PointValidity: Int, Codable {
     case valid
     case invalid
 }
