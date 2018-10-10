@@ -7,241 +7,223 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		03694899BF8CE15E86B577375145B5C2 /* RestDistance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 779B59B8E3CAF9EC4C74FEAE914AB76E /* RestDistance.swift */; };
-		043A3C9944639F7C2A334A7F8F842688 /* tess.c in Sources */ = {isa = PBXBuildFile; fileRef = 16D2B6EE1A6CE9CBB1FAAB2674E1C4E9 /* tess.c */; };
-		0B94607D46CB7E2B8429E16474074C12 /* MemAllocators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B212DB2B3C42C477F0163732D5809AA /* MemAllocators.swift */; };
-		1ACBBE6CB35EEF396B21D4BC711A407D /* EdgeJointLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDB9BDC4DC90BE3BD1BB2AA574B6A754 /* EdgeJointLink.swift */; };
-		1AF96FBB63711B35CC4862AF772023BE /* AABB.swift in Sources */ = {isa = PBXBuildFile; fileRef = F94A41D0676ADEE4A71ED83757756A2E /* AABB.swift */; };
-		294A66FA600172CDE45DBBC983EC7428 /* Body.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BDE35557960C7ECF414B302B59C7890 /* Body.swift */; };
-		299F07C8451392660288FCFC5E8E99A2 /* RenderingSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2B245A0502E13A206BBA29074CE2F8C /* RenderingSettings.swift */; };
-		30D6DCCA3C49BEADA52DB29D75AE793C /* bucketalloc.c in Sources */ = {isa = PBXBuildFile; fileRef = 13A5935F1FFF8BFE6573662AD88435C5 /* bucketalloc.c */; };
-		3293F8768DFC0D1AAE55B5698F07AC7F /* PointJointLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1933195C9E5756640B342C1D0C8484D /* PointJointLink.swift */; };
-		3C7D78A8CFDFDA4C101B72E7DC41E16A /* Public.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A369B4AF137D35E16974C0E9B4938D0 /* Public.swift */; };
-		47D34335F8988CFC2E59E6195AFDC515 /* dict.h in Headers */ = {isa = PBXBuildFile; fileRef = BC04C7B02B842FC7B50EB1BD8F4C306F /* dict.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		4D22D5FDA3ED784E082C9E7225C68CD6 /* Pods-JelloSwift_Example-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = A5F475B4E8D26795890510F3D840F205 /* Pods-JelloSwift_Example-dummy.m */; };
-		51326583C357881CF23A4622B8273479 /* GravityComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6D04EFC0413BF840DE0C61AA8BD36E /* GravityComponent.swift */; };
-		56E4A3F5B889622B98BA0D14DB3B9546 /* sweep.c in Sources */ = {isa = PBXBuildFile; fileRef = 42443326D01211CBCF295EA36E5514C6 /* sweep.c */; };
-		56E84A21DD336EAA5CE228A7CB3CBB8B /* MaterialPair.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF4EC1556D3C0206503937207892F834 /* MaterialPair.swift */; };
-		57FFFF3F904296C3DD13DC828E3BE5B0 /* GeomUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36552B9B67A31299A7B1227D82F44638 /* GeomUtils.swift */; };
-		677E05EFEAD3DD9FEBAFD0B1E5B74ED2 /* geom.c in Sources */ = {isa = PBXBuildFile; fileRef = DCD41EC340B3FDC62324B203B62F7743 /* geom.c */; };
-		6878F3E148ED02B18B95F6D6B9CC6A3A /* TessC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 213B40A1998A1C3AD46BF2E24B60DA6A /* TessC.swift */; };
-		6A475AEF36C98E2FAB9A60C2EA155DF3 /* JelloSwift-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 954308192931E76505283FEBBB27BA7D /* JelloSwift-dummy.m */; };
-		6DCE3FE20FE47A1FF68B7E87DECFD7D3 /* BodyJointLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3CE8D2228BBE77568C39774C9ADBF8 /* BodyJointLink.swift */; };
-		7120C75A5F8DEFF9CB3C13F5EC3EC8F7 /* bucketalloc.h in Headers */ = {isa = PBXBuildFile; fileRef = 1AB9566EDDA292B13BE71C1DB37F86E1 /* bucketalloc.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		781504BDA52E1C84222639B54BB9086A /* priorityq.h in Headers */ = {isa = PBXBuildFile; fileRef = 70711DA658250194F5AA32381594B7EC /* priorityq.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		7C4AA7B74E296CEC22932D9C8FA7D99F /* JelloSwift-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 91C31D5ABDEF4D81F9C09EF7D35D5F2E /* JelloSwift-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		8617AE8BD4AFB72C9662933EC4BF6C91 /* Vector2.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE1C3C9A0B5AA4674D131BA90DECABF5 /* Vector2.swift */; };
-		89A8FAAC04BF7869177A7F71A3433ECC /* ClosedShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90485B582B1F62F5C2CC12E8E5A52981 /* ClosedShape.swift */; };
-		8E1ADA88685144064A6B28B18A53537F /* CollisionObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D2A3FB0C52182CA419D8187923D326A /* CollisionObserver.swift */; };
-		8E6AEA71CF0082B24C563F9E84F07F4F /* PhysicsUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 469DA10FA75856A16C12EFDCE2735AA8 /* PhysicsUtils.swift */; };
-		91BBCF5A729F8F014B8FBF070D3F0682 /* ShapeJointLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8120B27A4F76C69CFB127005E141CF88 /* ShapeJointLink.swift */; };
-		96633FF1B21FF926FFB45BF9EDAE9855 /* LibTessSwift-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 0DBF3C648D79A5ABFBE8341E1498337F /* LibTessSwift-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		9F1C14C714AA2EDDEF534046EACE7C91 /* Pods-JelloSwift_Example-JelloSwift_Tests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 60E464D64C96034E5F9D11A218DAE45B /* Pods-JelloSwift_Example-JelloSwift_Tests-dummy.m */; };
-		AA40641E5ACC5E2F633F180C6653D505 /* tess.h in Headers */ = {isa = PBXBuildFile; fileRef = E191D245AF79050986F0D88A6780E28B /* tess.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		ABB6437EE4D036FF07C88F8CA1DF7546 /* tesselator.h in Headers */ = {isa = PBXBuildFile; fileRef = 4AC90EFA805912BBF2FE57F919ACA12A /* tesselator.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		AD3B26DFF876FA0748847F983D98D7FA /* BodyComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 077535BCC61A733EB62C78CFF3290AF9 /* BodyComponent.swift */; };
-		ADBF6B263734E0F5309363FF4A7A76E2 /* BodyEdge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B26545FC82C4BB4178BF7A723CA07AF /* BodyEdge.swift */; };
-		B3CACB23577612D249670B40B8939A30 /* World.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD079AC0BFE604B9CA88A7E5C0BA07ED /* World.swift */; };
-		B8F2724AE673CFA72DC44F5A4A01E62C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6604A7D69453B4569E4E4827FB9155A9 /* Foundation.framework */; };
-		B96047130A1F3A04C5A22CEE84AD6E9C /* SpringBodyJoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4540CCF06C51AAA7212CF455B15832 /* SpringBodyJoint.swift */; };
-		BC33200AE577E59D38A5C98E9EAACC06 /* Bitmask.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB796097EF5611F85F96DDFF4D14ED1A /* Bitmask.swift */; };
-		BD7AAA6547D0619792D7985C9DB9978C /* mesh.h in Headers */ = {isa = PBXBuildFile; fileRef = DFD77A7D57A12CEBD1EF8B4CD5B935CD /* mesh.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		BF61D39DF6BE177E3244EF72B43786A3 /* objc-clang.h in Headers */ = {isa = PBXBuildFile; fileRef = 9B95C7968D366E89BA3C519ECAD284F1 /* objc-clang.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C08F05BD20589CF5D51D0628499F35A9 /* LibTessSwift-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = CB2488DAC03A3B0DC0578D21CCDA311F /* LibTessSwift-dummy.m */; };
-		C172CC9A19620B9A45DD83EA533E4D07 /* geom.h in Headers */ = {isa = PBXBuildFile; fileRef = 291DC86518B6EF04DD9FC95B869794A5 /* geom.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C3648D33DA67D31607DF3AB72527E0C7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6604A7D69453B4569E4E4827FB9155A9 /* Foundation.framework */; };
-		C3B992FEDDFAB4B0C8E64378F46A9836 /* sweep.h in Headers */ = {isa = PBXBuildFile; fileRef = 3C9009B20182A28BC240AF5F9FBAE740 /* sweep.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C872028FECC2C23C5AF646958C632DD7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6604A7D69453B4569E4E4827FB9155A9 /* Foundation.framework */; };
-		D02D6E619957B5905C078DDDA84E8758 /* BodyJoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54DC4CD31A24CDEF597EFB3287623D78 /* BodyJoint.swift */; };
-		D411597780DB428090AFEF4D58B5588D /* priorityq.c in Sources */ = {isa = PBXBuildFile; fileRef = 22C93742AFB7840692791B044B0A6609 /* priorityq.c */; };
-		D7AB7B6E572DD5294E424AE3C39CD2A6 /* Pods-JelloSwift_Example-JelloSwift_Tests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 0FFD5ACA25DAD3566F5174713FC0F668 /* Pods-JelloSwift_Example-JelloSwift_Tests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		E01F35B96286FDD52399EFD500660D4F /* SpringComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D838058578EDFAE437C02255E4397A3A /* SpringComponent.swift */; };
-		E36891B6AD73C770D61C30C15E33BBAA /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C16F4C59099B0B15F6CF9901028707 /* Utils.swift */; };
-		E67546F1938E23E4CFC73512F8C72592 /* PressureComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8966311C9ECF4FB2B1A2ADED44046496 /* PressureComponent.swift */; };
-		EA3C417E5B9554948BE709DA8E0B67D8 /* BodyCollisionInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F3AD3F86A801D0841B98918FB47ECB8 /* BodyCollisionInformation.swift */; };
-		EA55DDEFE0A1F24721B8AC50CB49952A /* PointMass.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD84669C7E8917FFE721CCBDF13F290D /* PointMass.swift */; };
-		EDBEF4EC7FBC86488D5525A00CE1CCB0 /* dict.c in Sources */ = {isa = PBXBuildFile; fileRef = 085D2903BBF432B7E7404BD88DD5397D /* dict.c */; };
-		F246B78B0762F9D420B3E266B05CAF7E /* Pods-JelloSwift_Example-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = D0BC5945CBB0C2270541E4456F0F43F8 /* Pods-JelloSwift_Example-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		F590461F01B6E1462ABD2A9267D740EC /* mesh.c in Sources */ = {isa = PBXBuildFile; fileRef = A2AF54F09DBB9CFBF389BD19301153D2 /* mesh.c */; };
-		F7B6EB84870CA9BB56B6ABFAD7FAFEFF /* InternalSpring.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC127B83A7E2DFC29714EA29D6AF9175 /* InternalSpring.swift */; };
-		F947D97436024FD8CA8A60F39C21BA3E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6604A7D69453B4569E4E4827FB9155A9 /* Foundation.framework */; };
+		06CC6AB908B56FFFAB9062E8D1C5CFE6 /* Bitmask.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB796097EF5611F85F96DDFF4D14ED1A /* Bitmask.swift */; };
+		0D4790C8131A0D93C1F330ED2E7796EA /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A16F4CFC63FAC439D7A04994F579A03 /* Foundation.framework */; };
+		0E4B1DE2C4F576421FAB90A340067677 /* priorityq.c in Sources */ = {isa = PBXBuildFile; fileRef = 22C93742AFB7840692791B044B0A6609 /* priorityq.c */; };
+		0FBC132F945668791816E284AB61A260 /* bucketalloc.h in Headers */ = {isa = PBXBuildFile; fileRef = 1AB9566EDDA292B13BE71C1DB37F86E1 /* bucketalloc.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		141A514B48F1AA5122A8387640B56D23 /* dict.c in Sources */ = {isa = PBXBuildFile; fileRef = 085D2903BBF432B7E7404BD88DD5397D /* dict.c */; };
+		1B26C6DD8F6090BA5DED66364809FF3C /* mesh.h in Headers */ = {isa = PBXBuildFile; fileRef = DFD77A7D57A12CEBD1EF8B4CD5B935CD /* mesh.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1F25B5EB4764C4B8663077328C12547C /* geom.h in Headers */ = {isa = PBXBuildFile; fileRef = 291DC86518B6EF04DD9FC95B869794A5 /* geom.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1FED78B897A700AF9870463A914FC274 /* LibTessSwift-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 6753F3FED843EFAA6C346F13FFDDA5D7 /* LibTessSwift-dummy.m */; };
+		36886DDCDF817BB1F31592ADEFEFA6CE /* PressureComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8966311C9ECF4FB2B1A2ADED44046496 /* PressureComponent.swift */; };
+		381A1275A099A180629C2C2657984B8C /* mesh.c in Sources */ = {isa = PBXBuildFile; fileRef = A2AF54F09DBB9CFBF389BD19301153D2 /* mesh.c */; };
+		3DD2126D90322BB416FA2481C692CBF8 /* BodyJoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54DC4CD31A24CDEF597EFB3287623D78 /* BodyJoint.swift */; };
+		44A8242F6BED9119DA8B4204B90A5234 /* JelloSwift-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D0A9F18DB7EDB1E73E6E0F683043406 /* JelloSwift-dummy.m */; };
+		456A85EC5FD1EE125B1D71CD0A8B5CE0 /* PointMass.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD84669C7E8917FFE721CCBDF13F290D /* PointMass.swift */; };
+		47D566D1506D6E51E3F0CA46665E40F6 /* ClosedShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90485B582B1F62F5C2CC12E8E5A52981 /* ClosedShape.swift */; };
+		4D23653287FE1E17F6EF380F19620301 /* Pods-JelloSwift_Example-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = E9FA0DE585CDF087A308B3966AC48F90 /* Pods-JelloSwift_Example-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		51AF71E434A0F89A415E4511F0A46E9B /* RenderingSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2B245A0502E13A206BBA29074CE2F8C /* RenderingSettings.swift */; };
+		57A916980D9C46E52FB118D8472E9905 /* MemAllocators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B212DB2B3C42C477F0163732D5809AA /* MemAllocators.swift */; };
+		58D5353BD5065C7FF05B1DDBEB8990B4 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A16F4CFC63FAC439D7A04994F579A03 /* Foundation.framework */; };
+		5CBBCE5FBF34FC6217F8B18655CD24E2 /* AABB.swift in Sources */ = {isa = PBXBuildFile; fileRef = F94A41D0676ADEE4A71ED83757756A2E /* AABB.swift */; };
+		628CB6AA917CA70505FC7C786E8D8BD5 /* World.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD079AC0BFE604B9CA88A7E5C0BA07ED /* World.swift */; };
+		656846CAB355E055FD973615EACC35D5 /* Vector2.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE1C3C9A0B5AA4674D131BA90DECABF5 /* Vector2.swift */; };
+		6621C9D1BDC808F1EC914502D176225E /* tess.c in Sources */ = {isa = PBXBuildFile; fileRef = 16D2B6EE1A6CE9CBB1FAAB2674E1C4E9 /* tess.c */; };
+		71A4070D741F8F6C47FB130EE9287296 /* Pods-JelloSwift_Example-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = CBCBE9B23921F466A17310E96A2DE1A5 /* Pods-JelloSwift_Example-dummy.m */; };
+		71F5DAED7C04CDBB69E3B4A9FDE6F25C /* Body.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BDE35557960C7ECF414B302B59C7890 /* Body.swift */; };
+		784F889520C7037F21A19E79549FB4DB /* sweep.h in Headers */ = {isa = PBXBuildFile; fileRef = 3C9009B20182A28BC240AF5F9FBAE740 /* sweep.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		789599A3F6C111C6FB312BFFD6AC2611 /* SpringBodyJoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4540CCF06C51AAA7212CF455B15832 /* SpringBodyJoint.swift */; };
+		78E2931315DD407B866979811B0181AE /* RestDistance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 779B59B8E3CAF9EC4C74FEAE914AB76E /* RestDistance.swift */; };
+		85B28718657908F5221AFF9EE09045F2 /* SpringComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D838058578EDFAE437C02255E4397A3A /* SpringComponent.swift */; };
+		86A6DB3BD4B709EEB5A1D0DEB1262A26 /* ShapeJointLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8120B27A4F76C69CFB127005E141CF88 /* ShapeJointLink.swift */; };
+		8C027D67C9CC9B0D782868061F1FF226 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C16F4C59099B0B15F6CF9901028707 /* Utils.swift */; };
+		8C94A5DF2A6DFD79E71A023CF43C5EE5 /* tesselator.h in Headers */ = {isa = PBXBuildFile; fileRef = 4AC90EFA805912BBF2FE57F919ACA12A /* tesselator.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		996E4FF3C800C9C1FCE6450F415FC559 /* CollisionObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D2A3FB0C52182CA419D8187923D326A /* CollisionObserver.swift */; };
+		A67BC639AB090D93BCDD037B2D69BF03 /* PointJointLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1933195C9E5756640B342C1D0C8484D /* PointJointLink.swift */; };
+		AC6E3DB8921E8CFCD6DA718BDFFA7D72 /* objc-clang.h in Headers */ = {isa = PBXBuildFile; fileRef = 9B95C7968D366E89BA3C519ECAD284F1 /* objc-clang.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		AE20995A88E191E26514ADFA34A25F84 /* BodyEdge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B26545FC82C4BB4178BF7A723CA07AF /* BodyEdge.swift */; };
+		AF78FF3B73FA35CEFEB723E5861D1E16 /* bucketalloc.c in Sources */ = {isa = PBXBuildFile; fileRef = 13A5935F1FFF8BFE6573662AD88435C5 /* bucketalloc.c */; };
+		B26937932355223BA77F80B3B002512E /* JelloSwift-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = B4F49B772D5B0ABEF096B264DE1C15E2 /* JelloSwift-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		B2D8C9D8C94314F6A16057341FCBED0C /* EdgeJointLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDB9BDC4DC90BE3BD1BB2AA574B6A754 /* EdgeJointLink.swift */; };
+		B7DB567856F9B7C264EB2BE1E784BB80 /* LibTessSwift-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 24F8374E5F8ED00E3FC1D1E0B5F25A03 /* LibTessSwift-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		BB2DB516D4EF99E2A7F7AF29D6B0ECCF /* BodyCollisionInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F3AD3F86A801D0841B98918FB47ECB8 /* BodyCollisionInformation.swift */; };
+		BC8CCB526A0C88C5A455665BB1FD710B /* Pods-JelloSwift_Example-JelloSwift_Tests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = CF00632AA241DC246BA29521D4681719 /* Pods-JelloSwift_Example-JelloSwift_Tests-dummy.m */; };
+		BF2180E6DA82A5EDD703D9C1F954E399 /* GeomUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36552B9B67A31299A7B1227D82F44638 /* GeomUtils.swift */; };
+		BF9B494AA14B05205AE7DC5EA0FB26C7 /* BodyJointLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3CE8D2228BBE77568C39774C9ADBF8 /* BodyJointLink.swift */; };
+		C150845276102C21E40AA1BFB0E8276C /* dict.h in Headers */ = {isa = PBXBuildFile; fileRef = BC04C7B02B842FC7B50EB1BD8F4C306F /* dict.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C8D294275699DF1EC8086CE7D582683E /* sweep.c in Sources */ = {isa = PBXBuildFile; fileRef = 42443326D01211CBCF295EA36E5514C6 /* sweep.c */; };
+		CE8096BEEA467202634476151E1C653F /* InternalSpring.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC127B83A7E2DFC29714EA29D6AF9175 /* InternalSpring.swift */; };
+		D0FF0F5C8FAF6161855BA8FD03DD31BF /* PhysicsUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 469DA10FA75856A16C12EFDCE2735AA8 /* PhysicsUtils.swift */; };
+		D1F6DC26523234F9587F3366BDD614A1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A16F4CFC63FAC439D7A04994F579A03 /* Foundation.framework */; };
+		D3038D04B76C2929DC6EC40FCF54AE50 /* priorityq.h in Headers */ = {isa = PBXBuildFile; fileRef = 70711DA658250194F5AA32381594B7EC /* priorityq.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D4EFDE5EDD33C7477AFB4AA1EA954AC5 /* BodyComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 077535BCC61A733EB62C78CFF3290AF9 /* BodyComponent.swift */; };
+		DCDA5D14BE2EF4D922A3C99B0DE835BB /* tess.h in Headers */ = {isa = PBXBuildFile; fileRef = E191D245AF79050986F0D88A6780E28B /* tess.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DD4E7F0071BAEF2F15DFD777B987250E /* MaterialPair.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF4EC1556D3C0206503937207892F834 /* MaterialPair.swift */; };
+		E1175E9B6E7D5C6825010EFA68B9F84E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A16F4CFC63FAC439D7A04994F579A03 /* Foundation.framework */; };
+		EA9339BAB7534FC80D11743E89B8BA05 /* GravityComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6D04EFC0413BF840DE0C61AA8BD36E /* GravityComponent.swift */; };
+		F660C9D7656F4BC164E868BCAB7BC08B /* geom.c in Sources */ = {isa = PBXBuildFile; fileRef = DCD41EC340B3FDC62324B203B62F7743 /* geom.c */; };
+		FB394801586AA49D9C01E88253B3B9F4 /* TessC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 213B40A1998A1C3AD46BF2E24B60DA6A /* TessC.swift */; };
+		FC9D8D63D49BB1EA6A2106A08304FDA7 /* Pods-JelloSwift_Example-JelloSwift_Tests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 112C0C689B03A64F432B14A70248B436 /* Pods-JelloSwift_Example-JelloSwift_Tests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FFAF201FBFD3EFB00EEF27DAA33CD129 /* Public.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A369B4AF137D35E16974C0E9B4938D0 /* Public.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		1F0AAD83B14A7A3465864E57D4568F4A /* PBXContainerItemProxy */ = {
+		12439EAC4294D569155200C676458D91 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 0DE8BC21211A225D8210F937A592517E;
+			remoteGlobalIDString = 81C42841B3A8AC28336A17E93697FE9B;
 			remoteInfo = LibTessSwift;
 		};
-		33BADD6808164302B3B781F24F173260 /* PBXContainerItemProxy */ = {
+		43A26A82653B7547BC49791F3B2C29F2 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 0DE8BC21211A225D8210F937A592517E;
-			remoteInfo = LibTessSwift;
-		};
-		6925F844501F7B684101F2E8793C7723 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 65F37B549207EA036BF652A5D7E935F7;
+			remoteGlobalIDString = D898F8124D0288F22754E03FEE5CBD64;
 			remoteInfo = JelloSwift;
 		};
-		7BD96DFAA3B8F956085CFA80B2F341EA /* PBXContainerItemProxy */ = {
+		4A1E701F86D1C4E985B3C9B460897543 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 65F37B549207EA036BF652A5D7E935F7;
+			remoteGlobalIDString = 81C42841B3A8AC28336A17E93697FE9B;
+			remoteInfo = LibTessSwift;
+		};
+		6B25172BD6C1B87EB2B02094A6D78128 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D898F8124D0288F22754E03FEE5CBD64;
 			remoteInfo = JelloSwift;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		00586068FE12054F2C9E80EACDF72BA8 /* LibTessSwift.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = LibTessSwift.xcconfig; sourceTree = "<group>"; };
-		05A857F439BC45AA2DAD29C4AA37A9F3 /* Pods-JelloSwift_Example-JelloSwift_Tests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = "Pods-JelloSwift_Example-JelloSwift_Tests.modulemap"; sourceTree = "<group>"; };
-		0613AF13B4CE607BB3DCD1B48682B2C2 /* Pods-JelloSwift_Example-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-JelloSwift_Example-acknowledgements.markdown"; sourceTree = "<group>"; };
+		05D9443E36A24480D3DADEE1103C7CCF /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		077535BCC61A733EB62C78CFF3290AF9 /* BodyComponent.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BodyComponent.swift; path = Sources/BodyComponent.swift; sourceTree = "<group>"; };
-		085D2903BBF432B7E7404BD88DD5397D /* dict.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = dict.c; path = LibTessSwift/libtess2/dict.c; sourceTree = "<group>"; };
-		0DBF3C648D79A5ABFBE8341E1498337F /* LibTessSwift-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "LibTessSwift-umbrella.h"; sourceTree = "<group>"; };
-		0FFD5ACA25DAD3566F5174713FC0F668 /* Pods-JelloSwift_Example-JelloSwift_Tests-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-JelloSwift_Example-JelloSwift_Tests-umbrella.h"; sourceTree = "<group>"; };
-		13A5935F1FFF8BFE6573662AD88435C5 /* bucketalloc.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = bucketalloc.c; path = LibTessSwift/libtess2/bucketalloc.c; sourceTree = "<group>"; };
-		16D2B6EE1A6CE9CBB1FAAB2674E1C4E9 /* tess.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = tess.c; path = LibTessSwift/libtess2/tess.c; sourceTree = "<group>"; };
-		1A37D2FAB381794F601DEC13763A276F /* Pods-JelloSwift_Example-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-JelloSwift_Example-frameworks.sh"; sourceTree = "<group>"; };
+		085D2903BBF432B7E7404BD88DD5397D /* dict.c */ = {isa = PBXFileReference; includeInIndex = 1; name = dict.c; path = LibTessSwift/libtess2/dict.c; sourceTree = "<group>"; };
+		112C0C689B03A64F432B14A70248B436 /* Pods-JelloSwift_Example-JelloSwift_Tests-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-JelloSwift_Example-JelloSwift_Tests-umbrella.h"; sourceTree = "<group>"; };
+		13A5935F1FFF8BFE6573662AD88435C5 /* bucketalloc.c */ = {isa = PBXFileReference; includeInIndex = 1; name = bucketalloc.c; path = LibTessSwift/libtess2/bucketalloc.c; sourceTree = "<group>"; };
+		16D2B6EE1A6CE9CBB1FAAB2674E1C4E9 /* tess.c */ = {isa = PBXFileReference; includeInIndex = 1; name = tess.c; path = LibTessSwift/libtess2/tess.c; sourceTree = "<group>"; };
+		17B5856170D242FE18C8C313A4AC3C97 /* Pods-JelloSwift_Example-JelloSwift_Tests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-JelloSwift_Example-JelloSwift_Tests.modulemap"; sourceTree = "<group>"; };
 		1AB9566EDDA292B13BE71C1DB37F86E1 /* bucketalloc.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = bucketalloc.h; path = LibTessSwift/libtess2/bucketalloc.h; sourceTree = "<group>"; };
 		1D2A3FB0C52182CA419D8187923D326A /* CollisionObserver.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CollisionObserver.swift; path = Sources/CollisionObserver.swift; sourceTree = "<group>"; };
 		213B40A1998A1C3AD46BF2E24B60DA6A /* TessC.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TessC.swift; path = LibTessSwift/Classes/TessC.swift; sourceTree = "<group>"; };
-		22C93742AFB7840692791B044B0A6609 /* priorityq.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = priorityq.c; path = LibTessSwift/libtess2/priorityq.c; sourceTree = "<group>"; };
+		22C93742AFB7840692791B044B0A6609 /* priorityq.c */ = {isa = PBXFileReference; includeInIndex = 1; name = priorityq.c; path = LibTessSwift/libtess2/priorityq.c; sourceTree = "<group>"; };
+		24F8374E5F8ED00E3FC1D1E0B5F25A03 /* LibTessSwift-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "LibTessSwift-umbrella.h"; sourceTree = "<group>"; };
+		26A1295DABF869FCD32AB9D462A0213E /* Pods-JelloSwift_Example.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-JelloSwift_Example.modulemap"; sourceTree = "<group>"; };
 		291DC86518B6EF04DD9FC95B869794A5 /* geom.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = geom.h; path = LibTessSwift/libtess2/geom.h; sourceTree = "<group>"; };
-		3053AFDF68F9E33BE18679555EBC55CE /* Pods_JelloSwift_Example_JelloSwift_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_JelloSwift_Example_JelloSwift_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		29DE690B66F4E3CCB1FFBE4974110383 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2B4EE1B4A216E53F6EB03D4542129A1E /* LibTessSwift.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = LibTessSwift.xcconfig; sourceTree = "<group>"; };
+		2D555E66E72A4EF79B54F3CF3E7A0CF6 /* Pods-JelloSwift_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-JelloSwift_Example.debug.xcconfig"; sourceTree = "<group>"; };
+		2E9AE1CFC764CB2499C2271220C83AAD /* JelloSwift.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = JelloSwift.modulemap; sourceTree = "<group>"; };
+		3053AFDF68F9E33BE18679555EBC55CE /* Pods_JelloSwift_Example_JelloSwift_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_JelloSwift_Example_JelloSwift_Tests.framework; path = "Pods-JelloSwift_Example-JelloSwift_Tests.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
 		36552B9B67A31299A7B1227D82F44638 /* GeomUtils.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = GeomUtils.swift; path = Sources/GeomUtils.swift; sourceTree = "<group>"; };
+		389DC7A8C87AD8BD07E809985C4C4C37 /* Pods-JelloSwift_Example-JelloSwift_Tests-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-JelloSwift_Example-JelloSwift_Tests-resources.sh"; sourceTree = "<group>"; };
+		39F47CAA90652AF643EA834C21D04338 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3C9009B20182A28BC240AF5F9FBAE740 /* sweep.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = sweep.h; path = LibTessSwift/libtess2/sweep.h; sourceTree = "<group>"; };
-		3E3D33FB98818DED05544C7ABC947F64 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3F6D04EFC0413BF840DE0C61AA8BD36E /* GravityComponent.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = GravityComponent.swift; path = Sources/GravityComponent.swift; sourceTree = "<group>"; };
-		42443326D01211CBCF295EA36E5514C6 /* sweep.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = sweep.c; path = LibTessSwift/libtess2/sweep.c; sourceTree = "<group>"; };
-		43A15E09C9655F02BBF262111EEB8821 /* Readme.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; path = Readme.md; sourceTree = "<group>"; };
+		42443326D01211CBCF295EA36E5514C6 /* sweep.c */ = {isa = PBXFileReference; includeInIndex = 1; name = sweep.c; path = LibTessSwift/libtess2/sweep.c; sourceTree = "<group>"; };
+		43A15E09C9655F02BBF262111EEB8821 /* Readme.md */ = {isa = PBXFileReference; includeInIndex = 1; path = Readme.md; sourceTree = "<group>"; };
 		469DA10FA75856A16C12EFDCE2735AA8 /* PhysicsUtils.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PhysicsUtils.swift; path = Sources/PhysicsUtils.swift; sourceTree = "<group>"; };
+		48876572DC20E107381F3EC0C6F91160 /* Pods-JelloSwift_Example-JelloSwift_Tests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-JelloSwift_Example-JelloSwift_Tests-acknowledgements.plist"; sourceTree = "<group>"; };
 		4AC90EFA805912BBF2FE57F919ACA12A /* tesselator.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = tesselator.h; path = LibTessSwift/libtess2/tesselator.h; sourceTree = "<group>"; };
-		4D21593F2924B9A935B0914CE6C34821 /* Pods-JelloSwift_Example-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-JelloSwift_Example-acknowledgements.plist"; sourceTree = "<group>"; };
+		4D0A9F18DB7EDB1E73E6E0F683043406 /* JelloSwift-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "JelloSwift-dummy.m"; sourceTree = "<group>"; };
+		54C2DE0E59BEB72844262B5F2714CB5B /* Pods-JelloSwift_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-JelloSwift_Example.release.xcconfig"; sourceTree = "<group>"; };
 		54DC4CD31A24CDEF597EFB3287623D78 /* BodyJoint.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BodyJoint.swift; path = Sources/BodyJoint.swift; sourceTree = "<group>"; };
-		584F6C42452259E2C39A55A78140187A /* Pods-JelloSwift_Example-JelloSwift_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-JelloSwift_Example-JelloSwift_Tests.release.xcconfig"; sourceTree = "<group>"; };
+		581F10DAA5B6B4B9549BD5C80021B573 /* LibTessSwift.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = LibTessSwift.modulemap; sourceTree = "<group>"; };
+		5A16F4CFC63FAC439D7A04994F579A03 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.3.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		5A369B4AF137D35E16974C0E9B4938D0 /* Public.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Public.swift; path = LibTessSwift/Classes/Public.swift; sourceTree = "<group>"; };
 		5B26545FC82C4BB4178BF7A723CA07AF /* BodyEdge.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BodyEdge.swift; path = Sources/BodyEdge.swift; sourceTree = "<group>"; };
-		60E464D64C96034E5F9D11A218DAE45B /* Pods-JelloSwift_Example-JelloSwift_Tests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-JelloSwift_Example-JelloSwift_Tests-dummy.m"; sourceTree = "<group>"; };
-		60F3A72B5834ABA02B5B6983B28BD2B1 /* Pods-JelloSwift_Example-JelloSwift_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-JelloSwift_Example-JelloSwift_Tests.debug.xcconfig"; sourceTree = "<group>"; };
-		62B1DE269A5BB93FD58B804CF8FCCA1C /* LibTessSwift-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "LibTessSwift-prefix.pch"; sourceTree = "<group>"; };
-		6604A7D69453B4569E4E4827FB9155A9 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.3.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		6753F3FED843EFAA6C346F13FFDDA5D7 /* LibTessSwift-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "LibTessSwift-dummy.m"; sourceTree = "<group>"; };
 		6B212DB2B3C42C477F0163732D5809AA /* MemAllocators.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MemAllocators.swift; path = LibTessSwift/Classes/MemAllocators.swift; sourceTree = "<group>"; };
 		6BDE35557960C7ECF414B302B59C7890 /* Body.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Body.swift; path = Sources/Body.swift; sourceTree = "<group>"; };
-		6DFDF8962D6AEA958F97401971DFEBAF /* Pods-JelloSwift_Example-JelloSwift_Tests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-JelloSwift_Example-JelloSwift_Tests-acknowledgements.plist"; sourceTree = "<group>"; };
+		6DB1B6F04EC0261C9E7D92D994E9464B /* Pods-JelloSwift_Example-JelloSwift_Tests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-JelloSwift_Example-JelloSwift_Tests-acknowledgements.markdown"; sourceTree = "<group>"; };
 		70711DA658250194F5AA32381594B7EC /* priorityq.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = priorityq.h; path = LibTessSwift/libtess2/priorityq.h; sourceTree = "<group>"; };
-		75D7BA18A31AB78BF8FD85CA1E59EEBD /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		74A8079B1EAD09544F4DDE7CDAF4F75A /* Pods-JelloSwift_Example-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-JelloSwift_Example-acknowledgements.plist"; sourceTree = "<group>"; };
 		779B59B8E3CAF9EC4C74FEAE914AB76E /* RestDistance.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = RestDistance.swift; path = Sources/RestDistance.swift; sourceTree = "<group>"; };
+		7D9EF471D2FC2F31221C1F53B38DB862 /* Pods-JelloSwift_Example-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-JelloSwift_Example-frameworks.sh"; sourceTree = "<group>"; };
 		7E4540CCF06C51AAA7212CF455B15832 /* SpringBodyJoint.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SpringBodyJoint.swift; path = Sources/SpringBodyJoint.swift; sourceTree = "<group>"; };
 		7F3AD3F86A801D0841B98918FB47ECB8 /* BodyCollisionInformation.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BodyCollisionInformation.swift; path = Sources/BodyCollisionInformation.swift; sourceTree = "<group>"; };
-		8090FBBAC000EB7AA32E404CDCF15E70 /* Pods-JelloSwift_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-JelloSwift_Example.debug.xcconfig"; sourceTree = "<group>"; };
 		8120B27A4F76C69CFB127005E141CF88 /* ShapeJointLink.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ShapeJointLink.swift; path = Sources/ShapeJointLink.swift; sourceTree = "<group>"; };
+		8622EC8DB51068E70CB80AB55125DFDE /* JelloSwift.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = JelloSwift.xcconfig; sourceTree = "<group>"; };
+		865D9664B063E17A58C4EE9C203C8742 /* Pods-JelloSwift_Example-JelloSwift_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-JelloSwift_Example-JelloSwift_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		8966311C9ECF4FB2B1A2ADED44046496 /* PressureComponent.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PressureComponent.swift; path = Sources/PressureComponent.swift; sourceTree = "<group>"; };
-		8B2D784C998A7A2F2079AA58713135E1 /* JelloSwift.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; path = JelloSwift.podspec; sourceTree = "<group>"; };
-		8EB412AEE64F06705A55F89BA6551847 /* LibTessSwift.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = LibTessSwift.modulemap; sourceTree = "<group>"; };
-		8EF46B548F08791246242021C0798630 /* JelloSwift-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "JelloSwift-prefix.pch"; sourceTree = "<group>"; };
+		8B2D784C998A7A2F2079AA58713135E1 /* JelloSwift.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; lastKnownFileType = text; path = JelloSwift.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		90485B582B1F62F5C2CC12E8E5A52981 /* ClosedShape.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ClosedShape.swift; path = Sources/ClosedShape.swift; sourceTree = "<group>"; };
-		91C31D5ABDEF4D81F9C09EF7D35D5F2E /* JelloSwift-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "JelloSwift-umbrella.h"; sourceTree = "<group>"; };
-		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		93C16F4C59099B0B15F6CF9901028707 /* Utils.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Utils.swift; path = Sources/Utils.swift; sourceTree = "<group>"; };
-		954308192931E76505283FEBBB27BA7D /* JelloSwift-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "JelloSwift-dummy.m"; sourceTree = "<group>"; };
+		99A25A098EF0D86F245EB11E7EF3F3BC /* LibTessSwift-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "LibTessSwift-prefix.pch"; sourceTree = "<group>"; };
 		9B95C7968D366E89BA3C519ECAD284F1 /* objc-clang.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "objc-clang.h"; path = "LibTessSwift/libtess2/objc-clang.h"; sourceTree = "<group>"; };
 		A1933195C9E5756640B342C1D0C8484D /* PointJointLink.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PointJointLink.swift; path = Sources/PointJointLink.swift; sourceTree = "<group>"; };
-		A2AF54F09DBB9CFBF389BD19301153D2 /* mesh.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = mesh.c; path = LibTessSwift/libtess2/mesh.c; sourceTree = "<group>"; };
-		A5F475B4E8D26795890510F3D840F205 /* Pods-JelloSwift_Example-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-JelloSwift_Example-dummy.m"; sourceTree = "<group>"; };
-		AE3F126648C196E9C40AD5535D2DA525 /* JelloSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = JelloSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		B080B8F16A5C7C166ED34E784DCE63EE /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
-		B621AEB82EB8EE04F9406579688C3710 /* JelloSwift.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = JelloSwift.xcconfig; sourceTree = "<group>"; };
+		A2AF54F09DBB9CFBF389BD19301153D2 /* mesh.c */ = {isa = PBXFileReference; includeInIndex = 1; name = mesh.c; path = LibTessSwift/libtess2/mesh.c; sourceTree = "<group>"; };
+		AE3F126648C196E9C40AD5535D2DA525 /* JelloSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = JelloSwift.framework; path = JelloSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B080B8F16A5C7C166ED34E784DCE63EE /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; path = LICENSE; sourceTree = "<group>"; };
+		B1F0011792EF2AC3F8C6EC7E2154EA59 /* Pods-JelloSwift_Example-JelloSwift_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-JelloSwift_Example-JelloSwift_Tests.release.xcconfig"; sourceTree = "<group>"; };
+		B4F49B772D5B0ABEF096B264DE1C15E2 /* JelloSwift-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "JelloSwift-umbrella.h"; sourceTree = "<group>"; };
+		B9B29E6BB32151C0FEF91BC03595A36C /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BB796097EF5611F85F96DDFF4D14ED1A /* Bitmask.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Bitmask.swift; path = Sources/Bitmask.swift; sourceTree = "<group>"; };
+		BB9A14C2E0425DE8D1E1A2A05E248D2F /* Pods-JelloSwift_Example-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-JelloSwift_Example-resources.sh"; sourceTree = "<group>"; };
 		BC04C7B02B842FC7B50EB1BD8F4C306F /* dict.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = dict.h; path = LibTessSwift/libtess2/dict.h; sourceTree = "<group>"; };
 		BD84669C7E8917FFE721CCBDF13F290D /* PointMass.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PointMass.swift; path = Sources/PointMass.swift; sourceTree = "<group>"; };
 		BE1C3C9A0B5AA4674D131BA90DECABF5 /* Vector2.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Vector2.swift; path = Sources/Vector2.swift; sourceTree = "<group>"; };
-		C265EC8C7C4F50615F612A03C9D0D069 /* Pods-JelloSwift_Example-JelloSwift_Tests-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-JelloSwift_Example-JelloSwift_Tests-resources.sh"; sourceTree = "<group>"; };
 		C2B245A0502E13A206BBA29074CE2F8C /* RenderingSettings.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = RenderingSettings.swift; path = Sources/RenderingSettings.swift; sourceTree = "<group>"; };
-		C43F85A0B2A78915D6D237B41EA817EB /* Pods-JelloSwift_Example.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = "Pods-JelloSwift_Example.modulemap"; sourceTree = "<group>"; };
-		CB2488DAC03A3B0DC0578D21CCDA311F /* LibTessSwift-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "LibTessSwift-dummy.m"; sourceTree = "<group>"; };
+		CBCBE9B23921F466A17310E96A2DE1A5 /* Pods-JelloSwift_Example-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-JelloSwift_Example-dummy.m"; sourceTree = "<group>"; };
 		CD079AC0BFE604B9CA88A7E5C0BA07ED /* World.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = World.swift; path = Sources/World.swift; sourceTree = "<group>"; };
-		CD95627B401DE92C80E68D2A1F05338E /* Pods_JelloSwift_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_JelloSwift_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CD95627B401DE92C80E68D2A1F05338E /* Pods_JelloSwift_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_JelloSwift_Example.framework; path = "Pods-JelloSwift_Example.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE3CE8D2228BBE77568C39774C9ADBF8 /* BodyJointLink.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BodyJointLink.swift; path = Sources/BodyJointLink.swift; sourceTree = "<group>"; };
+		CF00632AA241DC246BA29521D4681719 /* Pods-JelloSwift_Example-JelloSwift_Tests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-JelloSwift_Example-JelloSwift_Tests-dummy.m"; sourceTree = "<group>"; };
 		CF4EC1556D3C0206503937207892F834 /* MaterialPair.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MaterialPair.swift; path = Sources/MaterialPair.swift; sourceTree = "<group>"; };
-		D0BC5945CBB0C2270541E4456F0F43F8 /* Pods-JelloSwift_Example-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-JelloSwift_Example-umbrella.h"; sourceTree = "<group>"; };
 		D838058578EDFAE437C02255E4397A3A /* SpringComponent.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SpringComponent.swift; path = Sources/SpringComponent.swift; sourceTree = "<group>"; };
-		DB8E6325A6ED35DE9A2EA55AAD046522 /* JelloSwift.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = JelloSwift.modulemap; sourceTree = "<group>"; };
+		DA3D69FA8487364102311CBF0502E7CF /* Pods-JelloSwift_Example-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-JelloSwift_Example-acknowledgements.markdown"; sourceTree = "<group>"; };
 		DC127B83A7E2DFC29714EA29D6AF9175 /* InternalSpring.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = InternalSpring.swift; path = Sources/InternalSpring.swift; sourceTree = "<group>"; };
-		DCD41EC340B3FDC62324B203B62F7743 /* geom.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = geom.c; path = LibTessSwift/libtess2/geom.c; sourceTree = "<group>"; };
+		DCD41EC340B3FDC62324B203B62F7743 /* geom.c */ = {isa = PBXFileReference; includeInIndex = 1; name = geom.c; path = LibTessSwift/libtess2/geom.c; sourceTree = "<group>"; };
 		DFD77A7D57A12CEBD1EF8B4CD5B935CD /* mesh.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = mesh.h; path = LibTessSwift/libtess2/mesh.h; sourceTree = "<group>"; };
 		E191D245AF79050986F0D88A6780E28B /* tess.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = tess.h; path = LibTessSwift/libtess2/tess.h; sourceTree = "<group>"; };
-		E23A65E0A957868316AFF87B26445760 /* Pods-JelloSwift_Example-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-JelloSwift_Example-resources.sh"; sourceTree = "<group>"; };
-		E51D1179783EF9A84117C9DB788B2A4B /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		E646928FB13A079068C3E13BEC4C2832 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		E9D7B4301461BB673F5FD36558F24078 /* Pods-JelloSwift_Example-JelloSwift_Tests-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-JelloSwift_Example-JelloSwift_Tests-frameworks.sh"; sourceTree = "<group>"; };
+		E4A795BC44BDA7977FA867B3BEA57D57 /* JelloSwift-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "JelloSwift-prefix.pch"; sourceTree = "<group>"; };
+		E9FA0DE585CDF087A308B3966AC48F90 /* Pods-JelloSwift_Example-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-JelloSwift_Example-umbrella.h"; sourceTree = "<group>"; };
 		EDB9BDC4DC90BE3BD1BB2AA574B6A754 /* EdgeJointLink.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = EdgeJointLink.swift; path = Sources/EdgeJointLink.swift; sourceTree = "<group>"; };
-		EE8C8270300E8C535E219A54367AFA21 /* Pods-JelloSwift_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-JelloSwift_Example.release.xcconfig"; sourceTree = "<group>"; };
-		F0394FF117028D2740757371C4E26974 /* LibTessSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = LibTessSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F0394FF117028D2740757371C4E26974 /* LibTessSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = LibTessSwift.framework; path = LibTessSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F94A41D0676ADEE4A71ED83757756A2E /* AABB.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AABB.swift; path = Sources/AABB.swift; sourceTree = "<group>"; };
-		FEA2C8C9CE01CFD1981BBF17DBD19E07 /* Pods-JelloSwift_Example-JelloSwift_Tests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-JelloSwift_Example-JelloSwift_Tests-acknowledgements.markdown"; sourceTree = "<group>"; };
+		FBD4A133537F4098E0E08F65A0062DB3 /* Pods-JelloSwift_Example-JelloSwift_Tests-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-JelloSwift_Example-JelloSwift_Tests-frameworks.sh"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		744EA91F20570EFB51287B4E7CECAE93 /* Frameworks */ = {
+		56A8C2CB6818D6D3F59D49B5C07D2783 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C3648D33DA67D31607DF3AB72527E0C7 /* Foundation.framework in Frameworks */,
+				58D5353BD5065C7FF05B1DDBEB8990B4 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		9476FD2C835B0DD50F9545CB716A9B42 /* Frameworks */ = {
+		8FB9BEC4F207ABB8D59565C96868A777 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C872028FECC2C23C5AF646958C632DD7 /* Foundation.framework in Frameworks */,
+				D1F6DC26523234F9587F3366BDD614A1 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		C0AF11B0AAD50ECD01195051FA169E1B /* Frameworks */ = {
+		99037A9A75BBCECBFF368B6AE8135955 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F947D97436024FD8CA8A60F39C21BA3E /* Foundation.framework in Frameworks */,
+				0D4790C8131A0D93C1F330ED2E7796EA /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		D1D2266E768B5BBBC0ED23E6E3783493 /* Frameworks */ = {
+		C1918DAF30B5D3BAFFBE890E88AD13C9 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B8F2724AE673CFA72DC44F5A4A01E62C /* Foundation.framework in Frameworks */,
+				E1175E9B6E7D5C6825010EFA68B9F84E /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		26E3DFF7294784AD409F06055611EBE0 /* Pods-JelloSwift_Example */ = {
-			isa = PBXGroup;
-			children = (
-				75D7BA18A31AB78BF8FD85CA1E59EEBD /* Info.plist */,
-				C43F85A0B2A78915D6D237B41EA817EB /* Pods-JelloSwift_Example.modulemap */,
-				0613AF13B4CE607BB3DCD1B48682B2C2 /* Pods-JelloSwift_Example-acknowledgements.markdown */,
-				4D21593F2924B9A935B0914CE6C34821 /* Pods-JelloSwift_Example-acknowledgements.plist */,
-				A5F475B4E8D26795890510F3D840F205 /* Pods-JelloSwift_Example-dummy.m */,
-				1A37D2FAB381794F601DEC13763A276F /* Pods-JelloSwift_Example-frameworks.sh */,
-				E23A65E0A957868316AFF87B26445760 /* Pods-JelloSwift_Example-resources.sh */,
-				D0BC5945CBB0C2270541E4456F0F43F8 /* Pods-JelloSwift_Example-umbrella.h */,
-				8090FBBAC000EB7AA32E404CDCF15E70 /* Pods-JelloSwift_Example.debug.xcconfig */,
-				EE8C8270300E8C535E219A54367AFA21 /* Pods-JelloSwift_Example.release.xcconfig */,
-			);
-			name = "Pods-JelloSwift_Example";
-			path = "Target Support Files/Pods-JelloSwift_Example";
-			sourceTree = "<group>";
-		};
 		32F63B56DBB225DB374F7F7341A50C06 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -250,18 +232,22 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
-		3A4F9761A58486E2C5D54D989B2B83F9 /* Support Files */ = {
+		4216DDBD5586E57D035152E700CE76FD /* Pods-JelloSwift_Example-JelloSwift_Tests */ = {
 			isa = PBXGroup;
 			children = (
-				E646928FB13A079068C3E13BEC4C2832 /* Info.plist */,
-				8EB412AEE64F06705A55F89BA6551847 /* LibTessSwift.modulemap */,
-				00586068FE12054F2C9E80EACDF72BA8 /* LibTessSwift.xcconfig */,
-				CB2488DAC03A3B0DC0578D21CCDA311F /* LibTessSwift-dummy.m */,
-				62B1DE269A5BB93FD58B804CF8FCCA1C /* LibTessSwift-prefix.pch */,
-				0DBF3C648D79A5ABFBE8341E1498337F /* LibTessSwift-umbrella.h */,
+				39F47CAA90652AF643EA834C21D04338 /* Info.plist */,
+				17B5856170D242FE18C8C313A4AC3C97 /* Pods-JelloSwift_Example-JelloSwift_Tests.modulemap */,
+				6DB1B6F04EC0261C9E7D92D994E9464B /* Pods-JelloSwift_Example-JelloSwift_Tests-acknowledgements.markdown */,
+				48876572DC20E107381F3EC0C6F91160 /* Pods-JelloSwift_Example-JelloSwift_Tests-acknowledgements.plist */,
+				CF00632AA241DC246BA29521D4681719 /* Pods-JelloSwift_Example-JelloSwift_Tests-dummy.m */,
+				FBD4A133537F4098E0E08F65A0062DB3 /* Pods-JelloSwift_Example-JelloSwift_Tests-frameworks.sh */,
+				389DC7A8C87AD8BD07E809985C4C4C37 /* Pods-JelloSwift_Example-JelloSwift_Tests-resources.sh */,
+				112C0C689B03A64F432B14A70248B436 /* Pods-JelloSwift_Example-JelloSwift_Tests-umbrella.h */,
+				865D9664B063E17A58C4EE9C203C8742 /* Pods-JelloSwift_Example-JelloSwift_Tests.debug.xcconfig */,
+				B1F0011792EF2AC3F8C6EC7E2154EA59 /* Pods-JelloSwift_Example-JelloSwift_Tests.release.xcconfig */,
 			);
-			name = "Support Files";
-			path = "../Target Support Files/LibTessSwift";
+			name = "Pods-JelloSwift_Example-JelloSwift_Tests";
+			path = "Target Support Files/Pods-JelloSwift_Example-JelloSwift_Tests";
 			sourceTree = "<group>";
 		};
 		5AFB3BA9059BBDC134FD1BC9535BE655 /* Products */ = {
@@ -273,6 +259,14 @@
 				3053AFDF68F9E33BE18679555EBC55CE /* Pods_JelloSwift_Example_JelloSwift_Tests.framework */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		5E0D919E635D23B70123790B8308F8EF /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				5A16F4CFC63FAC439D7A04994F579A03 /* Foundation.framework */,
+			);
+			name = iOS;
 			sourceTree = "<group>";
 		};
 		5FE987AFEE8BD99058E032B91A7E3BC7 /* LibTessSwift */ = {
@@ -297,23 +291,10 @@
 				E191D245AF79050986F0D88A6780E28B /* tess.h */,
 				213B40A1998A1C3AD46BF2E24B60DA6A /* TessC.swift */,
 				4AC90EFA805912BBF2FE57F919ACA12A /* tesselator.h */,
-				3A4F9761A58486E2C5D54D989B2B83F9 /* Support Files */,
+				F3C8DB36D6A5DB53F4BF9EEA514844A9 /* Support Files */,
 			);
+			name = LibTessSwift;
 			path = LibTessSwift;
-			sourceTree = "<group>";
-		};
-		68A5DBE2491733DCBB54EA58E91AD6AD /* Support Files */ = {
-			isa = PBXGroup;
-			children = (
-				3E3D33FB98818DED05544C7ABC947F64 /* Info.plist */,
-				DB8E6325A6ED35DE9A2EA55AAD046522 /* JelloSwift.modulemap */,
-				B621AEB82EB8EE04F9406579688C3710 /* JelloSwift.xcconfig */,
-				954308192931E76505283FEBBB27BA7D /* JelloSwift-dummy.m */,
-				8EF46B548F08791246242021C0798630 /* JelloSwift-prefix.pch */,
-				91C31D5ABDEF4D81F9C09EF7D35D5F2E /* JelloSwift-umbrella.h */,
-			);
-			name = "Support Files";
-			path = "Example/Pods/Target Support Files/JelloSwift";
 			sourceTree = "<group>";
 		};
 		7DB346D0F39D3F0E887471402A8071AB = {
@@ -326,6 +307,20 @@
 				5AFB3BA9059BBDC134FD1BC9535BE655 /* Products */,
 				FDAC8EA0E39C9FE4EA2C91E11B5CAED9 /* Targets Support Files */,
 			);
+			sourceTree = "<group>";
+		};
+		80482E06CCC2CAE2E7E60D8B8AD26A6F /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				05D9443E36A24480D3DADEE1103C7CCF /* Info.plist */,
+				2E9AE1CFC764CB2499C2271220C83AAD /* JelloSwift.modulemap */,
+				8622EC8DB51068E70CB80AB55125DFDE /* JelloSwift.xcconfig */,
+				4D0A9F18DB7EDB1E73E6E0F683043406 /* JelloSwift-dummy.m */,
+				E4A795BC44BDA7977FA867B3BEA57D57 /* JelloSwift-prefix.pch */,
+				B4F49B772D5B0ABEF096B264DE1C15E2 /* JelloSwift-umbrella.h */,
+			);
+			name = "Support Files";
+			path = "Example/Pods/Target Support Files/JelloSwift";
 			sourceTree = "<group>";
 		};
 		AD08DABA5597B3A18C8649A5D3868C43 /* JelloSwift */ = {
@@ -359,7 +354,7 @@
 				BE1C3C9A0B5AA4674D131BA90DECABF5 /* Vector2.swift */,
 				CD079AC0BFE604B9CA88A7E5C0BA07ED /* World.swift */,
 				DFC1A154279CE32C8BDA5951D47D790F /* Pod */,
-				68A5DBE2491733DCBB54EA58E91AD6AD /* Support Files */,
+				80482E06CCC2CAE2E7E60D8B8AD26A6F /* Support Files */,
 			);
 			name = JelloSwift;
 			path = ../..;
@@ -368,17 +363,9 @@
 		BC3CA7F9E30CC8F7E2DD044DD34432FC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				D35AF013A5F0BAD4F32504907A52519E /* iOS */,
+				5E0D919E635D23B70123790B8308F8EF /* iOS */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		D35AF013A5F0BAD4F32504907A52519E /* iOS */ = {
-			isa = PBXGroup;
-			children = (
-				6604A7D69453B4569E4E4827FB9155A9 /* Foundation.framework */,
-			);
-			name = iOS;
 			sourceTree = "<group>";
 		};
 		D76BE39DDEE6EBF964DF9EC9BF84270E /* Development Pods */ = {
@@ -399,29 +386,43 @@
 			name = Pod;
 			sourceTree = "<group>";
 		};
-		F945D20AF77B5C9B5DC7763B72C6EB47 /* Pods-JelloSwift_Example-JelloSwift_Tests */ = {
+		F3C8DB36D6A5DB53F4BF9EEA514844A9 /* Support Files */ = {
 			isa = PBXGroup;
 			children = (
-				E51D1179783EF9A84117C9DB788B2A4B /* Info.plist */,
-				05A857F439BC45AA2DAD29C4AA37A9F3 /* Pods-JelloSwift_Example-JelloSwift_Tests.modulemap */,
-				FEA2C8C9CE01CFD1981BBF17DBD19E07 /* Pods-JelloSwift_Example-JelloSwift_Tests-acknowledgements.markdown */,
-				6DFDF8962D6AEA958F97401971DFEBAF /* Pods-JelloSwift_Example-JelloSwift_Tests-acknowledgements.plist */,
-				60E464D64C96034E5F9D11A218DAE45B /* Pods-JelloSwift_Example-JelloSwift_Tests-dummy.m */,
-				E9D7B4301461BB673F5FD36558F24078 /* Pods-JelloSwift_Example-JelloSwift_Tests-frameworks.sh */,
-				C265EC8C7C4F50615F612A03C9D0D069 /* Pods-JelloSwift_Example-JelloSwift_Tests-resources.sh */,
-				0FFD5ACA25DAD3566F5174713FC0F668 /* Pods-JelloSwift_Example-JelloSwift_Tests-umbrella.h */,
-				60F3A72B5834ABA02B5B6983B28BD2B1 /* Pods-JelloSwift_Example-JelloSwift_Tests.debug.xcconfig */,
-				584F6C42452259E2C39A55A78140187A /* Pods-JelloSwift_Example-JelloSwift_Tests.release.xcconfig */,
+				29DE690B66F4E3CCB1FFBE4974110383 /* Info.plist */,
+				581F10DAA5B6B4B9549BD5C80021B573 /* LibTessSwift.modulemap */,
+				2B4EE1B4A216E53F6EB03D4542129A1E /* LibTessSwift.xcconfig */,
+				6753F3FED843EFAA6C346F13FFDDA5D7 /* LibTessSwift-dummy.m */,
+				99A25A098EF0D86F245EB11E7EF3F3BC /* LibTessSwift-prefix.pch */,
+				24F8374E5F8ED00E3FC1D1E0B5F25A03 /* LibTessSwift-umbrella.h */,
 			);
-			name = "Pods-JelloSwift_Example-JelloSwift_Tests";
-			path = "Target Support Files/Pods-JelloSwift_Example-JelloSwift_Tests";
+			name = "Support Files";
+			path = "../Target Support Files/LibTessSwift";
+			sourceTree = "<group>";
+		};
+		F46E4B9003361E821D19BF223EF126A6 /* Pods-JelloSwift_Example */ = {
+			isa = PBXGroup;
+			children = (
+				B9B29E6BB32151C0FEF91BC03595A36C /* Info.plist */,
+				26A1295DABF869FCD32AB9D462A0213E /* Pods-JelloSwift_Example.modulemap */,
+				DA3D69FA8487364102311CBF0502E7CF /* Pods-JelloSwift_Example-acknowledgements.markdown */,
+				74A8079B1EAD09544F4DDE7CDAF4F75A /* Pods-JelloSwift_Example-acknowledgements.plist */,
+				CBCBE9B23921F466A17310E96A2DE1A5 /* Pods-JelloSwift_Example-dummy.m */,
+				7D9EF471D2FC2F31221C1F53B38DB862 /* Pods-JelloSwift_Example-frameworks.sh */,
+				BB9A14C2E0425DE8D1E1A2A05E248D2F /* Pods-JelloSwift_Example-resources.sh */,
+				E9FA0DE585CDF087A308B3966AC48F90 /* Pods-JelloSwift_Example-umbrella.h */,
+				2D555E66E72A4EF79B54F3CF3E7A0CF6 /* Pods-JelloSwift_Example.debug.xcconfig */,
+				54C2DE0E59BEB72844262B5F2714CB5B /* Pods-JelloSwift_Example.release.xcconfig */,
+			);
+			name = "Pods-JelloSwift_Example";
+			path = "Target Support Files/Pods-JelloSwift_Example";
 			sourceTree = "<group>";
 		};
 		FDAC8EA0E39C9FE4EA2C91E11B5CAED9 /* Targets Support Files */ = {
 			isa = PBXGroup;
 			children = (
-				26E3DFF7294784AD409F06055611EBE0 /* Pods-JelloSwift_Example */,
-				F945D20AF77B5C9B5DC7763B72C6EB47 /* Pods-JelloSwift_Example-JelloSwift_Tests */,
+				F46E4B9003361E821D19BF223EF126A6 /* Pods-JelloSwift_Example */,
+				4216DDBD5586E57D035152E700CE76FD /* Pods-JelloSwift_Example-JelloSwift_Tests */,
 			);
 			name = "Targets Support Files";
 			sourceTree = "<group>";
@@ -429,57 +430,78 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
-		06D45D108FAF1DFF97F732D6A6C6B805 /* Headers */ = {
+		2295753760E20C6A7928C4A8575E7280 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F246B78B0762F9D420B3E266B05CAF7E /* Pods-JelloSwift_Example-umbrella.h in Headers */,
+				4D23653287FE1E17F6EF380F19620301 /* Pods-JelloSwift_Example-umbrella.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		9AD123049BC57E294D04CA26603C066E /* Headers */ = {
+		3862FB817079D4951020E4F8BDE21881 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7C4AA7B74E296CEC22932D9C8FA7D99F /* JelloSwift-umbrella.h in Headers */,
+				FC9D8D63D49BB1EA6A2106A08304FDA7 /* Pods-JelloSwift_Example-JelloSwift_Tests-umbrella.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		C0C128A22C55E9C621A1BC1185EF9851 /* Headers */ = {
+		C01A3C46542541E2451805E32F9F6229 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7120C75A5F8DEFF9CB3C13F5EC3EC8F7 /* bucketalloc.h in Headers */,
-				47D34335F8988CFC2E59E6195AFDC515 /* dict.h in Headers */,
-				C172CC9A19620B9A45DD83EA533E4D07 /* geom.h in Headers */,
-				96633FF1B21FF926FFB45BF9EDAE9855 /* LibTessSwift-umbrella.h in Headers */,
-				BD7AAA6547D0619792D7985C9DB9978C /* mesh.h in Headers */,
-				BF61D39DF6BE177E3244EF72B43786A3 /* objc-clang.h in Headers */,
-				781504BDA52E1C84222639B54BB9086A /* priorityq.h in Headers */,
-				C3B992FEDDFAB4B0C8E64378F46A9836 /* sweep.h in Headers */,
-				AA40641E5ACC5E2F633F180C6653D505 /* tess.h in Headers */,
-				ABB6437EE4D036FF07C88F8CA1DF7546 /* tesselator.h in Headers */,
+				0FBC132F945668791816E284AB61A260 /* bucketalloc.h in Headers */,
+				C150845276102C21E40AA1BFB0E8276C /* dict.h in Headers */,
+				1F25B5EB4764C4B8663077328C12547C /* geom.h in Headers */,
+				B7DB567856F9B7C264EB2BE1E784BB80 /* LibTessSwift-umbrella.h in Headers */,
+				1B26C6DD8F6090BA5DED66364809FF3C /* mesh.h in Headers */,
+				AC6E3DB8921E8CFCD6DA718BDFFA7D72 /* objc-clang.h in Headers */,
+				D3038D04B76C2929DC6EC40FCF54AE50 /* priorityq.h in Headers */,
+				784F889520C7037F21A19E79549FB4DB /* sweep.h in Headers */,
+				DCDA5D14BE2EF4D922A3C99B0DE835BB /* tess.h in Headers */,
+				8C94A5DF2A6DFD79E71A023CF43C5EE5 /* tesselator.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		F9393F6B218DA854B29BCADDCCDE5468 /* Headers */ = {
+		F909504EE93BF9DD87E8D9FFD0882758 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D7AB7B6E572DD5294E424AE3C39CD2A6 /* Pods-JelloSwift_Example-JelloSwift_Tests-umbrella.h in Headers */,
+				B26937932355223BA77F80B3B002512E /* JelloSwift-umbrella.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		0DE8BC21211A225D8210F937A592517E /* LibTessSwift */ = {
+		0D9C3D864155A240A28AFA3C1F68207F /* Pods-JelloSwift_Example-JelloSwift_Tests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = B16889A38BD4255700DDA11BB2834220 /* Build configuration list for PBXNativeTarget "LibTessSwift" */;
+			buildConfigurationList = C75565C827AD6DEDA38C8229C3B61C23 /* Build configuration list for PBXNativeTarget "Pods-JelloSwift_Example-JelloSwift_Tests" */;
 			buildPhases = (
-				62FC86A2C95C27360B9F82576235CFE3 /* Sources */,
-				D1D2266E768B5BBBC0ED23E6E3783493 /* Frameworks */,
-				C0C128A22C55E9C621A1BC1185EF9851 /* Headers */,
+				3862FB817079D4951020E4F8BDE21881 /* Headers */,
+				F58F13C9A682DD2DD6DCFA412C7B835C /* Sources */,
+				C1918DAF30B5D3BAFFBE890E88AD13C9 /* Frameworks */,
+				12DE4AA865835ED19C5126304F584295 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D510D4AF307C7A00E0720EAB5D080587 /* PBXTargetDependency */,
+				FA607EDE32AE173F7D4179D14202F56C /* PBXTargetDependency */,
+			);
+			name = "Pods-JelloSwift_Example-JelloSwift_Tests";
+			productName = "Pods-JelloSwift_Example-JelloSwift_Tests";
+			productReference = 3053AFDF68F9E33BE18679555EBC55CE /* Pods_JelloSwift_Example_JelloSwift_Tests.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		81C42841B3A8AC28336A17E93697FE9B /* LibTessSwift */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 920DDB8F56C7DE8210CB3BF467D42017 /* Build configuration list for PBXNativeTarget "LibTessSwift" */;
+			buildPhases = (
+				C01A3C46542541E2451805E32F9F6229 /* Headers */,
+				1F6FD249B0B88D4165971B77D17DF237 /* Sources */,
+				8FB9BEC4F207ABB8D59565C96868A777 /* Frameworks */,
+				052FB310E6D2260DF70CEB2C77C5400A /* Resources */,
 			);
 			buildRules = (
 			);
@@ -490,32 +512,34 @@
 			productReference = F0394FF117028D2740757371C4E26974 /* LibTessSwift.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		11684911469D821DDA0B5A3086E14276 /* Pods-JelloSwift_Example */ = {
+		8E9165922BB9F6980836D265489AD50A /* Pods-JelloSwift_Example */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = F99FB53D0AEC6CF8CBAAB03E75AA53AA /* Build configuration list for PBXNativeTarget "Pods-JelloSwift_Example" */;
+			buildConfigurationList = 9CEB38751975A9AE50E55BC4DB2BF39D /* Build configuration list for PBXNativeTarget "Pods-JelloSwift_Example" */;
 			buildPhases = (
-				AC591C11B7ED3A3EBB7B93A4980D0C40 /* Sources */,
-				9476FD2C835B0DD50F9545CB716A9B42 /* Frameworks */,
-				06D45D108FAF1DFF97F732D6A6C6B805 /* Headers */,
+				2295753760E20C6A7928C4A8575E7280 /* Headers */,
+				92C8ADE6B607E987715B05B2E52C9820 /* Sources */,
+				99037A9A75BBCECBFF368B6AE8135955 /* Frameworks */,
+				C5A28B303E20CA7D08D1B17F2C946FBF /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				AD6574464AA57F782FDD735270885BF3 /* PBXTargetDependency */,
-				FF4D11190FCC857FA780D3F6AE33CAB4 /* PBXTargetDependency */,
+				34E346C4071A3194ADBA4F1920F2958B /* PBXTargetDependency */,
+				4697FB7A7CB4E0E657A479B283A0811B /* PBXTargetDependency */,
 			);
 			name = "Pods-JelloSwift_Example";
 			productName = "Pods-JelloSwift_Example";
 			productReference = CD95627B401DE92C80E68D2A1F05338E /* Pods_JelloSwift_Example.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		65F37B549207EA036BF652A5D7E935F7 /* JelloSwift */ = {
+		D898F8124D0288F22754E03FEE5CBD64 /* JelloSwift */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = E2CA4F369BD070801B96BB5BCF0C4E05 /* Build configuration list for PBXNativeTarget "JelloSwift" */;
+			buildConfigurationList = 424791F02394237432A8D40B90213710 /* Build configuration list for PBXNativeTarget "JelloSwift" */;
 			buildPhases = (
-				5037237F52551C2D89838FFFAC9C1F2A /* Sources */,
-				C0AF11B0AAD50ECD01195051FA169E1B /* Frameworks */,
-				9AD123049BC57E294D04CA26603C066E /* Headers */,
+				F909504EE93BF9DD87E8D9FFD0882758 /* Headers */,
+				345327BAAB4E8F29A8C6AF874FB67582 /* Sources */,
+				56A8C2CB6818D6D3F59D49B5C07D2783 /* Frameworks */,
+				A6B2313737F4C3AE942B6286903D1299 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -526,32 +550,13 @@
 			productReference = AE3F126648C196E9C40AD5535D2DA525 /* JelloSwift.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		79FB218B6A2DC191444ECF4F999C496B /* Pods-JelloSwift_Example-JelloSwift_Tests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = E8055E3BC73FBB7C9E5CE78A3B6AEF6F /* Build configuration list for PBXNativeTarget "Pods-JelloSwift_Example-JelloSwift_Tests" */;
-			buildPhases = (
-				3254CD274E85C15BB6C9AC3E2EA49668 /* Sources */,
-				744EA91F20570EFB51287B4E7CECAE93 /* Frameworks */,
-				F9393F6B218DA854B29BCADDCCDE5468 /* Headers */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				D2D25D19E3A6E7EE2E475988F1D6CC9D /* PBXTargetDependency */,
-				3E7D6956021CC5690FC96831B8E317B6 /* PBXTargetDependency */,
-			);
-			name = "Pods-JelloSwift_Example-JelloSwift_Tests";
-			productName = "Pods-JelloSwift_Example-JelloSwift_Tests";
-			productReference = 3053AFDF68F9E33BE18679555EBC55CE /* Pods_JelloSwift_Example_JelloSwift_Tests.framework */;
-			productType = "com.apple.product-type.framework";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		D41D8CD98F00B204E9800998ECF8427E /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0830;
+				LastSwiftUpdateCheck = 0930;
 				LastUpgradeCheck = 0930;
 			};
 			buildConfigurationList = 2D8E8EC45A3A1A1D94AE762CB5028504 /* Build configuration list for PBXProject "Pods" */;
@@ -566,115 +571,249 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				65F37B549207EA036BF652A5D7E935F7 /* JelloSwift */,
-				0DE8BC21211A225D8210F937A592517E /* LibTessSwift */,
-				11684911469D821DDA0B5A3086E14276 /* Pods-JelloSwift_Example */,
-				79FB218B6A2DC191444ECF4F999C496B /* Pods-JelloSwift_Example-JelloSwift_Tests */,
+				D898F8124D0288F22754E03FEE5CBD64 /* JelloSwift */,
+				81C42841B3A8AC28336A17E93697FE9B /* LibTessSwift */,
+				8E9165922BB9F6980836D265489AD50A /* Pods-JelloSwift_Example */,
+				0D9C3D864155A240A28AFA3C1F68207F /* Pods-JelloSwift_Example-JelloSwift_Tests */,
 			);
 		};
 /* End PBXProject section */
 
+/* Begin PBXResourcesBuildPhase section */
+		052FB310E6D2260DF70CEB2C77C5400A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		12DE4AA865835ED19C5126304F584295 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A6B2313737F4C3AE942B6286903D1299 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C5A28B303E20CA7D08D1B17F2C946FBF /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
-		3254CD274E85C15BB6C9AC3E2EA49668 /* Sources */ = {
+		1F6FD249B0B88D4165971B77D17DF237 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9F1C14C714AA2EDDEF534046EACE7C91 /* Pods-JelloSwift_Example-JelloSwift_Tests-dummy.m in Sources */,
+				AF78FF3B73FA35CEFEB723E5861D1E16 /* bucketalloc.c in Sources */,
+				141A514B48F1AA5122A8387640B56D23 /* dict.c in Sources */,
+				F660C9D7656F4BC164E868BCAB7BC08B /* geom.c in Sources */,
+				1FED78B897A700AF9870463A914FC274 /* LibTessSwift-dummy.m in Sources */,
+				57A916980D9C46E52FB118D8472E9905 /* MemAllocators.swift in Sources */,
+				381A1275A099A180629C2C2657984B8C /* mesh.c in Sources */,
+				0E4B1DE2C4F576421FAB90A340067677 /* priorityq.c in Sources */,
+				FFAF201FBFD3EFB00EEF27DAA33CD129 /* Public.swift in Sources */,
+				C8D294275699DF1EC8086CE7D582683E /* sweep.c in Sources */,
+				6621C9D1BDC808F1EC914502D176225E /* tess.c in Sources */,
+				FB394801586AA49D9C01E88253B3B9F4 /* TessC.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		5037237F52551C2D89838FFFAC9C1F2A /* Sources */ = {
+		345327BAAB4E8F29A8C6AF874FB67582 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1AF96FBB63711B35CC4862AF772023BE /* AABB.swift in Sources */,
-				BC33200AE577E59D38A5C98E9EAACC06 /* Bitmask.swift in Sources */,
-				294A66FA600172CDE45DBBC983EC7428 /* Body.swift in Sources */,
-				EA3C417E5B9554948BE709DA8E0B67D8 /* BodyCollisionInformation.swift in Sources */,
-				AD3B26DFF876FA0748847F983D98D7FA /* BodyComponent.swift in Sources */,
-				ADBF6B263734E0F5309363FF4A7A76E2 /* BodyEdge.swift in Sources */,
-				D02D6E619957B5905C078DDDA84E8758 /* BodyJoint.swift in Sources */,
-				6DCE3FE20FE47A1FF68B7E87DECFD7D3 /* BodyJointLink.swift in Sources */,
-				89A8FAAC04BF7869177A7F71A3433ECC /* ClosedShape.swift in Sources */,
-				8E1ADA88685144064A6B28B18A53537F /* CollisionObserver.swift in Sources */,
-				1ACBBE6CB35EEF396B21D4BC711A407D /* EdgeJointLink.swift in Sources */,
-				57FFFF3F904296C3DD13DC828E3BE5B0 /* GeomUtils.swift in Sources */,
-				51326583C357881CF23A4622B8273479 /* GravityComponent.swift in Sources */,
-				F7B6EB84870CA9BB56B6ABFAD7FAFEFF /* InternalSpring.swift in Sources */,
-				6A475AEF36C98E2FAB9A60C2EA155DF3 /* JelloSwift-dummy.m in Sources */,
-				56E84A21DD336EAA5CE228A7CB3CBB8B /* MaterialPair.swift in Sources */,
-				8E6AEA71CF0082B24C563F9E84F07F4F /* PhysicsUtils.swift in Sources */,
-				3293F8768DFC0D1AAE55B5698F07AC7F /* PointJointLink.swift in Sources */,
-				EA55DDEFE0A1F24721B8AC50CB49952A /* PointMass.swift in Sources */,
-				E67546F1938E23E4CFC73512F8C72592 /* PressureComponent.swift in Sources */,
-				299F07C8451392660288FCFC5E8E99A2 /* RenderingSettings.swift in Sources */,
-				03694899BF8CE15E86B577375145B5C2 /* RestDistance.swift in Sources */,
-				91BBCF5A729F8F014B8FBF070D3F0682 /* ShapeJointLink.swift in Sources */,
-				B96047130A1F3A04C5A22CEE84AD6E9C /* SpringBodyJoint.swift in Sources */,
-				E01F35B96286FDD52399EFD500660D4F /* SpringComponent.swift in Sources */,
-				E36891B6AD73C770D61C30C15E33BBAA /* Utils.swift in Sources */,
-				8617AE8BD4AFB72C9662933EC4BF6C91 /* Vector2.swift in Sources */,
-				B3CACB23577612D249670B40B8939A30 /* World.swift in Sources */,
+				5CBBCE5FBF34FC6217F8B18655CD24E2 /* AABB.swift in Sources */,
+				06CC6AB908B56FFFAB9062E8D1C5CFE6 /* Bitmask.swift in Sources */,
+				71F5DAED7C04CDBB69E3B4A9FDE6F25C /* Body.swift in Sources */,
+				BB2DB516D4EF99E2A7F7AF29D6B0ECCF /* BodyCollisionInformation.swift in Sources */,
+				D4EFDE5EDD33C7477AFB4AA1EA954AC5 /* BodyComponent.swift in Sources */,
+				AE20995A88E191E26514ADFA34A25F84 /* BodyEdge.swift in Sources */,
+				3DD2126D90322BB416FA2481C692CBF8 /* BodyJoint.swift in Sources */,
+				BF9B494AA14B05205AE7DC5EA0FB26C7 /* BodyJointLink.swift in Sources */,
+				47D566D1506D6E51E3F0CA46665E40F6 /* ClosedShape.swift in Sources */,
+				996E4FF3C800C9C1FCE6450F415FC559 /* CollisionObserver.swift in Sources */,
+				B2D8C9D8C94314F6A16057341FCBED0C /* EdgeJointLink.swift in Sources */,
+				BF2180E6DA82A5EDD703D9C1F954E399 /* GeomUtils.swift in Sources */,
+				EA9339BAB7534FC80D11743E89B8BA05 /* GravityComponent.swift in Sources */,
+				CE8096BEEA467202634476151E1C653F /* InternalSpring.swift in Sources */,
+				44A8242F6BED9119DA8B4204B90A5234 /* JelloSwift-dummy.m in Sources */,
+				DD4E7F0071BAEF2F15DFD777B987250E /* MaterialPair.swift in Sources */,
+				D0FF0F5C8FAF6161855BA8FD03DD31BF /* PhysicsUtils.swift in Sources */,
+				A67BC639AB090D93BCDD037B2D69BF03 /* PointJointLink.swift in Sources */,
+				456A85EC5FD1EE125B1D71CD0A8B5CE0 /* PointMass.swift in Sources */,
+				36886DDCDF817BB1F31592ADEFEFA6CE /* PressureComponent.swift in Sources */,
+				51AF71E434A0F89A415E4511F0A46E9B /* RenderingSettings.swift in Sources */,
+				78E2931315DD407B866979811B0181AE /* RestDistance.swift in Sources */,
+				86A6DB3BD4B709EEB5A1D0DEB1262A26 /* ShapeJointLink.swift in Sources */,
+				789599A3F6C111C6FB312BFFD6AC2611 /* SpringBodyJoint.swift in Sources */,
+				85B28718657908F5221AFF9EE09045F2 /* SpringComponent.swift in Sources */,
+				8C027D67C9CC9B0D782868061F1FF226 /* Utils.swift in Sources */,
+				656846CAB355E055FD973615EACC35D5 /* Vector2.swift in Sources */,
+				628CB6AA917CA70505FC7C786E8D8BD5 /* World.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		62FC86A2C95C27360B9F82576235CFE3 /* Sources */ = {
+		92C8ADE6B607E987715B05B2E52C9820 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				30D6DCCA3C49BEADA52DB29D75AE793C /* bucketalloc.c in Sources */,
-				EDBEF4EC7FBC86488D5525A00CE1CCB0 /* dict.c in Sources */,
-				677E05EFEAD3DD9FEBAFD0B1E5B74ED2 /* geom.c in Sources */,
-				C08F05BD20589CF5D51D0628499F35A9 /* LibTessSwift-dummy.m in Sources */,
-				0B94607D46CB7E2B8429E16474074C12 /* MemAllocators.swift in Sources */,
-				F590461F01B6E1462ABD2A9267D740EC /* mesh.c in Sources */,
-				D411597780DB428090AFEF4D58B5588D /* priorityq.c in Sources */,
-				3C7D78A8CFDFDA4C101B72E7DC41E16A /* Public.swift in Sources */,
-				56E4A3F5B889622B98BA0D14DB3B9546 /* sweep.c in Sources */,
-				043A3C9944639F7C2A334A7F8F842688 /* tess.c in Sources */,
-				6878F3E148ED02B18B95F6D6B9CC6A3A /* TessC.swift in Sources */,
+				71A4070D741F8F6C47FB130EE9287296 /* Pods-JelloSwift_Example-dummy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		AC591C11B7ED3A3EBB7B93A4980D0C40 /* Sources */ = {
+		F58F13C9A682DD2DD6DCFA412C7B835C /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4D22D5FDA3ED784E082C9E7225C68CD6 /* Pods-JelloSwift_Example-dummy.m in Sources */,
+				BC8CCB526A0C88C5A455665BB1FD710B /* Pods-JelloSwift_Example-JelloSwift_Tests-dummy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		3E7D6956021CC5690FC96831B8E317B6 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = LibTessSwift;
-			target = 0DE8BC21211A225D8210F937A592517E /* LibTessSwift */;
-			targetProxy = 33BADD6808164302B3B781F24F173260 /* PBXContainerItemProxy */;
-		};
-		AD6574464AA57F782FDD735270885BF3 /* PBXTargetDependency */ = {
+		34E346C4071A3194ADBA4F1920F2958B /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = JelloSwift;
-			target = 65F37B549207EA036BF652A5D7E935F7 /* JelloSwift */;
-			targetProxy = 7BD96DFAA3B8F956085CFA80B2F341EA /* PBXContainerItemProxy */;
+			target = D898F8124D0288F22754E03FEE5CBD64 /* JelloSwift */;
+			targetProxy = 43A26A82653B7547BC49791F3B2C29F2 /* PBXContainerItemProxy */;
 		};
-		D2D25D19E3A6E7EE2E475988F1D6CC9D /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = JelloSwift;
-			target = 65F37B549207EA036BF652A5D7E935F7 /* JelloSwift */;
-			targetProxy = 6925F844501F7B684101F2E8793C7723 /* PBXContainerItemProxy */;
-		};
-		FF4D11190FCC857FA780D3F6AE33CAB4 /* PBXTargetDependency */ = {
+		4697FB7A7CB4E0E657A479B283A0811B /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = LibTessSwift;
-			target = 0DE8BC21211A225D8210F937A592517E /* LibTessSwift */;
-			targetProxy = 1F0AAD83B14A7A3465864E57D4568F4A /* PBXContainerItemProxy */;
+			target = 81C42841B3A8AC28336A17E93697FE9B /* LibTessSwift */;
+			targetProxy = 12439EAC4294D569155200C676458D91 /* PBXContainerItemProxy */;
+		};
+		D510D4AF307C7A00E0720EAB5D080587 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = JelloSwift;
+			target = D898F8124D0288F22754E03FEE5CBD64 /* JelloSwift */;
+			targetProxy = 6B25172BD6C1B87EB2B02094A6D78128 /* PBXContainerItemProxy */;
+		};
+		FA607EDE32AE173F7D4179D14202F56C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = LibTessSwift;
+			target = 81C42841B3A8AC28336A17E93697FE9B /* LibTessSwift */;
+			targetProxy = 4A1E701F86D1C4E985B3C9B460897543 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		1CDAB5613991E411E5990BAF694995C5 /* Debug */ = {
+		3675C1CFD2032E46ADF9FA94120957D9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = B1F0011792EF2AC3F8C6EC7E2154EA59 /* Pods-JelloSwift_Example-JelloSwift_Tests.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "Target Support Files/Pods-JelloSwift_Example-JelloSwift_Tests/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-JelloSwift_Example-JelloSwift_Tests/Pods-JelloSwift_Example-JelloSwift_Tests.modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		4863196F72918ABC031DDA8471AE317F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8622EC8DB51068E70CB80AB55125DFDE /* JelloSwift.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/JelloSwift/JelloSwift-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/JelloSwift/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/JelloSwift/JelloSwift.modulemap";
+				PRODUCT_MODULE_NAME = JelloSwift;
+				PRODUCT_NAME = JelloSwift;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		4E9BAAB1F886B9FB73692BEA2E4C5B66 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 865D9664B063E17A58C4EE9C203C8742 /* Pods-JelloSwift_Example-JelloSwift_Tests.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "Target Support Files/Pods-JelloSwift_Example-JelloSwift_Tests/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-JelloSwift_Example-JelloSwift_Tests/Pods-JelloSwift_Example-JelloSwift_Tests.modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		73ABC2D18F03827B7773405E7F2AD926 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -684,6 +823,7 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
@@ -705,6 +845,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_ALLOWED = NO;
 				CODE_SIGNING_REQUIRED = NO;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -726,149 +867,17 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
-				MTL_ENABLE_DEBUG_INFO = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = NO_SIGNING/;
 				STRIP_INSTALLED_PRODUCT = NO;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SYMROOT = "${SRCROOT}/../build";
 			};
 			name = Debug;
 		};
-		2A038BBE8E4D00C9959A1D47DC84FED8 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 00586068FE12054F2C9E80EACDF72BA8 /* LibTessSwift.xcconfig */;
-			buildSettings = {
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GCC_PREFIX_HEADER = "Target Support Files/LibTessSwift/LibTessSwift-prefix.pch";
-				INFOPLIST_FILE = "Target Support Files/LibTessSwift/Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MODULEMAP_FILE = "Target Support Files/LibTessSwift/LibTessSwift.modulemap";
-				PRODUCT_NAME = LibTessSwift;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Debug;
-		};
-		3C25FF3E0EB4D9873B3D70EE821FE61B /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 00586068FE12054F2C9E80EACDF72BA8 /* LibTessSwift.xcconfig */;
-			buildSettings = {
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GCC_PREFIX_HEADER = "Target Support Files/LibTessSwift/LibTessSwift-prefix.pch";
-				INFOPLIST_FILE = "Target Support Files/LibTessSwift/Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MODULEMAP_FILE = "Target Support Files/LibTessSwift/LibTessSwift.modulemap";
-				PRODUCT_NAME = LibTessSwift;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_COMPILATION_MODE = wholemodule;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Release;
-		};
-		69888B9B5510C1ADC2CD3C9CB6D23178 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = B621AEB82EB8EE04F9406579688C3710 /* JelloSwift.xcconfig */;
-			buildSettings = {
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GCC_PREFIX_HEADER = "Target Support Files/JelloSwift/JelloSwift-prefix.pch";
-				INFOPLIST_FILE = "Target Support Files/JelloSwift/Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MODULEMAP_FILE = "Target Support Files/JelloSwift/JelloSwift.modulemap";
-				PRODUCT_NAME = JelloSwift;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_COMPILATION_MODE = wholemodule;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Release;
-		};
-		7865C2DD6B21AA8151DC6BD2C4F51470 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = B621AEB82EB8EE04F9406579688C3710 /* JelloSwift.xcconfig */;
-			buildSettings = {
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GCC_PREFIX_HEADER = "Target Support Files/JelloSwift/JelloSwift-prefix.pch";
-				INFOPLIST_FILE = "Target Support Files/JelloSwift/Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MODULEMAP_FILE = "Target Support Files/JelloSwift/JelloSwift.modulemap";
-				PRODUCT_NAME = JelloSwift;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Debug;
-		};
-		7B62A85C412D689EF418FA67DA770A41 /* Release */ = {
+		9B6B989AABD96BB9DECB1784EA5E2534 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -878,6 +887,7 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
@@ -899,6 +909,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_ALLOWED = NO;
 				CODE_SIGNING_REQUIRED = NO;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -918,18 +929,17 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = NO_SIGNING/;
 				STRIP_INSTALLED_PRODUCT = NO;
 				SYMROOT = "${SRCROOT}/../build";
 			};
 			name = Release;
 		};
-		D69108A4DF48DA65282A922C6640C6E2 /* Release */ = {
+		9F356727957CD99D9613438955819F78 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 584F6C42452259E2C39A55A78140187A /* Pods-JelloSwift_Example-JelloSwift_Tests.release.xcconfig */;
+			baseConfigurationReference = 8622EC8DB51068E70CB80AB55125DFDE /* JelloSwift.xcconfig */;
 			buildSettings = {
-				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
@@ -939,20 +949,20 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = "Target Support Files/Pods-JelloSwift_Example-JelloSwift_Tests/Info.plist";
+				GCC_PREFIX_HEADER = "Target Support Files/JelloSwift/JelloSwift-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/JelloSwift/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MACH_O_TYPE = staticlib;
-				MODULEMAP_FILE = "Target Support Files/Pods-JelloSwift_Example-JelloSwift_Tests/Pods-JelloSwift_Example-JelloSwift_Tests.modulemap";
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = Pods_JelloSwift_Example_JelloSwift_Tests;
+				MODULEMAP_FILE = "Target Support Files/JelloSwift/JelloSwift.modulemap";
+				PRODUCT_MODULE_NAME = JelloSwift;
+				PRODUCT_NAME = JelloSwift;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -960,11 +970,77 @@
 			};
 			name = Release;
 		};
-		D6EAED10E55551C207AE4F4422B9C5BF /* Release */ = {
+		B2E8E051C0FA3B29D2460EF5DFDD4100 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = EE8C8270300E8C535E219A54367AFA21 /* Pods-JelloSwift_Example.release.xcconfig */;
+			baseConfigurationReference = 2B4EE1B4A216E53F6EB03D4542129A1E /* LibTessSwift.xcconfig */;
 			buildSettings = {
-				CLANG_ENABLE_OBJC_WEAK = YES;
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/LibTessSwift/LibTessSwift-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/LibTessSwift/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/LibTessSwift/LibTessSwift.modulemap";
+				PRODUCT_MODULE_NAME = LibTessSwift;
+				PRODUCT_NAME = LibTessSwift;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		B4CCFF137E1F3A840562016FFB4BBBDB /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2B4EE1B4A216E53F6EB03D4542129A1E /* LibTessSwift.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/LibTessSwift/LibTessSwift-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/LibTessSwift/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/LibTessSwift/LibTessSwift.modulemap";
+				PRODUCT_MODULE_NAME = LibTessSwift;
+				PRODUCT_NAME = LibTessSwift;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		F30563F0262CB3EABA4D1C7C00371FF0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2D555E66E72A4EF79B54F3CF3E7A0CF6 /* Pods-JelloSwift_Example.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
@@ -984,22 +1060,22 @@
 				OTHER_LIBTOOLFLAGS = "";
 				PODS_ROOT = "$(SRCROOT)";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = Pods_JelloSwift_Example;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
-			name = Release;
+			name = Debug;
 		};
-		DBD47BE65862C94D401AF71237FB407E /* Debug */ = {
+		FC077B73B6E839833A51FEEEACA25863 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8090FBBAC000EB7AA32E404CDCF15E70 /* Pods-JelloSwift_Example.debug.xcconfig */;
+			baseConfigurationReference = 54C2DE0E59BEB72844262B5F2714CB5B /* Pods-JelloSwift_Example.release.xcconfig */;
 			buildSettings = {
-				CLANG_ENABLE_OBJC_WEAK = YES;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
@@ -1019,51 +1095,17 @@
 				OTHER_LIBTOOLFLAGS = "";
 				PODS_ROOT = "$(SRCROOT)";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = Pods_JelloSwift_Example;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
-			name = Debug;
-		};
-		FD86AD42F708E7F01ED5A76B1889871C /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 60F3A72B5834ABA02B5B6983B28BD2B1 /* Pods-JelloSwift_Example-JelloSwift_Tests.debug.xcconfig */;
-			buildSettings = {
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = "Target Support Files/Pods-JelloSwift_Example-JelloSwift_Tests/Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MACH_O_TYPE = staticlib;
-				MODULEMAP_FILE = "Target Support Files/Pods-JelloSwift_Example-JelloSwift_Tests/Pods-JelloSwift_Example-JelloSwift_Tests.modulemap";
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = Pods_JelloSwift_Example_JelloSwift_Tests;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Debug;
+			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
@@ -1071,44 +1113,44 @@
 		2D8E8EC45A3A1A1D94AE762CB5028504 /* Build configuration list for PBXProject "Pods" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				1CDAB5613991E411E5990BAF694995C5 /* Debug */,
-				7B62A85C412D689EF418FA67DA770A41 /* Release */,
+				73ABC2D18F03827B7773405E7F2AD926 /* Debug */,
+				9B6B989AABD96BB9DECB1784EA5E2534 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		B16889A38BD4255700DDA11BB2834220 /* Build configuration list for PBXNativeTarget "LibTessSwift" */ = {
+		424791F02394237432A8D40B90213710 /* Build configuration list for PBXNativeTarget "JelloSwift" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				2A038BBE8E4D00C9959A1D47DC84FED8 /* Debug */,
-				3C25FF3E0EB4D9873B3D70EE821FE61B /* Release */,
+				4863196F72918ABC031DDA8471AE317F /* Debug */,
+				9F356727957CD99D9613438955819F78 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		E2CA4F369BD070801B96BB5BCF0C4E05 /* Build configuration list for PBXNativeTarget "JelloSwift" */ = {
+		920DDB8F56C7DE8210CB3BF467D42017 /* Build configuration list for PBXNativeTarget "LibTessSwift" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				7865C2DD6B21AA8151DC6BD2C4F51470 /* Debug */,
-				69888B9B5510C1ADC2CD3C9CB6D23178 /* Release */,
+				B2E8E051C0FA3B29D2460EF5DFDD4100 /* Debug */,
+				B4CCFF137E1F3A840562016FFB4BBBDB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		E8055E3BC73FBB7C9E5CE78A3B6AEF6F /* Build configuration list for PBXNativeTarget "Pods-JelloSwift_Example-JelloSwift_Tests" */ = {
+		9CEB38751975A9AE50E55BC4DB2BF39D /* Build configuration list for PBXNativeTarget "Pods-JelloSwift_Example" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				FD86AD42F708E7F01ED5A76B1889871C /* Debug */,
-				D69108A4DF48DA65282A922C6640C6E2 /* Release */,
+				F30563F0262CB3EABA4D1C7C00371FF0 /* Debug */,
+				FC077B73B6E839833A51FEEEACA25863 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		F99FB53D0AEC6CF8CBAAB03E75AA53AA /* Build configuration list for PBXNativeTarget "Pods-JelloSwift_Example" */ = {
+		C75565C827AD6DEDA38C8229C3B61C23 /* Build configuration list for PBXNativeTarget "Pods-JelloSwift_Example-JelloSwift_Tests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				DBD47BE65862C94D401AF71237FB407E /* Debug */,
-				D6EAED10E55551C207AE4F4422B9C5BF /* Release */,
+				4E9BAAB1F886B9FB73692BEA2E4C5B66 /* Debug */,
+				3675C1CFD2032E46ADF9FA94120957D9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

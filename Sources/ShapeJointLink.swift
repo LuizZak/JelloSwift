@@ -24,7 +24,7 @@ open class ShapeJointLink: JointLink {
     open fileprivate(set) unowned var body: Body
     
     /// Gets the type of joint this joint link represents
-    open let linkType = LinkType.shape
+    public let linkType = LinkType.shape
     
     /// The offset to apply to the position of this shape joint, in body 
     /// coordinates

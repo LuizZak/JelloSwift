@@ -24,7 +24,7 @@ open class EdgeJointLink: JointLink {
     open fileprivate(set) unowned var body: Body
     
     /// Gets the type of joint this joint link represents
-    open let linkType = LinkType.edge
+    public let linkType = LinkType.edge
     
     /// Gets the position, in world coordinates, at which this joint links with 
     /// the underlying body
