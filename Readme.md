@@ -54,10 +54,6 @@ let package = Package(
 )
 ```
 
-## Author
-
-LuizZak, luizinho_mack@yahoo.com.br
-
 ## License
 
 JelloSwift is available under the MIT license. See the LICENSE file for more info.
