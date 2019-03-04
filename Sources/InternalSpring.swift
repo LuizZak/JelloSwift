@@ -20,12 +20,20 @@ public struct InternalSpring: Codable {
     
     /// Rest distance of the spring, or the distance the spring tries to
     /// maintain
-    public var restDistance: RestDistance = 0
+    public var restDistance: RestDistance = 0 {
+        didSet {
+            restDistanceSquared = restDistance.squared()
+        }
+    }
     
     /// Initial resting distance of the spring, ignoring any plasticity deformations.
     /// This value matches the initial `restDistance` value set during spring
     /// creation.
-    public var initialRestDistance: RestDistance = 0
+    public var initialRestDistance: RestDistance = 0 {
+        didSet {
+            initialRestDistanceSquared = initialRestDistance.squared()
+        }
+    }
     
     /// Specifies the plasticity properties of this spring.
     /// If `nil`, plasticity is disabled and spring never deforms permanently.
@@ -43,6 +51,16 @@ public struct InternalSpring: Codable {
         }
     }
     
+    /// The rest distance of this spring, squared.
+    /// Always the square of the current `restDistance`, and updated automatically
+    /// whehever `restDistance` is set.
+    private(set) var restDistanceSquared: RestDistance = 0
+    
+    /// The initial rest distance of this spring, squared.
+    /// Always the square of the current `initialRestDistanceSquared`, and updated
+    /// automatically whehever `initialRestDistanceSquared` is set.
+    private(set) var initialRestDistanceSquared: RestDistance = 0
+    
     /// The spring coefficient
     public var coefficient: JFloat = 0
     
@@ -51,12 +69,27 @@ public struct InternalSpring: Codable {
     
     public init(_ pmA: Int, _ pmB: Int, _ distance: RestDistance = 0,
                 _ springK: JFloat, _ springD: JFloat) {
+        
         pointMassA = pmA
         pointMassB = pmB
         self.restDistance = distance
         initialRestDistance = distance
         coefficient = springK
         damping = springD
+    }
+    
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        
+        try pointMassA = container.decode(Int.self, forKey: .pointMassA)
+        try pointMassB = container.decode(Int.self, forKey: .pointMassB)
+        try restDistance = container.decode(RestDistance.self, forKey: .restDistance)
+        try initialRestDistance = container.decode(RestDistance.self, forKey: .initialRestDistance)
+        try coefficient = container.decode(JFloat.self, forKey: .coefficient)
+        try damping = container.decode(JFloat.self, forKey: .damping)
+        
+        restDistanceSquared = restDistance.squared()
+        initialRestDistanceSquared = initialRestDistance.squared()
     }
     
     /// Updates the plasticity settings of this spring.
@@ -73,6 +106,15 @@ public struct InternalSpring: Codable {
             calculatePlasticity(distance: distance, restDistance: restDistance,
                                 initialRestDistance: initialRestDistance,
                                 plasticity: plas)
+    }
+    
+    private enum CodingKeys: String, CodingKey {
+        case pointMassA
+        case pointMassB
+        case restDistance
+        case initialRestDistance
+        case coefficient
+        case damping
     }
 }
 

@@ -24,11 +24,11 @@ public protocol CollisionObserver: class {
 
 public extension CollisionObserver {
     
-    public func bodiesDidCollide(_ infos: [BodyCollisionInformation]) {
+    func bodiesDidCollide(_ infos: [BodyCollisionInformation]) {
         
     }
     
-    public func bodyCollision(_ info: BodyCollisionInformation, didExceedPenetrationThreshold penetrationThreshold: JFloat) {
+    func bodyCollision(_ info: BodyCollisionInformation, didExceedPenetrationThreshold penetrationThreshold: JFloat) {
         
     }
 }

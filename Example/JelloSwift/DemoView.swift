@@ -27,11 +27,7 @@ extension Vector2 {
     }
 }
 
-// Note: This view is only implemented for testing purposes - in a real use case you'd probably
-// want to use this library along with a proper hardware-accelerated rendering library.
-
-class DemoView: UIView, CollisionObserver
-{
+class DemoView: UIView, CollisionObserver {
     var context: OpenGLContext!
     
     override class var layerClass : AnyClass {
@@ -107,7 +103,7 @@ class DemoView: UIView, CollisionObserver
     func initSettings() {
         // Do any additional setup after loading the view.
         timer = CADisplayLink(target: self, selector: #selector(DemoView.gameLoop))
-        timer.add(to: RunLoop.main, forMode: RunLoopMode.defaultRunLoopMode)
+        timer.add(to: RunLoop.main, forMode: RunLoop.Mode.default)
         
         initializeLevel()
         
@@ -620,7 +616,7 @@ class DemoView: UIView, CollisionObserver
 extension DemoView {
     
     ///                                               1
-    /// Returns a 3x3 matrix for projecting into a -1 0 1 -style space such that
+    /// Returns a 3x3 matrix for projecting onto a -1 0 1 -style space such that
     ///                                              -1
     /// a [0, 0] vector projects into the top-left (1, -1), and [width, height]
     /// projects into the bottom-right (-1, 1).

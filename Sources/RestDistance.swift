@@ -97,6 +97,17 @@ public enum RestDistance: ExpressibleByFloatLiteral, ExpressibleByIntegerLiteral
             return Swift.max(min, Swift.min(max, value))
         }
     }
+    
+    /// Returns a new rest distance structure which represents the square of this
+    /// rest distance's parameters.
+    public func squared() -> RestDistance {
+        switch self {
+        case .fixed(let d):
+            return .fixed(d * 2)
+        case let .ranged(min, max):
+            return .ranged(min: min * min, max: max * max)
+        }
+    }
 }
 
 extension RestDistance: Codable {
