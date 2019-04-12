@@ -121,7 +121,7 @@ public struct Vector2: VectorRepresentable, Equatable, CustomStringConvertible, 
         return "{ \(self.x) : \(self.y) }"
     }
     
-    @usableFromInline
+    @inlinable
     init(_ vector: NativeVectorType) {
         theVector = vector
     }
