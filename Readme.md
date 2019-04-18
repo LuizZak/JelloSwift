@@ -25,7 +25,7 @@ To run the example project, clone the repo, and run `pod install` from the Examp
 
 ## Requirements
 
-To compile this project, you require Xcode 10.0 w/ Swift 4.2 installed.
+To compile this project, you require Xcode 10.2 w/ Swift 5.0 installed.
 
 ## Installation
 
@@ -47,9 +47,11 @@ import PackageDescription
 
 let package = Package(
     name: "project_name",
-    targets: [],
     dependencies: [
-        .Package(url: "https://github.com/LuizZak/JelloSwift.git", majorVersion: 0, minor: 14)
+        .package(url: "https://github.com/LuizZak/JelloSwift.git", from: "0.14.0")
+    ],
+    targets: [
+        // ...
     ]
 )
 ```

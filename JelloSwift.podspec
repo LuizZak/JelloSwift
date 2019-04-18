@@ -33,5 +33,7 @@ The intention is to write a fast and concise physics engine to be used in games 
   s.ios.deployment_target = '8.0'
   s.osx.deployment_target = '10.10'
 
+  s.swift_version = '5.0'
+
   s.source_files = 'Sources/**/*'
 end

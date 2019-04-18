@@ -88,6 +88,20 @@ class Vector2Tests: XCTestCase {
         XCTAssert(diff.y <= delta)
     }
     
+    func testMin() {
+        let vec1 = Vector2(x: 1, y: -1)
+        let vec2 = Vector2(x: 0, y: 2)
+        
+        XCTAssertEqual(min(vec1, vec2), Vector2(x: 0, y: -1))
+    }
+    
+    func testMax() {
+        let vec1 = Vector2(x: 1, y: -1)
+        let vec2 = Vector2(x: 0, y: 2)
+        
+        XCTAssertEqual(max(vec1, vec2), Vector2(x: 1, y: 2))
+    }
+    
     func testAverageVectorPerformance() {
         let input: [Vector2] = (1...1000000).map { Vector2(x: $0, y: $0) }
         

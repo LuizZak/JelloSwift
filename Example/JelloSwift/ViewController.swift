@@ -38,14 +38,14 @@ class ViewController: UIViewController {
             NSLayoutConstraint.constraints(withVisualFormat: "H:|[demo]|",
                                            options: [],
                                            metrics: nil,
-                                           views: ["demo": demo])
+                                           views: ["demo": demo as Any])
         )
         
         view.addConstraints(
             NSLayoutConstraint.constraints(withVisualFormat: "V:|[demo]|",
                                            options: [],
                                            metrics: nil,
-                                           views: ["demo": demo])
+                                           views: ["demo": demo as Any])
         )
     }
     

@@ -27,11 +27,7 @@ extension Vector2 {
     }
 }
 
-// Note: This view is only implemented for testing purposes - in a real use case you'd probably
-// want to use this library along with a proper hardware-accelerated rendering library.
-
-class DemoView: UIView, CollisionObserver
-{
+class DemoView: UIView, CollisionObserver {
     var context: OpenGLContext!
     
     override class var layerClass : AnyClass {
@@ -83,8 +79,7 @@ class DemoView: UIView, CollisionObserver
         initOpenGL()
     }
     
-    required init?(coder aDecoder: NSCoder)
-    {
+    required init?(coder aDecoder: NSCoder) {
         physicsTimeLabel = UILabel()
         renderTimeLabel = UILabel()
         
@@ -107,7 +102,7 @@ class DemoView: UIView, CollisionObserver
     func initSettings() {
         // Do any additional setup after loading the view.
         timer = CADisplayLink(target: self, selector: #selector(DemoView.gameLoop))
-        timer.add(to: RunLoop.main, forMode: RunLoopMode.defaultRunLoopMode)
+        timer.add(to: RunLoop.main, forMode: RunLoop.Mode.default)
         
         initializeLevel()
         
@@ -129,8 +124,7 @@ class DemoView: UIView, CollisionObserver
         vao = context.generateVAO()
     }
     
-    func initLabels()
-    {
+    func initLabels() {
         physicsTimeLabel.frame = CGRect(x: 20, y: 20, width: 500, height: 20)
         renderTimeLabel.frame = CGRect(x: 20, y: 37, width: 500, height: 20)
         
@@ -138,8 +132,7 @@ class DemoView: UIView, CollisionObserver
         addSubview(renderTimeLabel)
     }
     
-    func initializeLevel()
-    {
+    func initializeLevel() {
         let size = frame.size
         
         // Create basic shapes
@@ -148,8 +141,7 @@ class DemoView: UIView, CollisionObserver
         // Add a Raycasting component
         createBouncyBall(vec).addComponent(ofType: BodyRayComponent.self)
         
-        for i in 0..<6
-        {
+        for i in 0..<6 {
             let v = vec + Vector2(x: CGFloat(i - 3), y: CGFloat(2 + i * 1))
             
             let ball = createBouncyBall(v)
@@ -225,22 +217,17 @@ class DemoView: UIView, CollisionObserver
     
     // MARK: - Touch
     
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?)
-    {
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         /* Called when a touch begins */
-        if inputMode == .createBall
-        {
-            for touch: AnyObject in touches
-            {
+        if inputMode == .createBall {
+            for touch: AnyObject in touches {
                 let location = touch.location(in: self)
                 
                 let vecLoc = Vector2(x: location.x, y: location.y).inWorldCoords
                 
                 createBouncyBall(vecLoc)
             }
-        }
-        else if inputMode == .dragBody
-        {
+        } else if inputMode == .dragBody {
             // Select the closest point-mass to drag
             let touch: UITouch = touches.first!
             let location = touch.location(in: self)
@@ -250,23 +237,20 @@ class DemoView: UIView, CollisionObserver
         }
     }
     
-    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?)
-    {
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         let touch: AnyObject = touches.first!
         let location = touch.location(in: self)
         fingerLocation = Vector2(x: location.x, y: location.y).inWorldCoords
     }
     
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?)
-    {
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         // Reset dragging point
         draggingPoint = nil
     }
     
     // MARK: - Drawing
     
-    func render()
-    {  
+    func render() {
         let sw = Stopwatch.startNew()
         
         world.joints.forEach(drawJoint)
@@ -294,11 +278,9 @@ class DemoView: UIView, CollisionObserver
         
         drawDrag()
         
-        if useDetailedRender
-        {
+        if useDetailedRender {
             // Draw collisions
-            for info in collisions
-            {
+            for info in collisions {
                 let pointB = info.hitPt
                 let normal = info.normal
                 
@@ -310,8 +292,7 @@ class DemoView: UIView, CollisionObserver
         
         renderOpenGL()
         
-        if let duration = renderLabelStopwatch.duration, duration > updateInterval
-        {
+        if let duration = renderLabelStopwatch.duration, duration > updateInterval {
             renderLabelStopwatch.reset()
             
             let time = round(sw.stop() * 1000 * 20) / 20
@@ -323,14 +304,12 @@ class DemoView: UIView, CollisionObserver
     
     // MARK: - Update Loop (CADisplayLink)
     
-    @objc func gameLoop()
-    {
+    @objc func gameLoop() {
         update()
         render()
     }
     
-    func update()
-    {
+    func update() {
         let sw = Stopwatch()
         
         updateWithTimeSinceLastUpdate(timer.timestamp)
@@ -342,8 +321,7 @@ class DemoView: UIView, CollisionObserver
             intervals = Array(intervals.dropFirst(intervals.count - 200))
         }
         
-        if let duration = updateLabelStopwatch.duration, duration > updateInterval
-        {
+        if let duration = updateLabelStopwatch.duration, duration > updateInterval {
             updateLabelStopwatch.reset()
             
             let timeMilli = time
@@ -359,8 +337,7 @@ class DemoView: UIView, CollisionObserver
         }
     }
     
-    func updateWithTimeSinceLastUpdate(_ timeSinceLast: CFTimeInterval)
-    {
+    func updateWithTimeSinceLastUpdate(_ timeSinceLast: CFTimeInterval) {
         /* Called before each frame is rendered */
         updateDrag()
         
@@ -371,8 +348,7 @@ class DemoView: UIView, CollisionObserver
     }
     
     // Updates the dragging functionality
-    func updateDrag()
-    {
+    func updateDrag() {
         // Dragging point
         guard let p = draggingPoint , inputMode == InputMode.dragBody else {
             return
@@ -383,8 +359,7 @@ class DemoView: UIView, CollisionObserver
         p.applyForce(of: dragForce)
     }
     
-    func bodiesDidCollide(_ infos: [BodyCollisionInformation])
-    {
+    func bodiesDidCollide(_ infos: [BodyCollisionInformation]) {
         collisions.append(contentsOf: infos)
     }
     
@@ -402,8 +377,8 @@ class DemoView: UIView, CollisionObserver
         
         // Create the closed shape for the box's physics body
         let shape = ClosedShape
-                        .rectangle(ofSides: size)
-                        .transformedBy(rotatingBy: angle)
+            .rectangle(ofSides: size)
+            .transformedBy(rotatingBy: angle)
         
         var comps = [BodyComponentCreator]()
         
@@ -411,8 +386,7 @@ class DemoView: UIView, CollisionObserver
         // forces that holds a body together
         comps.append(SpringComponentCreator(shapeMatchingOn: true, edgeSpringK: 600, edgeSpringDamp: 20, shapeSpringK: 100, shapeSpringDamp: 60))
         
-        if !pinned
-        {
+        if !pinned {
             // Add a gravity component that will pull the body down
             comps.append(GravityComponentCreator())
         }
@@ -434,8 +408,7 @@ class DemoView: UIView, CollisionObserver
     
     /// Creates a bouncy ball at the specified world coordinates
     @discardableResult
-    func createBouncyBall(_ pos: Vector2, pinned: Bool = false, kinematic: Bool = false, radius: JFloat = 1, mass: JFloat = 0.5, def: Int = 12) -> Body
-    {
+    func createBouncyBall(_ pos: Vector2, pinned: Bool = false, kinematic: Bool = false, radius: JFloat = 1, mass: JFloat = 0.5, def: Int = 12) -> Body {
         // Create the closed shape for the ball's physics body
         let shape = ClosedShape
                         .circle(ofRadius: radius, pointCount: def)
@@ -463,8 +436,7 @@ class DemoView: UIView, CollisionObserver
     
     /// Creates two linked bouncy balls in a given position in the world
     @discardableResult
-    func createLinkedBouncyBalls(_ pos: Vector2) -> (left: Body, right: Body)
-    {
+    func createLinkedBouncyBalls(_ pos: Vector2) -> (left: Body, right: Body) {
         let b1 = createBouncyBall(pos - Vector2(x: 1, y: 0), pinned: false, kinematic: false, radius: 1)
         let b2 = createBouncyBall(pos + Vector2(x: 1, y: 0), pinned: false, kinematic: false, radius: 1)
         
@@ -481,8 +453,7 @@ class DemoView: UIView, CollisionObserver
     
     /// Creates a pinned box with a ball attached to one of its edges
     @discardableResult
-    func createBallBoxLinkedStructure(_ pos: Vector2) -> (ball: Body, box: Body)
-    {
+    func createBallBoxLinkedStructure(_ pos: Vector2) -> (ball: Body, box: Body) {
         let b1 = createBouncyBall(pos - Vector2(x: 0, y: 2), pinned: false, kinematic: false, radius: 1, mass: 1)
         let b2 = createBox(pos, size: Vector2.unit * 2, pinned: true, kinematic: false, mass: 1)
         
@@ -501,8 +472,7 @@ class DemoView: UIView, CollisionObserver
     
     /// Creates a pinned box with two balls attached to one of its edges
     @discardableResult
-    func createScaleStructure(_ pos: Vector2) -> (leftBall: Body, scale: Body, rightBall: Body)
-    {
+    func createScaleStructure(_ pos: Vector2) -> (leftBall: Body, scale: Body, rightBall: Body) {
         let b1 = createBox(pos, size: Vector2(x: 4, y: 2), pinned: true, kinematic: false)
         let b2 = createBouncyBall(pos + Vector2(x: -1.2, y: -2), pinned: false, kinematic: false, radius: 1)
         let b3 = createBouncyBall(pos + Vector2(x:  1.2, y: -2), pinned: false, kinematic: false, radius: 1)
@@ -541,8 +511,7 @@ class DemoView: UIView, CollisionObserver
     
     /// Creates a car structure
     @discardableResult
-    func createCarStructure(_ pos: Vector2) -> (car: Body, leftWheel: Body, rightWheel: Body)
-    {
+    func createCarStructure(_ pos: Vector2) -> (car: Body, leftWheel: Body, rightWheel: Body) {
         var carShape = ClosedShape()
         
         // Add the car shape vertices
@@ -608,8 +577,7 @@ class DemoView: UIView, CollisionObserver
     }
     
     /// Enum used to modify the input mode of the test simulation
-    enum InputMode: Int
-    {
+    enum InputMode: Int {
         /// Creates a jiggly ball under the finger on tap
         case createBall
         /// Allows dragging bodies around
@@ -620,7 +588,7 @@ class DemoView: UIView, CollisionObserver
 extension DemoView {
     
     ///                                               1
-    /// Returns a 3x3 matrix for projecting into a -1 0 1 -style space such that
+    /// Returns a 3x3 matrix for projecting onto a -1 0 1 -style space such that
     ///                                              -1
     /// a [0, 0] vector projects into the top-left (1, -1), and [width, height]
     /// projects into the bottom-right (-1, 1).
@@ -739,8 +707,7 @@ extension DemoView {
     }
     
     /// Renders the dragging shape line
-    func drawDrag()
-    {
+    func drawDrag() {
         // Dragging point
         guard let p = draggingPoint, inputMode == InputMode.dragBody else {
             return
@@ -753,8 +720,7 @@ extension DemoView {
         drawLine(from: lineStart, to: lineEnd, color: 0xFF00DD00)
     }
     
-    func drawJoint(_ joint: BodyJoint)
-    {
+    func drawJoint(_ joint: BodyJoint) {
         let start = joint.bodyLink1.position
         let end = joint.bodyLink2.position
         
@@ -787,19 +753,50 @@ extension DemoView {
             }
         }
         
-        drawLine(from: start, to: end, color: color)
+        if !useDetailedRender && joint.restDistance.minimumDistance > 0.2 {
+            let springWidth = 0.2
+            let segmentCount = Int((joint.restDistance.minimumDistance / 0.1).rounded(.up))
+            
+            func positionForSegment(_ offset: Int) -> Vector2 {
+                if offset == 0 {
+                    return start
+                }
+                if offset == segmentCount {
+                    return end
+                }
+                
+                let segPosition = start.ratio(JFloat(offset) / JFloat(segmentCount), to: end)
+                let segPerp = (end - start).perpendicular().normalized() * JFloat(springWidth)
+                
+                let segmentPosition: Vector2
+                
+                if offset.isMultiple(of: 2) {
+                    segmentPosition = segPosition + segPerp
+                } else {
+                    segmentPosition = segPosition - segPerp
+                }
+                
+                return segmentPosition
+            }
+            
+            for seg in 1...segmentCount {
+                let start = positionForSegment(seg - 1)
+                let end = positionForSegment(seg)
+                
+                drawLine(from: start, to: end, color: color)
+            }
+        } else {
+            drawLine(from: start, to: end, color: color)
+        }
     }
     
-    func drawBody(_ body: Body) throws
-    {
+    func drawBody(_ body: Body) throws {
         var bodyColor: UInt = 0x7DFFFFFF
         if let color = body.objectTag as? UInt {
             bodyColor = color
-        }
-        else if let color = body.objectTag as? Color4 {
+        } else if let color = body.objectTag as? Color4 {
             bodyColor = color.toUIntARGB()
-        }
-        else if let color = body.objectTag as? UIColor {
+        } else if let color = body.objectTag as? UIColor {
             bodyColor = Color4.fromUIColor(color).toUIntARGB()
         }
         
@@ -829,8 +826,7 @@ extension DemoView {
         
         let shapePoints = body.vertices
         
-        if !useDetailedRender
-        {
+        if !useDetailedRender {
             // Don't do any other rendering other than the body's buffer
             try drawBodyFill()
             let lineColorVec = (Color4.fromUIntARGB(bodyColor).vector * Color4(r: 0.7, g: 0.6, b: 0.8, a: 1).vector)
@@ -839,10 +835,8 @@ extension DemoView {
         }
         
         // Draw normals, for pressure bodies
-        if body.component(ofType: PressureComponent.self) != nil
-        {
-            for point in body.pointMasses
-            {
+        if body.component(ofType: PressureComponent.self) != nil {
+            for point in body.pointMasses {
                 drawLine(from: point.position, to: point.position + point.normal / 3, color: 0xFFEC33EC)
             }
         }
@@ -851,8 +845,7 @@ extension DemoView {
         drawPolyOutline(body.globalShape, color: 0xFF777777)
         
         // Draw lines going from the body's outer points to the global shape indices
-        for (globalShape, p) in zip(body.globalShape, body.pointMasses)
-        {
+        for (globalShape, p) in zip(body.globalShape, body.pointMasses) {
             let start = p.position
             let end = globalShape
             
@@ -920,4 +913,3 @@ final class BodyRayComponent: BodyComponent {
         
     }
 }
-

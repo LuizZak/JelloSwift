@@ -21,6 +21,7 @@
 		A00385801E6374EB00546EB8 /* SimpleVertex.glsl in Resources */ = {isa = PBXBuildFile; fileRef = A003857E1E6374EB00546EB8 /* SimpleVertex.glsl */; };
 		A02BE1F51ED72BCC00B2404D /* WorldTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A02BE1F41ED72BCC00B2404D /* WorldTests.swift */; };
 		A05EE0D91E578637007978E6 /* Vector2Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05EE0D81E578637007978E6 /* Vector2Tests.swift */; };
+		A07CADD2221ED9B7002F653E /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A07CADD1221ED9B7002F653E /* Accelerate.framework */; };
 		A097789A1E66582B0095D4A7 /* LibTessTriangulate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A09778991E66582B0095D4A7 /* LibTessTriangulate.swift */; };
 		A097789F1E6687810095D4A7 /* Vertex.swift in Sources */ = {isa = PBXBuildFile; fileRef = A097789E1E6687810095D4A7 /* Vertex.swift */; };
 		A0CD1AE31E535C6C00D41938 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0CD1AE21E535C6C00D41938 /* Utils.swift */; };
@@ -68,6 +69,7 @@
 		A003857E1E6374EB00546EB8 /* SimpleVertex.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SimpleVertex.glsl; sourceTree = "<group>"; };
 		A02BE1F41ED72BCC00B2404D /* WorldTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorldTests.swift; sourceTree = "<group>"; };
 		A05EE0D81E578637007978E6 /* Vector2Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Vector2Tests.swift; sourceTree = "<group>"; };
+		A07CADD1221ED9B7002F653E /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		A09778991E66582B0095D4A7 /* LibTessTriangulate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibTessTriangulate.swift; sourceTree = "<group>"; };
 		A097789E1E6687810095D4A7 /* Vertex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Vertex.swift; sourceTree = "<group>"; };
 		A0B032FF1E547D00002AD0BF /* CHANGELOG.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = CHANGELOG.md; path = ../CHANGELOG.md; sourceTree = "<group>"; };
@@ -92,6 +94,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A07CADD2221ED9B7002F653E /* Accelerate.framework in Frameworks */,
 				43164F373699445C5A3B77C8 /* Pods_JelloSwift_Example.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -110,6 +113,7 @@
 		203E6A0381D78319AC3ECF78 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A07CADD1221ED9B7002F653E /* Accelerate.framework */,
 				2462A80FA34D0A96435BEFCF /* Pods_JelloSwift_Example.framework */,
 				3C3674CED751C29896E47584 /* Pods_JelloSwift_Tests.framework */,
 				8450031F73AA21EE70E1545D /* Pods_JelloSwift_Example_JelloSwift_Tests.framework */,
@@ -366,7 +370,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-JelloSwift_Example/Pods-JelloSwift_Example-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-JelloSwift_Example/Pods-JelloSwift_Example-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/JelloSwift/JelloSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/LibTessSwift/LibTessSwift.framework",
 			);
@@ -377,7 +381,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-JelloSwift_Example/Pods-JelloSwift_Example-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-JelloSwift_Example/Pods-JelloSwift_Example-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		470219B779F076C8941CE84C /* [CP] Check Pods Manifest.lock */ = {
@@ -404,7 +408,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-JelloSwift_Example-JelloSwift_Tests/Pods-JelloSwift_Example-JelloSwift_Tests-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-JelloSwift_Example-JelloSwift_Tests/Pods-JelloSwift_Example-JelloSwift_Tests-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/JelloSwift/JelloSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/LibTessSwift/LibTessSwift.framework",
 			);
@@ -415,7 +419,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-JelloSwift_Example-JelloSwift_Tests/Pods-JelloSwift_Example-JelloSwift_Tests-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-JelloSwift_Example-JelloSwift_Tests/Pods-JelloSwift_Example-JelloSwift_Tests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -535,6 +539,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -582,7 +587,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 5.0;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -599,9 +604,7 @@
 				MODULE_NAME = ExampleApp;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.JelloSwift-Example2";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 2;
 			};
 			name = Debug;
@@ -618,8 +621,7 @@
 				MODULE_NAME = ExampleApp;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.JelloSwift-Example2";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 2;
 			};
 			name = Release;
@@ -630,10 +632,7 @@
 			buildSettings = {
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				DEVELOPMENT_TEAM = TCHZUNU285;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -642,8 +641,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -653,16 +651,12 @@
 			buildSettings = {
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				DEVELOPMENT_TEAM = TCHZUNU285;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};

@@ -58,7 +58,7 @@ public protocol BodyComponentCreator {
 
 public extension BodyComponentCreator {
     /// Creates and attaches the component to a given body
-    public func attach(to body: Body) {
+    func attach(to body: Body) {
         body.addComponent(ofType: type(of: self).bodyComponentClass)
         
         prepareBodyAfterComponent(body)
@@ -66,7 +66,7 @@ public extension BodyComponentCreator {
     
     /// Performs post-attachment configurations to a body.
     /// called by `attach(to:)`
-    public func prepareBodyAfterComponent(_ body: Body) {
+    func prepareBodyAfterComponent(_ body: Body) {
         
     }
 }

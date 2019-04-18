@@ -257,7 +257,7 @@ open class TessC {
     @discardableResult
     open func tessellate(windingRule: WindingRule, elementType: ElementType, polySize: Int, vertexSize: VertexSize = .vertex3) throws -> (vertices: [CVector3], indices: [Int]) {
         
-        let (verts, ind) = try tessellateRaw(windingRule: windingRule, elementType: elementType, polySize: polySize, vertexSize: vertexSize)
+        let (verts, i) = try tessellateRaw(windingRule: windingRule, elementType: elementType, polySize: polySize, vertexSize: vertexSize)
         
         var output: [CVector3] = []
         output.reserveCapacity(vertexCount)
@@ -273,7 +273,7 @@ open class TessC {
         
         vertices = output
         
-        return (output, ind)
+        return (output, i)
     }
     
     private func signedArea(_ vertices: [CVector3]) -> TESSreal {

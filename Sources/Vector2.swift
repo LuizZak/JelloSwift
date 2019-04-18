@@ -121,7 +121,7 @@ public struct Vector2: VectorRepresentable, Equatable, CustomStringConvertible, 
         return "{ \(self.x) : \(self.y) }"
     }
     
-    @usableFromInline
+    @inlinable
     init(_ vector: NativeVectorType) {
         theVector = vector
     }
@@ -129,7 +129,7 @@ public struct Vector2: VectorRepresentable, Equatable, CustomStringConvertible, 
     /// Inits a 0-valued Vector2
     @inlinable
     public init() {
-        theVector = NativeVectorType(0)
+        theVector = NativeVectorType(repeating: 0)
     }
     
     /// Inits a vector 2 with two integer components
@@ -153,7 +153,7 @@ public struct Vector2: VectorRepresentable, Equatable, CustomStringConvertible, 
     /// Inits a vector 2 with X and Y defined as a given float
     @inlinable
     public init(value: JFloat) {
-        theVector = NativeVectorType(value)
+        theVector = NativeVectorType(repeating: value)
     }
     
     /// Returns the distance between this Vector2 and another Vector2
@@ -312,12 +312,12 @@ extension Vector2 {
     // JFloat interaction
     @inlinable
     static public func +(lhs: Vector2, rhs: JFloat) -> Vector2 {
-        return Vector2(lhs.theVector + Vector2.NativeVectorType(rhs))
+        return Vector2(lhs.theVector + Vector2.NativeVectorType(repeating: rhs))
     }
     
     @inlinable
     static public func -(lhs: Vector2, rhs: JFloat) -> Vector2 {
-        return Vector2(lhs.theVector - Vector2.NativeVectorType(rhs))
+        return Vector2(lhs.theVector - Vector2.NativeVectorType(repeating: rhs))
     }
     
     @inlinable
@@ -327,7 +327,7 @@ extension Vector2 {
     
     @inlinable
     static public func /(lhs: Vector2, rhs: JFloat) -> Vector2 {
-        return Vector2(lhs.theVector / Vector2.NativeVectorType(rhs))
+        return Vector2(lhs.theVector / Vector2.NativeVectorType(repeating: rhs))
     }
     
     @inlinable
@@ -380,6 +380,9 @@ extension Vector2 {
     }
 }
 
+@usableFromInline
+let _identityMatrix = Vector2.NativeMatrixType(1)
+
 // MARK: Matrix-transformation
 extension Vector2 {
     
@@ -395,16 +398,9 @@ extension Vector2 {
                               rotatingBy angle: JFloat = 0,
                               translatingBy translate: Vector2 = Vector2.zero) -> Vector2.NativeMatrixType {
         
-        var matrix = Vector2.NativeMatrixType(1)
+        var matrix = _identityMatrix
         
         // Prepare matrices
-        
-        // Translating:
-        //
-        // | 0  0  dx |
-        // | 0  0  dy |
-        // | 0  0  1  |
-        //
         
         // Scaling:
         //
@@ -413,12 +409,6 @@ extension Vector2 {
         // | 0  0  1 |
         //
         
-        // Rotation:
-        //
-        // | cos(a)  sin(a)  0 |
-        // | -sin(a) cos(a)  0 |
-        // |   0       0     1 |
-        
         let cScale =
             Vector2.NativeMatrixType(columns:
                 (Vector2.HomogenousVectorType(scale.theVector.x, 0, 0),
@@ -426,6 +416,12 @@ extension Vector2 {
                  Vector2.HomogenousVectorType(0, 0, 1)))
         
         matrix *= cScale
+        
+        // Rotation:
+        //
+        // | cos(a)  sin(a)  0 |
+        // | -sin(a) cos(a)  0 |
+        // |   0       0     1 |
         
         if angle != 0 {
             let c = cos(-angle)
@@ -439,7 +435,14 @@ extension Vector2 {
             
             matrix *= cRotation
         }
-    
+        
+        // Translation:
+        //
+        // | 0  0  dx |
+        // | 0  0  dy |
+        // | 0  0  1  |
+        //
+        
         let cTranslation =
             Vector2.NativeMatrixType(columns:
                 (Vector2.HomogenousVectorType(1, 0, translate.theVector.x),
@@ -584,38 +587,6 @@ public func floor(_ x: Vector2) -> Vector2 {
 @inlinable
 public func abs(_ x: Vector2) -> Vector2 {
     return Vector2(abs(x.theVector))
-}
-
-// MARK: - Codable Conformance
-extension Vector2.NativeVectorType: Codable {
-    public init(from decoder: Decoder) throws {
-        var container = try decoder.unkeyedContainer()
-        
-        try self.init(container.decode(JFloat.self), container.decode(JFloat.self))
-    }
-    
-    public func encode(to encoder: Encoder) throws {
-        var container = encoder.unkeyedContainer()
-        
-        try container.encode(x)
-        try container.encode(y)
-    }
-}
-
-extension Vector2.HomogenousVectorType: Codable {
-    public init(from decoder: Decoder) throws {
-        var container = try decoder.unkeyedContainer()
-        
-        try self.init(container.decode(JFloat.self), container.decode(JFloat.self), container.decode(JFloat.self))
-    }
-    
-    public func encode(to encoder: Encoder) throws {
-        var container = encoder.unkeyedContainer()
-        
-        try container.encode(x)
-        try container.encode(y)
-        try container.encode(z)
-    }
 }
 
 extension Vector2.NativeMatrixType: Codable {

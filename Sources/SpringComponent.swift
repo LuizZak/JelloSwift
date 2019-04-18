@@ -10,10 +10,16 @@
 /// spring-based physics in the body's point masses
 public final class SpringComponent: BodyComponent {
     
-    /// Gets the count of springs on this spring component
+    /// Gets the total number of springs on this spring component, including both
+    /// edge and internal springs
     public var springCount: Int {
         return springs.count
     }
+    
+    /// Gets the number of edge springs on the body.
+    ///
+    /// Edge springs are automatically created.
+    public var edgeSpringsCount: Int
     
     /// The list of internal springs for the body
     fileprivate var springs: [InternalSpring] = []
@@ -36,7 +42,7 @@ public final class SpringComponent: BodyComponent {
     fileprivate var shapeSpringDamp: JFloat = 10
     
     public init() {
-        
+        edgeSpringsCount = 0
     }
     
     public func prepare(_ body: Body) {
@@ -83,8 +89,10 @@ public final class SpringComponent: BodyComponent {
     
     /// Builds the default edge internal springs for this spring body
     public func buildDefaultSprings(_ body: Body) {
-        for i in 0..<body.pointMasses.count {
-            let pointB = (i + 1) % body.pointMasses.count
+        edgeSpringsCount = body.pointMasses.count
+        
+        for i in 0..<edgeSpringsCount {
+            let pointB = (i + 1) % edgeSpringsCount
             addInternalSpring(body, pointA: i, pointB: pointB,
                               springK: edgeSpringK, damping: edgeSpringDamp)
         }
@@ -96,12 +104,12 @@ public final class SpringComponent: BodyComponent {
         shapeSpringDamp = damping
     }
     
-    /// Changes the spring constants for the springs around the shape itself 
+    /// Changes the spring constants for the springs around the shape itself
     /// (edge springs)
-    public func setEdgeSpringConstants(_ body: Body, edgeSpringK: JFloat,
+    public func setEdgeSpringConstants(edgeSpringK: JFloat,
                                        _ edgeSpringDamp: JFloat) {
         // we know that the first n springs in the list are the edge springs.
-        for i in 0..<body.pointMasses.count {
+        for i in 0..<edgeSpringsCount {
             springs[i].coefficient = edgeSpringK
             springs[i].damping = edgeSpringDamp
         }
@@ -110,10 +118,12 @@ public final class SpringComponent: BodyComponent {
     /// Sets the spring constant for the given spring index.
     /// The spring index starts from pointMasses.count and onwards, so the first
     /// spring will not be the first edge spring.
-    public func setSpringConstants(forSpringIndex springID: Int, in body: Body,
-                                   _ springK: JFloat, _ springDamp: JFloat) {
-        // index is for all internal springs, AFTER the default internal springs.
-        let index = body.pointMasses.count + springID
+    public func setSpringConstants(forSpringIndex springID: Int,
+                                   _ springK: JFloat,
+                                   _ springDamp: JFloat) {
+        
+        // index is for all internal springs, AFTER the default edge springs.
+        let index = edgeSpringsCount + springID
         
         springs[index].coefficient = springK
         springs[index].damping = springDamp
@@ -122,40 +132,40 @@ public final class SpringComponent: BodyComponent {
     /// Sets the rest distance for the givne spring index.
     /// The spring index starts from pointMasses.count and onwards, so the first
     /// spring will not be the first edge spring.
-    public func setSpringRestDistance(forSpringIndex springID: Int, in body: Body, _ dist: RestDistance) {
+    public func setSpringRestDistance(forSpringIndex springID: Int, _ dist: RestDistance) {
         // index is for all internal springs, AFTER the default internal springs.
-        let index = body.pointMasses.count + springID
-        
+        let index = edgeSpringsCount + springID
+
         springs[index].restDistance = dist
     }
     
     /// Gets the rest distance for the givne spring index.
     /// This ignores the default edge springs, so the index is always
     /// `+ body.pointMasses.count`
-    public func springRestDistance(forSpringIndex springID: Int, in body: Body) -> RestDistance {
-        return springs[body.pointMasses.count + springID].restDistance
+    public func springRestDistance(forSpringIndex springID: Int) -> RestDistance {
+        return springs[edgeSpringsCount + springID].restDistance
     }
     
     /// Gets the spring constant of a spring at the specified index.
-    /// This ignores the default edge springs, so the index is always 
+    /// This ignores the default edge springs, so the index is always
     /// `+ body.pointMasses.count`
-    public func springCoefficient(forSpringIndex springID: Int, in body: Body) -> JFloat {
-        return springs[body.pointMasses.count + springID].coefficient
+    public func springCoefficient(forSpringIndex springID: Int) -> JFloat {
+        return springs[edgeSpringsCount + springID].coefficient
     }
     
     /// Gets the spring damping of a spring at the specified index
-    /// This ignores the default edge springs, so the index is always 
+    /// This ignores the default edge springs, so the index is always
     /// `+ body.pointMasses.count`
-    public func springDamping(forSpringIndex springID: Int, in body: Body) -> JFloat {
-        return springs[body.pointMasses.count + springID].damping
+    public func springDamping(forSpringIndex springID: Int) -> JFloat {
+        return springs[edgeSpringsCount + springID].damping
     }
     
     /// Gets the current plasticity settings of a spring, or nil, if no plasticity
     /// is set.
     /// This ignores the default edge springs, so the index is always
     /// `+ body.pointMasses.count`
-    public func springPlasticity(forSpringIndex springID: Int, in body: Body) -> SpringPlasticity? {
-        return springs[body.pointMasses.count + springID].plasticity
+    public func springPlasticity(forSpringIndex springID: Int) -> SpringPlasticity? {
+        return springs[edgeSpringsCount + springID].plasticity
     }
     
     /// Sets the current plasticity settings of a spring, or disables it, if `nil`
@@ -163,9 +173,9 @@ public final class SpringComponent: BodyComponent {
     ///
     /// This ignores the default edge springs, so the index is always
     /// `+ body.pointMasses.count`
-    public func setSpringPlasticity(forSpringIndex springID: Int, in body: Body,
+    public func setSpringPlasticity(forSpringIndex springID: Int,
                                     plasticity: SpringPlasticity?) {
-        springs[body.pointMasses.count + springID].plasticity = plasticity
+        springs[edgeSpringsCount + springID].plasticity = plasticity
     }
     
     public func accumulateInternalForces(in body: Body, relaxing: Bool) {
@@ -280,7 +290,7 @@ public struct SpringComponentCreator: BodyComponentCreator, Codable {
         
         comp.shapeMatchingOn = shapeMatchingOn
         
-        comp.setEdgeSpringConstants(body, edgeSpringK: edgeSpringK, edgeSpringDamp)
+        comp.setEdgeSpringConstants(edgeSpringK: edgeSpringK, edgeSpringDamp)
         comp.setShapeMatchingConstants(shapeSpringK, shapeSpringDamp)
         
         for element in innerSprings {
