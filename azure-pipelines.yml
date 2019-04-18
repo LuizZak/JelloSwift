@@ -10,14 +10,11 @@ pool:
   vmImage: 'macOS-10.14'
 
 steps:
-- task: CocoaPods@0
-  inputs:
-    projectDirectory: Example
-    forceRepoUpdate: true
+- script: pod update --project-directory=Example
 - task: Xcode@5
   inputs:
     actions: 'test'
-    configuration: 'Release'
+    configuration: 'Debug'
     sdk: 'iphonesimulator'
     xcWorkspacePath: 'Example/JelloSwift.xcworkspace'
     scheme: 'JelloSwift-Example'
