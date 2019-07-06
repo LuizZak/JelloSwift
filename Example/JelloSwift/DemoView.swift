@@ -22,6 +22,11 @@ extension Vector2 {
         return JelloSwift.toScreenCoords(self)
     }
     
+    /// Helper post-fix alias for adjusting screen scale to in-world scale
+    var inWorldScale: Vector2 {
+        return self / JelloSwift.renderingScale
+    }
+    
     init(x: CGFloat, y: CGFloat) {
         self.init(x: x.native, y: y.native)
     }
@@ -141,6 +146,9 @@ class DemoView: UIView, CollisionObserver {
         // Add a Raycasting component
         createBouncyBall(vec).addComponent(ofType: BodyRayComponent.self)
         
+        // Create a rather deflated gass ball
+        createBendConstrainedBouncyBall(vec + Vector2(x: 200, y: 350).inWorldScale, radius: 4)
+        
         for i in 0..<6 {
             let v = vec + Vector2(x: CGFloat(i - 3), y: CGFloat(2 + i * 1))
             
@@ -195,7 +203,7 @@ class DemoView: UIView, CollisionObserver {
             right.objectTag = UInt(0x7D22EFEF)
         }
         
-        createCarStructure(Vector2(x: size.width * 0.12, y: 90).inWorldCoords)
+        createCarStructure(Vector2(x: size.width * 0.20, y: 90).inWorldCoords)
         createBox(Vector2(x: size.width * 0.5, y: 16).inWorldCoords, size: Vector2(x: 34, y: 1), isStatic: true).objectTag = UInt(0x7DDCDCCC)
         
         // Create the ground box
@@ -426,6 +434,39 @@ class DemoView: UIView, CollisionObserver {
         
         // Add a gravity component taht will pull the body down
         comps.append(GravityComponentCreator())
+        
+        let body = Body(world: world, shape: shape, pointMasses: [mass], position: pos, kinematic: kinematic, components: comps)
+        
+        body.isPined = pinned
+        
+        return body
+    }
+    
+    /// Creates a deflated, bend-constrained ball at the specified world coordinates
+    @discardableResult
+    func createBendConstrainedBouncyBall(_ pos: Vector2, pinned: Bool = false, kinematic: Bool = false, radius: JFloat = 1, mass: JFloat = 0.5, def: Int = 12) -> Body {
+        // Create the closed shape for the ball's physics body
+        let shape = ClosedShape
+            .circle(ofRadius: radius, pointCount: def)
+            .transformedBy(scalingBy: Vector2(x: 0.3, y: 0.3))
+        
+        var comps = [BodyComponentCreator]()
+        
+        // Add a spring body component - spring bodies have string physics that attract the inner points, it's one of the
+        // forces that holds a body together
+        comps.append(SpringComponentCreator(shapeMatchingOn: false, edgeSpringK: 600, edgeSpringDamp: 20, shapeSpringK: 10, shapeSpringDamp: 20))
+        
+//        // Add a pressure component - pressure applies an outwards-going force that basically
+//        // tries to expand the body as if filled with air, like a balloon
+//        comps.append(PressureComponentCreator(gasAmmount: 10))
+        
+        // Add a gravity component taht will pull the body down
+        comps.append(GravityComponentCreator())
+        
+        // Add a bend constraint to keep the object as straight lined as possible
+        // This will essentially result in a 'poor man's pressure component', for
+        // this specific ball-shaped body
+        comps.append(BendConstraintComponentCreator(stiffness: 200))
         
         let body = Body(world: world, shape: shape, pointMasses: [mass], position: pos, kinematic: kinematic, components: comps)
         

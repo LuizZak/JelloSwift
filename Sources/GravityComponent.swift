@@ -54,8 +54,8 @@ public struct GravityComponentCreator: BodyComponentCreator, Codable {
         vector = gravity
     }
     
-    public func prepareBodyAfterComponent(_ body: Body) {
-        body.withComponent(ofType: GravityComponent.self) { component in
+    public func prepareBodyAfterComponent(_ body: Body, component: BodyComponent) {
+        if let component = component as? GravityComponent {
             component.gravity = vector
         }
     }

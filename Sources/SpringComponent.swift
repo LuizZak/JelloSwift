@@ -213,6 +213,12 @@ public final class SpringComponent: BodyComponent {
             }
         }
         
+        let matrix = Vector2.matrix(scalingBy: body.scale,
+                                    rotatingBy: body.derivedAngle,
+                                    translatingBy: body.derivedPos)
+        
+        body.baseShape.transformVertices(&body.globalShape, matrix: matrix)
+        
         if shapeMatchingOn && shapeSpringK > 0 {
             applyShapeMatching(on: body)
         }
@@ -222,12 +228,6 @@ public final class SpringComponent: BodyComponent {
     /// Shape-matching applies spring forces to each point masses on the
     /// direction of the body's original global shape
     fileprivate func applyShapeMatching(on body: Body) {
-        
-        let matrix = Vector2.matrix(scalingBy: body.scale,
-                                    rotatingBy: body.derivedAngle,
-                                    translatingBy: body.derivedPos)
-        
-        body.baseShape.transformVertices(&body.globalShape, matrix: matrix)
         
         for (global, p) in zip(body.globalShape, body.pointMasses) {
             let velB = body.isKinematic ? Vector2.zero : p.velocity
@@ -283,18 +283,18 @@ public struct SpringComponentCreator: BodyComponentCreator, Codable {
         self.innerSprings = innerSprings
     }
     
-    public func prepareBodyAfterComponent(_ body: Body) {
-        guard let comp = body.component(ofType: SpringComponent.self) else {
+    public func prepareBodyAfterComponent(_ body: Body, component: BodyComponent) {
+        guard let component = component as? SpringComponent else {
             return
         }
         
-        comp.shapeMatchingOn = shapeMatchingOn
+        component.shapeMatchingOn = shapeMatchingOn
         
-        comp.setEdgeSpringConstants(edgeSpringK: edgeSpringK, edgeSpringDamp)
-        comp.setShapeMatchingConstants(shapeSpringK, shapeSpringDamp)
+        component.setEdgeSpringConstants(edgeSpringK: edgeSpringK, edgeSpringDamp)
+        component.setShapeMatchingConstants(shapeSpringK, shapeSpringDamp)
         
         for element in innerSprings {
-            comp.addInternalSpring(body, pointA: element.pointMassA,
+            component.addInternalSpring(body, pointA: element.pointMassA,
                                    pointB: element.pointMassB,
                                    springK: element.coefficient,
                                    damping: element.damping,

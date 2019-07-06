@@ -32,3 +32,4 @@ Packages
 xcuserdata
 *.xcodeproj
 DerivedData/
+.swiftpm/

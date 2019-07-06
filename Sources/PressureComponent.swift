@@ -64,7 +64,9 @@ public struct PressureComponentCreator: BodyComponentCreator, Codable {
         self.gasAmmount = gasAmmount
     }
     
-    public func prepareBodyAfterComponent(_ body: Body) {
-        body.component(ofType: PressureComponent.self)?.gasAmmount = gasAmmount
+    public func prepareBodyAfterComponent(_ body: Body, component: BodyComponent) {
+        if let component = component as? PressureComponent {
+            component.gasAmmount = gasAmmount
+        }
     }
 }

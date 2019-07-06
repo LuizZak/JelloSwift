@@ -53,20 +53,20 @@ public protocol BodyComponentCreator {
     
     /// Performs post-attachment configurations to a body.
     /// called by `attach(to:)`
-    func prepareBodyAfterComponent(_ body: Body)
+    func prepareBodyAfterComponent(_ body: Body, component: BodyComponent)
 }
 
 public extension BodyComponentCreator {
     /// Creates and attaches the component to a given body
     func attach(to body: Body) {
-        body.addComponent(ofType: type(of: self).bodyComponentClass)
+        let component = body.addComponent(ofType: type(of: self).bodyComponentClass)
         
-        prepareBodyAfterComponent(body)
+        prepareBodyAfterComponent(body, component: component)
     }
     
     /// Performs post-attachment configurations to a body.
     /// called by `attach(to:)`
-    func prepareBodyAfterComponent(_ body: Body) {
+    func prepareBodyAfterComponent(_ body: Body, component: BodyComponent) {
         
     }
 }
