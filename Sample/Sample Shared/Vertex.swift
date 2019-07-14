@@ -207,6 +207,12 @@ struct VertexBuffer {
         self.indices = indices
     }
     
+    /// Clears all the vertices and indices from this vertex buffer
+    mutating func clearVertices() {
+        vertices.removeAll(keepingCapacity: true)
+        indices.removeAll(keepingCapacity: true)
+    }
+    
     /// Sets the color of all vertices to a specified color
     mutating func setVerticesColor(_ color: Color) {
         setVerticesColor(.fromUIColor(color))
@@ -295,24 +301,18 @@ struct VertexBuffer {
         }
     }
     
-    mutating func addIndice(_ indice: Int) {
-        indices.append(IndexType(indice))
+    mutating func addIndex(_ index: Int) {
+        indices.append(IndexType(index))
     }
     
     /// Adds a triangle to the indices by specifing three indexes on the buffer
     /// object.
     /// Make sure the provided values are within the bounds of the vertices
     /// array.
-    mutating func addTriangleAtIndexes(_ a: Int, _ b: Int, _ c: Int) {
-        addIndice(a)
-        addIndice(b)
-        addIndice(c)
-    }
-    
-    /// Clears all the vertices and indices from this vertex buffer
-    mutating func clearVertices() {
-        vertices.removeAll(keepingCapacity: true)
-        indices.removeAll(keepingCapacity: true)
+    mutating func addTriangleWithIndices(_ a: Int, _ b: Int, _ c: Int) {
+        addIndex(a)
+        addIndex(b)
+        addIndex(c)
     }
     
     /// Creates a vertex buffer from a given set of vectors

@@ -553,8 +553,8 @@ extension DemoScene {
         let i2 = vertexBuffer.addVertex(end - normal, color: color)
         let i3 = vertexBuffer.addVertex(start - normal, color: color)
         
-        vertexBuffer.addTriangleAtIndexes(i0, i1, i2)
-        vertexBuffer.addTriangleAtIndexes(i2, i3, i0)
+        vertexBuffer.addTriangleWithIndices(i0, i1, i2)
+        vertexBuffer.addTriangleWithIndices(i2, i3, i0)
     }
     
     func drawCircle(center point: Vector2, radius: JFloat, sides: Int = 10, color: UInt = 0xFFFFFFFF) throws {
@@ -582,9 +582,9 @@ extension DemoScene {
         
         // Add vertex index triplets
         for i in 0..<indices.count / 3 {
-            vertexBuffer.addTriangleAtIndexes(start + indices[i * 3],
-                                              start + indices[i * 3 + 1],
-                                              start + indices[i * 3 + 2])
+            vertexBuffer.addTriangleWithIndices(start + indices[i * 3],
+                                                start + indices[i * 3 + 1],
+                                                start + indices[i * 3 + 2])
         }
     }
     
@@ -679,6 +679,13 @@ extension DemoScene {
                 drawLine(from: start, to: end, color: color)
             }
         } else {
+            if joint.bodyLink1.linkType == .edge {
+                try? drawCircle(center: start, radius: 0.15, color: color)
+            }
+            if joint.bodyLink2.linkType == .edge {
+                try? drawCircle(center: end, radius: 0.15, color: color)
+            }
+            
             // Draw active range for joint
             switch joint.restDistance {
             case .fixed:
@@ -691,7 +698,7 @@ extension DemoScene {
                 var endRange = start + dir * max
                 
                 if start.distanceSquared(to: end) < (min * min) {
-                    startRange = start
+                    startRange = end
                 }
                 if start.distanceSquared(to: end) > (max * max) {
                     endRange = end
@@ -699,8 +706,13 @@ extension DemoScene {
                 
                 let perp = dir.perpendicular()
                 
-                drawLine(from: startRange + perp * -length, to: startRange + perp * length)
-                drawLine(from: endRange + perp * -length, to: endRange + perp * length)
+                drawLine(from: startRange + perp * -length,
+                         to: startRange + perp * length,
+                         color: color)
+                
+                drawLine(from: endRange + perp * -length,
+                         to: endRange + perp * length,
+                         color: color)
                 
                 drawLine(from: start, to: end, color: color)
                 drawLine(from: startRange, to: endRange, color: color)
@@ -738,9 +750,9 @@ extension DemoScene {
             
             // Add vertex index triplets
             for i in 0..<indices.count / 3 {
-                vertexBuffer.addTriangleAtIndexes(start + indices[i * 3],
-                                                  start + indices[i * 3 + 1],
-                                                  start + indices[i * 3 + 2])
+                vertexBuffer.addTriangleWithIndices(start + indices[i * 3],
+                                                    start + indices[i * 3 + 1],
+                                                    start + indices[i * 3 + 2])
             }
         }
         
