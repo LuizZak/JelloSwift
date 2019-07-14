@@ -39,10 +39,8 @@ class LibTessTriangulate {
             result.append(Vector2(x: vertex.x, y: vertex.y))
         }
         
-        for i in 0..<tess.elementCount
-        {
-            for j in 0..<polySize
-            {
+        for i in 0..<tess.elementCount {
+            for j in 0..<polySize {
                 let index = tess.elements![i * polySize + j]
                 if (index == -1) {
                     continue;

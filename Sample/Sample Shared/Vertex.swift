@@ -16,7 +16,6 @@ import CoreGraphics
 typealias Vector3 = SIMD3<Float>
 
 extension Vector3 {
-    
     init(x: CGFloat, y: CGFloat, z: CGFloat) {
         self.init(x: Float(x), y: Float(y), z: Float(z))
     }
@@ -30,7 +29,6 @@ extension Vector3 {
 typealias Vector4 = packed_float4
 
 extension Vector4 {
-    
     init(x: Int, y: Int, z: Int, w: Int) {
         self = packed_float4(x: Float(x), y: Float(y), z: Float(z), w: Float(w))
     }

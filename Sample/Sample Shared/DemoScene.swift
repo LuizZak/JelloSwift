@@ -289,12 +289,12 @@ extension DemoScene {
             let (left, box, right) = createScaleStructure(Vector2(x: size.width * 0.4, y: size.height * 0.8).inWorldCoords)
             
             left.objectTag = UInt(0x7D22EFEF)
-            box.objectTag = UInt(0x7D666666)
+            box.objectTag = UInt(0x7D116666)
             right.objectTag = UInt(0x7D22EFEF)
         }
         
         createCarStructure(Vector2(x: size.width * 0.12, y: 90).inWorldCoords)
-        createBox(Vector2(x: size.width * 0.5, y: 16).inWorldCoords, size: Vector2(x: 34, y: 1), isStatic: true).objectTag = UInt(0x7DDCDCCC)
+        createBox(Vector2(x: size.width * 0.5, y: 16).inWorldCoords, size: Vector2(x: 34, y: 1), isStatic: true).objectTag = UInt(0x7D999999)
         
         // Create the ground box
         let box = ClosedShape.create { box in
@@ -307,7 +307,7 @@ extension DemoScene {
         
         let platform = Body(world: world, shape: box, pointMasses: [JFloat.infinity], position: Vector2(x: size.width / 2, y: 150).inWorldCoords)
         platform.isStatic = true
-        platform.objectTag = UInt(0x7DCCCCDC)
+        platform.objectTag = UInt(0x7D999999)
         
         // Relax the world a bit to reduce 'popping'
         world.relaxWorld(timestep: 1.0 / 600, iterations: 120 * 3)

@@ -130,7 +130,6 @@ class Triangulate {
     // decide if point Px/Py is inside triangle defined by
     // (Ax,Ay) (Bx,By) (Cx,Cy)
     private static func insideTriangle(A: Vector2, B: Vector2, C: Vector2, P: Vector2) -> Bool {
-        
         let a = C - B
         let b = A - C
         let c = B - A
@@ -146,7 +145,6 @@ class Triangulate {
     }
     
     private static func snip(contour: [Vector2], u: Int, v: Int, w: Int, n: Int, V: [Int]) -> Bool {
-        
         let A = contour[V[u]]
         let B = contour[V[v]]
         let C = contour[V[w]]
