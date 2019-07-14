@@ -2,7 +2,8 @@
 
 #### Develop trunk changelog:
 
-- Trunk's clean!
+- Now `BodyComponent.accumulateExternalForces` expects a `World` parameter as well.
+- Deprecated `BodyComponent.accumulateExternalForces(on:relaxing:)`.
 
 ## Stable Releases
 ---
