@@ -58,7 +58,7 @@ class DemoScene {
     /// Whether to perform a detailed render of the scene. Detailed rendering
     /// renders, along with the body shape, the body's normals, global shape and
     /// axis, and collision normals
-    var useDetailedRender = false
+    var useDetailedRender = true
     
     var collisions: [BodyCollisionInformation] = []
     
@@ -679,7 +679,32 @@ extension DemoScene {
                 drawLine(from: start, to: end, color: color)
             }
         } else {
-            drawLine(from: start, to: end, color: color)
+            // Draw active range for joint
+            switch joint.restDistance {
+            case .fixed:
+                drawLine(from: start, to: end, color: color)
+                
+            case let .ranged(min, max):
+                let length: JFloat = 0.3
+                let dir = (end - start).normalized()
+                var startRange = start + dir * min
+                var endRange = start + dir * max
+                
+                if start.distanceSquared(to: end) < (min * min) {
+                    startRange = start
+                }
+                if start.distanceSquared(to: end) > (max * max) {
+                    endRange = end
+                }
+                
+                let perp = dir.perpendicular()
+                
+                drawLine(from: startRange + perp * -length, to: startRange + perp * length)
+                drawLine(from: endRange + perp * -length, to: endRange + perp * length)
+                
+                drawLine(from: start, to: end, color: color)
+                drawLine(from: startRange, to: endRange, color: color)
+            }
         }
     }
     
