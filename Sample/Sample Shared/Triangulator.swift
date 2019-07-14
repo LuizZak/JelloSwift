@@ -11,8 +11,7 @@
 
 import JelloSwift
 
-class Triangulate
-{
+class Triangulate {
     /// Triangulates a contour/polygon, returning the resulting triangulated
     /// triplet of points into a flat vector array.
     ///
@@ -120,8 +119,7 @@ class Triangulate
         var area: JFloat = 0.0
         var prev = contour.count - 1
         
-        for cur in 0..<contour.count
-        {
+        for cur in 0..<contour.count {
             area += contour[prev].x * contour[cur].y - contour[cur].x * contour[prev].y
             prev = cur
         }

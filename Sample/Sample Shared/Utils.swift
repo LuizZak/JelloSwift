@@ -6,55 +6,53 @@
 //  Copyright © 2017 CocoaPods. All rights reserved.
 //
 
-import UIKit
+import Foundation
 
-class Stopwatch
-{
-    var startTime:CFAbsoluteTime
-    var endTime:CFAbsoluteTime?
+#if os(macOS)
+import Cocoa
+typealias Color = NSColor
+#elseif os(iOS)
+import UIKit
+typealias Color = UIColor
+#endif
+
+class Stopwatch {
+    var startTime: CFAbsoluteTime
+    var endTime: CFAbsoluteTime?
     
-    init(startTime: CFAbsoluteTime = CFAbsoluteTimeGetCurrent())
-    {
+    init(startTime: CFAbsoluteTime = CFAbsoluteTimeGetCurrent()) {
         self.startTime = startTime
     }
     
-    func start()
-    {
+    func start() {
         startTime = CFAbsoluteTimeGetCurrent()
     }
     
-    func stop() -> CFAbsoluteTime
-    {
+    func stop() -> CFAbsoluteTime {
         endTime = CFAbsoluteTimeGetCurrent()
         
         return duration!
     }
     
-    static func startNew() -> Stopwatch
-    {
+    static func startNew() -> Stopwatch {
         return Stopwatch(startTime: CFAbsoluteTimeGetCurrent())
     }
     
-    func reset()
-    {
+    func reset() {
         start()
     }
     
-    var duration:CFAbsoluteTime?
-    {
-        if let endTime = endTime
-        {
+    var duration: CFAbsoluteTime? {
+        if let endTime = endTime {
             return endTime - startTime
-        }
-        else
-        {
+        } else {
             return CFAbsoluteTimeGetCurrent() - startTime
         }
     }
 }
 
-extension UIColor {
-    func flattenWithColor(_ foreColor: UIColor) -> UIColor {
+extension Color {
+    func flattenWithColor(_ foreColor: Color) -> Color {
         return flattenColors(self, withColor: foreColor)
     }
     
@@ -72,27 +70,26 @@ extension UIColor {
         return ret
     }
     
-    static func fromARGB(_ argb: Int32) -> UIColor {
+    static func fromARGB(_ argb: Int32) -> Color {
         let blue = argb & 0xff
         let green = argb >> 8 & 0xff
         let red = argb >> 16 & 0xff
         let alpha = argb >> 24 & 0xff
         
-        return UIColor(red: CGFloat(red) / 255.0, green: CGFloat(green) / 255.0, blue: CGFloat(blue) / 255.0, alpha: CGFloat(alpha) / 255.0)
+        return Color(red: CGFloat(red) / 255.0, green: CGFloat(green) / 255.0, blue: CGFloat(blue) / 255.0, alpha: CGFloat(alpha) / 255.0)
     }
     
-    static func fromUInt(_ color: UInt) -> UIColor
-    {
+    static func fromUInt(_ color: UInt) -> Color {
         let a = CGFloat((color >> 24) & 0xFF) / 255.0
         let r = CGFloat((color >> 16) & 0xFF) / 255.0
         let g = CGFloat((color >> 8) & 0xFF) / 255.0
         let b = CGFloat(color & 0xFF) / 255.0
         
-        return UIColor(red: r, green: g, blue: b, alpha: a)
+        return Color(red: r, green: g, blue: b, alpha: a)
     }
 }
 
-func flattenColors(_ backColor: UIColor, withColor foreColor: UIColor) -> UIColor {
+func flattenColors(_ backColor: Color, withColor foreColor: Color) -> Color {
     // Based off an answer by an anonymous user on StackOverlow http://stackoverflow.com/questions/1718825/blend-formula-for-gdi/2223241#2223241
     var backR: CGFloat = 0, backG: CGFloat = 0, backB: CGFloat = 0, backA: CGFloat = 0
     
@@ -116,7 +113,7 @@ func flattenColors(_ backColor: UIColor, withColor foreColor: UIColor) -> UIColo
     
     let alpha = backAlphaFloat + foreAlphaFloat - backAlphaFloat * foreAlphaNormalized
     
-    return UIColor(red: min(1, (foreR * foreAlphaFloat + backR * backColorMultiplier) / alpha),
+    return Color(red: min(1, (foreR * foreAlphaFloat + backR * backColorMultiplier) / alpha),
                    green: min(1, (foreG * foreAlphaFloat + backG * backColorMultiplier) / alpha),
                    blue: min(1, (foreB * foreAlphaFloat + backB * backColorMultiplier) / alpha),
                    alpha: alpha)

@@ -27,6 +27,7 @@ public final class PointMass: Codable, VectorRepresentable {
     public var normal = Vector2.zero
     
     /// For VectorRepresentable conformance - returns `self.position`
+    @inlinable
     public var vector: Vector2 {
         return position
     }
@@ -40,6 +41,7 @@ public final class PointMass: Codable, VectorRepresentable {
     ///
     /// - parameter elapsed: The elapsed time to integrate by, usually in 
     /// seconds
+    @inlinable
     public func integrate(_ elapsed: JFloat) {
         if (mass.isFinite) {
             let elapMass = elapsed / mass
@@ -52,17 +54,20 @@ public final class PointMass: Codable, VectorRepresentable {
         force = Vector2.zero
     }
     
-    // Applies the given force vector to this point mass
+    /// Applies the given force vector to this point mass
+    @inlinable
     public func applyForce(of force: Vector2) {
         self.force += force
     }
     
     /// Averages a list of point mass positions into one normalized Vector2 point
+    @inlinable
     public static func averagePosition<T: Collection>(of pointMasses: T) -> Vector2 where T.Iterator.Element == PointMass {
         return pointMasses.averageVector()
     }
     
     /// Averages a list of point mass velocities into one normalized Vector2 point
+    @inlinable
     public static func averageVelocity<T: Collection>(of pointMasses: T) -> Vector2 where T.Iterator.Element == PointMass {
         return pointMasses.reduce(Vector2.zero) { $0 + $1.velocity } / JFloat(pointMasses.count)
     }

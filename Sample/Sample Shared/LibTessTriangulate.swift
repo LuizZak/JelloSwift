@@ -6,7 +6,6 @@
 //  Copyright © 2017 Luiz Fernando Silva. All rights reserved.
 //
 
-import UIKit
 import JelloSwift
 import LibTessSwift
 

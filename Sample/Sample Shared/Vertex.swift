@@ -6,15 +6,14 @@
 //  Copyright © 2017 Luiz Fernando Silva. All rights reserved.
 //
 
-import UIKit
 import JelloSwift
 import simd
-import OpenGLES
+import CoreGraphics
 
 // MARK: Vector aliases -
 
 // MARK: Vector3
-typealias Vector3 = float3
+typealias Vector3 = SIMD3<Float>
 
 extension Vector3 {
     
@@ -93,7 +92,7 @@ struct Color4 {
         vector = Vector4(x: Float(r), y: Float(g), z: Float(b), w: Float(a))
     }
     
-    static func fromUIColor(_ color: UIColor) -> Color4 {
+    static func fromUIColor(_ color: Color) -> Color4 {
         var r: CGFloat = 0
         var g: CGFloat = 0
         var b: CGFloat = 0
@@ -104,8 +103,8 @@ struct Color4 {
         return Color4(r: r, g: g, b: b, a: a)
     }
     
-    func toUIColor() -> UIColor {
-        return UIColor(red: CGFloat(r), green: CGFloat(g), blue: CGFloat(b), alpha: CGFloat(a))
+    func toUIColor() -> Color {
+        return Color(red: CGFloat(r), green: CGFloat(g), blue: CGFloat(b), alpha: CGFloat(a))
     }
     
     static func fromUIntARGB(_ color: UInt) -> Color4 {
@@ -151,40 +150,38 @@ extension Color4 {
 /// Represents a Vertex of a 3D model.
 /// Uses a float4 to define the color components, as well.
 struct Vertex {
-    
-    /// Offset, in memory, of the 'color' field on this Vertex
-    static var colorOffset: Int { return MemoryLayout<Vector3>.size }
-    
-    var position: Vector3
-    var color: Color4
+    var position: Vector3 = Vector3()
+    var color: Color4 = Color4()
 }
 
 /// Represents a vertex array object, and an acompanying vertex buffer object
 struct VertexArrayObject {
-    var vao: GLuint
     var buffer: VertexBuffer
 }
 
 /// A paired vertex/index buffer, with identifiers coupled in
 struct VertexBuffer {
-    var indexBuffer: GLuint = 0
-    var vertexBuffer: GLuint = 0
+    typealias VertexType = Vertex
+    typealias IndexType = UInt32
+    
+    var indexBuffer: UInt = 0
+    var vertexBuffer: UInt = 0
     
     /// current color that will be added to all vertices that do not specify a
     /// color of their own
     var currentColor: UInt = 0xFFFFFFFF
     
-    var vertices: [Vertex]
-    var indices: [GLuint]
+    var vertices: [VertexType]
+    var indices: [IndexType]
     
     /// The memory size of this vertex buffer's vertexBuffer property
     var vertexBufferSize: Int {
-        return MemoryLayout<Vertex>.stride * vertices.count
+        return MemoryLayout<VertexType>.stride * vertices.count
     }
     
     /// The memory size of this vertex buffer's indices property
     var indexBufferSize: Int {
-        return MemoryLayout<GLuint>.stride * indices.count
+        return MemoryLayout<IndexType>.stride * indices.count
     }
     
     /// Gets or sets the vertex at a given index
@@ -207,13 +204,13 @@ struct VertexBuffer {
         indices.reserveCapacity(capacity)
     }
     
-    init(vertices: [Vertex], indices: [GLuint]) {
+    init(vertices: [Vertex], indices: [UInt32]) {
         self.vertices = vertices
         self.indices = indices
     }
     
     /// Sets the color of all vertices to a specified color
-    mutating func setVerticesColor(_ color: UIColor) {
+    mutating func setVerticesColor(_ color: Color) {
         setVerticesColor(.fromUIColor(color))
     }
     
@@ -226,7 +223,7 @@ struct VertexBuffer {
     
     /// Sets the color of all vertices to a specified color
     mutating func setVerticesColor(_ color: UInt) {
-        setVerticesColor(UIColor.fromUInt(color))
+        setVerticesColor(Color.fromUInt(color))
     }
     
     /// Merges the vertices and indices of another vertex array buffer into this
@@ -236,7 +233,7 @@ struct VertexBuffer {
         let top = vertices.count
         
         // Increase incoming indices
-        let newIndices = object.indices.map { $0 + GLuint(top) }
+        let newIndices = object.indices.map { $0 + UInt32(top) }
         
         vertices.append(contentsOf: object.vertices)
         indices.append(contentsOf: newIndices)
@@ -293,15 +290,15 @@ struct VertexBuffer {
     mutating func applyTransformation(_ matrix: float4x4) {
         for i in 0..<vertices.count {
             var vert = vertices[i]
-            let result = float4(vert.position.x, vert.position.y, vert.position.z, 1) * matrix
-            vert.position = float3(x: result.x, y: result.y, z: result.z)
+            let result = SIMD4<Float>(vert.position.x, vert.position.y, vert.position.z, 1) * matrix
+            vert.position = SIMD3<Float>(x: result.x, y: result.y, z: result.z)
             
             vertices[i] = vert
         }
     }
     
     mutating func addIndice(_ indice: Int) {
-        indices.append(GLuint(indice))
+        indices.append(IndexType(indice))
     }
     
     /// Adds a triangle to the indices by specifing three indexes on the buffer
@@ -328,7 +325,7 @@ struct VertexBuffer {
             return Vertex(position: pos, color: .white)
         }
         
-        let indices = Array(0..<GLuint(vectors.count))
+        let indices = Array(0..<IndexType(vectors.count))
         
         return VertexBuffer(vertices: vertexes, indices: indices)
     }
