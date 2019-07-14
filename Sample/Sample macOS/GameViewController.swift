@@ -31,7 +31,6 @@ class GameViewController: NSViewController {
         }
 
         mtkView.device = defaultDevice
-        mtkView.sampleCount = 8
 
         let newRenderer = Renderer(metalKitView: mtkView)
 

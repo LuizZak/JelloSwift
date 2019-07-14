@@ -32,7 +32,6 @@ class GameViewController: UIViewController {
 
         mtkView.device = defaultDevice
         mtkView.backgroundColor = UIColor.black
-        mtkView.sampleCount = 8
 
         let newRenderer = Renderer(metalKitView: mtkView)
 

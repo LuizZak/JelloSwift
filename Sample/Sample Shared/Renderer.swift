@@ -13,6 +13,8 @@ import MetalKit
 import simd
 
 class Renderer: NSObject, MTKViewDelegate {
+    var multisampleLevel = 8
+    
     public let metalDevice: MTLDevice!
     let metalCommandQueue: MTLCommandQueue!
     private var pipelineState: MTLRenderPipelineState!
@@ -27,18 +29,19 @@ class Renderer: NSObject, MTKViewDelegate {
         super.init()
         
         setupMetal()
+        metalKitView.sampleCount = multisampleLevel
         metalKitView.delegate = self
         demoScene = DemoScene(boundsSize: metalKitView.bounds.size, delegate: self)
         demoScene.initializeLevel()
     }
     
     private func setupMetal() {
-        // 1
+        detectMultisampleLevel()
+        
         let defaultLibrary = metalDevice.makeDefaultLibrary()!
         let fragmentProgram = defaultLibrary.makeFunction(name: "basic_fragment")
         let vertexProgram = defaultLibrary.makeFunction(name: "basic_vertex")
         
-        // 2
         let pipelineStateDescriptor = MTLRenderPipelineDescriptor()
         pipelineStateDescriptor.vertexFunction = vertexProgram
         pipelineStateDescriptor.fragmentFunction = fragmentProgram
@@ -50,10 +53,22 @@ class Renderer: NSObject, MTKViewDelegate {
         pipelineStateDescriptor.colorAttachments[0].sourceAlphaBlendFactor = .sourceAlpha
         pipelineStateDescriptor.colorAttachments[0].destinationRGBBlendFactor = .oneMinusSourceAlpha
         pipelineStateDescriptor.colorAttachments[0].destinationAlphaBlendFactor = .oneMinusSourceAlpha
+        pipelineStateDescriptor.sampleCount = multisampleLevel
         
-        // 3
         pipelineState = try! metalDevice
             .makeRenderPipelineState(descriptor: pipelineStateDescriptor)
+    }
+    
+    private func detectMultisampleLevel() {
+        var level = 8
+        while level > 1 {
+            if metalDevice.supportsTextureSampleCount(level) {
+                break
+            }
+            level /= 2
+        }
+        
+        multisampleLevel = level
     }
     
     private func updateGameState() {
@@ -65,23 +80,27 @@ class Renderer: NSObject, MTKViewDelegate {
         /// Per frame updates hare
         updateGameState()
         
-        // 1
         guard let drawable = view.currentDrawable else {
             return
         }
         
-        let renderPassDescriptor = MTLRenderPassDescriptor() // 2
-        renderPassDescriptor.colorAttachments[0].texture = drawable.texture // 3
-        renderPassDescriptor.colorAttachments[0].loadAction = .clear // 4
-        renderPassDescriptor.colorAttachments[0]
-            .clearColor = MTLClearColor(red: 0.85, green: 0.85, blue: 0.85, alpha: 1.0) // 5
+        let renderPassDescriptor = MTLRenderPassDescriptor()
+        renderPassDescriptor.colorAttachments[0].loadAction = .clear
         
-        // 6
+        if multisampleLevel > 1 {
+            renderPassDescriptor.colorAttachments[0].texture = view.multisampleColorTexture
+            renderPassDescriptor.colorAttachments[0].resolveTexture = drawable.texture
+            renderPassDescriptor.colorAttachments[0].storeAction = .multisampleResolve
+        } else {
+            renderPassDescriptor.colorAttachments[0].texture = drawable.texture
+        }
+        
+        renderPassDescriptor.colorAttachments[0]
+            .clearColor = MTLClearColor(red: 0.85, green: 0.85, blue: 0.85, alpha: 1.0)
+        
         guard let commandBuffer = metalCommandQueue.makeCommandBuffer() else {
             return
         }
-        
-        // 7
         guard let renderEncoder = commandBuffer
             .makeRenderCommandEncoder(descriptor: renderPassDescriptor) else {
                 return
@@ -92,10 +111,10 @@ class Renderer: NSObject, MTKViewDelegate {
         demoScene.renderToVaoBuffer()
         renderVertices(demoScene.vertexBuffer, renderEncoder: renderEncoder)
         
-        renderEncoder.endEncoding() // 8
+        renderEncoder.endEncoding()
         
-        commandBuffer.present(drawable) // 9
-        commandBuffer.commit() // 10
+        commandBuffer.present(drawable)
+        commandBuffer.commit()
     }
     
     func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) {
