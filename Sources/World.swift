@@ -182,14 +182,24 @@ public final class World {
         joints.remove(joint)
     }
     
+    /// Returns `true` if the two given bodies are joined to one another.
+    public func areBodiesJoined(_ body1: Body, _ body2: Body) -> Bool {
+        return body1.joints.contains { $0.bodyLink1.body === body2 || $0.bodyLink2.body === body2 }
+    }
+    
     /// Finds the closest PointMass in the world to a given point
-    public func closestPointMass(to pt: Vector2) -> (Body, PointMass)? {
+    public func closestPointMass(to pt: Vector2,
+                                 ignoreFunction: ((Body, PointMass) -> Bool)? = nil) -> (Body, PointMass)? {
+        
         var ret: (Body, PointMass)? = nil
         
         var closestD = JFloat.greatestFiniteMagnitude
         
         for body in bodies {
             let (pm, dist) = body.closestPointMass(to: pt)
+            if ignoreFunction?(body, pm) == true {
+                continue
+            }
             
             if dist < closestD {
                 closestD = dist
@@ -247,7 +257,10 @@ public final class World {
     ///
     /// - Returns: All bodies that intersect with the closed shape. If closed
     ///            shape contains less than 2 points, returns empty.
-    public func bodiesIntersecting(closedShape: ClosedShape, at worldPos: Vector2, ignoreTest: ((Body) -> Bool)? = nil) -> ContiguousArray<Body> {
+    public func bodiesIntersecting(closedShape: ClosedShape,
+                                   at worldPos: Vector2,
+                                   ignoreTest: ((Body) -> Bool)? = nil) -> ContiguousArray<Body> {
+        
         if closedShape.localVertices.count < 2 {
             return []
         }
@@ -304,7 +317,11 @@ public final class World {
     /// - Returns: An optional tuple containing the farthest point reached by
     /// the ray, and a Body value specifying the body that was closest to the
     /// ray, if it hit any body, or nil if it hit nothing.
-    public func rayCast(from start: Vector2, to end: Vector2, bitmask: Bitmask = 0, ignoreTest: ((Body) -> Bool)? = nil) -> (retPt: Vector2, body: Body)? {
+    public func rayCast(from start: Vector2,
+                        to end: Vector2,
+                        bitmask: Bitmask = 0,
+                        ignoreTest: ((Body) -> Bool)? = nil) -> (retPt: Vector2, body: Body)? {
+        
         var aabb = AABB(points: [start, end])
         var aabbBitmask = self.bitmask(for: aabb)
         var result: (Vector2, Body)?
@@ -353,7 +370,10 @@ public final class World {
     }
     
     /// Internal updating method
-    fileprivate func update(_ elapsed: JFloat, withBodies bodies: ContiguousArray<Body>, joints: ContiguousArray<BodyJoint>) {
+    fileprivate func update(_ elapsed: JFloat,
+                            withBodies bodies: ContiguousArray<Body>,
+                            joints: ContiguousArray<BodyJoint>) {
+        
         // Update the bodies
         for body in bodies {
             body.derivePositionAndAngle(elapsed)
@@ -363,7 +383,7 @@ public final class World {
             if body.componentCount > 0 {
                 body.updateEdgesAndNormals()
                 
-                body.accumulateExternalForces(relaxing: relaxing)
+                body.accumulateExternalForces(world: self, relaxing: relaxing)
                 body.accumulateInternalForces(relaxing: relaxing)
             } else {
                 // We need these for the collision detection

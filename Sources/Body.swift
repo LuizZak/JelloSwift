@@ -507,9 +507,9 @@ public final class Body: Equatable {
     ///
     /// These are external forces acting on the PointMasses, such as gravity,
     /// etc.
-    public func accumulateExternalForces(relaxing: Bool = false) {
+    public func accumulateExternalForces(world: World, relaxing: Bool = false) {
         for component in components {
-            component.accumulateExternalForces(on: self, relaxing: relaxing)
+            component.accumulateExternalForces(on: self, world: world, relaxing: relaxing)
         }
     }
     

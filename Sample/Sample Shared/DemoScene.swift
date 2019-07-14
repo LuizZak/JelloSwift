@@ -122,7 +122,10 @@ class DemoScene {
                 let start = vertex - normal * 0.1
                 let end = vertex + normal * comp.rayLength
                 
-                let pt = world.rayCast(from: start, to: end, ignoreTest: { $0 == body })?.retPt ?? end
+                let pt
+                    = world.rayCast(from: start,
+                                    to: end,
+                                    ignoreTest: { [world] in $0 == body || (comp.ignoreJoinedBodies && world.areBodiesJoined(body, $0)) })?.retPt ?? end
                 
                 drawLine(from: vertex, to: pt, color: comp.color.toUIntARGB())
                 try? drawCircle(center: pt, radius: 0.1, color: comp.color.toUIntARGB())
@@ -285,6 +288,7 @@ extension DemoScene {
         }
         
         createBallBoxLinkedStructure(Vector2(x: size.width * 0.8, y: size.height * 0.8).inWorldCoords)
+        
         do {
             let (left, box, right) = createScaleStructure(Vector2(x: size.width * 0.4, y: size.height * 0.8).inWorldCoords)
             
@@ -412,6 +416,7 @@ extension DemoScene {
         // Allow relaxation of bodies
         b1.component(ofType: GravityComponent.self)?.relaxable = true
         b2.component(ofType: GravityComponent.self)?.relaxable = true
+        b1.addComponent(ofType: StickyRayComponent.self)
         
         return (b1, b2)
     }
@@ -769,27 +774,6 @@ extension DemoScene: CollisionObserver {
 
 extension Vector2.NativeMatrixType {
     
-    /// Returns a 4x4 GLfloat matrix representation for this matrix object
-    func floatMatrix4x4() -> [Float] {
-        var matrix: [Float] = [Float](repeating: 0, count: 16)
-        
-        matrix[0] = Float(columns.0.x)
-        matrix[4] = Float(columns.0.y)
-        matrix[12] = Float(columns.0.z)
-        
-        matrix[1] = Float(columns.1.x)
-        matrix[5] = Float(columns.1.y)
-        matrix[13] = Float(columns.1.z)
-        
-        matrix[2] = Float(columns.2.x)
-        matrix[6] = Float(columns.2.y)
-        matrix[14] = Float(columns.2.z)
-        
-        matrix[15] = 1
-        
-        return matrix
-    }
-    
     /// Returns a 4x4 floating-point transformation matrix for this matrix
     /// object
     func matrix4x4() -> float4x4 {
@@ -802,9 +786,4 @@ extension Vector2.NativeMatrixType {
         
         return matrix
     }
-}
-
-struct BodyRayComponent: BodyComponent {
-    var color: Color4 = Color4.fromUIntARGB(0xFFFF0000)
-    var rayLength: JFloat = 1
 }

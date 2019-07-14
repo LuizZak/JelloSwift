@@ -38,6 +38,10 @@
 		A0FCA66722DAB1C3000C2481 /* img_detailed.png in Resources */ = {isa = PBXBuildFile; fileRef = A0FCA66422DAB1C3000C2481 /* img_detailed.png */; };
 		A0FCA66822DAB1C3000C2481 /* img_simple.png in Resources */ = {isa = PBXBuildFile; fileRef = A0FCA66522DAB1C3000C2481 /* img_simple.png */; };
 		A0FCA66922DAB1C3000C2481 /* img_simple.png in Resources */ = {isa = PBXBuildFile; fileRef = A0FCA66522DAB1C3000C2481 /* img_simple.png */; };
+		A0FCAA9022DB8D21000C2481 /* BodyRayComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FCAA8F22DB8D21000C2481 /* BodyRayComponent.swift */; };
+		A0FCAA9122DB8D28000C2481 /* BodyRayComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FCAA8F22DB8D21000C2481 /* BodyRayComponent.swift */; };
+		A0FCAA9322DB8EAC000C2481 /* StickyRayComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FCAA9222DB8EAC000C2481 /* StickyRayComponent.swift */; };
+		A0FCAA9422DB8FC4000C2481 /* StickyRayComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FCAA9222DB8EAC000C2481 /* StickyRayComponent.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -63,6 +67,8 @@
 		A0C42ADD22D8C3C300E8F467 /* Triangulator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Triangulator.swift; sourceTree = "<group>"; };
 		A0FCA66422DAB1C3000C2481 /* img_detailed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = img_detailed.png; sourceTree = "<group>"; };
 		A0FCA66522DAB1C3000C2481 /* img_simple.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = img_simple.png; sourceTree = "<group>"; };
+		A0FCAA8F22DB8D21000C2481 /* BodyRayComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BodyRayComponent.swift; sourceTree = "<group>"; };
+		A0FCAA9222DB8EAC000C2481 /* StickyRayComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickyRayComponent.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -108,6 +114,8 @@
 				A0C42AD622D8C1D000E8F467 /* Utils.swift */,
 				A0461FB322D8AD57001EAF92 /* Renderer.swift */,
 				A0C42ACC22D8C0C300E8F467 /* DemoScene.swift */,
+				A0FCAA8F22DB8D21000C2481 /* BodyRayComponent.swift */,
+				A0FCAA9222DB8EAC000C2481 /* StickyRayComponent.swift */,
 				A0299F8622D8CAF600BB9E52 /* Shaders.metal */,
 				A0461FB522D8AD5A001EAF92 /* Assets.xcassets */,
 				A0FCA66422DAB1C3000C2481 /* img_detailed.png */,
@@ -273,6 +281,8 @@
 			files = (
 				A0461FD822D8AD5A001EAF92 /* Renderer.swift in Sources */,
 				A0C42ADE22D8C3C300E8F467 /* LibTessTriangulate.swift in Sources */,
+				A0FCAA9022DB8D21000C2481 /* BodyRayComponent.swift in Sources */,
+				A0FCAA9322DB8EAC000C2481 /* StickyRayComponent.swift in Sources */,
 				A0461FC022D8AD5A001EAF92 /* GameViewController.swift in Sources */,
 				A0461FBE22D8AD5A001EAF92 /* AppDelegate.swift in Sources */,
 				A0C42AE022D8C3C300E8F467 /* Triangulator.swift in Sources */,
@@ -289,6 +299,8 @@
 			files = (
 				A0461FD922D8AD5A001EAF92 /* Renderer.swift in Sources */,
 				A0C42ADF22D8C3C300E8F467 /* LibTessTriangulate.swift in Sources */,
+				A0FCAA9122DB8D28000C2481 /* BodyRayComponent.swift in Sources */,
+				A0FCAA9422DB8FC4000C2481 /* StickyRayComponent.swift in Sources */,
 				A0461FD122D8AD5A001EAF92 /* GameViewController.swift in Sources */,
 				A0461FCF22D8AD5A001EAF92 /* AppDelegate.swift in Sources */,
 				A0C42AE122D8C3C300E8F467 /* Triangulator.swift in Sources */,

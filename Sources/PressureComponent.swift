@@ -48,6 +48,10 @@ public final class PressureComponent: BodyComponent {
             pointEnd.applyForce(of: pointEnd.normal * pressureV)
         }
     }
+    
+    public func accumulateExternalForces(on body: Body, world: World, relaxing: Bool) {
+        
+    }
 }
 
 // Creator for the Spring component

@@ -218,6 +218,10 @@ public final class SpringComponent: BodyComponent {
         }
     }
     
+    public func accumulateExternalForces(on body: Body, world: World, relaxing: Bool) {
+        
+    }
+    
     /// Applies shape-matching on the given body.
     /// Shape-matching applies spring forces to each point masses on the
     /// direction of the body's original global shape
