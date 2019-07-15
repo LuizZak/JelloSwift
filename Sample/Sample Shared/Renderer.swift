@@ -127,8 +127,14 @@ class Renderer: NSObject, MTKViewDelegate {
     }
     
     func renderVertices(_ buffer: VertexBuffer, renderEncoder: MTLRenderCommandEncoder) {
-        vertexBuffer.setData(buffer.vertices, device: metalDevice)
-        indexBuffer.setData(buffer.indices, device: metalDevice)
+        if !vertexBuffer.setData(buffer.vertices, device: metalDevice) {
+            print("Could not allocate vertex buffer @\(#file):\(#line - 1)")
+            return
+        }
+        if !indexBuffer.setData(buffer.indices, device: metalDevice) {
+            print("Could not allocate index buffer @\(#file):\(#line - 1)")
+            return
+        }
         
         renderEncoder.setVertexBuffer(vertexBuffer.buffer, offset: 0, index: 0)
         renderEncoder

@@ -18,25 +18,30 @@ class MetalBuffer<T> {
         self.length = length
     }
     
-    func setData(_ data: [T], device: MTLDevice) {
-        reserve(count: data.count, device: device)
+    func setData(_ data: [T], device: MTLDevice) -> Bool {
+        if !reserve(count: data.count, device: device) {
+            return false
+        }
         
         buffer.contents()
             .assumingMemoryBound(to: T.self)
             .assign(from: data, count: data.count)
+        
+        return true
     }
     
-    func reserve(count: Int, device: MTLDevice) {
+    func reserve(count: Int, device: MTLDevice) -> Bool {
         if length > count {
-            return
+            return true
         }
         
         length = count
         let newSize = length * MemoryLayout<T>.stride
         guard let buffer = device.makeBuffer(length: newSize, options: .storageModeShared) else {
-            fatalError("Could not allocate buffer with size \(newSize)")
+            return false
         }
         
         self.buffer = buffer
+        return true
     }
 }
