@@ -16,7 +16,7 @@ open class BodyJointLink: JointLink {
     
     /// Gets the type of joint this joint link represents
     public let linkType = LinkType.body
-    
+
     /// Gets the position, in world coordinates, at which this joint links with
     /// the underlying body
     open var position: Vector2 {
@@ -32,6 +32,10 @@ open class BodyJointLink: JointLink {
     open var mass: JFloat {
         return body.pointMasses.reduce(0) { $0 + $1.mass }
     }
+
+    /// Gets or sets a value specifying whether this joint link supports angling
+    /// and torque forces.
+    open var supportsAngling: Bool
     
     /// Gets a value specifying whether the object referenced by this 
     /// JointLinkType is static
@@ -44,8 +48,9 @@ open class BodyJointLink: JointLink {
     }
     
     /// Inits a new body joint link with the specified parameters
-    public init(body: Body) {
+    public init(body: Body, supportsAngling: Bool = true) {
         self.body = body
+        self.supportsAngling = supportsAngling
     }
     
     /// Appies a given force to the subject of this joint link

@@ -21,8 +21,8 @@ public enum RestDistance: ExpressibleByFloatLiteral, ExpressibleByIntegerLiteral
     /// If the current value is .fixed, this method always returns the rest
     /// distance it represents, if .ranged, it returns its min value.
     ///
-    /// Setting this value updates the `.fixed` value, or in case of `.ranged`
-    /// it updates the minimum distance value.
+    /// Setting this value when it is a `.fixed` value changes it to a `.ranged`
+    /// value, with the maximum value being the original fixed distance.
     public var minimumDistance: JFloat {
         get {
             switch(self) {
@@ -33,8 +33,8 @@ public enum RestDistance: ExpressibleByFloatLiteral, ExpressibleByIntegerLiteral
         }
         set {
             switch self {
-            case .fixed:
-                self = .fixed(newValue)
+            case .fixed(let value):
+                self = .ranged(min: newValue, max: value)
             case .ranged(_, let max):
                 self = .ranged(min: newValue, max: max)
             }
@@ -45,8 +45,8 @@ public enum RestDistance: ExpressibleByFloatLiteral, ExpressibleByIntegerLiteral
     /// If the current value is .fixed, this method always returns the rest
     /// distance it represents, if .ranged, it returns its max value
     ///
-    /// Setting this value updates the `.fixed` value, or in case of `.ranged`
-    /// it updates the maximum distance value.
+    /// Setting this value when it is a `.fixed` value changes it to a `.ranged`
+    /// value, with the minimum value being the original fixed distance.
     public var maximumDistance: JFloat {
         get {
             switch(self) {
@@ -57,8 +57,8 @@ public enum RestDistance: ExpressibleByFloatLiteral, ExpressibleByIntegerLiteral
         }
         set {
             switch self {
-            case .fixed:
-                self = .fixed(newValue)
+            case .fixed(let value):
+                self = .ranged(min: value, max: newValue)
             case .ranged(let min, _):
                 self = .ranged(min: min, max: newValue)
             }

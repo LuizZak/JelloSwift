@@ -44,6 +44,10 @@ open class PointJointLink: JointLink {
     open var isStatic: Bool {
         return _pointMass.mass.isInfinite
     }
+
+    /// Gets or sets a value specifying whether this joint link supports angling
+    /// and torque forces.
+    open var supportsAngling: Bool
     
     /// The angle of the joint.
     /// For point joints, this is the normal of the point.
@@ -52,10 +56,11 @@ open class PointJointLink: JointLink {
     }
     
     /// Inits a new point joint link with the specified parameters
-    public init(body: Body, pointMassIndex: Int) {
+    public init(body: Body, pointMassIndex: Int, supportsAngling: Bool = true) {
         self.body = body
         _pointMass = body.pointMasses[pointMassIndex]
         _pointMassIndex = pointMassIndex
+        self.supportsAngling = supportsAngling
     }
     
     /// Appies a given force to the subject of this joint link

@@ -54,6 +54,10 @@ open class EdgeJointLink: JointLink {
     open var isStatic: Bool {
         return _pointMass1.mass.isInfinite && _pointMass2.mass.isInfinite
     }
+
+    /// Gets or sets a value specifying whether this joint link supports angling
+    /// and torque forces.
+    open var supportsAngling: Bool
     
     /// The angle of the joint.
     /// For edge joints, this is the angle of the edge.
@@ -62,13 +66,14 @@ open class EdgeJointLink: JointLink {
     }
     
     /// Inits a new edge joint link with the specified parameters
-    public init(body: Body, edgeIndex: Int, edgeRatio: JFloat = 0.5) {
+    public init(body: Body, edgeIndex: Int, edgeRatio: JFloat = 0.5, supportsAngling: Bool = true) {
         self.body = body
         _edgeIndex = edgeIndex
         _pointMass1 = body.pointMasses[edgeIndex % body.pointMasses.count]
         _pointMass2 = body.pointMasses[(edgeIndex + 1) % body.pointMasses.count]
         
         self.edgeRatio = edgeRatio
+        self.supportsAngling = supportsAngling
     }
     
     /// Appies a given force to the subject of this joint link
@@ -96,7 +101,7 @@ open class EdgeJointLink: JointLink {
     open func applyTorque(_ force: JFloat) {
         let direction = body.edges[_edgeIndex].difference.perpendicular()
         
-        _pointMass1.applyForce(of: -direction * force)
-        _pointMass2.applyForce(of: direction * force)
+        _pointMass1.applyForce(of: direction * force * (1 - edgeRatio))
+        _pointMass2.applyForce(of: -direction * force * (edgeRatio))
     }
 }

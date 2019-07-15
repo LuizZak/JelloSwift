@@ -83,6 +83,9 @@ public protocol JointLink {
     /// Gets a value specifying whether the object referenced by this
     /// JointLinkType is static
     var isStatic: Bool { get }
+
+    /// Gets a value specifying whether this joint link supports angling.
+    var supportsAngling: Bool { get }
     
     /// The angle of the joint.
     /// For body and shape joints, this is the angle of the body's rotational

@@ -60,18 +60,23 @@ open class ShapeJointLink: JointLink {
     open var isStatic: Bool {
         return _pointMasses.any { $0.mass.isInfinite }
     }
-    
+
+    /// Gets or sets a value specifying whether this joint link supports angling
+    /// and torque forces.
+    open var supportsAngling: Bool
+
     /// The angle of the joint.
     /// For shape joints, this is the angle of the body's rotational axis.
     open var angle: JFloat {
-        return _angle()
+        return body.derivedAngle
     }
     
     /// Inits a new point joint link with the specified parameters
-    public init(body: Body, pointMassIndexes: [Int]) {
+    public init(body: Body, pointMassIndexes: [Int], supportsAngling: Bool = true) {
         self.body = body
         _pointMasses = pointMassIndexes.map { body.pointMasses[$0] }
         _indexes = pointMassIndexes
+        self.supportsAngling = supportsAngling
     }
     
     /// Appies a given force to the subject of this joint link
@@ -92,16 +97,17 @@ open class ShapeJointLink: JointLink {
     /// - Parameter force: A torque force to apply to the subject of this joint
     /// link.
     open func applyTorque(_ force: JFloat) {
-        for i in _indexes {
-            let pm = body.pointMasses[i]
-            
-            let baseNorm = body.baseShape[i].normalized()
-            let curNorm  = (pm.position - body.derivedPos).normalized()
-            
-            let angle = Vector2(x: baseNorm • curNorm, y: baseNorm.x * curNorm.y - baseNorm.y * curNorm.x)
-            
-            pm.applyForce(of: angle * force)
-        }
+        body.applyTorque(of: force)
+//        for i in _indexes {
+//            let pm = body.pointMasses[i]
+//
+//            let baseNorm = body.baseShape[i].normalized()
+//            let curNorm  = (pm.position - body.derivedPos).normalized()
+//
+//            let angle = Vector2(x: baseNorm • curNorm, y: baseNorm.x * curNorm.y - baseNorm.y * curNorm.x)
+//
+//            pm.applyForce(of: angle * force)
+//        }
     }
     
     // TODO: Implement the function below to derive the angle of the shape's
