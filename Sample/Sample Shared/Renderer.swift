@@ -36,6 +36,11 @@ class Renderer: NSObject, MTKViewDelegate {
         setupMetal()
         metalKitView.sampleCount = multisampleLevel
         metalKitView.delegate = self
+        if #available(OSX 10.15, *) {
+            if multisampleLevel > 1 {
+                metalKitView.multisampleColorAttachmentTextureUsage = .renderTarget
+            }
+        }
         demoScene = DemoScene(boundsSize: metalKitView.bounds.size, delegate: self)
         demoScene.initializeLevel()
     }
