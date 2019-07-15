@@ -28,12 +28,14 @@
 		A0C42AD522D8C0E900E8F467 /* JelloSwift in Frameworks */ = {isa = PBXBuildFile; productRef = A0C42AD422D8C0E900E8F467 /* JelloSwift */; };
 		A0C42AD722D8C1D000E8F467 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C42AD622D8C1D000E8F467 /* Utils.swift */; };
 		A0C42AD822D8C1D000E8F467 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C42AD622D8C1D000E8F467 /* Utils.swift */; };
-		A0C42ADA22D8C3BA00E8F467 /* Vertex.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C42AD922D8C3BA00E8F467 /* Vertex.swift */; };
-		A0C42ADB22D8C3BA00E8F467 /* Vertex.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C42AD922D8C3BA00E8F467 /* Vertex.swift */; };
+		A0C42ADA22D8C3BA00E8F467 /* VertexBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C42AD922D8C3BA00E8F467 /* VertexBuffer.swift */; };
+		A0C42ADB22D8C3BA00E8F467 /* VertexBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C42AD922D8C3BA00E8F467 /* VertexBuffer.swift */; };
 		A0C42ADE22D8C3C300E8F467 /* LibTessTriangulate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C42ADC22D8C3C300E8F467 /* LibTessTriangulate.swift */; };
 		A0C42ADF22D8C3C300E8F467 /* LibTessTriangulate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C42ADC22D8C3C300E8F467 /* LibTessTriangulate.swift */; };
 		A0C42AE022D8C3C300E8F467 /* Triangulator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C42ADD22D8C3C300E8F467 /* Triangulator.swift */; };
 		A0C42AE122D8C3C300E8F467 /* Triangulator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C42ADD22D8C3C300E8F467 /* Triangulator.swift */; };
+		A0F4103622DBF3050082D4F6 /* MetalBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F4103522DBF3050082D4F6 /* MetalBuffer.swift */; };
+		A0F4103722DBF3050082D4F6 /* MetalBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F4103522DBF3050082D4F6 /* MetalBuffer.swift */; };
 		A0FCA66622DAB1C3000C2481 /* img_detailed.png in Resources */ = {isa = PBXBuildFile; fileRef = A0FCA66422DAB1C3000C2481 /* img_detailed.png */; };
 		A0FCA66722DAB1C3000C2481 /* img_detailed.png in Resources */ = {isa = PBXBuildFile; fileRef = A0FCA66422DAB1C3000C2481 /* img_detailed.png */; };
 		A0FCA66822DAB1C3000C2481 /* img_simple.png in Resources */ = {isa = PBXBuildFile; fileRef = A0FCA66522DAB1C3000C2481 /* img_simple.png */; };
@@ -62,9 +64,10 @@
 		A0461FE822D8ADD3001EAF92 /* JelloSwift */ = {isa = PBXFileReference; lastKnownFileType = folder; name = JelloSwift; path = ../; sourceTree = "<group>"; };
 		A0C42ACC22D8C0C300E8F467 /* DemoScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoScene.swift; sourceTree = "<group>"; };
 		A0C42AD622D8C1D000E8F467 /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
-		A0C42AD922D8C3BA00E8F467 /* Vertex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Vertex.swift; sourceTree = "<group>"; };
+		A0C42AD922D8C3BA00E8F467 /* VertexBuffer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VertexBuffer.swift; sourceTree = "<group>"; };
 		A0C42ADC22D8C3C300E8F467 /* LibTessTriangulate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibTessTriangulate.swift; sourceTree = "<group>"; };
 		A0C42ADD22D8C3C300E8F467 /* Triangulator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Triangulator.swift; sourceTree = "<group>"; };
+		A0F4103522DBF3050082D4F6 /* MetalBuffer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalBuffer.swift; sourceTree = "<group>"; };
 		A0FCA66422DAB1C3000C2481 /* img_detailed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = img_detailed.png; sourceTree = "<group>"; };
 		A0FCA66522DAB1C3000C2481 /* img_simple.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = img_simple.png; sourceTree = "<group>"; };
 		A0FCAA8F22DB8D21000C2481 /* BodyRayComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BodyRayComponent.swift; sourceTree = "<group>"; };
@@ -110,9 +113,10 @@
 			children = (
 				A0C42ADC22D8C3C300E8F467 /* LibTessTriangulate.swift */,
 				A0C42ADD22D8C3C300E8F467 /* Triangulator.swift */,
-				A0C42AD922D8C3BA00E8F467 /* Vertex.swift */,
+				A0C42AD922D8C3BA00E8F467 /* VertexBuffer.swift */,
 				A0C42AD622D8C1D000E8F467 /* Utils.swift */,
 				A0461FB322D8AD57001EAF92 /* Renderer.swift */,
+				A0F4103522DBF3050082D4F6 /* MetalBuffer.swift */,
 				A0C42ACC22D8C0C300E8F467 /* DemoScene.swift */,
 				A0FCAA8F22DB8D21000C2481 /* BodyRayComponent.swift */,
 				A0FCAA9222DB8EAC000C2481 /* StickyRayComponent.swift */,
@@ -284,11 +288,12 @@
 				A0FCAA9022DB8D21000C2481 /* BodyRayComponent.swift in Sources */,
 				A0FCAA9322DB8EAC000C2481 /* StickyRayComponent.swift in Sources */,
 				A0461FC022D8AD5A001EAF92 /* GameViewController.swift in Sources */,
+				A0F4103622DBF3050082D4F6 /* MetalBuffer.swift in Sources */,
 				A0461FBE22D8AD5A001EAF92 /* AppDelegate.swift in Sources */,
 				A0C42AE022D8C3C300E8F467 /* Triangulator.swift in Sources */,
 				A0C42ACD22D8C0C300E8F467 /* DemoScene.swift in Sources */,
 				A0299F8722D8CAF600BB9E52 /* Shaders.metal in Sources */,
-				A0C42ADA22D8C3BA00E8F467 /* Vertex.swift in Sources */,
+				A0C42ADA22D8C3BA00E8F467 /* VertexBuffer.swift in Sources */,
 				A0C42AD722D8C1D000E8F467 /* Utils.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -302,11 +307,12 @@
 				A0FCAA9122DB8D28000C2481 /* BodyRayComponent.swift in Sources */,
 				A0FCAA9422DB8FC4000C2481 /* StickyRayComponent.swift in Sources */,
 				A0461FD122D8AD5A001EAF92 /* GameViewController.swift in Sources */,
+				A0F4103722DBF3050082D4F6 /* MetalBuffer.swift in Sources */,
 				A0461FCF22D8AD5A001EAF92 /* AppDelegate.swift in Sources */,
 				A0C42AE122D8C3C300E8F467 /* Triangulator.swift in Sources */,
 				A0C42ACE22D8C0C300E8F467 /* DemoScene.swift in Sources */,
 				A0299F8822D8CAF600BB9E52 /* Shaders.metal in Sources */,
-				A0C42ADB22D8C3BA00E8F467 /* Vertex.swift in Sources */,
+				A0C42ADB22D8C3BA00E8F467 /* VertexBuffer.swift in Sources */,
 				A0C42AD822D8C1D000E8F467 /* Utils.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

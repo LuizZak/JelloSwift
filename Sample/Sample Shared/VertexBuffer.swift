@@ -152,11 +152,6 @@ struct Vertex {
     var color: Color4 = Color4()
 }
 
-/// Represents a vertex array object, and an acompanying vertex buffer object
-struct VertexArrayObject {
-    var buffer: VertexBuffer
-}
-
 /// A paired vertex/index buffer, with identifiers coupled in
 struct VertexBuffer {
     typealias VertexType = Vertex
@@ -328,4 +323,3 @@ struct VertexBuffer {
         return VertexBuffer(vertices: vertexes, indices: indices)
     }
 }
-

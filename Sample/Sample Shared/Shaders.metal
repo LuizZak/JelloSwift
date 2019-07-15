@@ -19,13 +19,10 @@ struct VertexOut {
     float4 color;
 };
 
-vertex VertexOut basic_vertex( // 1
-                              const device VertexIn* vertex_array [[ buffer(0) ]], // 2
-                              unsigned int vid [[ vertex_id ]]) {                  // 3
-    // 4
-    VertexIn v = vertex_array[vid];
+vertex VertexOut basic_vertex(const device VertexIn* vertex_array [[ buffer(0) ]],
+                              unsigned int vid [[ vertex_id ]]) {
     
-    // 5
+    VertexIn v = vertex_array[vid];
     VertexOut outVertex = VertexOut();
     outVertex.computedPosition = float4(v.position, 1.0);
     outVertex.color = v.color;

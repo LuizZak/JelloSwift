@@ -18,6 +18,8 @@ class Renderer: NSObject, MTKViewDelegate {
     public let metalDevice: MTLDevice!
     let metalCommandQueue: MTLCommandQueue!
     private var pipelineState: MTLRenderPipelineState!
+    private var vertexBuffer: MetalBuffer<VertexBuffer.VertexType>
+    private var indexBuffer: MetalBuffer<VertexBuffer.IndexType>
     
     var demoScene: DemoScene!
     
@@ -25,6 +27,9 @@ class Renderer: NSObject, MTKViewDelegate {
         metalDevice = MTLCreateSystemDefaultDevice()
         metalCommandQueue = metalDevice.makeCommandQueue()
         metalKitView.device = metalDevice
+        
+        vertexBuffer = MetalBuffer(device: metalDevice, length: 1024)!
+        indexBuffer = MetalBuffer(device: metalDevice, length: 1024)!
         
         super.init()
         
@@ -122,24 +127,21 @@ class Renderer: NSObject, MTKViewDelegate {
     }
     
     func renderVertices(_ buffer: VertexBuffer, renderEncoder: MTLRenderCommandEncoder) {
-        var vertices: [Vertex] = Array(repeating: Vertex(), count: 3)
+        vertexBuffer.setData(buffer.vertices, device: metalDevice)
+        indexBuffer.setData(buffer.indices, device: metalDevice)
         
-        for triStart in stride(from: 0, to: buffer.indices.count, by: 3) {
-            vertices[0] = buffer.vertices[Int(buffer.indices[triStart])]
-            vertices[1] = buffer.vertices[Int(buffer.indices[triStart + 1])]
-            vertices[2] = buffer.vertices[Int(buffer.indices[triStart + 2])]
-            
-            renderEncoder.setVertexBytes(&vertices, length: MemoryLayout<Vertex>.stride * 3, index: 0)
-            renderEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: 3)
-        }
+        renderEncoder.setVertexBuffer(vertexBuffer.buffer, offset: 0, index: 0)
+        renderEncoder
+            .drawIndexedPrimitives(type: .triangle,
+                                   indexCount: buffer.indices.count,
+                                   indexType: .uint32,
+                                   indexBuffer: indexBuffer.buffer,
+                                   indexBufferOffset: 0)
     }
 }
 
 // MARK: - DemoSceneDelegate
 extension Renderer: DemoSceneDelegate {
-    func render(_ vao: VertexArrayObject) {
-        
-    }
     func didUpdatePhysicsTimer(intervalCount: Int,
                                timeMilliRounded: TimeInterval,
                                fps: TimeInterval,
