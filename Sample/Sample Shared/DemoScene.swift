@@ -128,7 +128,7 @@ class DemoScene {
                                     ignoreTest: { [world] in $0 == body || (comp.ignoreJoinedBodies && world.areBodiesJoined(body, $0)) })?.retPt ?? end
                 
                 drawLine(from: vertex, to: pt, color: comp.color.toUIntARGB())
-                try? drawCircle(center: pt, radius: 0.1, color: comp.color.toUIntARGB())
+                drawCircle(center: pt, radius: 0.1, color: comp.color.toUIntARGB())
             }
         }
         
@@ -555,9 +555,16 @@ extension DemoScene {
         
         vertexBuffer.addTriangleWithIndices(i0, i1, i2)
         vertexBuffer.addTriangleWithIndices(i2, i3, i0)
+        
+        // Draw a pointy line to make the line look less squared
+        let p0 = vertexBuffer.addVertex(start - normal.perpendicular(), color: color)
+        let p1 = vertexBuffer.addVertex(end + normal.perpendicular(), color: color)
+        
+        vertexBuffer.addTriangleWithIndices(i0, p0, i1)
+        vertexBuffer.addTriangleWithIndices(i2, p1, i3)
     }
     
-    func drawCircle(center point: Vector2, radius: JFloat, sides: Int = 10, color: UInt = 0xFFFFFFFF) throws {
+    func drawCircle(center point: Vector2, radius: JFloat, sides: Int = 10, color: UInt = 0xFFFFFFFF) {
         let prev = vertexBuffer.currentColor
         vertexBuffer.currentColor = color
         defer {
@@ -676,10 +683,10 @@ extension DemoScene {
             }
         } else {
             if joint.bodyLink1.linkType == .edge {
-                try? drawCircle(center: start, radius: 0.15, color: color)
+                drawCircle(center: start, radius: 0.15, color: color)
             }
             if joint.bodyLink2.linkType == .edge {
-                try? drawCircle(center: end, radius: 0.15, color: color)
+                drawCircle(center: end, radius: 0.15, color: color)
             }
             
             // Draw active range for joint
