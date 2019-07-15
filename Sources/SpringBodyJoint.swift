@@ -26,12 +26,18 @@ open class SpringBodyJoint: BodyJoint {
     /// Inits a new spring body joint witht he specified parameters. Leave the 
     /// distance nil to calculate the distance automatically from the current
     /// distance of the two provided joint links
-    public init(on world: World, link1: JointLink, link2: JointLink,
-                coefficient: JFloat, damping: JFloat,
-                distance: RestDistance? = nil) {
+    public init(on world: World,
+                link1: JointLink,
+                link2: JointLink,
+                coefficient: JFloat,
+                damping: JFloat,
+                distance: RestDistance? = nil,
+                plasticity: SpringPlasticity? = nil) {
+        
         self.springCoefficient = coefficient
         self.springDamping = damping
         self.initialRestDistance = 0
+        self.plasticity = plasticity
         
         super.init(on: world, link1: link1, link2: link2, distance: distance)
         

@@ -176,7 +176,17 @@ public struct Vector2: VectorRepresentable, Equatable, CustomStringConvertible, 
         return self
     }
     
-    /// Returns a Vector2 perpendicular to this Vector2
+    /// Returns a Vector2 perpendicular to this Vector2, rotated clockwise.
+    ///
+    /// Ex:
+    ///
+    /// ```
+    ///     y                     y
+    ///     ,                     ,
+    /// x - •-->     perp:    x - • - -
+    ///     ,                     |
+    ///                           V
+    /// ```
     @inlinable
     public func perpendicular() -> Vector2 {
         return Vector2(x: -y, y: x)

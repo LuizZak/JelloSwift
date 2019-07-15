@@ -29,7 +29,9 @@ public struct BodyEdge: Codable {
     /// The normal for the edge
     public var normal = Vector2.zero
     
-    /// The difference between the start and end points, normalized
+    /// The difference between the start and end points, normalized.
+    /// 
+    /// Equal to `(end - start).normalized()`.
     public var difference = Vector2.zero
     
     /// The edge's length

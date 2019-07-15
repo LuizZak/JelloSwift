@@ -8,6 +8,9 @@
 
 /// Represents a joint link that links to an edge of a body
 open class EdgeJointLink: JointLink {
+    /// The edge index on the list of edges from the body that this joint links
+    /// to
+    fileprivate let _edgeIndex: Int
     /// The first point mass this joint is linked to
     fileprivate let _pointMass1: PointMass
     /// The second point mass this joint is linked to
@@ -52,9 +55,16 @@ open class EdgeJointLink: JointLink {
         return _pointMass1.mass.isInfinite && _pointMass2.mass.isInfinite
     }
     
+    /// The angle of the joint.
+    /// For edge joints, this is the angle of the edge.
+    open var angle: JFloat {
+        return body.edges[_edgeIndex].difference.angle
+    }
+    
     /// Inits a new edge joint link with the specified parameters
     public init(body: Body, edgeIndex: Int, edgeRatio: JFloat = 0.5) {
         self.body = body
+        _edgeIndex = edgeIndex
         _pointMass1 = body.pointMasses[edgeIndex % body.pointMasses.count]
         _pointMass2 = body.pointMasses[(edgeIndex + 1) % body.pointMasses.count]
         
@@ -77,5 +87,16 @@ open class EdgeJointLink: JointLink {
             torqueF = 1 - abs(1 - edgeRatio * 2)
             body.applyTorque(of: torqueF)
         }
+    }
+    
+    /// Applies a torque (rotational) force to the subject of this joint link.
+    ///
+    /// - Parameter force: A torque force to apply to the subject of this joint
+    /// link.
+    open func applyTorque(_ force: JFloat) {
+        let direction = body.edges[_edgeIndex].difference.perpendicular()
+        
+        _pointMass1.applyForce(of: -direction * force)
+        _pointMass2.applyForce(of: direction * force)
     }
 }

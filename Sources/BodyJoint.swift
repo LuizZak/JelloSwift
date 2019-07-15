@@ -84,10 +84,22 @@ public protocol JointLink {
     /// JointLinkType is static
     var isStatic: Bool { get }
     
+    /// The angle of the joint.
+    /// For body and shape joints, this is the angle of the body's rotational
+    /// axis, for edge joints, this is the angle of the edge, and for point
+    /// joints, this is the normal of the point.
+    var angle: JFloat { get }
+    
     /// Appies a given force to the subject of this joint link
     ///
-    /// - parameter force: A force to apply to the subjects of this joint link
+    /// - parameter force: A force to apply to the subject of this joint link
     func applyForce(of force: Vector2)
+    
+    /// Applies a torque (rotational) force to the subject of this joint link.
+    ///
+    /// - Parameter force: A torque force to apply to the subject of this joint
+    /// link.
+    func applyTorque(_ force: JFloat)
 }
 
 /// The type of joint link of a BodyJointLink class

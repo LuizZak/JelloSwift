@@ -14,6 +14,9 @@ open class PointJointLink: JointLink {
     /// The point mass this joint is linked to
     fileprivate let _pointMass: PointMass
     
+    /// The index of the point mass this joint is linked to
+    fileprivate let _pointMassIndex: Int
+    
     /// Gets the body that this joint link is linked to
     open fileprivate(set) unowned var body: Body
     
@@ -42,10 +45,17 @@ open class PointJointLink: JointLink {
         return _pointMass.mass.isInfinite
     }
     
+    /// The angle of the joint.
+    /// For point joints, this is the normal of the point.
+    open var angle: JFloat {
+        return _pointMass.normal.angle
+    }
+    
     /// Inits a new point joint link with the specified parameters
     public init(body: Body, pointMassIndex: Int) {
         self.body = body
         _pointMass = body.pointMasses[pointMassIndex]
+        _pointMassIndex = pointMassIndex
     }
     
     /// Appies a given force to the subject of this joint link
@@ -53,5 +63,24 @@ open class PointJointLink: JointLink {
     /// - parameter force: A force to apply to the subjects of this joint link
     open func applyForce(of force: Vector2) {
         _pointMass.applyForce(of: force)
+    }
+    
+    /// Applies a torque (rotational) force to the subject of this joint link.
+    ///
+    /// Torque on point masses is applied by rotating the two adjacent point
+    /// masses, such that the normal of the point mass rotates according to the
+    /// specified torque force.
+    ///
+    /// - Parameter force: A torque force to apply to the subject of this joint
+    /// link.
+    open func applyTorque(_ force: JFloat) {
+        let edge1 = body.edges[_pointMassIndex]
+        let edge2 = body.edges[(_pointMassIndex + 1) % body.pointMasses.count]
+        
+        let angle1 = edge1.difference.perpendicular()
+        let angle2 = edge2.difference.perpendicular()
+        
+        body.pointMasses[edge1.startPointIndex].applyForce(of: angle1 * force)
+        body.pointMasses[edge2.endPointIndex].applyForce(of: -angle2 * force)
     }
 }

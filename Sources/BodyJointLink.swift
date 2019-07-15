@@ -39,6 +39,10 @@ open class BodyJointLink: JointLink {
         return body.isStatic || body.isPined
     }
     
+    open var angle: JFloat {
+        return body.derivedAngle
+    }
+    
     /// Inits a new body joint link with the specified parameters
     public init(body: Body) {
         self.body = body
@@ -49,5 +53,13 @@ open class BodyJointLink: JointLink {
     /// - parameter force: A force to apply to the subjects of this joint link
     open func applyForce(of force: Vector2) {
         body.applyForce(force, atGlobalPoint: position)
+    }
+    
+    /// Applies a torque (rotational) force to the subject of this joint link.
+    ///
+    /// - Parameter force: A torque force to apply to the subject of this joint
+    /// link.
+    open func applyTorque(_ force: JFloat) {
+        body.applyTorque(of: force)
     }
 }

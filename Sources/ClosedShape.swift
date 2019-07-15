@@ -29,6 +29,14 @@ public struct ClosedShape: Codable, ExpressibleByArrayLiteral {
         }
     }
     
+    public init() {
+        
+    }
+    
+    public init(capacity: Int) {
+        localVertices.reserveCapacity(capacity)
+    }
+    
     public init(arrayLiteral elements: ClosedShape.Element...) {
         localVertices = elements
     }
@@ -174,8 +182,7 @@ extension ClosedShape {
     /// Creates a closed shape that represents a circle of a given radius, with
     /// the specified number of points around its circumference
     public static func circle(ofRadius radius: JFloat, pointCount: Int) -> ClosedShape {
-        
-        return .create { shape in
+        return .create(capacity: pointCount) { shape in
             for i in 0..<pointCount
             {
                 let n = .pi * 2 * (JFloat(i) / JFloat(pointCount))
@@ -208,9 +215,20 @@ extension ClosedShape {
     ///
     /// You can specify `centered` to recenter the shape once it's finished
     /// (see `ClosedShape.centered()`).
+    ///
+    /// If specified, `capacity` is used to reserve a minimum capacity for the
+    /// closed shape's vertices array.
     public static func create(centered: Bool = true,
+                              capacity: Int? = nil,
                               closure: (inout ClosedShape) -> ()) -> ClosedShape {
-        var shape = ClosedShape()
+        
+        var shape: ClosedShape
+        
+        if let capacity = capacity {
+            shape = ClosedShape(capacity: capacity)
+        } else {
+            shape = ClosedShape()
+        }
         
         shape.begin()
         closure(&shape)
