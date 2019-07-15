@@ -558,33 +558,29 @@ extension DemoScene {
     }
     
     func drawCircle(center point: Vector2, radius: JFloat, sides: Int = 10, color: UInt = 0xFFFFFFFF) throws {
+        let prev = vertexBuffer.currentColor
+        vertexBuffer.currentColor = color
+        defer {
+            vertexBuffer.currentColor = prev
+        }
+        
         let shape =
             ClosedShape
                 .circle(ofRadius: radius, pointCount: sides)
                 .transformedBy(translatingBy: point)
         
-        // Triangulate body's polygon
-        guard let (vertices, indices) = try LibTessTriangulate.process(polygon: shape.localVertices) else {
-            return
-        }
+        // Add triangles that connect the edges to a center vertex to form the
+        // circle
+        let center = vertexBuffer.addVertex(point, color: color)
         
-        let start = vertexBuffer.vertices.count
-        
-        let prev = vertexBuffer.currentColor
-        vertexBuffer.currentColor = color
-        
-        // Color
-        for vert in vertices {
+        for vert in shape.localVertices {
             vertexBuffer.addVertex(x: vert.x, y: vert.y)
         }
         
-        vertexBuffer.currentColor = prev
-        
-        // Add vertex index triplets
-        for i in 0..<indices.count / 3 {
-            vertexBuffer.addTriangleWithIndices(start + indices[i * 3],
-                                                start + indices[i * 3 + 1],
-                                                start + indices[i * 3 + 2])
+        for vert in 0..<shape.localVertices.count {
+            let next = (vert + 1) % shape.localVertices.count
+            
+            vertexBuffer.addTriangleWithIndices(center + vert + 1, center + next + 1, center)
         }
     }
     
