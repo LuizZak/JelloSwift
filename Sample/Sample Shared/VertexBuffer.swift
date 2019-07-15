@@ -157,9 +157,6 @@ struct VertexBuffer {
     typealias VertexType = Vertex
     typealias IndexType = UInt32
     
-    var indexBuffer: UInt = 0
-    var vertexBuffer: UInt = 0
-    
     /// current color that will be added to all vertices that do not specify a
     /// color of their own
     var currentColor: UInt = 0xFFFFFFFF
