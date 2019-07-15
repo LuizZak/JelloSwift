@@ -89,7 +89,7 @@ open class EdgeJointLink: JointLink {
         // middle of the edge, and 0 torque at the very corners.
         if edgeRatio > 0 && edgeRatio < 1 {
             var torqueF = (body.derivedPos - position) • force.perpendicular()
-            torqueF = 1 - abs(1 - edgeRatio * 2)
+            torqueF = torqueF * (1 - abs(1 - edgeRatio * 2))
             body.applyTorque(of: torqueF)
         }
     }

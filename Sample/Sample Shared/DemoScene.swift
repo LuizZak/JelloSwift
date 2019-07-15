@@ -474,10 +474,10 @@ extension DemoScene {
                                        link2: BodyJointLink(body: circle, supportsAngling: false),
                                        coefficient: 100,
                                        damping: 10,
-                                       referenceAngle1: -.pi / 2,
+                                       referenceAngle1: .pi / 2,
                                        referenceAngle2: 0)
         world.addJoint(joint)
-        joint.restDistance = (joint.restDistance.minimumDistance - 2) <-> (joint.restDistance.maximumDistance)
+        //joint.restDistance = (joint.restDistance.minimumDistance - 2) <-> (joint.restDistance.maximumDistance)
     }
 
     /// Creates a car structure
@@ -739,6 +739,11 @@ extension DemoScene {
                 
                 drawLine(from: start, to: end, color: color)
                 drawLine(from: startRange, to: endRange, color: color)
+            }
+
+            if let prismatic = joint as? PrismaticBodyJoint {
+                drawLine(from: joint.bodyLink1.position, to: joint.bodyLink1.position + Vector2(x: 3, y: 0).rotated(by: joint.bodyLink1.angle + prismatic.referenceAngle1))
+                drawLine(from: joint.bodyLink2.position, to: joint.bodyLink2.position + Vector2(x: 3, y: 0).rotated(by: joint.bodyLink2.angle + prismatic.referenceAngle2))
             }
         }
     }
