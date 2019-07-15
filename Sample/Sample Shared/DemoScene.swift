@@ -571,7 +571,7 @@ extension DemoScene {
         
         // Add triangles that connect the edges to a center vertex to form the
         // circle
-        let center = vertexBuffer.addVertex(point, color: color)
+        let center = vertexBuffer.addVertex(point)
         
         for vert in shape.localVertices {
             vertexBuffer.addVertex(x: vert.x, y: vert.y)
