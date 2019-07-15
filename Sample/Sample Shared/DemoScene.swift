@@ -235,30 +235,8 @@ extension DemoScene {
 extension DemoScene {
     func initializeLevel() {
         let size = CGSize(width: 1024, height: 768)
+        let center = (Vector2(x: size.width, y: size.height) / 2).inWorldCoords
 
-        do {
-            let center = (Vector2(x: size.width, y: size.height) / 2).inWorldCoords
-
-            let box = createBox(center, size: Vector2(x: 4, y: 2), pinned: true)
-            box.velDamping = 0.993
-
-            let circle = createBouncyBall(center + Vector2(x: 5, y: 0))
-
-            let joint = PrismaticBodyJoint(on: world,
-                                           link1: EdgeJointLink(body: box, edgeIndex: 1),
-                                           link2: BodyJointLink(body: circle, supportsAngling: false),
-                                           coefficient: 100,
-                                           damping: 10,
-                                           referenceAngle1: -.pi / 2,
-                                           referenceAngle2: 0)
-            world.addJoint(joint)
-            joint.restDistance = (joint.restDistance.minimumDistance - 2) <-> (joint.restDistance.maximumDistance)
-            createCarStructure(Vector2(x: size.width * 0.20, y: 90).inWorldCoords)
-            createBox(Vector2(x: size.width * 0.5, y: 16).inWorldCoords, size: Vector2(x: 34, y: 1), isStatic: true).objectTag = UInt(0x7D999999)
-        }
-
-        return
-        
         // Create basic shapes
         let vec = (Vector2(x: size.width, y: 400) / 2).inWorldCoords
         
@@ -322,6 +300,8 @@ extension DemoScene {
         
         createCarStructure(Vector2(x: size.width * 0.12, y: 90).inWorldCoords)
         createBox(Vector2(x: size.width * 0.5, y: 16).inWorldCoords, size: Vector2(x: 34, y: 1), isStatic: true).objectTag = UInt(0x7D999999)
+
+        createPrismaticJoinedBodies(Vector2(x: size.width * 0.6, y: size.height * 0.9).inWorldCoords)
         
         // Create the ground box
         let box = ClosedShape.create { box in
@@ -482,7 +462,24 @@ extension DemoScene {
         
         return (b2, b1, b3)
     }
-    
+
+    func createPrismaticJoinedBodies(_ pos: Vector2) {
+        let box = createBox(pos, size: Vector2(x: 4, y: 2), pinned: true)
+        box.velDamping = 0.993
+
+        let circle = createBouncyBall(pos + Vector2(x: 5, y: 0))
+
+        let joint = PrismaticBodyJoint(on: world,
+                                       link1: EdgeJointLink(body: box, edgeIndex: 1),
+                                       link2: BodyJointLink(body: circle, supportsAngling: false),
+                                       coefficient: 100,
+                                       damping: 10,
+                                       referenceAngle1: -.pi / 2,
+                                       referenceAngle2: 0)
+        world.addJoint(joint)
+        joint.restDistance = (joint.restDistance.minimumDistance - 2) <-> (joint.restDistance.maximumDistance)
+    }
+
     /// Creates a car structure
     @discardableResult
     func createCarStructure(_ pos: Vector2) -> (car: Body, leftWheel: Body, rightWheel: Body) {
@@ -529,16 +526,14 @@ extension DemoScene {
         let ljCar = ShapeJointLink(body: carBody, pointMassIndexes: [19, 0, 1, 2, 3, 4])
         ljCar.offset = Vector2(x: 0, y: -0.6)
         
-        let leftJoint = PrismaticBodyJoint(on: world, link1: ljWheel, link2: ljCar, coefficient: 100, damping: 15, distance: 0.0)
-        leftJoint.restDistance.maximumDistance = 0.5
+        let leftJoint = SpringBodyJoint(on: world, link1: ljWheel, link2: ljCar, coefficient: 100, damping: 15, distance: 0.0)
         leftJoint.allowCollisions = true
         
         let rjWheel = BodyJointLink(body: rightWheel, supportsAngling: false)
         let rjCar = ShapeJointLink(body: carBody, pointMassIndexes: [13, 14, 15, 16, 17, 18])
         rjCar.offset = Vector2(x: 0, y: -0.6)
         
-        let rightJoint = PrismaticBodyJoint(on: world, link1: rjWheel, link2: rjCar, coefficient: 100, damping: 15, distance: 0.0)
-        rightJoint.restDistance.maximumDistance = 0.5
+        let rightJoint = SpringBodyJoint(on: world, link1: rjWheel, link2: rjCar, coefficient: 40, damping: 20, distance: 0.0)
         rightJoint.allowCollisions = true
         
         world.addJoint(leftJoint)

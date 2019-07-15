@@ -68,7 +68,7 @@ open class ShapeJointLink: JointLink {
     /// The angle of the joint.
     /// For shape joints, this is the angle of the body's rotational axis.
     open var angle: JFloat {
-        return body.derivedAngle
+        return _angle()
     }
     
     /// Inits a new point joint link with the specified parameters
@@ -97,17 +97,16 @@ open class ShapeJointLink: JointLink {
     /// - Parameter force: A torque force to apply to the subject of this joint
     /// link.
     open func applyTorque(_ force: JFloat) {
-        body.applyTorque(of: force)
-//        for i in _indexes {
-//            let pm = body.pointMasses[i]
-//
-//            let baseNorm = body.baseShape[i].normalized()
-//            let curNorm  = (pm.position - body.derivedPos).normalized()
-//
-//            let angle = Vector2(x: baseNorm • curNorm, y: baseNorm.x * curNorm.y - baseNorm.y * curNorm.x)
-//
-//            pm.applyForce(of: angle * force)
-//        }
+        for i in _indexes {
+            let pm = body.pointMasses[i]
+
+            let baseNorm = body.baseShape[i].normalized()
+            let curNorm  = (pm.position - position + offsetPosition).normalized()
+
+            let angle = Vector2(x: baseNorm • curNorm, y: baseNorm.x * curNorm.y - baseNorm.y * curNorm.x)
+
+            pm.applyForce(of: angle * force)
+        }
     }
     
     // TODO: Implement the function below to derive the angle of the shape's
