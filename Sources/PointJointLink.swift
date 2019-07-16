@@ -88,4 +88,12 @@ open class PointJointLink: JointLink {
         body.pointMasses[edge1.startPointIndex].applyForce(of: angle1 * force)
         body.pointMasses[edge2.endPointIndex].applyForce(of: -angle2 * force)
     }
+    
+    /// Changes the coordinate system of this joint link's components to the one
+    /// specified.
+    ///
+    /// Absolute positional movement is performed for a point mass link.
+    open func moveTo(_ position: Vector2) {
+        _pointMass.position = position
+    }
 }

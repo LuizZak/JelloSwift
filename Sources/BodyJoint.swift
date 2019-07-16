@@ -103,6 +103,14 @@ public protocol JointLink {
     /// - Parameter force: A torque force to apply to the subject of this joint
     /// link.
     func applyTorque(_ force: JFloat)
+    
+    /// Changes the coordinate system of this joint link's components to the one
+    /// specified.
+    ///
+    /// Relative positional movement is performed across all components, for a
+    /// shape or edge link, across the entire body for a body link, and for a
+    /// single point mass, for a point mass link.
+    func moveTo(_ position: Vector2)
 }
 
 /// The type of joint link of a BodyJointLink class

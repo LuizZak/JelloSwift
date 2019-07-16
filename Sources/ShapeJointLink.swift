@@ -109,6 +109,18 @@ open class ShapeJointLink: JointLink {
         }
     }
     
+    /// Changes the coordinate system of this joint link's components to the one
+    /// specified.
+    ///
+    /// Relative positional movement is performed across all components for a
+    /// shape link.
+    open func moveTo(_ position: Vector2) {
+        let relative = position - self.position
+        for pm in _pointMasses {
+            pm.position += relative
+        }
+    }
+    
     // TODO: Implement the function below to derive the angle of the shape's
     // angle
     

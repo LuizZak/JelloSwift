@@ -67,4 +67,16 @@ open class BodyJointLink: JointLink {
     open func applyTorque(_ force: JFloat) {
         body.applyTorque(of: force)
     }
+    
+    /// Changes the coordinate system of this joint link's components to the one
+    /// specified.
+    ///
+    /// Relative positional movement is performed across the entire body for a
+    /// body link.
+    open func moveTo(_ position: Vector2) {
+        let relative = position - self.position
+        for pointMass in body.pointMasses {
+            pointMass.position += relative
+        }
+    }
 }

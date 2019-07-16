@@ -32,16 +32,12 @@ open class EdgeJointLink: JointLink {
     /// Gets the position, in world coordinates, at which this joint links with 
     /// the underlying body
     open var position: Vector2 {
-        return calculateVectorRatio(_pointMass1.position,
-                                    vec2: _pointMass2.position,
-                                    ratio: edgeRatio)
+        return _pointMass1.position.ratio(edgeRatio, to: _pointMass2.position)
     }
     
     /// Gets the velocity of the object this joint links to
     open var velocity: Vector2 {
-        return calculateVectorRatio(_pointMass1.velocity,
-                                    vec2: _pointMass2.velocity,
-                                    ratio: edgeRatio)
+        return _pointMass1.velocity.ratio(edgeRatio, to: _pointMass2.velocity)
     }
     
     /// Gets the total mass of the subject of this joint link
@@ -99,9 +95,22 @@ open class EdgeJointLink: JointLink {
     /// - Parameter force: A torque force to apply to the subject of this joint
     /// link.
     open func applyTorque(_ force: JFloat) {
-        let direction = body.edges[_edgeIndex].difference.perpendicular()
+        body.applyTorque(of: force)
         
+        let direction = body.edges[_edgeIndex].difference.perpendicular()
+
         _pointMass1.applyForce(of: direction * force * (1 - edgeRatio))
         _pointMass2.applyForce(of: -direction * force * (edgeRatio))
+    }
+    
+    /// Changes the coordinate system of this joint link's components to the one
+    /// specified.
+    ///
+    /// Relative positional movement is performed across all components, for an
+    /// edge link. Both point masses for the edge are moved the same amount.
+    open func moveTo(_ position: Vector2) {
+        let relative = position - self.position
+        _pointMass1.position += relative
+        _pointMass2.position += relative
     }
 }

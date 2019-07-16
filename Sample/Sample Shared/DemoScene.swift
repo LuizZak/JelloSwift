@@ -464,20 +464,20 @@ extension DemoScene {
     }
 
     func createPrismaticJoinedBodies(_ pos: Vector2) {
-        let box = createBox(pos, size: Vector2(x: 4, y: 2), pinned: true)
+        let box = createBox(pos, size: Vector2(x: 4, y: 2), pinned: true, mass: 2)
         box.velDamping = 0.993
 
         let circle = createBouncyBall(pos + Vector2(x: 5, y: 0))
 
         let joint = PrismaticBodyJoint(on: world,
                                        link1: EdgeJointLink(body: box, edgeIndex: 1),
-                                       link2: BodyJointLink(body: circle, supportsAngling: false),
+                                       link2: BodyJointLink(body: circle),
                                        coefficient: 100,
                                        damping: 10,
                                        referenceAngle1: .pi / 2,
                                        referenceAngle2: 0)
         world.addJoint(joint)
-        //joint.restDistance = (joint.restDistance.minimumDistance - 2) <-> (joint.restDistance.maximumDistance)
+        joint.restDistance = (joint.restDistance.minimumDistance - 2) <-> (joint.restDistance.maximumDistance)
     }
 
     /// Creates a car structure
