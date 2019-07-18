@@ -63,15 +63,19 @@ open class PrismaticBodyJoint: SpringBodyJoint {
         let strength: JFloat = 15
 
         if bodyLink1.supportsAngling {
-            bodyLink1.applyTorque(distance(alpha: angle1, beta: diff) * strength + (strength * omega1))
+            bodyLink1.applyTorque(distance(alpha: angle1, beta: diff) * strength - (strength * omega1))
         }
 
         if bodyLink2.supportsAngling {
-            bodyLink2.applyTorque(distance(alpha: angle2, beta: diff) * strength + (strength * omega2))
+            bodyLink2.applyTorque(distance(alpha: angle2, beta: diff) * strength - (strength * omega2))
         }
 
         // Project links towards the rest angle of the joint
-        project(bodyLink2, on: bodyLink1, angle: angle1)
+        if bodyLink1.supportsAngling {
+            project(bodyLink1, on: bodyLink2, angle: angle2)
+        } else if bodyLink2.supportsAngling {
+            project(bodyLink2, on: bodyLink1, angle: angle1)
+        }
     }
 
     private func project(_ link1: JointLink, on link2: JointLink, angle: JFloat) {
@@ -98,11 +102,11 @@ open class PrismaticBodyJoint: SpringBodyJoint {
 
 /**
  * Shortest distance (angular) between two angles.
- * It will be in range [0, 180].
+ * It will be in range [0, π].
  */
 func distance<F: FloatingPoint>(alpha: F, beta: F) -> F {
     let sign: F = (alpha - beta >= 0 && alpha - beta <= F.pi) || (alpha - beta <= -F.pi && alpha - beta >= -(F.pi * 2)) ? 1 : -1
-    let phi = abs(beta - alpha).truncatingRemainder(dividingBy: .pi * 2)       // This is either the distance or 360 - distance
-    let distance = phi > .pi ? (.pi * 2) - phi : phi
+    let phi: F = abs(beta - alpha).truncatingRemainder(dividingBy: .pi * 2)       // This is either the distance or 360 - distance
+    let distance: F = phi > .pi ? (.pi * 2) - phi : phi
     return distance * sign
 }

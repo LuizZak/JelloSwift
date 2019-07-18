@@ -235,7 +235,6 @@ extension DemoScene {
 extension DemoScene {
     func initializeLevel() {
         let size = CGSize(width: 1024, height: 768)
-        let center = (Vector2(x: size.width, y: size.height) / 2).inWorldCoords
 
         // Create basic shapes
         let vec = (Vector2(x: size.width, y: 400) / 2).inWorldCoords
@@ -467,7 +466,7 @@ extension DemoScene {
         let box = createBox(pos, size: Vector2(x: 4, y: 2), pinned: true, mass: 2)
         box.velDamping = 0.993
 
-        let circle = createBouncyBall(pos + Vector2(x: 5, y: 0))
+        let circle = createBox(pos + Vector2(x: 5, y: 0), size: Vector2(value: 2))//createBouncyBall(pos + Vector2(x: 5, y: 0))
 
         let joint = PrismaticBodyJoint(on: world,
                                        link1: EdgeJointLink(body: box, edgeIndex: 1),
@@ -742,8 +741,13 @@ extension DemoScene {
             }
 
             if let prismatic = joint as? PrismaticBodyJoint {
-                drawLine(from: joint.bodyLink1.position, to: joint.bodyLink1.position + Vector2(x: 3, y: 0).rotated(by: joint.bodyLink1.angle + prismatic.referenceAngle1))
-                drawLine(from: joint.bodyLink2.position, to: joint.bodyLink2.position + Vector2(x: 3, y: 0).rotated(by: joint.bodyLink2.angle + prismatic.referenceAngle2))
+                if joint.bodyLink1.supportsAngling {
+                    drawLine(from: joint.bodyLink1.position, to: joint.bodyLink1.position + Vector2(x: 3, y: 0).rotated(by: joint.bodyLink1.angle + prismatic.referenceAngle1))
+                }
+                
+                if joint.bodyLink2.supportsAngling {
+                    drawLine(from: joint.bodyLink2.position, to: joint.bodyLink2.position + Vector2(x: 3, y: 0).rotated(by: joint.bodyLink2.angle + prismatic.referenceAngle2))
+                }
             }
         }
     }
