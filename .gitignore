@@ -33,3 +33,5 @@ xcuserdata
 JelloSwift.xcodeproj
 DerivedData/
 .swiftpm/
+
+.DS_Store
