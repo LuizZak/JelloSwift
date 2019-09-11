@@ -988,20 +988,37 @@ public final class Body: Equatable {
     }
 }
 
+// MARK: - Point mass changes
 extension Body {
     
+    /// Applies a force to a single point mass.
+    ///
+    /// - Parameter force: A force to apply.
+    /// - Parameter index: The index of the point mass on this body to affect.
     public func applyForce(_ force: Vector2, toPointMassAt index: Int) {
         pointMasses[index].applyForce(of: force)
     }
     
+    /// Applies a relative velocity change to a single point mass.
+    ///
+    /// - Parameter velocity: A velocity to apply.
+    /// - Parameter index: The index of the point mass on this body to affect.
     public func applyVelocity(_ velocity: Vector2, toPointMassAt index: Int) {
         pointMasses[index].velocity += velocity
     }
     
+    /// Sets the absolute velocity of a single point mass.
+    ///
+    /// - Parameter velocity: The new absolute velocity of the point mass.
+    /// - Parameter index: The index of the point mass on this body to affect.
     public func setVelocity(_ velocity: Vector2, ofPointMassAt index: Int) {
         pointMasses[index].velocity = velocity
     }
     
+    /// Sets the absolute position of a single point mass.
+    ///
+    /// - Parameter position: The new absolute position of the point mass.
+    /// - Parameter index: The index of the point mass on this body to affect.
     public func setPosition(_ position: Vector2, ofPointMassAt index: Int) {
         pointMasses[index].position = position
         
