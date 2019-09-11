@@ -66,7 +66,7 @@ class Triangulate {
         
         while nv > 2 {
             /* if we loop, it is probably a non-simple polygon */
-            if 0 >= count {
+            if count <= 0 {
                 //** Triangulate: ERROR - probable bad polygon!
                 return nil
             }
@@ -137,9 +137,9 @@ class Triangulate {
         let bp = P - B
         let cp = P - C
         
-        let aCROSSbp = a =/ bp
-        let cCROSSap = c =/ ap
-        let bCROSScp = b =/ cp
+        let aCROSSbp = a.cross(bp)
+        let cCROSSap = c.cross(ap)
+        let bCROSScp = b.cross(cp)
         
         return ((aCROSSbp >= 0.0) && (bCROSScp >= 0.0) && (cCROSSap >= 0.0))
     }

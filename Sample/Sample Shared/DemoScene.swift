@@ -565,10 +565,10 @@ extension DemoScene {
     }
     
     func drawCircle(center point: Vector2, radius: JFloat, sides: Int = 10, color: UInt = 0xFFFFFFFF) {
-        let prev = vertexBuffer.currentColor
+        let prevColor = vertexBuffer.currentColor
         vertexBuffer.currentColor = color
         defer {
-            vertexBuffer.currentColor = prev
+            vertexBuffer.currentColor = prevColor
         }
         
         let shape =

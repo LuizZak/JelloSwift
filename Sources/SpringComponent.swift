@@ -183,24 +183,13 @@ public final class SpringComponent: BodyComponent {
             let p1 = body.pointMasses[s.pointMassA]
             let p2 = body.pointMasses[s.pointMassB]
             
-            let force: Vector2
-            
             let actDist = p1.position.distance(to: p2.position)
             
-            switch s.restDistance {
-            case .fixed(let dist):
-                force =
-                    calculateSpringForce(posA: p1.position, velA: p1.velocity,
-                                         posB: p2.position, velB: p2.velocity,
-                                         distance: dist,
-                                         springK: s.coefficient, springD: s.damping)
-            case .ranged:
-                force =
-                    calculateSpringForce(posA: p1.position, velA: p1.velocity,
-                                         posB: p2.position, velB: p2.velocity,
-                                         distance: s.restDistance.clamp(value: actDist),
-                                         springK: s.coefficient, springD: s.damping)
-            }
+            let force
+                = calculateSpringForce(posA: p1.position, velA: p1.velocity,
+                                       posB: p2.position, velB: p2.velocity,
+                                       distance: s.restDistance.clamp(value: actDist),
+                                       springK: s.coefficient, springD: s.damping)
             
             p1.applyForce(of: force)
             p2.applyForce(of: -force)

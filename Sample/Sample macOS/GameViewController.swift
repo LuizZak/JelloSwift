@@ -32,7 +32,7 @@ class GameViewController: NSViewController {
 
         mtkView.device = defaultDevice
 
-        let newRenderer = Renderer(metalKitView: mtkView)
+        let newRenderer = Renderer(metalKitView: mtkView, delegate: self)
 
         renderer = newRenderer
 
@@ -48,7 +48,6 @@ class GameViewController: NSViewController {
         mtkView.onMouseUp = { point in
             newRenderer.demoScene.touchEnded(at: Vector2(x: point.x, y: point.y))
         }
-        renderer.demoScene.delegate = self
     }
 }
 

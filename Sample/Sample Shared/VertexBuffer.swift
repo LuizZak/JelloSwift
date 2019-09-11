@@ -237,37 +237,37 @@ struct VertexBuffer {
     
     /// Adds a new vertex to this vertex buffer, with the current color component.
     @discardableResult
-    mutating func addVertex(x: CGFloat, y: CGFloat) -> Int {
+    mutating func addVertex(x: CGFloat, y: CGFloat) -> IndexType {
         return self.addVertex(x: x, y: y, color: currentColor)
     }
     
     /// Adds a new vertex to this vertex buffer, with the current color component.
     @discardableResult
-    mutating func addVertex(x: JFloat, y: JFloat) -> Int {
+    mutating func addVertex(x: JFloat, y: JFloat) -> IndexType {
         return self.addVertex(x: CGFloat(x), y: CGFloat(y), color: currentColor)
     }
     
     /// Adds a new vertex, specifying the color component to go along with it.
     @discardableResult
-    mutating func addVertex(x: CGFloat, y: CGFloat, color: UInt) -> Int {
+    mutating func addVertex(x: CGFloat, y: CGFloat, color: UInt) -> IndexType {
         return addVertex(Vector2(x: x, y: y), color: color)
     }
     
     /// Adds a new vertex, specifying the color component to go along with it.
     @discardableResult
-    mutating func addVertex(x: JFloat, y: JFloat, color: UInt) -> Int {
+    mutating func addVertex(x: JFloat, y: JFloat, color: UInt) -> IndexType {
         return addVertex(Vector2(x: CGFloat(x), y: CGFloat(y)), color: color)
     }
     
     /// Adds a new vertex, specifying the color component to go along with it.
     @discardableResult
-    mutating func addVertex(_ vec: Vector2) -> Int {
+    mutating func addVertex(_ vec: Vector2) -> IndexType {
         return addVertex(vec, color: currentColor)
     }
     
     /// Adds a new vertex, specifying the color component to go along with it.
     @discardableResult
-    mutating func addVertex(_ vec: Vector2, color: UInt) -> Int {
+    mutating func addVertex(_ vec: Vector2, color: UInt) -> IndexType {
         let a = (color >> 24) & 0xff
         let r = (color >> 16) & 0xff
         let g = (color >> 8) & 0xff
@@ -280,7 +280,7 @@ struct VertexBuffer {
         
         vertices.append(vertex)
         
-        return vertices.count - 1
+        return IndexType(vertices.count - 1)
     }
     
     mutating func applyTransformation(_ matrix: float4x4) {
@@ -293,15 +293,15 @@ struct VertexBuffer {
         }
     }
     
-    mutating func addIndex(_ index: Int) {
-        indices.append(IndexType(index))
+    mutating func addIndex(_ index: IndexType) {
+        indices.append(index)
     }
     
     /// Adds a triangle to the indices by specifing three indexes on the buffer
     /// object.
     /// Make sure the provided values are within the bounds of the vertices
     /// array.
-    mutating func addTriangleWithIndices(_ a: Int, _ b: Int, _ c: Int) {
+    mutating func addTriangleWithIndices(_ a: IndexType, _ b: IndexType, _ c: IndexType) {
         addIndex(a)
         addIndex(b)
         addIndex(c)
