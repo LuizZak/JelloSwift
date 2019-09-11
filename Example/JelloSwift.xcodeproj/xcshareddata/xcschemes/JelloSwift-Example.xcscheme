@@ -46,7 +46,7 @@
       <CodeCoverageTargets>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "65F37B549207EA036BF652A5D7E935F7"
+            BlueprintIdentifier = "D898F8124D0288F22754E03FEE5CBD64"
             BuildableName = "JelloSwift.framework"
             BlueprintName = "JelloSwift"
             ReferencedContainer = "container:Pods/Pods.xcodeproj">

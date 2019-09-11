@@ -1,4 +1,5 @@
-swift_version = '4.1'
+swift_version = '5.0'
+platform :ios, '8.3'
 use_frameworks!
 
 target 'JelloSwift_Example' do

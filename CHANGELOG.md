@@ -7,6 +7,10 @@
 ## Stable Releases
 ---
 
+## v0.14.0:
+
+- Bumped target Swift version to 4.2.
+
 ## v0.13.0:
 
 - Bumped target Swift version to 4.1.

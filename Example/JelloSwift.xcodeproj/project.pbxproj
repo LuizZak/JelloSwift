@@ -21,6 +21,7 @@
 		A00385801E6374EB00546EB8 /* SimpleVertex.glsl in Resources */ = {isa = PBXBuildFile; fileRef = A003857E1E6374EB00546EB8 /* SimpleVertex.glsl */; };
 		A02BE1F51ED72BCC00B2404D /* WorldTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A02BE1F41ED72BCC00B2404D /* WorldTests.swift */; };
 		A05EE0D91E578637007978E6 /* Vector2Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05EE0D81E578637007978E6 /* Vector2Tests.swift */; };
+		A07CADD2221ED9B7002F653E /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A07CADD1221ED9B7002F653E /* Accelerate.framework */; };
 		A097789A1E66582B0095D4A7 /* LibTessTriangulate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A09778991E66582B0095D4A7 /* LibTessTriangulate.swift */; };
 		A097789F1E6687810095D4A7 /* Vertex.swift in Sources */ = {isa = PBXBuildFile; fileRef = A097789E1E6687810095D4A7 /* Vertex.swift */; };
 		A0CD1AE31E535C6C00D41938 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0CD1AE21E535C6C00D41938 /* Utils.swift */; };
@@ -45,7 +46,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		068C800B8E4651F712E7E3C9 /* JelloSwift.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = JelloSwift.podspec; path = ../JelloSwift.podspec; sourceTree = "<group>"; };
+		068C800B8E4651F712E7E3C9 /* JelloSwift.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = JelloSwift.podspec; path = ../JelloSwift.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		23F0F490F6D083F6DE778E0A /* Pods-JelloSwift_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JelloSwift_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-JelloSwift_Tests/Pods-JelloSwift_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		2462A80FA34D0A96435BEFCF /* Pods_JelloSwift_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_JelloSwift_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3C3674CED751C29896E47584 /* Pods_JelloSwift_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_JelloSwift_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -68,6 +69,7 @@
 		A003857E1E6374EB00546EB8 /* SimpleVertex.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SimpleVertex.glsl; sourceTree = "<group>"; };
 		A02BE1F41ED72BCC00B2404D /* WorldTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorldTests.swift; sourceTree = "<group>"; };
 		A05EE0D81E578637007978E6 /* Vector2Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Vector2Tests.swift; sourceTree = "<group>"; };
+		A07CADD1221ED9B7002F653E /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		A09778991E66582B0095D4A7 /* LibTessTriangulate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibTessTriangulate.swift; sourceTree = "<group>"; };
 		A097789E1E6687810095D4A7 /* Vertex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Vertex.swift; sourceTree = "<group>"; };
 		A0B032FF1E547D00002AD0BF /* CHANGELOG.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = CHANGELOG.md; path = ../CHANGELOG.md; sourceTree = "<group>"; };
@@ -92,6 +94,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A07CADD2221ED9B7002F653E /* Accelerate.framework in Frameworks */,
 				43164F373699445C5A3B77C8 /* Pods_JelloSwift_Example.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -110,6 +113,7 @@
 		203E6A0381D78319AC3ECF78 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A07CADD1221ED9B7002F653E /* Accelerate.framework */,
 				2462A80FA34D0A96435BEFCF /* Pods_JelloSwift_Example.framework */,
 				3C3674CED751C29896E47584 /* Pods_JelloSwift_Tests.framework */,
 				8450031F73AA21EE70E1545D /* Pods_JelloSwift_Example_JelloSwift_Tests.framework */,
@@ -247,7 +251,6 @@
 				607FACCD1AFB9204008FA782 /* Frameworks */,
 				607FACCE1AFB9204008FA782 /* Resources */,
 				46CEF67617D257C9F9098CC5 /* [CP] Embed Pods Frameworks */,
-				9A9D3ADC1C814FADF4262A57 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -267,7 +270,6 @@
 				607FACE21AFB9204008FA782 /* Frameworks */,
 				607FACE31AFB9204008FA782 /* Resources */,
 				F080F74F340C0FC0C6AB589D /* [CP] Embed Pods Frameworks */,
-				8A32B8CCE30AB47760D1400A /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -368,7 +370,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-JelloSwift_Example/Pods-JelloSwift_Example-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-JelloSwift_Example/Pods-JelloSwift_Example-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/JelloSwift/JelloSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/LibTessSwift/LibTessSwift.framework",
 			);
@@ -379,7 +381,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-JelloSwift_Example/Pods-JelloSwift_Example-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-JelloSwift_Example/Pods-JelloSwift_Example-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		470219B779F076C8941CE84C /* [CP] Check Pods Manifest.lock */ = {
@@ -400,43 +402,13 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		8A32B8CCE30AB47760D1400A /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-JelloSwift_Example-JelloSwift_Tests/Pods-JelloSwift_Example-JelloSwift_Tests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		9A9D3ADC1C814FADF4262A57 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-JelloSwift_Example/Pods-JelloSwift_Example-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		F080F74F340C0FC0C6AB589D /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-JelloSwift_Example-JelloSwift_Tests/Pods-JelloSwift_Example-JelloSwift_Tests-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-JelloSwift_Example-JelloSwift_Tests/Pods-JelloSwift_Example-JelloSwift_Tests-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/JelloSwift/JelloSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/LibTessSwift/LibTessSwift.framework",
 			);
@@ -447,7 +419,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-JelloSwift_Example-JelloSwift_Tests/Pods-JelloSwift_Example-JelloSwift_Tests-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-JelloSwift_Example-JelloSwift_Tests/Pods-JelloSwift_Example-JelloSwift_Tests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -567,6 +539,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -614,7 +587,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 5.0;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -623,7 +596,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = F17A0939E6376A12C7BF40BA /* Pods-JelloSwift_Example.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				DEVELOPMENT_TEAM = TCHZUNU285;
@@ -632,9 +604,7 @@
 				MODULE_NAME = ExampleApp;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.JelloSwift-Example2";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 2;
 			};
 			name = Debug;
@@ -643,7 +613,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 9A7119EFEF38E227BE06C6F0 /* Pods-JelloSwift_Example.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				DEVELOPMENT_TEAM = TCHZUNU285;
@@ -652,8 +621,7 @@
 				MODULE_NAME = ExampleApp;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.JelloSwift-Example2";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 2;
 			};
 			name = Release;
@@ -662,13 +630,9 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = EFEDEDF691EF826695E8A272 /* Pods-JelloSwift_Example-JelloSwift_Tests.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				DEVELOPMENT_TEAM = TCHZUNU285;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -677,8 +641,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -686,19 +649,14 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7B52A8EEE140BC9CD780C7F1 /* Pods-JelloSwift_Example-JelloSwift_Tests.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				DEVELOPMENT_TEAM = TCHZUNU285;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};

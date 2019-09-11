@@ -43,8 +43,8 @@ class AABBTests: XCTestCase {
         
         let aabb = AABB(points: [point1, point2])
         
-        XCTAssert(aabb.minimum == Vector2(x: 1, y: 2))
-        XCTAssert(aabb.maximum == Vector2(x: 10, y: 20))
+        XCTAssertEqual(aabb.minimum, Vector2(x: 1, y: 2))
+        XCTAssertEqual(aabb.maximum, Vector2(x: 10, y: 20))
     }
     
     func testAABBIntersection() {

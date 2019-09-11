@@ -1,19 +1,23 @@
 PODS:
-  - JelloSwift (0.12.0)
-  - LibTessSwift (0.6.2)
+  - JelloSwift (0.15.0)
+  - LibTessSwift (0.6.3)
 
 DEPENDENCIES:
   - JelloSwift (from `../`)
   - LibTessSwift (~> 0.6.0)
 
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - LibTessSwift
+
 EXTERNAL SOURCES:
   JelloSwift:
-    :path: ../
+    :path: "../"
 
 SPEC CHECKSUMS:
-  JelloSwift: b9e1e3d27ef2078ab7c07638191fcb7f102a154e
-  LibTessSwift: 340c50726f38731243c2e4435945472f6675ebcd
+  JelloSwift: f335a1ac9c1965e41a95e1fdf677453e4db6bc46
+  LibTessSwift: 2678bdddc132a84be2de3d17ab0c66d992dd9ac8
 
-PODFILE CHECKSUM: 823444b598b76e6741f0e89ed582783756e5b7e4
+PODFILE CHECKSUM: 53165c1f822a062a43db5eb57ffa7b2bc1f77bd8
 
-COCOAPODS: 1.4.0
+COCOAPODS: 1.6.1

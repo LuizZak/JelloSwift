@@ -711,7 +711,7 @@ public extension World {
     ///   - timestep: The timestep (in seconds) of each iteration.
     ///
     /// - Precondition: `iterations` > 0
-    public func relaxWorld(timestep: JFloat, iterations: Int = 100) {
+    func relaxWorld(timestep: JFloat, iterations: Int = 100) {
         relaxing = true
         
         for _ in 0...iterations {
@@ -750,7 +750,7 @@ public extension World {
     ///   - timestep: The timestep (in seconds) of each iteration.
     ///
     /// - Precondition: `iterations` > 0
-    public func relaxBodies(in bodies: [Body], timestep: JFloat, iterations: Int = 100) {
+    func relaxBodies(in bodies: [Body], timestep: JFloat, iterations: Int = 100) {
         relaxing = true
         
         // Find all joints for the bodies

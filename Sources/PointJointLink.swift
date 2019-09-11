@@ -18,7 +18,7 @@ open class PointJointLink: JointLink {
     open fileprivate(set) unowned var body: Body
     
     /// Gets the type of joint this joint link represents
-    open let linkType = LinkType.point
+    public let linkType = LinkType.point
     
     /// Gets the position, in world coordinates, at which this joint links with
     /// the underlying body

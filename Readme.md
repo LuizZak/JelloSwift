@@ -1,6 +1,6 @@
 # JelloSwift
 
-[![CI Status](http://img.shields.io/travis/LuizZak/JelloSwift.svg?style=flat)](https://travis-ci.org/LuizZak/JelloSwift)
+[![Build Status](https://dev.azure.com/luiz-fs/JelloSwift/_apis/build/status/LuizZak.JelloSwift?branchName=master)](https://dev.azure.com/luiz-fs/JelloSwift/_build/latest?definitionId=6&branchName=master)
 [![Version](https://img.shields.io/cocoapods/v/JelloSwift.svg?style=flat)](http://cocoapods.org/pods/JelloSwift)
 [![License](https://img.shields.io/cocoapods/l/JelloSwift.svg?style=flat)](http://cocoapods.org/pods/JelloSwift)
 [![Platform](https://img.shields.io/cocoapods/p/JelloSwift.svg?style=flat)](http://cocoapods.org/pods/JelloSwift)
@@ -25,7 +25,7 @@ To run the example project, clone the repo, and run `pod install` from the Examp
 
 ## Requirements
 
-To compile this project, you require Xcode 9.3 w/ Swift 4.1 installed.
+To compile this project, you require Xcode 10.2 w/ Swift 5.0 installed.
 
 ## Installation
 
@@ -47,16 +47,14 @@ import PackageDescription
 
 let package = Package(
     name: "project_name",
-    targets: [],
     dependencies: [
-        .Package(url: "https://github.com/LuizZak/JelloSwift.git", majorVersion: 0, minor: 13)
+        .package(url: "https://github.com/LuizZak/JelloSwift.git", from: "0.14.0")
+    ],
+    targets: [
+        // ...
     ]
 )
 ```
-
-## Author
-
-LuizZak, luizinho_mack@yahoo.com.br
 
 ## License
 
