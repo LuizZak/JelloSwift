@@ -189,9 +189,9 @@ public final class World {
     
     /// Finds the closest PointMass in the world to a given point
     public func closestPointMass(to pt: Vector2,
-                                 ignoreFunction: ((Body, PointMass) -> Bool)? = nil) -> (Body, PointMass)? {
+                                 ignoreFunction: ((Body, Int) -> Bool)? = nil) -> (Body, Int)? {
         
-        var ret: (Body, PointMass)? = nil
+        var ret: (Body, Int)? = nil
         
         var closestD = JFloat.greatestFiniteMagnitude
         
@@ -611,14 +611,14 @@ public final class World {
             }
             
             if A.mass.isFinite {
-                A.position += info.normal * Amove
+                bodyA.setPosition(A.position + info.normal * Amove, ofPointMassAt: info.bodyApm)
             }
             
             if B1.mass.isFinite {
-                B1.position -= info.normal * (Bmove * b1inf)
+                bodyB.setPosition(B1.position - info.normal * (Bmove * b1inf), ofPointMassAt: info.bodyBpmA)
             }
             if B2.mass.isFinite {
-                B2.position -= info.normal * (Bmove * b2inf)
+                bodyB.setPosition(B2.position - info.normal * (Bmove * b2inf), ofPointMassAt: info.bodyBpmB)
             }
             
             if relDot <= 0.0001 && (A.mass.isFinite || b2MassSum.isFinite) {
@@ -636,15 +636,16 @@ public final class World {
                 let f: JFloat = (relVel • tangent) * friction / jDenom
                 
                 if A.mass.isFinite {
-                    A.velocity += (info.normal * (j / A.mass)) - (tangent * (f / A.mass))
+                    bodyA.applyVelocity((info.normal * (j / A.mass)) - (tangent * (f / A.mass)), toPointMassAt: info.bodyApm)
                 }
                 
                 if b2MassSum.isFinite {
                     let jComp = info.normal * j / b2MassSum
                     let fComp = tangent * (f * b2MassSum)
                     
-                    B1.velocity -= (jComp * b1inf) - (fComp * b1inf)
-                    B2.velocity -= (jComp * b2inf) - (fComp * b2inf)
+                    
+                    bodyB.applyVelocity(-((jComp * b1inf) - (fComp * b1inf)), toPointMassAt: info.bodyBpmA)
+                    bodyB.applyVelocity(-((jComp * b2inf) - (fComp * b2inf)), toPointMassAt: info.bodyBpmB)
                 }
             }
         }
@@ -660,6 +661,10 @@ public final class World {
     
     /// Update bodies' bitmask for early collision filtering
     fileprivate func updateBodyBitmask(_ body: Body) {
+        if(!body._bitmasksStale) {
+            return
+        }
+        
         (body.bitmaskX, body.bitmaskY) = bitmask(for: body.aabb)
     }
     
@@ -737,8 +742,8 @@ public extension World {
         
         // Reset all velocities
         for body in bodies {
-            for pointMass in body.pointMasses {
-                pointMass.velocity = .zero
+            for i in 0..<body.pointMasses.count {
+                body.setVelocity(.zero, ofPointMassAt: i)
             }
         }
     }
@@ -792,8 +797,8 @@ public extension World {
         
         // Reset all velocities
         for body in bodies {
-            for pointMass in body.pointMasses {
-                pointMass.velocity = .zero
+            for i in 0..<body.pointMasses.count {
+                body.setVelocity(.zero, ofPointMassAt: i)
             }
         }
     }

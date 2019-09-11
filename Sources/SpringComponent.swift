@@ -191,8 +191,8 @@ public final class SpringComponent: BodyComponent {
                                        distance: s.restDistance.clamp(value: actDist),
                                        springK: s.coefficient, springD: s.damping)
             
-            p1.applyForce(of: force)
-            p2.applyForce(of: -force)
+            body.applyForce(force, toPointMassAt: s.pointMassA)
+            body.applyForce(-force, toPointMassAt: s.pointMassB)
             
             if !relaxing && s.plasticity != nil {
                 // Apply plasticity
@@ -222,8 +222,9 @@ public final class SpringComponent: BodyComponent {
         
         body.baseShape.transformVertices(&body.globalShape, matrix: matrix)
         
-        for (global, p) in zip(body.globalShape, body.pointMasses) {
-            let velB = body.isKinematic ? Vector2.zero : p.velocity
+        for (global, i) in zip(body.globalShape, 0..<body.pointMasses.count) {
+            let p = body.pointMasses[i]
+            let velB = body.isKinematic ? .zero : p.velocity
             
             let force = calculateSpringForce(posA: p.position, velA: p.velocity,
                                              posB: global, velB: velB,
@@ -231,7 +232,7 @@ public final class SpringComponent: BodyComponent {
                                              springK: shapeSpringK,
                                              springD: shapeSpringDamp)
             
-            p.applyForce(of: force)
+            body.applyForce(force, toPointMassAt: i)
         }
     }
 }

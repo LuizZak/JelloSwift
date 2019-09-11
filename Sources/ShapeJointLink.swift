@@ -14,9 +14,6 @@
 
 /// Represents a joint link that links to multiple point masses of a body
 open class ShapeJointLink: JointLink {
-    /// The point masses this joint is linked to
-    fileprivate let _pointMasses: [PointMass]
-    
     /// The indices of this shape joint link
     fileprivate let _indexes: [Int]
     
@@ -33,7 +30,13 @@ open class ShapeJointLink: JointLink {
     /// Gets the position, in world coordinates, at which this joint links with 
     /// the underlying body
     open var position: Vector2 {
-        return PointMass.averagePosition(of: _pointMasses) + offsetPosition
+        var average = Vector2.zero
+        
+        for i in _indexes {
+            average += body.pointMasses[i].position
+        }
+        
+        return average / JFloat(_indexes.count) + offsetPosition
     }
     
     /// Offset position, calculated based on the owning body's angle
@@ -47,24 +50,42 @@ open class ShapeJointLink: JointLink {
     
     /// Gets the velocity of the object this joint links to
     open var velocity: Vector2 {
-        return PointMass.averageVelocity(of: _pointMasses)
+        var average = Vector2.zero
+        
+        for i in _indexes {
+            average += body.pointMasses[i].velocity
+        }
+        
+        return average / JFloat(_indexes.count)
     }
     
     /// Gets the total mass of the subject of this joint link
     open var mass: JFloat {
-        return _pointMasses.reduce(0) { $0 + $1.mass }
+        //return _pointMasses.reduce(0) { $0 + $1.mass }
+        var sum: JFloat = 0
+        
+        for i in _indexes {
+            sum += body.pointMasses[i].mass
+        }
+        
+        return sum
     }
     
     /// Gets a value specifying whether the object referenced by this 
     /// JointLinkType is static
     open var isStatic: Bool {
-        return _pointMasses.any { $0.mass.isInfinite }
+        for i in _indexes {
+            if(body.pointMasses[i].mass.isInfinite) {
+                return true
+            }
+        }
+        
+        return false
     }
     
     /// Inits a new point joint link with the specified parameters
     public init(body: Body, pointMassIndexes: [Int]) {
         self.body = body
-        _pointMasses = pointMassIndexes.map { body.pointMasses[$0] }
         _indexes = pointMassIndexes
     }
     
@@ -74,10 +95,11 @@ open class ShapeJointLink: JointLink {
     open func applyForce(of force: Vector2) {
         let torqueF = offsetPosition • force.perpendicular()
         
-        for p in _pointMasses {
+        for i in _indexes {
+            let p = body.pointMasses[i]
             let tempR = (p.position - position + offsetPosition).perpendicular()
             
-            p.applyForce(of: force + tempR * torqueF)
+            body.applyForce(force + tempR * torqueF, toPointMassAt: i)
         }
     }
     
@@ -119,7 +141,7 @@ open class ShapeJointLink: JointLink {
             angle += thisAngle
         }
         
-        angle /= JFloat(_pointMasses.count)
+        angle /= JFloat(_indexes.count)
         
         return angle
     }

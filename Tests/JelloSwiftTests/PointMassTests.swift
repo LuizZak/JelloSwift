@@ -17,7 +17,7 @@ class PointMassTests: XCTestCase
     
     func testVelocityAccumulation()
     {
-        let p = PointMass(mass: 0.2, position: Vector2(x: 0, y: 0))
+        var p = PointMass(mass: 0.2, position: Vector2(x: 0, y: 0))
         p.force += Vector2(x: 1, y: 2)
         p.force += Vector2(x: 1, y: 2)
         p.force += Vector2(x: 1, y: 2)

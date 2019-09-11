@@ -50,7 +50,7 @@ class DemoScene {
     var inputMode = InputMode.dragBody
     
     // The current point being dragged around
-    var draggingPoint: PointMass? = nil
+    var draggingPoint: (Body, Int)? = nil
     
     // The location of the user's finger, in physics world coordinates
     var pointerLocation = Vector2.zero
@@ -179,20 +179,21 @@ class DemoScene {
     // Updates the dragging functionality
     func updateDrag() {
         // Dragging point
-        guard let p = draggingPoint, inputMode == InputMode.dragBody else {
+        guard let (body, pIndex) = draggingPoint, inputMode == InputMode.dragBody else {
             return
         }
         
-        let dragForce =
-            calculateSpringForce(posA: p.position,
-                                 velA: p.velocity,
-                                 posB: pointerLocation,
-                                 velB: Vector2.zero,
-                                 distance: 0,
-                                 springK: 700,
-                                 springD: 20)
+        let p = body.pointMasses[pIndex]
         
-        p.applyForce(of: dragForce)
+        let dragForce = calculateSpringForce(posA: p.position, 
+                                             velA: p.velocity, 
+                                             posB: pointerLocation,
+                                             velB: Vector2.zero,
+                                             distance: 0, 
+                                             springK: 700, 
+                                             springD: 20)
+        
+        body.applyForce(dragForce, toPointMassAt: pIndex)
     }
     
     /// Enum used to modify the input mode of the test simulation
@@ -216,7 +217,7 @@ extension DemoScene {
             // Select the closest point-mass to drag
             pointerLocation = worldPoint
             
-            draggingPoint = world.closestPointMass(to: pointerLocation)?.1
+            draggingPoint = world.closestPointMass(to: pointerLocation)
         }
     }
     
@@ -607,12 +608,12 @@ extension DemoScene {
     /// Renders the dragging shape line
     func drawDrag() {
         // Dragging point
-        guard let p = draggingPoint, inputMode == InputMode.dragBody else {
+        guard let (body, index) = draggingPoint, inputMode == InputMode.dragBody else {
             return
         }
         
         // Create the path to draw
-        let lineStart = p.position
+        let lineStart = body.pointMasses[index].position
         let lineEnd = pointerLocation
         
         drawLine(from: lineStart, to: lineEnd, color: 0xFF00DD00)

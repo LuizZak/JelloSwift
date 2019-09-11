@@ -32,8 +32,8 @@ public final class GravityComponent: BodyComponent {
             return
         }
         
-        for point in body.pointMasses {
-            point.applyForce(of: gravity * point.mass)
+        for i in 0..<body.pointMasses.count {
+            body.applyForce(gravity * body.pointMasses[i].mass, toPointMassAt: i)
         }
     }
     
