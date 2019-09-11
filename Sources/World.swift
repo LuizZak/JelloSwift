@@ -231,9 +231,7 @@ public final class World {
     /// Returns a vector of bodies intersecting with the given line.
     public func bodiesIntersecting(lineFrom start: Vector2, to end: Vector2, bitmask: Bitmask = 0) -> [Body] {
         return bodies.filter { body -> Bool in
-            if body._bitmasksStale {
-                updateBodyBitmask(body)
-            }
+            updateBodyBitmask(body)
             
             return
                 (bitmask == 0 || (body.bitmask & bitmask) != 0) &&
@@ -272,9 +270,7 @@ public final class World {
         var results = ContiguousArray<Body>()
         
         for body in bodies {
-            if body._bitmasksStale {
-                updateBodyBitmask(body)
-            }
+            updateBodyBitmask(body)
             
             if !bitmasksIntersect(shapeBitmask, (body.bitmaskX, body.bitmaskY)) {
                 continue
@@ -331,9 +327,7 @@ public final class World {
                 continue
             }
             
-            if body._bitmasksStale {
-                updateBodyBitmask(body)
-            }
+            updateBodyBitmask(body)
             
             guard bitmasksIntersect(aabbBitmask, (body.bitmaskX, body.bitmaskY)) else {
                 continue
@@ -661,7 +655,7 @@ public final class World {
     
     /// Update bodies' bitmask for early collision filtering
     fileprivate func updateBodyBitmask(_ body: Body) {
-        if(!body._bitmasksStale) {
+        if !body._bitmasksStale {
             return
         }
         
