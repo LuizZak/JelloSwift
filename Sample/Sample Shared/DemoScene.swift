@@ -587,7 +587,9 @@ extension DemoScene {
         for vert in 0..<shape.localVertices.count {
             let next = (vert + 1) % shape.localVertices.count
             
-            vertexBuffer.addTriangleWithIndices(center + vert + 1, center + next + 1, center)
+            vertexBuffer.addTriangleWithIndices(center + UInt32(vert) + 1,
+                                                center + UInt32(next) + 1,
+                                                center)
         }
     }
     
@@ -740,7 +742,7 @@ extension DemoScene {
                 return
             }
             
-            let start = vertexBuffer.vertices.count
+            let start = UInt32(vertexBuffer.vertices.count)
             
             let prev = vertexBuffer.currentColor
             vertexBuffer.currentColor = bodyColor
@@ -753,9 +755,9 @@ extension DemoScene {
             
             // Add vertex index triplets
             for i in 0..<indices.count / 3 {
-                vertexBuffer.addTriangleWithIndices(start + indices[i * 3],
-                                                    start + indices[i * 3 + 1],
-                                                    start + indices[i * 3 + 2])
+                vertexBuffer.addTriangleWithIndices(start + UInt32(indices[i * 3]),
+                                                    start + UInt32(indices[i * 3 + 1]),
+                                                    start + UInt32(indices[i * 3 + 2]))
             }
         }
         
