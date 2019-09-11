@@ -22,7 +22,12 @@ public final class World {
             invWorldGridStep = 1 / worldGridStep
         }
     }
-    fileprivate var worldGridSubdivision: Int = MemoryLayout<UInt>.size * 8
+    fileprivate var worldGridSubdivision: Int = MemoryLayout<UInt>.size * 8 {
+        didSet {
+            subdivVec = Vector2(x: JFloat(worldGridSubdivision), y: JFloat(worldGridSubdivision))
+        }
+    }
+    fileprivate var subdivVec: Vector2 = Vector2.zero
     
     /// Inverse of `worldGridStep`, for multiplication over coordinates when
     /// projecting AABBs into the world grid.
@@ -51,6 +56,8 @@ public final class World {
     
     /// Inits an empty world
     public init() {
+        subdivVec = Vector2(x: JFloat(worldGridSubdivision), y: JFloat(worldGridSubdivision))
+        
         self.clear()
     }
     
@@ -660,6 +667,7 @@ public final class World {
         }
         
         (body.bitmaskX, body.bitmaskY) = bitmask(for: body.aabb)
+        body._bitmasksStale = false
     }
     
     /// Returns a set of X and Y bitmasks for filtering collision with objects
@@ -679,14 +687,11 @@ public final class World {
         
         let subdiv = JFloat(worldGridSubdivision)
         
-        let minVec = max(.zero, min(Vector2(x: subdiv, y: subdiv), (aabb.minimum - worldLimits.minimum) * invWorldGridStep))
-        let maxVec = max(.zero, min(Vector2(x: subdiv, y: subdiv), (aabb.maximum - worldLimits.minimum) * invWorldGridStep))
+        let minVec = max(.zero, min(subdivVec, (aabb.minimum - worldLimits.minimum) * invWorldGridStep))
+        let maxVec = max(.zero, min(subdivVec, (aabb.maximum - worldLimits.minimum) * invWorldGridStep))
         
         assert(minVec.x >= 0 && minVec.x <= subdiv && minVec.y >= 0 && minVec.y <= subdiv)
         assert(maxVec.x >= 0 && maxVec.x <= subdiv && maxVec.y >= 0 && maxVec.y <= subdiv)
-        
-        var bitmaskX: Bitmask = 0
-        var bitmaskY: Bitmask = 0
         
         // In case the AABB is contained within invalid boundaries, return 0-ed
         // out bitmasks that do not intersect any range
@@ -694,13 +699,19 @@ public final class World {
             return (0, 0)
         }
         
-        for i in Int(minVec.x)...Int(maxVec.x) {
-            bitmaskX.setBitOn(atIndex: i)
-        }
+        let minShiftX = UInt.max >> UInt(max(0, 64 - maxVec.x))
+        let maxShiftX = UInt.max << UInt(max(0, minVec.x))
         
-        for i in Int(minVec.y)...Int(maxVec.y) {
-            bitmaskY.setBitOn(atIndex: i)
-        }
+        var bitmaskX = minShiftX & maxShiftX
+        bitmaskX.setBitOn(atIndex: Int(minVec.x))
+        bitmaskX.setBitOn(atIndex: Int(maxVec.x))
+        
+        let minShiftY = UInt.max >> UInt(max(0, 64 - maxVec.y))
+        let maxShiftY = UInt.max << UInt(max(0, minVec.y))
+        
+        var bitmaskY = minShiftY & maxShiftY
+        bitmaskY.setBitOn(atIndex: Int(minVec.y))
+        bitmaskY.setBitOn(atIndex: Int(maxVec.y))
         
         return (bitmaskX, bitmaskY)
     }
