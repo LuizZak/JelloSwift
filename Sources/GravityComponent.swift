@@ -19,17 +19,21 @@ public final class GravityComponent: BodyComponent {
         
     }
     
+    public func accumulateInternalForces(in body: Body, relaxing: Bool) {
+        
+    }
+    
     /// Accumulates the force of gravity by applying a unified force downwards.
     /// This force ignores mass by multiplying the gravity component by mass
     /// before applying the force, resulting in uniform velocity application in
     /// all bodies.
-    public func accumulateExternalForces(on body: Body, relaxing: Bool) {
+    public func accumulateExternalForces(on body: Body, world: World, relaxing: Bool) {
         if relaxing && !relaxable {
             return
         }
         
-        for point in body.pointMasses {
-            point.applyForce(of: gravity * point.mass)
+        for i in 0..<body.pointMasses.count {
+            body.applyForce(gravity * body.pointMasses[i].mass, toPointMassAt: i)
         }
     }
     

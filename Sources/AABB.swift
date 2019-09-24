@@ -18,37 +18,43 @@ public struct AABB: Codable {
     public var validity = PointValidity.invalid
     
     /// Maximum points for this bounding box
-    fileprivate(set) public var minimum = Vector2.zero
+    internal(set) public var minimum = Vector2.zero
     
     /// Maximum point for this bounding box
-    fileprivate(set) public var maximum = Vector2.zero
+    internal(set) public var maximum = Vector2.zero
     
     /// Gets the X position of this AABB
+    @inlinable
     public var x: JFloat {
         return minimum.x
     }
     /// Gets the Y position of this AABB
+    @inlinable
     public var y: JFloat {
         return minimum.y
     }
     
     /// Gets the width of this AABB.
     /// This is the same as `maximum.x - minimum.x`
+    @inlinable
     public var width: JFloat {
         return maximum.x - minimum.x
     }
     
     /// Gets the height of this AABB
     /// This is the same as `maximum.y - minimum.y`
+    @inlinable
     public var height: JFloat {
         return maximum.y - minimum.y
     }
     
     /// Gets the middle X position of this AABB
+    @inlinable
     public var midX: JFloat {
         return (minimum.x + maximum.x) / 2
     }
     /// Gets the middle Y position of this AABB
+    @inlinable
     public var midY: JFloat {
         return (minimum.y + maximum.y) / 2
     }
@@ -130,6 +136,7 @@ public struct AABB: Codable {
     /// The check is inclusive, so the edges of the bounding box are considered
     /// to contain the point as well.
     /// Returns false, if this AABB is invalid.
+    @inlinable
     public func contains(_ point: Vector2) -> Bool {
         if validity == .invalid {
             return false
@@ -143,6 +150,7 @@ public struct AABB: Codable {
     /// to intersect the other bounding box's edges as well.
     /// If either this, or the other bounding box are invalid, false is 
     /// returned.
+    @inlinable
     public func intersects(_ box: AABB) -> Bool {
         if validity == .invalid || box.validity == .invalid {
             return false

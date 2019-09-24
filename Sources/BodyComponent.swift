@@ -26,20 +26,11 @@ public protocol BodyComponent {
     /// variable of each PointMass in the body.
     /// These are external forces acting on the PointMasses, such as gravity, 
     /// etc.
-    func accumulateExternalForces(on body: Body, relaxing: Bool)
+    func accumulateExternalForces(on body: Body, world: World, relaxing: Bool)
 }
 
 extension BodyComponent {
-    
     public func prepare(_ body: Body) {
-        
-    }
-    
-    public func accumulateInternalForces(in body: Body, relaxing: Bool) {
-        
-    }
-    
-    public func accumulateExternalForces(on body: Body, relaxing: Bool) {
         
     }
 }

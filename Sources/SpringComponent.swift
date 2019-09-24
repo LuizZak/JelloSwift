@@ -51,14 +51,19 @@ public final class SpringComponent: BodyComponent {
     
     /// Adds an internal spring to this body
     @discardableResult
-    public func addInternalSpring(_ body: Body, pointA: Int, pointB: Int,
-                                  springK: JFloat, damping: JFloat) -> InternalSpring {
+    public func addInternalSpring(_ body: Body,
+                                  pointA: Int,
+                                  pointB: Int,
+                                  springK: JFloat,
+                                  damping: JFloat,
+                                  plasticity: SpringPlasticity? = nil) -> InternalSpring {
+
         let pA = body.pointMasses[pointA]
         let pB = body.pointMasses[pointB]
         
         let dist = RestDistance.fixed(pA.position.distance(to: pB.position))
         
-        let spring = InternalSpring(pointA, pointB, dist, springK, damping)
+        let spring = InternalSpring(pointA, pointB, dist, springK, damping, plasticity)
         
         springs.append(spring)
         
@@ -67,12 +72,16 @@ public final class SpringComponent: BodyComponent {
     
     /// Adds an internal spring to this body
     @discardableResult
-    public func addInternalSpring(_ body: Body, pointA: Int, pointB: Int,
-                                  springK: JFloat, damping: JFloat,
-                                  dist: RestDistance) -> InternalSpring {
+    public func addInternalSpring(_ body: Body,
+                                  pointA: Int,
+                                  pointB: Int,
+                                  springK: JFloat,
+                                  damping: JFloat,
+                                  dist: RestDistance,
+                                  plasticity: SpringPlasticity? = nil) -> InternalSpring {
         let dist = dist
         
-        let spring = InternalSpring(pointA, pointB, dist, springK, damping)
+        let spring = InternalSpring(pointA, pointB, dist, springK, damping, plasticity)
         
         springs.append(spring)
         
@@ -183,27 +192,16 @@ public final class SpringComponent: BodyComponent {
             let p1 = body.pointMasses[s.pointMassA]
             let p2 = body.pointMasses[s.pointMassB]
             
-            let force: Vector2
-            
             let actDist = p1.position.distance(to: p2.position)
             
-            switch s.restDistance {
-            case .fixed(let dist):
-                force =
-                    calculateSpringForce(posA: p1.position, velA: p1.velocity,
-                                         posB: p2.position, velB: p2.velocity,
-                                         distance: dist,
-                                         springK: s.coefficient, springD: s.damping)
-            case .ranged:
-                force =
-                    calculateSpringForce(posA: p1.position, velA: p1.velocity,
-                                         posB: p2.position, velB: p2.velocity,
-                                         distance: s.restDistance.clamp(value: actDist),
-                                         springK: s.coefficient, springD: s.damping)
-            }
+            let force
+                = calculateSpringForce(posA: p1.position, velA: p1.velocity,
+                                       posB: p2.position, velB: p2.velocity,
+                                       distance: s.restDistance.clamp(value: actDist),
+                                       springK: s.coefficient, springD: s.damping)
             
-            p1.applyForce(of: force)
-            p2.applyForce(of: -force)
+            body.applyForce(force, toPointMassAt: s.pointMassA)
+            body.applyForce(-force, toPointMassAt: s.pointMassB)
             
             if !relaxing && s.plasticity != nil {
                 // Apply plasticity
@@ -218,6 +216,10 @@ public final class SpringComponent: BodyComponent {
         }
     }
     
+    public func accumulateExternalForces(on body: Body, world: World, relaxing: Bool) {
+        
+    }
+    
     /// Applies shape-matching on the given body.
     /// Shape-matching applies spring forces to each point masses on the
     /// direction of the body's original global shape
@@ -229,8 +231,9 @@ public final class SpringComponent: BodyComponent {
         
         body.baseShape.transformVertices(&body.globalShape, matrix: matrix)
         
-        for (global, p) in zip(body.globalShape, body.pointMasses) {
-            let velB = body.isKinematic ? Vector2.zero : p.velocity
+        for (global, i) in zip(body.globalShape, 0..<body.pointMasses.count) {
+            let p = body.pointMasses[i]
+            let velB = body.isKinematic ? .zero : p.velocity
             
             let force = calculateSpringForce(posA: p.position, velA: p.velocity,
                                              posB: global, velB: velB,
@@ -238,7 +241,7 @@ public final class SpringComponent: BodyComponent {
                                              springK: shapeSpringK,
                                              springD: shapeSpringDamp)
             
-            p.applyForce(of: force)
+            body.applyForce(force, toPointMassAt: i)
         }
     }
 }

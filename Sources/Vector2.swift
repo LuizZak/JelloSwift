@@ -45,24 +45,24 @@ public struct Vector2: VectorRepresentable, Equatable, CustomStringConvertible, 
     
     #if arch(x86_64) || arch(arm64)
     /// Used to match `JFloat`'s native type
-    public typealias NativeVectorType = double2
+    public typealias NativeVectorType = SIMD2<Double>
     
     /// The 3x3 matrix type that can be used to apply transformations by
     /// multiplying on this Vector2
     public typealias NativeMatrixType = double3x3
     
     /// This is used during affine transformation
-    public typealias HomogenousVectorType = double3
+    public typealias HomogenousVectorType = SIMD3<Double>
     #elseif arch(i386) || arch(arm)
     ///Used to match `JFloat`'s native type
-    public typealias NativeVectorType = float2
+    public typealias NativeVectorType = SIMD2<Float>
     
     /// The 3x3 matrix type that can be used to apply transformations by
     /// multiplying on this Vector2
     public typealias NativeMatrixType = float3x3
     
     /// This is used during affine transformation
-    public typealias HomogenousVectorType = float3
+    public typealias HomogenousVectorType = SIMD3<Float>
     #endif
     
     /// The underlying SIMD vector type

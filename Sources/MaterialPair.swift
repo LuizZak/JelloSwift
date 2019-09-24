@@ -33,6 +33,7 @@ public struct MaterialPair {
 
 /// The default collision filter. Always returns true, so all collisions passed 
 /// through it are approved
+@inlinable
 public func defaultCollisionFilter(_ info: BodyCollisionInformation,
                                    normalVelocity: JFloat) -> Bool {
     return true

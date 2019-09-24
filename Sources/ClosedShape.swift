@@ -6,11 +6,7 @@
 //  Copyright (c) 2014 Luiz Fernando Silva. All rights reserved.
 //
 
-#if os(macOS) || os(iOS)
-    import Darwin.C
-#elseif os(Linux)
-    import Glibc
-#endif
+import Foundation
 
 /// Contains a set of points that is equivalent as the internal shape of a soft
 /// body.

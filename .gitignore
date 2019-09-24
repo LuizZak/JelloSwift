@@ -30,7 +30,8 @@ DerivedData
 Packages
 .build
 xcuserdata
-*.xcodeproj
+JelloSwift.xcodeproj
 DerivedData/
+.swiftpm/
 
 .DS_Store

@@ -1,0 +1,25 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "LibTessSwift",
+        "repositoryURL": "https://github.com/LuizZak/LibTessSwift.git",
+        "state": {
+          "branch": null,
+          "revision": "da48d3f8e66a614df22d5b2fab2f04576130f46e",
+          "version": "0.8.2"
+        }
+      },
+      {
+        "package": "MiniLexer",
+        "repositoryURL": "https://github.com/LuizZak/MiniLexer.git",
+        "state": {
+          "branch": null,
+          "revision": "4da97d6f92d79402cd3cf35d6438ec723554ae7c",
+          "version": "0.9.5"
+        }
+      }
+    ]
+  },
+  "version": 1
+}

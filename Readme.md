@@ -1,9 +1,6 @@
 # JelloSwift
 
 [![Build Status](https://dev.azure.com/luiz-fs/JelloSwift/_apis/build/status/LuizZak.JelloSwift?branchName=master)](https://dev.azure.com/luiz-fs/JelloSwift/_build/latest?definitionId=6&branchName=master)
-[![Version](https://img.shields.io/cocoapods/v/JelloSwift.svg?style=flat)](http://cocoapods.org/pods/JelloSwift)
-[![License](https://img.shields.io/cocoapods/l/JelloSwift.svg?style=flat)](http://cocoapods.org/pods/JelloSwift)
-[![Platform](https://img.shields.io/cocoapods/p/JelloSwift.svg?style=flat)](http://cocoapods.org/pods/JelloSwift)
 
 Soft-body physics dynamics library written in Swift
 ----------
@@ -21,7 +18,7 @@ The project comes with a demo scene for the iPad, so just fire up and drag the s
 
 ## Example
 
-To run the example project, clone the repo, and run `pod install` from the Example directory first.
+To run the example project, clone the repo, open the Sample project under Sample/Sample.xcodeproj, select a platform and run.
 
 ## Requirements
 
@@ -29,31 +26,15 @@ To compile this project, you require Xcode 10.2 w/ Swift 5.0 installed.
 
 ## Installation
 
-#### CocoaPods
-
-JelloSwift is available through [CocoaPods](http://cocoapods.org). To install
-it, simply add the following line to your Podfile:
-
-```ruby
-pod "JelloSwift"
-```
-
 #### Swift Package Manager
 
 JelloSwift is also available as a [Swift Package](https://swift.org/package-manager)
 
 ```swift
-import PackageDescription
-
-let package = Package(
-    name: "project_name",
-    dependencies: [
-        .package(url: "https://github.com/LuizZak/JelloSwift.git", from: "0.14.0")
-    ],
-    targets: [
-        // ...
-    ]
-)
+dependencies: [
+    // [...]
+    .package(url: "https://github.com/LuizZak/JelloSwift.git", from: "0.14.0"),
+],
 ```
 
 ## License

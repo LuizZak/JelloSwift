@@ -1,6 +1,0 @@
-framework module LibTessSwift {
-  umbrella header "LibTessSwift-umbrella.h"
-
-  export *
-  module * { export * }
-}

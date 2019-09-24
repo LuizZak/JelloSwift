@@ -22,7 +22,12 @@ public final class World {
             invWorldGridStep = 1 / worldGridStep
         }
     }
-    fileprivate var worldGridSubdivision: Int = MemoryLayout<UInt>.size * 8
+    fileprivate var worldGridSubdivision: Int = MemoryLayout<UInt>.size * 8 {
+        didSet {
+            subdivVec = Vector2(x: JFloat(worldGridSubdivision), y: JFloat(worldGridSubdivision))
+        }
+    }
+    fileprivate var subdivVec: Vector2 = Vector2.zero
     
     /// Inverse of `worldGridStep`, for multiplication over coordinates when
     /// projecting AABBs into the world grid.
@@ -51,6 +56,8 @@ public final class World {
     
     /// Inits an empty world
     public init() {
+        subdivVec = Vector2(x: JFloat(worldGridSubdivision), y: JFloat(worldGridSubdivision))
+        
         self.clear()
     }
     
@@ -182,14 +189,24 @@ public final class World {
         joints.remove(joint)
     }
     
+    /// Returns `true` if the two given bodies are joined to one another.
+    public func areBodiesJoined(_ body1: Body, _ body2: Body) -> Bool {
+        return body1.joints.contains { $0.bodyLink1.body === body2 || $0.bodyLink2.body === body2 }
+    }
+    
     /// Finds the closest PointMass in the world to a given point
-    public func closestPointMass(to pt: Vector2) -> (Body, PointMass)? {
-        var ret: (Body, PointMass)? = nil
+    public func closestPointMass(to pt: Vector2,
+                                 ignoreFunction: ((Body, Int) -> Bool)? = nil) -> (Body, Int)? {
+        
+        var ret: (Body, Int)? = nil
         
         var closestD = JFloat.greatestFiniteMagnitude
         
         for body in bodies {
             let (pm, dist) = body.closestPointMass(to: pt)
+            if ignoreFunction?(body, pm) == true {
+                continue
+            }
             
             if dist < closestD {
                 closestD = dist
@@ -221,9 +238,7 @@ public final class World {
     /// Returns a vector of bodies intersecting with the given line.
     public func bodiesIntersecting(lineFrom start: Vector2, to end: Vector2, bitmask: Bitmask = 0) -> [Body] {
         return bodies.filter { body -> Bool in
-            if body._bitmasksStale {
-                updateBodyBitmask(body)
-            }
+            updateBodyBitmask(body)
             
             return
                 (bitmask == 0 || (body.bitmask & bitmask) != 0) &&
@@ -247,7 +262,10 @@ public final class World {
     ///
     /// - Returns: All bodies that intersect with the closed shape. If closed
     ///            shape contains less than 2 points, returns empty.
-    public func bodiesIntersecting(closedShape: ClosedShape, at worldPos: Vector2, ignoreTest: ((Body) -> Bool)? = nil) -> ContiguousArray<Body> {
+    public func bodiesIntersecting(closedShape: ClosedShape,
+                                   at worldPos: Vector2,
+                                   ignoreTest: ((Body) -> Bool)? = nil) -> ContiguousArray<Body> {
+        
         if closedShape.localVertices.count < 2 {
             return []
         }
@@ -259,9 +277,7 @@ public final class World {
         var results = ContiguousArray<Body>()
         
         for body in bodies {
-            if body._bitmasksStale {
-                updateBodyBitmask(body)
-            }
+            updateBodyBitmask(body)
             
             if !bitmasksIntersect(shapeBitmask, (body.bitmaskX, body.bitmaskY)) {
                 continue
@@ -304,7 +320,11 @@ public final class World {
     /// - Returns: An optional tuple containing the farthest point reached by
     /// the ray, and a Body value specifying the body that was closest to the
     /// ray, if it hit any body, or nil if it hit nothing.
-    public func rayCast(from start: Vector2, to end: Vector2, bitmask: Bitmask = 0, ignoreTest: ((Body) -> Bool)? = nil) -> (retPt: Vector2, body: Body)? {
+    public func rayCast(from start: Vector2,
+                        to end: Vector2,
+                        bitmask: Bitmask = 0,
+                        ignoreTest: ((Body) -> Bool)? = nil) -> (retPt: Vector2, body: Body)? {
+        
         var aabb = AABB(points: [start, end])
         var aabbBitmask = self.bitmask(for: aabb)
         var result: (Vector2, Body)?
@@ -314,9 +334,7 @@ public final class World {
                 continue
             }
             
-            if body._bitmasksStale {
-                updateBodyBitmask(body)
-            }
+            updateBodyBitmask(body)
             
             guard bitmasksIntersect(aabbBitmask, (body.bitmaskX, body.bitmaskY)) else {
                 continue
@@ -353,7 +371,10 @@ public final class World {
     }
     
     /// Internal updating method
-    fileprivate func update(_ elapsed: JFloat, withBodies bodies: ContiguousArray<Body>, joints: ContiguousArray<BodyJoint>) {
+    fileprivate func update(_ elapsed: JFloat,
+                            withBodies bodies: ContiguousArray<Body>,
+                            joints: ContiguousArray<BodyJoint>) {
+        
         // Update the bodies
         for body in bodies {
             body.derivePositionAndAngle(elapsed)
@@ -363,7 +384,7 @@ public final class World {
             if body.componentCount > 0 {
                 body.updateEdgesAndNormals()
                 
-                body.accumulateExternalForces(relaxing: relaxing)
+                body.accumulateExternalForces(world: self, relaxing: relaxing)
                 body.accumulateInternalForces(relaxing: relaxing)
             } else {
                 // We need these for the collision detection
@@ -591,14 +612,14 @@ public final class World {
             }
             
             if A.mass.isFinite {
-                A.position += info.normal * Amove
+                bodyA.setPosition(A.position + info.normal * Amove, ofPointMassAt: info.bodyApm)
             }
             
             if B1.mass.isFinite {
-                B1.position -= info.normal * (Bmove * b1inf)
+                bodyB.setPosition(B1.position - info.normal * (Bmove * b1inf), ofPointMassAt: info.bodyBpmA)
             }
             if B2.mass.isFinite {
-                B2.position -= info.normal * (Bmove * b2inf)
+                bodyB.setPosition(B2.position - info.normal * (Bmove * b2inf), ofPointMassAt: info.bodyBpmB)
             }
             
             if relDot <= 0.0001 && (A.mass.isFinite || b2MassSum.isFinite) {
@@ -616,15 +637,16 @@ public final class World {
                 let f: JFloat = (relVel • tangent) * friction / jDenom
                 
                 if A.mass.isFinite {
-                    A.velocity += (info.normal * (j / A.mass)) - (tangent * (f / A.mass))
+                    bodyA.applyVelocity((info.normal * (j / A.mass)) - (tangent * (f / A.mass)), toPointMassAt: info.bodyApm)
                 }
                 
                 if b2MassSum.isFinite {
                     let jComp = info.normal * j / b2MassSum
                     let fComp = tangent * (f * b2MassSum)
                     
-                    B1.velocity -= (jComp * b1inf) - (fComp * b1inf)
-                    B2.velocity -= (jComp * b2inf) - (fComp * b2inf)
+                    
+                    bodyB.applyVelocity(-((jComp * b1inf) - (fComp * b1inf)), toPointMassAt: info.bodyBpmA)
+                    bodyB.applyVelocity(-((jComp * b2inf) - (fComp * b2inf)), toPointMassAt: info.bodyBpmB)
                 }
             }
         }
@@ -640,7 +662,12 @@ public final class World {
     
     /// Update bodies' bitmask for early collision filtering
     fileprivate func updateBodyBitmask(_ body: Body) {
+        if !body._bitmasksStale {
+            return
+        }
+        
         (body.bitmaskX, body.bitmaskY) = bitmask(for: body.aabb)
+        body._bitmasksStale = false
     }
     
     /// Returns a set of X and Y bitmasks for filtering collision with objects
@@ -660,14 +687,11 @@ public final class World {
         
         let subdiv = JFloat(worldGridSubdivision)
         
-        let minVec = max(.zero, min(Vector2(x: subdiv, y: subdiv), (aabb.minimum - worldLimits.minimum) * invWorldGridStep))
-        let maxVec = max(.zero, min(Vector2(x: subdiv, y: subdiv), (aabb.maximum - worldLimits.minimum) * invWorldGridStep))
+        let minVec = max(.zero, min(subdivVec, (aabb.minimum - worldLimits.minimum) * invWorldGridStep))
+        let maxVec = max(.zero, min(subdivVec, (aabb.maximum - worldLimits.minimum) * invWorldGridStep))
         
         assert(minVec.x >= 0 && minVec.x <= subdiv && minVec.y >= 0 && minVec.y <= subdiv)
         assert(maxVec.x >= 0 && maxVec.x <= subdiv && maxVec.y >= 0 && maxVec.y <= subdiv)
-        
-        var bitmaskX: Bitmask = 0
-        var bitmaskY: Bitmask = 0
         
         // In case the AABB is contained within invalid boundaries, return 0-ed
         // out bitmasks that do not intersect any range
@@ -675,13 +699,19 @@ public final class World {
             return (0, 0)
         }
         
-        for i in Int(minVec.x)...Int(maxVec.x) {
-            bitmaskX.setBitOn(atIndex: i)
-        }
+        let minShiftX = UInt.max >> UInt(max(0, 64 - maxVec.x))
+        let maxShiftX = UInt.max << UInt(max(0, minVec.x))
         
-        for i in Int(minVec.y)...Int(maxVec.y) {
-            bitmaskY.setBitOn(atIndex: i)
-        }
+        var bitmaskX = minShiftX & maxShiftX
+        bitmaskX.setBitOn(atIndex: Int(minVec.x))
+        bitmaskX.setBitOn(atIndex: Int(maxVec.x))
+        
+        let minShiftY = UInt.max >> UInt(max(0, 64 - maxVec.y))
+        let maxShiftY = UInt.max << UInt(max(0, minVec.y))
+        
+        var bitmaskY = minShiftY & maxShiftY
+        bitmaskY.setBitOn(atIndex: Int(minVec.y))
+        bitmaskY.setBitOn(atIndex: Int(maxVec.y))
         
         return (bitmaskX, bitmaskY)
     }
@@ -717,8 +747,8 @@ public extension World {
         
         // Reset all velocities
         for body in bodies {
-            for pointMass in body.pointMasses {
-                pointMass.velocity = .zero
+            for i in 0..<body.pointMasses.count {
+                body.setVelocity(.zero, ofPointMassAt: i)
             }
         }
     }
@@ -772,8 +802,8 @@ public extension World {
         
         // Reset all velocities
         for body in bodies {
-            for pointMass in body.pointMasses {
-                pointMass.velocity = .zero
+            for i in 0..<body.pointMasses.count {
+                body.setVelocity(.zero, ofPointMassAt: i)
             }
         }
     }

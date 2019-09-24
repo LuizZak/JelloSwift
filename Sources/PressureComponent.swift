@@ -41,12 +41,13 @@ public final class PressureComponent: BodyComponent {
         for e in body.edges {
             let pressureV = (invVolume * e.length * gasAmmount)
             
-            let pointStart = body.pointMasses[e.startPointIndex]
-            let pointEnd = body.pointMasses[e.endPointIndex]
-            
-            pointStart.applyForce(of: pointStart.normal * pressureV)
-            pointEnd.applyForce(of: pointEnd.normal * pressureV)
+            body.applyForce(body.pointMasses[e.startPointIndex].normal * pressureV, toPointMassAt: e.startPointIndex)
+            body.applyForce(body.pointMasses[e.endPointIndex].normal * pressureV, toPointMassAt: e.endPointIndex)
         }
+    }
+    
+    public func accumulateExternalForces(on body: Body, world: World, relaxing: Bool) {
+        
     }
 }
 

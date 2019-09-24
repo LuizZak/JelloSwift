@@ -1,6 +1,0 @@
-framework module JelloSwift {
-  umbrella header "JelloSwift-umbrella.h"
-
-  export *
-  module * { export * }
-}

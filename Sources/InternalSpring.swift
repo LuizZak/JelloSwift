@@ -67,8 +67,12 @@ public struct InternalSpring: Codable {
     /// The spring damping
     public var damping: JFloat = 0
     
-    public init(_ pmA: Int, _ pmB: Int, _ distance: RestDistance = 0,
-                _ springK: JFloat, _ springD: JFloat) {
+    public init(_ pmA: Int,
+                _ pmB: Int,
+                _ distance: RestDistance = 0,
+                _ springK: JFloat,
+                _ springD: JFloat,
+                _ plasticity: SpringPlasticity? = nil) {
         
         pointMassA = pmA
         pointMassB = pmB
@@ -76,6 +80,7 @@ public struct InternalSpring: Codable {
         initialRestDistance = distance
         coefficient = springK
         damping = springD
+        self.plasticity = plasticity
     }
     
     public init(from decoder: Decoder) throws {
