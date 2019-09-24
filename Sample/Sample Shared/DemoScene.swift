@@ -9,7 +9,7 @@ extension Vector2 {
     var inWorldCoords: Vector2 {
         return JelloSwift.toWorldCoords(self)
     }
-    
+
     /// Helper post-fix alias for global function `toScreenCoords(self)`
     var inScreenCoords: Vector2 {
         return JelloSwift.toScreenCoords(self)

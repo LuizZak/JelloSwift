@@ -51,14 +51,19 @@ public final class SpringComponent: BodyComponent {
     
     /// Adds an internal spring to this body
     @discardableResult
-    public func addInternalSpring(_ body: Body, pointA: Int, pointB: Int,
-                                  springK: JFloat, damping: JFloat) -> InternalSpring {
+    public func addInternalSpring(_ body: Body,
+                                  pointA: Int,
+                                  pointB: Int,
+                                  springK: JFloat,
+                                  damping: JFloat,
+                                  plasticity: SpringPlasticity? = nil) -> InternalSpring {
+
         let pA = body.pointMasses[pointA]
         let pB = body.pointMasses[pointB]
         
         let dist = RestDistance.fixed(pA.position.distance(to: pB.position))
         
-        let spring = InternalSpring(pointA, pointB, dist, springK, damping)
+        let spring = InternalSpring(pointA, pointB, dist, springK, damping, plasticity)
         
         springs.append(spring)
         
@@ -67,12 +72,16 @@ public final class SpringComponent: BodyComponent {
     
     /// Adds an internal spring to this body
     @discardableResult
-    public func addInternalSpring(_ body: Body, pointA: Int, pointB: Int,
-                                  springK: JFloat, damping: JFloat,
-                                  dist: RestDistance) -> InternalSpring {
+    public func addInternalSpring(_ body: Body,
+                                  pointA: Int,
+                                  pointB: Int,
+                                  springK: JFloat,
+                                  damping: JFloat,
+                                  dist: RestDistance,
+                                  plasticity: SpringPlasticity? = nil) -> InternalSpring {
         let dist = dist
         
-        let spring = InternalSpring(pointA, pointB, dist, springK, damping)
+        let spring = InternalSpring(pointA, pointB, dist, springK, damping, plasticity)
         
         springs.append(spring)
         
