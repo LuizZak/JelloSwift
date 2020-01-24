@@ -29,21 +29,22 @@ class LibTessTriangulate {
         
         tess.addContour(contour)
         
-        try tess.tessellate(windingRule: .evenOdd, elementType: .polygons,
-                            polySize: polySize)
+        let (vertices, elements) = try tess.tessellate(windingRule: .evenOdd,
+                                                       elementType: .polygons,
+                                                       polySize: polySize)
         
         var result: [Vector2] = []
         var indices: [Int] = []
         
-        for vertex in tess.vertices! {
+        for vertex in vertices {
             result.append(Vector2(x: vertex.x, y: vertex.y))
         }
         
         for i in 0..<tess.elementCount {
             for j in 0..<polySize {
-                let index = tess.elements![i * polySize + j]
-                if (index == -1) {
-                    continue;
+                let index = elements[i * polySize + j]
+                if index == -1 {
+                    continue
                 }
                 indices.append(index)
             }

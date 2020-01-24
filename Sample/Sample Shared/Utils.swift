@@ -31,7 +31,7 @@ class Stopwatch {
     func stop() -> CFAbsoluteTime {
         endTime = CFAbsoluteTimeGetCurrent()
         
-        return duration!
+        return duration
     }
     
     static func startNew() -> Stopwatch {
@@ -42,7 +42,7 @@ class Stopwatch {
         start()
     }
     
-    var duration: CFAbsoluteTime? {
+    var duration: CFAbsoluteTime {
         if let endTime = endTime {
             return endTime - startTime
         } else {
@@ -114,7 +114,7 @@ func flattenColors(_ backColor: Color, withColor foreColor: Color) -> Color {
     let alpha = backAlphaFloat + foreAlphaFloat - backAlphaFloat * foreAlphaNormalized
     
     return Color(red: min(1, (foreR * foreAlphaFloat + backR * backColorMultiplier) / alpha),
-                   green: min(1, (foreG * foreAlphaFloat + backG * backColorMultiplier) / alpha),
-                   blue: min(1, (foreB * foreAlphaFloat + backB * backColorMultiplier) / alpha),
-                   alpha: alpha)
+                 green: min(1, (foreG * foreAlphaFloat + backG * backColorMultiplier) / alpha),
+                 blue: min(1, (foreB * foreAlphaFloat + backB * backColorMultiplier) / alpha),
+                 alpha: alpha)
 }

@@ -26,19 +26,19 @@ extension Vector3 {
 }
 
 // MARK: Vector4
-typealias Vector4 = packed_float4
+typealias Vector4 = SIMD4<Float>
 
 extension Vector4 {
     init(x: Int, y: Int, z: Int, w: Int) {
-        self = packed_float4(x: Float(x), y: Float(y), z: Float(z), w: Float(w))
+        self.init(x: Float(x), y: Float(y), z: Float(z), w: Float(w))
     }
     
     init(x: CGFloat, y: CGFloat, z: CGFloat, w: CGFloat) {
-        self = packed_float4(x: Float(x), y: Float(y), z: Float(z), w: Float(w))
+        self.init(x: Float(x), y: Float(y), z: Float(z), w: Float(w))
     }
     
     init(x: Double, y: Double, z: Double, w: Double) {
-        self = packed_float4(x: Float(x), y: Float(y), z: Float(z), w: Float(w))
+        self.init(x: Float(x), y: Float(y), z: Float(z), w: Float(w))
     }
 }
 
@@ -138,8 +138,7 @@ extension Color4 {
     static let blue = Color4(r: 0, g: 0, b: 1, a: 1)
     
     static let yellow = Color4(r: 1, g: 1, b: 0, a: 1)
-    static let purple = Color4(r: 1, g: 0, b: 1, a: 1)
-    
+    static let magenta = Color4(r: 1, g: 0, b: 1, a: 1)
     static let cyan = Color4(r: 0, g: 1, b: 1, a: 1)
 }
 

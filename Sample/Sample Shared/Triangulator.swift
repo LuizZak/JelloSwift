@@ -100,14 +100,14 @@ class Triangulate {
                 indices.append(c)
                 
                 /* remove v from remaining polygon */
-                for t in v+1..<nv {
+                for t in v + 1..<nv {
                     vertexIndices[t - 1] = vertexIndices[t]
                 }
                 
                 nv -= 1
                 
                 /* resest error detection counter */
-                count = 2*nv
+                count = 2 * nv
             }
         }
         
@@ -141,7 +141,7 @@ class Triangulate {
         let cCROSSap = c.cross(ap)
         let bCROSScp = b.cross(cp)
         
-        return ((aCROSSbp >= 0.0) && (bCROSScp >= 0.0) && (cCROSSap >= 0.0))
+        return aCROSSbp >= 0.0 && bCROSScp >= 0.0 && cCROSSap >= 0.0
     }
     
     private static func snip(contour: [Vector2], u: Int, v: Int, w: Int, n: Int, V: [Int]) -> Bool {
@@ -154,7 +154,7 @@ class Triangulate {
         }
         
         for p in 0..<n {
-            if (p == u) || (p == v) || (p == w) {
+            if p == u || p == v || p == w {
                 continue
             }
             

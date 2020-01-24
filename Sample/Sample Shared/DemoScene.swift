@@ -82,7 +82,7 @@ class DemoScene {
             intervals = Array(intervals.dropFirst(intervals.count - 200))
         }
         
-        if let duration = updateLabelStopwatch.duration, duration > labelUpdateInterval {
+        if updateLabelStopwatch.duration > labelUpdateInterval {
             updateLabelStopwatch.reset()
             
             let timeMilli = time
@@ -109,29 +109,6 @@ class DemoScene {
         world.joints.forEach(drawJoint)
         try? world.bodies.forEach(drawBody)
         
-        // Render rays from ray bodies
-        for body in world.bodies {
-            guard let comp = body.component(ofType: BodyRayComponent.self) else {
-                continue
-            }
-            
-            for point in body.pointMasses {
-                let vertex = point.position
-                let normal = point.normal
-                
-                let start = vertex - normal * 0.1
-                let end = vertex + normal * comp.rayLength
-                
-                let pt
-                    = world.rayCast(from: start,
-                                    to: end,
-                                    ignoreTest: { [world] in $0 == body || (comp.ignoreJoinedBodies && world.areBodiesJoined(body, $0)) })?.retPt ?? end
-                
-                drawLine(from: vertex, to: pt, color: comp.color.toUIntARGB())
-                drawCircle(center: pt, radius: 0.1, color: comp.color.toUIntARGB())
-            }
-        }
-        
         drawDrag()
         
         if useDetailedRender {
@@ -156,7 +133,7 @@ class DemoScene {
         
         collisions.removeAll(keepingCapacity: true)
         
-        if let duration = renderLabelStopwatch.duration, duration > labelUpdateInterval {
+        if renderLabelStopwatch.duration > labelUpdateInterval {
             renderLabelStopwatch.reset()
             
             let time = round(sw.stop() * 1000 * 20) / 20
@@ -802,6 +779,25 @@ extension DemoScene {
         drawLine(from: axisUp[0], to: axisUp[1], color: 0xFFED0000)
         // Green Right vector
         drawLine(from: axisRight[0], to: axisRight[1], color: 0xFF00ED00)
+        
+        // Render rays from ray bodies
+        if let comp = body.component(ofType: BodyRayComponent.self) {
+            for point in body.pointMasses {
+                let vertex = point.position
+                let normal = point.normal
+                
+                let start = vertex - normal * 0.1
+                let end = vertex + normal * comp.rayLength
+                
+                let pt
+                    = world.rayCast(from: start,
+                                    to: end,
+                                    ignoreTest: { [world] in $0 == body || (comp.ignoreJoinedBodies && world.areBodiesJoined(body, $0)) })?.retPt ?? end
+                
+                drawLine(from: vertex, to: pt, color: comp.color.toUIntARGB())
+                drawCircle(center: pt, radius: 0.1, color: comp.color.toUIntARGB())
+            }
+        }
     }
 }
 

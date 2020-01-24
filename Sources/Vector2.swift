@@ -93,20 +93,20 @@ public struct Vector2: VectorRepresentable, Equatable, CustomStringConvertible, 
     
     /// Returns the angle in radians of this Vector2
     @inlinable
-    public var angle : JFloat {
+    public var angle: JFloat {
         return atan2(y, x)
     }
     
     /// Returns the squared length of this Vector2
     @inlinable
-    public var length : JFloat {
+    public var length: JFloat {
         return length_squared(theVector)
     }
     
     /// Returns the magnitude (or square root of the squared length) of this 
     /// Vector2
     @inlinable
-    public var magnitude : JFloat {
+    public var magnitude: JFloat {
         return simd.length(theVector)
     }
     
