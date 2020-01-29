@@ -100,6 +100,10 @@ struct Color4 {
         
         return Color4(r: r, g: g, b: b, a: a)
     }
+
+    func withTransparency(_ alpha: CGFloat) -> Color4 {
+        return Color4(r: r, g: g, b: b, a: alpha)
+    }
     
     func toUIColor() -> Color {
         return Color(red: CGFloat(r), green: CGFloat(g), blue: CGFloat(b), alpha: CGFloat(a))

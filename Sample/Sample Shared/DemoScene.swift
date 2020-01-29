@@ -118,15 +118,15 @@ class DemoScene {
             for point in body.pointMasses {
                 let vertex = point.position
                 let normal = point.normal
-                
+
                 let start = vertex - normal * 0.1
                 let end = vertex + normal * comp.rayLength
-                
+
                 let pt
                     = world.rayCast(from: start,
                                     to: end,
                                     ignoreTest: { [world] in $0 == body || (comp.ignoreJoinedBodies && world.areBodiesJoined(body, $0)) })?.retPt ?? end
-                
+
                 drawLine(from: vertex, to: pt, color: comp.color.toUIntARGB())
                 drawCircle(center: pt, radius: 0.1, color: comp.color.toUIntARGB())
             }

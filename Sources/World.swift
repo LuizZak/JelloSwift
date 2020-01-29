@@ -216,6 +216,29 @@ public final class World {
         
         return ret
     }
+
+    /// Returns the closest edge to a given point, across all bodies in the world.
+    public func closestPoint(to pt: Vector2,
+                             ignoreFunction: ((Body) -> Bool)? = nil) -> (Body, hitPoint: Vector2)? {
+
+        var closest: (Body, hitPoint: Vector2)?
+
+        for body in bodies {
+            if ignoreFunction?(body) == true {
+                continue
+            }
+            let edge = body.closestPoint(to: pt)
+            if let current = closest {
+                if edge.distance < current.hitPoint.distance(to: pt) {
+                    closest = (body, edge.hitPoint)
+                }
+            } else {
+                closest = (body, edge.hitPoint)
+            }
+        }
+
+        return closest
+    }
     
     /// Given a global point, returns a body (if any) that contains this point.
     /// Useful for picking objects with a cursor, etc.
