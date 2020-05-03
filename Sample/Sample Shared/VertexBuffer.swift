@@ -13,7 +13,31 @@ import CoreGraphics
 // MARK: Vector aliases -
 
 // MARK: Vector3
+
+#if DEBUG
+// TODO: Once Swift gets inlining SIMD in debug mode, remove this Vector3 struct
+// in favor of SIMD structures
+
+struct Vector3: Hashable {
+    var x: Float
+    var y: Float
+    var z: Float
+    
+    init() {
+        self.x = 0
+        self.y = 0
+        self.z = 0
+    }
+    
+    init(x: Float, y: Float, z: Float) {
+        self.x = x
+        self.y = y
+        self.z = z
+    }
+}
+#else
 typealias Vector3 = SIMD3<Float>
+#endif
 
 extension Vector3 {
     init(x: CGFloat, y: CGFloat, z: CGFloat) {
@@ -30,15 +54,15 @@ typealias Vector4 = packed_float4
 
 extension Vector4 {
     init(x: Int, y: Int, z: Int, w: Int) {
-        self = packed_float4(x: Float(x), y: Float(y), z: Float(z), w: Float(w))
+        self.init(x: Float(x), y: Float(y), z: Float(z), w: Float(w))
     }
     
     init(x: CGFloat, y: CGFloat, z: CGFloat, w: CGFloat) {
-        self = packed_float4(x: Float(x), y: Float(y), z: Float(z), w: Float(w))
+        self.init(x: Float(x), y: Float(y), z: Float(z), w: Float(w))
     }
     
     init(x: Double, y: Double, z: Double, w: Double) {
-        self = packed_float4(x: Float(x), y: Float(y), z: Float(z), w: Float(w))
+        self.init(x: Float(x), y: Float(y), z: Float(z), w: Float(w))
     }
 }
 
@@ -291,7 +315,7 @@ struct VertexBuffer {
         for i in 0..<vertices.count {
             var vert = vertices[i]
             let result = SIMD4<Float>(vert.position.x, vert.position.y, vert.position.z, 1) * matrix
-            vert.position = SIMD3<Float>(x: result.x, y: result.y, z: result.z)
+            vert.position = Vector3(x: result.x, y: result.y, z: result.z)
             
             vertices[i] = vert
         }

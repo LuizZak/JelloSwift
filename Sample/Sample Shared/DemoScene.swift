@@ -822,9 +822,9 @@ extension Vector2.NativeMatrixType {
     func matrix4x4() -> float4x4 {
         var matrix = float4x4(diagonal: [1, 1, 1, 1])
         
-        matrix[0] = SIMD4<Float>(x: self[0, 0], y: self[0, 1], z: 0, w: self[0, 2])
-        matrix[1] = SIMD4<Float>(x: self[1, 0], y: self[1, 1], z: 0, w: self[1, 2])
-        matrix[2] = SIMD4<Float>(x: self[2, 0], y: self[2, 1], z: 1, w: self[2, 2])
+        matrix[0] = SIMD4<Float>(x: Float(self[0, 0]), y: Float(self[0, 1]), z: 0, w: Float(self[0, 2]))
+        matrix[1] = SIMD4<Float>(x: Float(self[1, 0]), y: Float(self[1, 1]), z: 0, w: Float(self[1, 2]))
+        matrix[2] = SIMD4<Float>(x: Float(self[2, 0]), y: Float(self[2, 1]), z: 1, w: Float(self[2, 2]))
         matrix[3] = SIMD4<Float>(x: 0, y: 0, z: 0, w: 1)
         
         return matrix
