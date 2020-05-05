@@ -61,7 +61,6 @@ open class ShapeJointLink: JointLink {
     
     /// Gets the total mass of the subject of this joint link
     open var mass: JFloat {
-        //return _pointMasses.reduce(0) { $0 + $1.mass }
         var sum: JFloat = 0
         
         for i in _indexes {
@@ -75,7 +74,7 @@ open class ShapeJointLink: JointLink {
     /// JointLinkType is static
     open var isStatic: Bool {
         for i in _indexes {
-            if(body.pointMasses[i].mass.isInfinite) {
+            if body.pointMasses[i].mass.isInfinite {
                 return true
             }
         }
@@ -103,8 +102,7 @@ open class ShapeJointLink: JointLink {
         }
     }
     
-    // TODO: Implement the function below to derive the angle of the shape's
-    // angle
+    // TODO: Implement the function below to derive the shape's angle
     
     /// Returns the average angle of the vertices of this ShapeJointLink, based 
     /// on the body's original shape's vertices

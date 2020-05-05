@@ -33,7 +33,7 @@ public func lineIntersect(lineA: (start: Vector2, end: Vector2),
     let denom = ((lineB.end.y - lineB.start.y) * (lineA.end.x - lineA.start.x)) - ((lineB.end.x - lineB.start.x) * (lineA.end.y - lineA.start.y))
     
     // if denom == 0, lines are parallel - being a bit generous on this one..
-    if (abs(denom) < .leastNonzeroMagnitude) {
+    if abs(denom) < .leastNonzeroMagnitude {
         return nil
     }
     
@@ -43,7 +43,7 @@ public func lineIntersect(lineA: (start: Vector2, end: Vector2),
     let Ua = UaTop / denom
     let Ub = UbTop / denom
     
-    if ((Ua >= 0) && (Ua <= 1) && (Ub >= 0) && (Ub <= 1)) {
+    if Ua >= 0 && Ua <= 1 && Ub >= 0 && Ub <= 1 {
         // these lines intersect!
         let hitPt = lineA.start + ((lineA.end - lineA.start) * Ua)
         

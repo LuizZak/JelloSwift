@@ -98,10 +98,10 @@ func flattenColors(_ backColor: Color, withColor foreColor: Color) -> Color {
     backColor.getRed(&backR, green: &backG, blue: &backB, alpha: &backA)
     foreColor.getRed(&foreR, green: &foreG, blue: &foreB, alpha: &foreA)
     
-    if (foreA == 0) {
+    if foreA == 0 {
         return backColor
     }
-    if (foreA == 1) {
+    if foreA == 1 {
         return foreColor
     }
     

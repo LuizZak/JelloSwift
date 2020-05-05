@@ -154,7 +154,7 @@ class Triangulate {
         }
         
         for p in 0..<n {
-            if (p == u) || (p == v) || (p == w) {
+            if p == u || p == v || p == w {
                 continue
             }
             

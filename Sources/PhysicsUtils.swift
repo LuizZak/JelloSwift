@@ -16,7 +16,7 @@ public func calculateSpringForce(posA: Vector2, velA: Vector2,
     
     var dist = posA.distance(to: posB)
     
-    if (dist <= 0.0000005) {
+    if dist <= 0.0000005 {
         return .zero
     }
     
@@ -44,7 +44,7 @@ public func calculateSpringForce(posA: Vector2, velA: Vector2,
     
     var dist = posA.distanceSquared(to: posB)
     
-    if (dist <= 0.0000005) {
+    if dist <= 0.0000005 {
         return .zero
     }
     

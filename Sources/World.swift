@@ -117,7 +117,7 @@ public final class World {
             materialPairs.append([])
             
             for j in 0..<materialCount {
-                if (i < materialCount - 1) && (j < materialCount - 1) {
+                if i < materialCount - 1 && j < materialCount - 1 {
                     materialPairs[i].append(old[i][j])
                 } else {
                     materialPairs[i].append(defaultMatPair)
@@ -130,7 +130,7 @@ public final class World {
     
     /// Enables or disables collision between 2 materials.
     public func setMaterialPairCollide(_ a: Int, b: Int, collide: Bool) {
-        if (a >= 0) && (a < materialCount) && (b >= 0) && (b < materialCount) {
+        if a >= 0 && a < materialCount && b >= 0 && b < materialCount {
             materialPairs[a][b].collide = collide
             materialPairs[b][a].collide = collide
         }
@@ -138,7 +138,7 @@ public final class World {
     
     /// Sets the collision response variables for a pair of materials.
     public func setMaterialPairData(_ a: Int, b: Int, friction: JFloat, elasticity: JFloat) {
-        if (a >= 0) && (a < materialCount) && (b >= 0) && (b < materialCount) {
+        if a >= 0 && a < materialCount && b >= 0 && b < materialCount {
             materialPairs[a][b].friction = friction
             materialPairs[a][b].elasticity = elasticity
             
@@ -149,7 +149,7 @@ public final class World {
     
     /// Sets a user function to call when 2 bodies of the given materials collide.
     public func setMaterialPairFilterCallback(_ a: Int, b: Int, filter: @escaping (BodyCollisionInformation, JFloat) -> (Bool)) {
-        if (a >= 0) && (a < materialCount) && (b >= 0) && (b < materialCount) {
+        if a >= 0 && a < materialCount && b >= 0 && b < materialCount {
             materialPairs[a][b].collisionFilter = filter
             materialPairs[b][a].collisionFilter = filter
         }
@@ -525,10 +525,9 @@ public final class World {
                 let distToB = pt2.distanceSquared(to: pt)
                 let edgeLen = bB.edges[j].lengthSquared
                 
-                if (edgeLen < distToA && edgeLen < distToB &&
-                    (distToA > closestAway) && (distToA > closestSame) &&
-                    (distToB > closestAway) && (distToB > closestSame))
-                {
+                if edgeLen < distToA && edgeLen < distToB &&
+                    distToA > closestAway && distToA > closestSame &&
+                    distToB > closestAway && distToB > closestSame {
                     continue
                 }
                 

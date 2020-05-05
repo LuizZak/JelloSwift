@@ -43,7 +43,7 @@ public struct PointMass: Codable, VectorRepresentable {
     /// seconds
     @inlinable
     public mutating func integrate(_ elapsed: JFloat) {
-        if (mass.isFinite) {
+        if mass.isFinite {
             let elapMass = elapsed / mass
             
             velocity += force * elapMass

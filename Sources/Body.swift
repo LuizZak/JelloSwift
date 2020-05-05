@@ -462,22 +462,22 @@ public final class Body: Equatable {
         }
         
         angle /= JFloat(c)
-    
+        
         derivedAngle = angle
         
         // now calculate the derived Omega, based on change in angle over time.
         var angleChange = (derivedAngle - lastAngle)
-    
+        
         if (angleChange < 0 ? -angleChange : angleChange) >= .pi {
-            if (angleChange < 0) {
+            if angleChange < 0 {
                 angleChange = angleChange + (.pi * 2)
             } else {
                 angleChange = angleChange - (.pi * 2)
             }
         }
-    
+        
         derivedOmega = angleChange / elapsed
-    
+        
         lastAngle = derivedAngle
     }
     
@@ -623,7 +623,7 @@ public final class Body: Equatable {
                     let slope = (edgeEnd.x - edgeSt.x) / (edgeEnd.y - edgeSt.y)
                     let hitX = edgeSt.x + ((pt.y - edgeSt.y) * slope)
                     
-                    if ((hitX <= pt.x) && (hitX >= endPt.x)) {
+                    if (hitX <= pt.x) && (hitX >= endPt.x) {
                         inside = !inside
                     }
                 }
@@ -650,7 +650,7 @@ public final class Body: Equatable {
                     let slope = (edgeEnd.x - edgeSt.x) / (edgeEnd.y - edgeSt.y)
                     let hitX = edgeSt.x + ((pt.y - edgeSt.y) * slope)
                     
-                    if ((hitX >= pt.x) && (hitX <= endPt.x)) {
+                    if (hitX >= pt.x) && (hitX <= endPt.x) {
                         inside = !inside
                     }
                 }
@@ -744,14 +744,14 @@ public final class Body: Equatable {
         // calculate the distance!
         let x = toP • edge.difference
         
-        if (x <= 0.0) {
+        if x <= 0.0 {
             // x is outside the line segment, distance is from pt to ptA.
             dist = pt.distanceSquared(to: ptA)
             
             hitPt = ptA
             
             edgeD = 0
-        } else if (x >= edge.length) {
+        } else if x >= edge.length {
             // x is outside of the line segment, distance is from pt to ptB.
             dist = pt.distanceSquared(to: ptB)
             
