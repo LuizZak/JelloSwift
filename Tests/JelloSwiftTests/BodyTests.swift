@@ -11,10 +11,6 @@ import XCTest
 
 class BodyTests: XCTestCase {
     
-    static var allTests = [
-        ("testPointNormalsNotANumber", testPointNormalsNotANumber)
-    ]
-    
     func testPointNormalsNotANumber() {
         // Tests the Body doesn't evaluate nan for point normals for edges
         // that are exactly overlapping one another

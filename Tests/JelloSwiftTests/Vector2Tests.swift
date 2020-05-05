@@ -11,13 +11,6 @@ import XCTest
 
 class Vector2Tests: XCTestCase {
     
-    static var allTests = [
-        ("testMatrixTranslate", testMatrixTranslate),
-        ("testMatrixScale", testMatrixScale),
-        ("testMatrixRotate", testMatrixRotate),
-        ("testCompoundMatrix", testCompoundMatrix)
-    ]
-    
     // Precision delta
     
     #if arch(x86_64) || arch(arm64)

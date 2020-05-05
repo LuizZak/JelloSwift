@@ -11,15 +11,6 @@ import XCTest
 
 class ClosedShapeTests: XCTestCase {
     
-    static var allTests = [
-        ("testOffsetTransformVertices", testOffsetTransformVertices),
-        ("testRotateTransformVertices", testRotateTransformVertices),
-        ("testSquare", testSquare),
-        ("testRectangle", testRectangle),
-        ("testCircle", testCircle),
-        ("testCircleSixPoints", testCircleSixPoints)
-    ]
-    
     // Precision delta
     
     #if arch(x86_64) || arch(arm64)

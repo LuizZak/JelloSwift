@@ -11,16 +11,6 @@ import XCTest
 
 class AABBTests: XCTestCase {
     
-    static var allTests = [
-        ("testAABBWithPointsSimple", testAABBWithPointsSimple),
-        ("testAABBWithPointsMixed", testAABBWithPointsMixed),
-        ("testAABBIntersection", testAABBIntersection),
-        ("testAABBIntersectionSharingEdges", testAABBIntersectionSharingEdges),
-        ("testAABBComplexIntersection", testAABBComplexIntersection),
-        ("testAABBNoIntersection", testAABBNoIntersection),
-        ("testAABBNoIntersectionComplex", testAABBNoIntersectionComplex)
-    ]
-    
     func testAABBWithPointsSimple() {
         // Tests AABB minimum/maximum coordinates calculation
         

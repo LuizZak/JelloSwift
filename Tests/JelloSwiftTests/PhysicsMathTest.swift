@@ -9,13 +9,7 @@
 import XCTest
 @testable import JelloSwift
 
-class PhysicsMathTest: XCTestCase
-{
-    static var allTests = [
-        ("testVector2Perp", testVector2Perp),
-        ("testVector2Dist", testVector2Dist),
-        ("testVector2Math", testVector2Math)
-    ]
+class PhysicsMathTest: XCTestCase {
     
     // Precision delta
     
@@ -25,16 +19,14 @@ class PhysicsMathTest: XCTestCase
         let delta: JFloat = 0.000001
     #endif
     
-    func testVector2Perp()
-    {
+    func testVector2Perp() {
         let vec1 = Vector2(x: 0, y: 1)
         let vecPerp = vec1.perpendicular()
         
         XCTAssert(abs(vecPerp.x - -vec1.y) <= delta && abs(vecPerp.y - vec1.x) <= delta, "Pass")
     }
     
-    func testVector2Dist()
-    {
+    func testVector2Dist() {
         let vec1 = Vector2(x: 4, y: 8)
         let vec2 = Vector2(x: 14, y: 13)
         
@@ -48,8 +40,7 @@ class PhysicsMathTest: XCTestCase
         XCTAssert(abs(dissq - ((dx * dx) + (dy * dy))) <= delta, "Pass")
     }
     
-    func testVector2Math()
-    {
+    func testVector2Math() {
         let vec1 = Vector2(x: 4, y: 6)
         let vec2 = Vector2(x: 9, y: 7)
         
@@ -57,8 +48,7 @@ class PhysicsMathTest: XCTestCase
         XCTAssert(abs((vec1 =/ vec2) - JFloat(4 * 7 - 6 * 9)) <= delta, "CROSS product test failed!")
     }
     
-    func testVector2Rotate()
-    {
+    func testVector2Rotate() {
 //        var vec = Vector2(x: 0, y: 1)
         
 //        XCTAssertEqual(rotateVector(vec, PI * 2), vec, "Vector rotation test failed!")

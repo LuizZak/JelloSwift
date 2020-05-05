@@ -9,15 +9,8 @@
 import XCTest
 @testable import JelloSwift
 
-class JelloSwiftTests: XCTestCase
-{
-    static var allTests = [
-        ("testAABB", testAABB),
-        ("testBitmask", testBitmask)
-    ]
-    
-    func testAABB()
-    {
+class JelloSwiftTests: XCTestCase {
+    func testAABB() {
         let aabb1 = AABB(min: Vector2.zero, max: Vector2(x: 10, y: 10))
         let aabb2 = AABB(min: Vector2(x: -1, y: -1), max: Vector2(x: 0, y: 0))
         let vec = Vector2(x: 0, y: 0)
@@ -27,8 +20,7 @@ class JelloSwiftTests: XCTestCase
         XCTAssert(aabb2.intersects(aabb1), "Pass")
     }
     
-    func testBitmask()
-    {
+    func testBitmask() {
         var b:Bitmask = 0
         
         b = b.setBitOn(atIndex: 1)

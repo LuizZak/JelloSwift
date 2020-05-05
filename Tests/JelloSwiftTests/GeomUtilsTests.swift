@@ -9,12 +9,7 @@
 import XCTest
 @testable import JelloSwift
 
-class GeomUtilsTests: XCTestCase
-{
-    static var allTests = [
-        ("testLineRatio", testLineRatio),
-        ("testLineRatioCentralized", testLineRatioCentralized)
-    ]
+class GeomUtilsTests: XCTestCase {
     
     // Precision delta
     
@@ -24,9 +19,7 @@ class GeomUtilsTests: XCTestCase
         let delta: JFloat = 0.000001
     #endif
     
-    
-    func testLineRatio()
-    {
+    func testLineRatio() {
         let pt1 = Vector2(x: 0, y: 0)
         let pt2 = Vector2(x: 10, y: 10)
         
@@ -38,8 +31,7 @@ class GeomUtilsTests: XCTestCase
         XCTAssertEqual((pt1 + pt2) / 2, calculateVectorRatio(pt1, vec2: pt2, ratio: 0.5), "Failed to calculate point in line correctly")
     }
     
-    func testLineRatioCentralized()
-    {
+    func testLineRatioCentralized() {
         let pt1 = Vector2(x: -10, y: -10)
         let pt2 = Vector2(x: 10, y: 10)
         

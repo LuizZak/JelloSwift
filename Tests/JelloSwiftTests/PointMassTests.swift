@@ -9,14 +9,8 @@
 import XCTest
 @testable import JelloSwift
 
-class PointMassTests: XCTestCase
-{
-    static var allTests = [
-        ("testVelocityAccumulation", testVelocityAccumulation)
-    ]
-    
-    func testVelocityAccumulation()
-    {
+class PointMassTests: XCTestCase {
+    func testVelocityAccumulation() {
         var p = PointMass(mass: 0.2, position: Vector2(x: 0, y: 0))
         p.force += Vector2(x: 1, y: 2)
         p.force += Vector2(x: 1, y: 2)
