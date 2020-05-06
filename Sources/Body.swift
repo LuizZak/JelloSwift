@@ -953,6 +953,22 @@ public final class Body: Equatable {
         }
     }
     
+    /// Applies a global force to all the point masses in this body.
+    ///
+    /// Ignored, if body is static.
+    ///
+    /// - Parameters:
+    ///   - force: The point to apply the force, in world coordinates.
+    public func applyGlobalForce(_ force: Vector2) {
+        if isStatic {
+            return
+        }
+        
+        for i in 0..<pointMasses.count {
+            applyForce(force, toPointMassAt: i)
+        }
+    }
+    
     /// Adds a velocity vector to all the point masses in this body.
     /// Does nothing, if body is static.
     ///

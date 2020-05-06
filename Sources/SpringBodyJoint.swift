@@ -63,17 +63,24 @@ open class SpringBodyJoint: BodyJoint {
                                          springK: springCoefficient,
                                          springD: springDamping)
         
-        if !bodyLink1.isStatic && !bodyLink2.isStatic {
+        switch (bodyLink1.isStatic, bodyLink2.isStatic) {
+        case (false, false):
             let mass1 = bodyLink1.mass
             let mass2 = bodyLink2.mass
             let massSum = mass1 + mass2
             
             bodyLink1.applyForce(of:  force * (massSum / mass1))
             bodyLink2.applyForce(of: -force * (massSum / mass2))
-        } else if !bodyLink1.isStatic && bodyLink2.isStatic { // Static bodies:
+            
+        case (false, true):
             bodyLink1.applyForce(of: force)
-        } else if !bodyLink2.isStatic && bodyLink1.isStatic {
+            
+        case (true, false):
             bodyLink2.applyForce(of: -force)
+            
+        case (true, true):
+            // No force applied in case both bodies are static
+            break
         }
         
         // Apply plasticity, if present.

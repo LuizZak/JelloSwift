@@ -48,6 +48,6 @@ open class BodyJointLink: JointLink {
     ///
     /// - parameter force: A force to apply to the subjects of this joint link
     open func applyForce(of force: Vector2) {
-        body.applyForce(force, atGlobalPoint: position)
+        body.applyGlobalForce(force)
     }
 }
