@@ -107,7 +107,7 @@ class Triangulate {
                 nv -= 1
                 
                 /* resest error detection counter */
-                count = 2*nv
+                count = 2 * nv
             }
         }
         
@@ -149,7 +149,7 @@ class Triangulate {
         let B = contour[V[v]]
         let C = contour[V[w]]
         
-        if ((B.x - A.x) * (C.y - A.y)) - ((B.y - A.y) * (C.x - A.x)) < JFloat.leastNonzeroMagnitude {
+        if ((B.x - A.x) * (C.y - A.y)) - ((B.y - A.y) * (C.x - A.x)) < .leastNonzeroMagnitude {
             return false
         }
         

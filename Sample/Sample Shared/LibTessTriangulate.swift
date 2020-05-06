@@ -14,7 +14,7 @@ class LibTessTriangulate {
     static let tess = TessC()!
     
     /// Triangulates a set of vertices using LibTessSwift
-    static func process(polygon: [Vector2]) throws -> (vertices: [Vector2], indices: [Int])? {
+    static func process(polygon: [Vector2]) -> (vertices: [Vector2], indices: [Int])? {
         
         // Try a simple triangulation, and fallback to libtess if it fails
         if let simple = Triangulate.processIndices(polygon: polygon) {
@@ -29,8 +29,12 @@ class LibTessTriangulate {
         
         tess.addContour(contour)
         
-        try tess.tessellate(windingRule: .evenOdd, elementType: .polygons,
-                            polySize: polySize)
+        do {
+            try tess.tessellate(windingRule: .evenOdd, elementType: .polygons,
+                                polySize: polySize)
+        } catch {
+            return nil
+        }
         
         var result: [Vector2] = []
         var indices: [Int] = []
@@ -43,7 +47,7 @@ class LibTessTriangulate {
             for j in 0..<polySize {
                 let index = tess.elements![i * polySize + j]
                 if index == -1 {
-                    continue;
+                    continue
                 }
                 indices.append(index)
             }

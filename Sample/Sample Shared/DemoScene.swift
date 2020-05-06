@@ -107,7 +107,7 @@ class DemoScene {
         let sw = Stopwatch.startNew()
         
         world.joints.forEach(drawJoint)
-        try? world.bodies.forEach(drawBody)
+        world.bodies.forEach(drawBody)
         
         // Render rays from ray bodies
         for body in world.bodies {
@@ -726,7 +726,7 @@ extension DemoScene {
         }
     }
     
-    func drawBody(_ body: Body) throws {
+    func drawBody(_ body: Body) {
         var bodyColor: UInt = 0x7DFFFFFF
         if let color = body.objectTag as? UInt {
             bodyColor = color
@@ -737,9 +737,9 @@ extension DemoScene {
         }
         
         // Helper lazy body fill drawing inner function
-        func drawBodyFill() throws {
+        func drawBodyFill() {
             // Triangulate body's polygon
-            guard let (vertices, indices) = try LibTessTriangulate.process(polygon: body.vertices) else {
+            guard let (vertices, indices) = LibTessTriangulate.process(polygon: body.vertices) else {
                 return
             }
             
@@ -766,7 +766,7 @@ extension DemoScene {
         
         if !useDetailedRender {
             // Don't do any other rendering other than the body's buffer
-            try drawBodyFill()
+            drawBodyFill()
             let lineColorVec = (Color4.fromUIntARGB(bodyColor).vector * Color4(r: 0.7, g: 0.6, b: 0.8, a: 1).vector)
             drawPolyOutline(shapePoints, color: Color4(vector: lineColorVec).toUIntARGB(), width: 1)
             return
@@ -791,7 +791,7 @@ extension DemoScene {
         }
         
         // Draw the body now
-        try drawBodyFill()
+        drawBodyFill()
         drawPolyOutline(shapePoints, color: 0xFF000000)
         
         // Draw the body axis
@@ -822,10 +822,10 @@ extension Vector2.NativeMatrixType {
     func matrix4x4() -> float4x4 {
         var matrix = float4x4(diagonal: [1, 1, 1, 1])
         
-        matrix[0] = SIMD4<Float>(x: Float(self[0, 0]), y: Float(self[0, 1]), z: 0, w: Float(self[0, 2]))
-        matrix[1] = SIMD4<Float>(x: Float(self[1, 0]), y: Float(self[1, 1]), z: 0, w: Float(self[1, 2]))
-        matrix[2] = SIMD4<Float>(x: Float(self[2, 0]), y: Float(self[2, 1]), z: 1, w: Float(self[2, 2]))
-        matrix[3] = SIMD4<Float>(x: 0, y: 0, z: 0, w: 1)
+        matrix[0] = .init(x: Float(self[0, 0]), y: Float(self[0, 1]), z: 0, w: Float(self[0, 2]))
+        matrix[1] = .init(x: Float(self[1, 0]), y: Float(self[1, 1]), z: 0, w: Float(self[1, 2]))
+        matrix[2] = .init(x: Float(self[2, 0]), y: Float(self[2, 1]), z: 1, w: Float(self[2, 2]))
+        matrix[3] = .init(x: 0, y: 0, z: 0, w: 1)
         
         return matrix
     }

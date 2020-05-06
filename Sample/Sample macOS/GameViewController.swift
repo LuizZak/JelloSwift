@@ -15,6 +15,18 @@ class GameViewController: NSViewController {
 
     var renderer: Renderer!
     var mtkView: GameView!
+    lazy var detailModeButton: NSButton = {
+        let button = NSButton(image: NSImage(named: "img_detailed")!,
+                              target: self,
+                              action: #selector(didPressDetailModeButton))
+        
+        button.image = NSImage(named: "img_simple")
+        button.alternateImage = NSImage(named: "img_detailed")
+        button.bezelStyle = .texturedSquare
+        button.setButtonType(.toggle)
+        
+        return button
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,6 +59,32 @@ class GameViewController: NSViewController {
         }
         mtkView.onMouseUp = { point in
             newRenderer.demoScene.touchEnded(at: Vector2(x: point.x, y: point.y))
+        }
+        
+        addDetailModeButton()
+    }
+    
+    func addDetailModeButton() {
+        view.addSubview(detailModeButton)
+        
+        detailModeButton.trailingAnchor.constraint(equalTo: view.trailingAnchor,
+                                                   constant: -12).isActive = true
+        
+        detailModeButton.topAnchor.constraint(equalTo: view.topAnchor,
+                                              constant: 12).isActive = true
+
+        detailModeButton.widthAnchor.constraint(equalToConstant: 51).isActive = true
+        detailModeButton.heightAnchor.constraint(equalToConstant: 51).isActive = true
+        
+        detailModeButton.translatesAutoresizingMaskIntoConstraints = false
+    }
+    
+    @objc
+    func didPressDetailModeButton() {
+        if renderer.demoScene.useDetailedRender {
+            renderer.demoScene.useDetailedRender = false
+        } else {
+            renderer.demoScene.useDetailedRender = true
         }
     }
 }
