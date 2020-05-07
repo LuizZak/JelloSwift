@@ -30,34 +30,6 @@ public func calculateSpringForce(posA: Vector2, velA: Vector2,
     return BtoA * ((dist * springK) - (totalRelVel * springD))
 }
 
-/// Calculates a spring force, given position, velocity, spring constant, and
-/// damping factor.
-///
-/// The target distance is given as a square of the actual target distance to
-/// allow skipping square rooting the distance from `postA` to `posB`
-@inlinable
-public func calculateSpringForce(posA: Vector2, velA: Vector2,
-                                 posB: Vector2, velB: Vector2,
-                                 distanceSquared: JFloat,
-                                 springK: JFloat,
-                                 springD: JFloat) -> Vector2 {
-    
-    var dist = posA.distanceSquared(to: posB)
-    
-    if dist <= 0.0000005 {
-        return .zero
-    }
-    
-    let BtoA = (posA - posB) / dist
-    
-    dist = distanceSquared - dist
-    
-    let relVel = velA - velB
-    let totalRelVel = relVel • BtoA
-    
-    return BtoA * ((dist * springK) - (totalRelVel * springD))
-}
-
 /// Calculates a new resting distance based on provided plasticity parameters.
 /// The resulting resting distance is returned by the function.
 ///
