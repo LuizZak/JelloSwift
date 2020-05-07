@@ -41,9 +41,9 @@ class StickyRayComponent: BodyRayComponent {
             let strength = rayStickyFunction(normalizedDistance)
             
             let edgeVelocity
-                = body.pointMasses[edgeHit.edgePoint1]
+                = hitBody.pointMasses[edgeHit.edgePoint1]
                     .velocity
-                    .ratio(edgeHit.edgeRatio, to: body.pointMasses[edgeHit.edgePoint2].velocity)
+                    .ratio(edgeHit.edgeRatio, to: hitBody.pointMasses[edgeHit.edgePoint2].velocity)
             
             let force =
                 calculateSpringForce(posA: vertex,
