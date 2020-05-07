@@ -63,11 +63,13 @@ public final class SpringComponent: BodyComponent {
         
         let dist = RestDistance.fixed(pA.position.distance(to: pB.position))
         
-        let spring = InternalSpring(pointA, pointB, dist, springK, damping, plasticity)
-        
-        springs.append(spring)
-        
-        return spring
+        return addInternalSpring(body,
+                                 pointA: pointA,
+                                 pointB: pointB,
+                                 springK: springK,
+                                 damping: damping,
+                                 dist: dist,
+                                 plasticity: plasticity)
     }
     
     /// Adds an internal spring to this body
@@ -79,7 +81,6 @@ public final class SpringComponent: BodyComponent {
                                   damping: JFloat,
                                   dist: RestDistance,
                                   plasticity: SpringPlasticity? = nil) -> InternalSpring {
-        let dist = dist
         
         let spring = InternalSpring(pointA, pointB, dist, springK, damping, plasticity)
         
@@ -184,6 +185,7 @@ public final class SpringComponent: BodyComponent {
     /// `+ body.pointMasses.count`
     public func setSpringPlasticity(forSpringIndex springID: Int,
                                     plasticity: SpringPlasticity?) {
+        
         springs[edgeSpringsCount + springID].plasticity = plasticity
     }
     
