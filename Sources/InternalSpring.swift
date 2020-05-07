@@ -123,7 +123,6 @@ public struct InternalSpring: Codable {
     }
 }
 
-
 /// Specifies plasticity properties of a spring.
 ///
 /// Plasticity permanently affects a spring's rest length by modifying it

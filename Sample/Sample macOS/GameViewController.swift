@@ -131,8 +131,13 @@ class GameView: MTKView {
     
     func createTrackingArea() {
         // Add tracking
-        let options: NSTrackingArea.Options = [.activeAlways, .inVisibleRect, .mouseMoved, .enabledDuringMouseDrag]
-        let area = NSTrackingArea(rect: bounds, options:options, owner: self, userInfo: nil)
+        let options: NSTrackingArea.Options = [
+            .activeAlways,
+            .inVisibleRect,
+            .mouseMoved,
+            .enabledDuringMouseDrag
+        ]
+        let area = NSTrackingArea(rect: bounds, options: options, owner: self, userInfo: nil)
         
         self.addTrackingArea(area)
     }
@@ -148,7 +153,6 @@ class GameView: MTKView {
         renderTimeLabel.isBezeled = false
         renderTimeLabel.isBordered = false
         renderTimeLabel.isEditable = false
-        
         
         addSubview(physicsTimeLabel)
         addSubview(renderTimeLabel)

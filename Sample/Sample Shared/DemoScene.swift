@@ -271,7 +271,7 @@ extension DemoScene {
         
         // Create a pinned box in the middle of the level
         let pinnedBox = createBox(Vector2(x: size.width / 2, y: size.height / 2).inWorldCoords, size: .unit * 2, pinned: true)
-        // Increase the velocity damping of the pinned box so it doesn't jiggles around nonstop
+        // Increase the velocity damping of the pinned box so it won't jiggle around nonstop
         pinnedBox.velDamping = 0.99
         
         // Create two kinematic boxes
