@@ -138,8 +138,8 @@ public final class Body: Equatable {
     ///   - scale: Scale of body`s rest shape. Is applied on `shape` value to
     /// calculate final rest shape of the body. Defaults to 1.
     ///   - kinematic: Whether this body is kinematic; that is, whether it can
-    /// have its base shape move around. If false, only point masses move around
-    /// the body's center, but this center remains static in place.
+    /// have its base shape move around. If false, the center of the body remains
+    /// static while the point masses move around this center.
     ///   - components: Array of body component creators to add to this body.
     public init(world: World? = nil,
                 shape: ClosedShape,
@@ -314,7 +314,7 @@ public final class Body: Equatable {
         _bitmasksStale = true
     }
     
-    /// Sets the shape of this body to a new ClosedShape object.  This function
+    /// Sets the shape of this body to a new ClosedShape object. This function
     /// will remove any existing PointMass objects, and replace them with new
     /// ones IF the new shape has a different vertex count than the previous
     /// one. In this case the mass for each newly added point mass will be set
