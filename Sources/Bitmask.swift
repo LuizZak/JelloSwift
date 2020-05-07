@@ -24,6 +24,7 @@ extension Bitmask {
     }
     
     /// Sets a range of bits on on this bitmask.
+    /// 
     /// Overwrites any previously set values.
     ///
     /// - Parameters:

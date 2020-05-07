@@ -10,6 +10,7 @@ import Foundation
 
 /// Contains a set of points that is equivalent as the internal shape of a soft
 /// body.
+///
 /// Do note that points must be added in a counter-clockwise fashion, since the
 /// points are represented in an Euclidean space where the y-axis grows upwards,
 /// as oposed to screen space where the y-axis grows down.
@@ -88,6 +89,7 @@ extension ClosedShape {
     
     /// Transforms all vertices of this closed shape by the given angle and
     /// scale locally.
+    ///
     /// Transformation is applied in the following order: scale -> rotation.
     public mutating func transformOwnBy(rotatingBy angleInRadians: JFloat = 0,
                                         scalingBy scale: Vector2 = .unit) {
@@ -109,6 +111,7 @@ extension ClosedShape {
     
     /// Gets a new closed shape from this shape transformed by the given
     /// position, angle, and scale.
+    ///
     /// Transformation is applied in the following order: scale -> rotation ->
     /// position.
     public func transformedBy(translatingBy worldPos: Vector2 = .zero,
@@ -124,13 +127,16 @@ extension ClosedShape {
     
     /// Transforms the points on this closed shape, applying the result into a
     /// given array of points.
+    /// 
     /// Transformation is applied in the following order: scale -> rotation ->
     /// position.
+    ///
     /// - note: The target array of points must have the **same** count of
     ///     vertices as this closed shape.
     public func transformVertices(_ target: inout [Vector2], worldPos: Vector2,
                                   angleInRadians: JFloat,
                                   localScale: Vector2 = Vector2.unit) {
+        
         assert(target.count == localVertices.count)
         
         let m = Vector2.matrix(scalingBy: localScale, rotatingBy: angleInRadians, translatingBy: worldPos)
@@ -142,10 +148,12 @@ extension ClosedShape {
     
     /// Transforms the points on this closed shape using a given transformation
     /// matrix, applying the result into a given array of points.
+    /// 
     /// - note: The target array of points must have the **same** count of
     ///     vertices as this closed shape.
     public func transformVertices(_ target: inout [Vector2],
                                   matrix: Vector2.NativeMatrixType) {
+        
         assert(target.count == localVertices.count)
         
         for i in 0..<target.count {
@@ -174,7 +182,6 @@ extension ClosedShape {
     /// Creates a closed shape that represents a circle of a given radius, with
     /// the specified number of points around its circumference
     public static func circle(ofRadius radius: JFloat, pointCount: Int) -> ClosedShape {
-        
         return .create { shape in
             for i in 0..<pointCount
             {
@@ -193,7 +200,6 @@ extension ClosedShape {
     /// Creates a closed shape that represents a rectangle, with sides of the
     /// specified length
     public static func rectangle(ofSides sides: Vector2) -> ClosedShape {
-        
         // Counter-clockwise!
         return .create { shape in
             shape.addVertex(Vector2(x: -sides.x, y:  sides.y) / 2)
@@ -210,6 +216,7 @@ extension ClosedShape {
     /// (see `ClosedShape.centered()`).
     public static func create(centered: Bool = true,
                               closure: (inout ClosedShape) -> ()) -> ClosedShape {
+        
         var shape = ClosedShape()
         
         shape.begin()

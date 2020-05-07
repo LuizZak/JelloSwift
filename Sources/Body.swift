@@ -48,6 +48,7 @@ public final class Body: Equatable {
     
     /// The velocity damping to apply to the body. Values closer to 0
     /// deaccelerate faster, values closer to 1 deaccelerate slower.
+    ///
     /// 1 never deaccelerates. Values outside the range [0, 1] inclusive may
     /// introduce instability
     public var velDamping: JFloat = 0.999
@@ -59,7 +60,6 @@ public final class Body: Equatable {
     public var componentCount: Int {
         return components.count
     }
-    
     
     // Both these properties are in radians:
     
@@ -79,6 +79,7 @@ public final class Body: Equatable {
     }
     
     /// The axis-aligned bounding box for this body's point masses.
+    ///
     /// Will be slighly expanded to include the velocity of the points, in case
     /// this body is kinematic, so it won't always match exactly the position of
     /// the point masses.
@@ -140,10 +141,15 @@ public final class Body: Equatable {
     /// have its base shape move around. If false, only point masses move around
     /// the body's center, but this center remains static in place.
     ///   - components: Array of body component creators to add to this body.
-    public init(world: World? = nil, shape: ClosedShape, pointMasses: [JFloat] = [1],
-                position: Vector2 = Vector2.zero, angle: JFloat = 0,
-                scale: Vector2 = Vector2.unit, kinematic: Bool = false,
+    public init(world: World? = nil,
+                shape: ClosedShape,
+                pointMasses: [JFloat] = [1],
+                position: Vector2 = Vector2.zero,
+                angle: JFloat = 0,
+                scale: Vector2 = Vector2.unit,
+                kinematic: Bool = false,
                 components: [BodyComponentCreator] = []) {
+        
         aabb = AABB()
         derivedPos = position
         derivedAngle = angle

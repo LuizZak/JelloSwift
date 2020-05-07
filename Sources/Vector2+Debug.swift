@@ -480,7 +480,6 @@ extension Vector2 {
     /// Rotates a given vector by an angle in radians
     @inlinable
     public static func rotate(_ vec: Vector2, by angleInRadians: JFloat) -> Vector2 {
-        
         // Check if we have a 0º or 180º rotation - these we can figure out
         // using conditionals to speedup common paths.
         let remainder =
@@ -496,7 +495,8 @@ extension Vector2 {
         let c = cos(angleInRadians)
         let s = sin(angleInRadians)
         
-        return Vector2(x: (c * vec.x) - (s * vec.y), y: (c * vec.y) + (s * vec.x))
+        return Vector2(x: (c * vec.x) - (s * vec.y),
+                       y: (c * vec.y) + (s * vec.x))
     }
 }
 

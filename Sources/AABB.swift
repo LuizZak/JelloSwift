@@ -74,6 +74,7 @@ public struct AABB: Codable {
     
     /// Initializes a valid AABB instance out of the given minimum and maximum
     /// coordinates.
+    ///
     /// The coordinates are not checked for ordering, and will be directly
     /// assigned to `minimum` and `maximum` properties.
     public init(min: Vector2, max: Vector2) {
@@ -94,10 +95,11 @@ public struct AABB: Codable {
         validity = .invalid
     }
     
-    /// Expands the bounding box of this AABB to include the given point. If the
-    /// AABB is invalid, it sets the `minimum` and `maximum` coordinates to the
-    /// point, if not, it fits the point, expanding the bounding box to fit the
-    /// point, if necessary.
+    /// Expands the bounding box of this AABB to include the given point.
+    ///
+    /// If the AABB is invalid, it sets the `minimum` and `maximum` coordinates
+    /// to the point, if not, it fits the point, expanding the bounding box to
+    /// fit the point, if necessary.
     public mutating func expand(toInclude point: Vector2) {
         if validity == .invalid {
             minimum = point
@@ -112,7 +114,9 @@ public struct AABB: Codable {
     
     /// Expands the bounding box of this AABB to include the given point set of
     /// points.
+    ///
     /// Same as calling `expand(toInclude:Vector2)` over each point.
+    ///
     /// If the array is empty, nothing is done.
     public mutating func expand(toInclude points: [Vector2]) {
         if points.count == 0 {
@@ -133,8 +137,10 @@ public struct AABB: Codable {
     }
     
     /// Returns whether a given point is contained within this bounding box.
+    ///
     /// The check is inclusive, so the edges of the bounding box are considered
     /// to contain the point as well.
+    ///
     /// Returns false, if this AABB is invalid.
     @inlinable
     public func contains(_ point: Vector2) -> Bool {
@@ -146,8 +152,10 @@ public struct AABB: Codable {
     }
     
     /// Returns whether this AABB intersects the given AABB instance.
+    ///
     /// This check is inclusive, so the edges of the bounding box are considered
     /// to intersect the other bounding box's edges as well.
+    ///
     /// If either this, or the other bounding box are invalid, false is 
     /// returned.
     @inlinable
@@ -161,8 +169,9 @@ public struct AABB: Codable {
 }
 
 /// Specifies the point validity for a whole AABB.
-/// AABBs of PointValidity.invalid type should not be considered
-/// valid during checks of containment.
+///
+/// AABBs of PointValidity.invalid type should not be considered valid during
+/// checks of containment, and always behave like a null space.
 public enum PointValidity: Int, Codable {
     case valid
     case invalid
