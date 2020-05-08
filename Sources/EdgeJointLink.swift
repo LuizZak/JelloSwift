@@ -61,7 +61,7 @@ open class EdgeJointLink: JointLink {
         let pm1 = body.pointMasses[_pointMass1]
         let pm2 = body.pointMasses[_pointMass2]
         
-        return pm1.mass.isInfinite && pm2.mass.isInfinite
+        return body.isStatic || (pm1.mass.isInfinite && pm2.mass.isInfinite)
     }
     
     /// Inits a new edge joint link with the specified parameters
