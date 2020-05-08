@@ -17,7 +17,7 @@ open class EdgeJointLink: JointLink {
     /// Values must range between [0 - 1] inclusive, and dictate the middle
     /// point of the edge.
     /// Specifying either 0 or 1 makes this edge joint link behave essentially
-    /// like a PointJointLink
+    /// like a `PointJointLink`
     open var edgeRatio: JFloat
     
     /// Gets the body that this joint link is linked to
@@ -61,7 +61,7 @@ open class EdgeJointLink: JointLink {
         let pm1 = body.pointMasses[_pointMass1]
         let pm2 = body.pointMasses[_pointMass2]
         
-        return pm1.mass.isInfinite && pm2.mass.isInfinite
+        return body.isStatic || (pm1.mass.isInfinite && pm2.mass.isInfinite)
     }
     
     /// Inits a new edge joint link with the specified parameters
@@ -79,15 +79,5 @@ open class EdgeJointLink: JointLink {
     open func applyForce(of force: Vector2) {
         body.applyForce(force * (1 - edgeRatio), toPointMassAt: _pointMass1)
         body.applyForce(force * (edgeRatio), toPointMassAt: _pointMass2)
-        
-        // Torque - this depends on how far down the middle of the edge the
-        // force is being applied at.
-        // Torque is applied maximally as half the actual torque when along the
-        // middle of the edge, and 0 torque at the very corners.
-        if edgeRatio > 0 && edgeRatio < 1 {
-            var torqueF = (body.derivedPos - position) • force.perpendicular()
-            torqueF = 1 - abs(1 - edgeRatio * 2)
-            body.applyTorque(of: torqueF)
-        }
     }
 }
