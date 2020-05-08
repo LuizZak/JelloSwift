@@ -235,7 +235,7 @@ public final class SpringComponent: BodyComponent {
         
         for (global, i) in zip(body.globalShape, 0..<body.pointMasses.count) {
             let p = body.pointMasses[i]
-            let velB = body.isKinematic ? .zero : p.velocity
+            let velB = body.dynamicsMode.isFullyKinematic ? .zero : p.velocity
             
             let force = calculateSpringForce(posA: p.position, velA: p.velocity,
                                              posB: global, velB: velB,

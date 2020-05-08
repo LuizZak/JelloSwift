@@ -89,22 +89,9 @@ public final class Body: Equatable {
     /// body.
     public var material = 0
     
-    /// Whether this body is static.
-    public var isStatic = false
-    
-    /// Whether this body is kinematic - kinematic bodies do not rotate or move
-    /// their base shape, so they always appear to not move, like a static body,
-    /// but can be squished and moved, like a dynamic body. This effectively
-    /// sticks their globalShape to always be around the current derived
-    /// position (see `setPositionAngle`).
-    public var isKinematic = false
-    
-    /// Whether this body is pinned - pinned bodies rotate around their axis,
-    /// but try to remain in place, like a kinematic body.
-    public var isPined = false
-    
-    /// Whether the body is able to rotate while moving.
-    public var freeRotate = true
+    /// The behavior of this body's dynamics, controlling how its point masses
+    /// and geometry move around the world.
+    public var dynamicsMode: DynamicsMode
     
     /// A free field that can be used to attach custom objects to a soft body
     /// instance.
@@ -126,20 +113,18 @@ public final class Body: Equatable {
     ///
     /// - Parameters:
     ///   - world: World to add this body to. Can be omitted to not add it to any
-    /// world yet.
+    ///     world yet.
     ///   - shape: Closed shape that represents this body's rest shape.
-    ///   - pointMasses: An array of masses for each point mass created from the
-    /// provided `shape` parameter. If an array of `.count == 1` is provided, that
-    /// one mass value is used for all point masses; otherwise length must be
-    /// the same as `shape.localVertices.count`, otherwise remaining point masses
-    /// will have a default mass of 1.
+    ///   - zpointMasses: An array of masses for each point mass created from the
+    ///     provided `shape` parameter. If an array of `.count == 1` is provided,
+    ///     that one mass value is used for all point masses; otherwise length
+    ///     must be the same as `shape.localVertices.count`, otherwise remaining
+    ///     point masses will have a default mass of 1.
     ///   - position: Center position for body's shape.
     ///   - angle: Angle - in radians - to initially rotate body with.
     ///   - scale: Scale of body`s rest shape. Is applied on `shape` value to
-    /// calculate final rest shape of the body. Defaults to 1.
-    ///   - kinematic: Whether this body is kinematic; that is, whether it can
-    /// have its base shape move around. If false, the center of the body remains
-    /// static while the point masses move around this center.
+    ///     calculate final rest shape of the body. Defaults to 1.
+    ///   - dynamicsMode: The dynamics mode of the body. Defaults to `.dynamic()`.
     ///   - components: Array of body component creators to add to this body.
     public init(world: World? = nil,
                 shape: ClosedShape,
@@ -147,7 +132,7 @@ public final class Body: Equatable {
                 position: Vector2 = Vector2.zero,
                 angle: JFloat = 0,
                 scale: Vector2 = Vector2.unit,
-                kinematic: Bool = false,
+                dynamicsMode: DynamicsMode = .dynamic(),
                 components: [BodyComponentCreator] = []) {
         
         aabb = AABB()
@@ -158,8 +143,7 @@ public final class Body: Equatable {
         lastAngle = derivedAngle
         self.scale = scale
         material = 0
-        isStatic = false
-        isKinematic = kinematic
+        self.dynamicsMode = dynamicsMode
         setShape(shape)
         
         var points = pointMasses
@@ -297,7 +281,7 @@ public final class Body: Equatable {
     /// - parameter forceUpdate:
     ///     Whether to force the update of the body, even if it's a static body.
     public func updateAABB(_ elapsed: JFloat, forceUpdate: Bool) {
-        guard !isStatic || forceUpdate else {
+        guard !dynamicsMode.isStatic || forceUpdate else {
             return
         }
         
@@ -306,7 +290,7 @@ public final class Body: Equatable {
         for point in pointMasses {
             aabb.expand(toInclude: point.position)
             
-            if !isStatic {
+            if !dynamicsMode.isStatic {
                 aabb.expand(toInclude: point.position + point.velocity * elapsed)
             }
         }
@@ -347,34 +331,58 @@ public final class Body: Equatable {
         _bitmasksStale = true
     }
     
-    /// Sets the mass for all the PointMass objects in this body.
+    /// Sets the mass for all point masses in this body.
+    ///
+    /// If `mass` is infinite, the body's dynamics mode is automatically set to
+    /// `.static`, and if the body is already static but `mass` is finite, the
+    /// body's dynamics mode is set to `.dynamic()` instead.
     public func setMassAll(_ mass: JFloat) {
         for i in 0..<pointMasses.count {
             pointMasses[i].mass = mass
         }
         
-        isStatic = mass.isInfinite
+        if mass.isInfinite {
+            dynamicsMode = .static
+        } else if dynamicsMode == .static {
+            dynamicsMode = .dynamic()
+        }
     }
     
     /// Sets the mass for a single PointMass individually.
+    ///
+    /// If `mass` is infinite, the body's dynamics mode is automatically set to
+    /// `.static`, and if the body is already static but `mass` is finite, the
+    /// body's dynamics mode is set to `.dynamic()` instead.
     public func setMassForPointMass(atIndex index: Int, mass: JFloat) {
         pointMasses[index].mass = mass
         
         // Re-evaluate whether body is static
-        isStatic = pointMasses.any { $0.mass.isInfinite }
+        if pointMasses.any(where: { $0.mass.isInfinite }) {
+            dynamicsMode = .static
+        } else if dynamicsMode == .static {
+            dynamicsMode = .dynamic()
+        }
     }
     
     /// Sets the mass for all the point masses from a list of masses.
     /// In case the array count is bigger than the point mass count, it only
     /// sets up to the count of masses in the array, if larger, it sets the
     /// matching masses for all point masses, and ignores the rest of the array.
+    ///
+    /// If any of the masses is infinite, the body's dynamics mode is automatically
+    /// set to `.static`, and if the body is already static but all masses are
+    /// finite, the body's dynamics mode is set to `.dynamic()` instead.
     public func setMass(fromList masses: [JFloat]) {
         for (mass, i) in zip(masses, 0..<pointMasses.count) {
             pointMasses[i].mass = mass
         }
         
         // Re-evaluate whether body is static
-        isStatic = pointMasses.any { $0.mass.isInfinite }
+        if pointMasses.any(where: { $0.mass.isInfinite }) {
+            dynamicsMode = .static
+        } else if dynamicsMode == .static {
+            dynamicsMode = .dynamic()
+        }
     }
     
     /// Sets the position and angle of the body manually.
@@ -396,7 +404,7 @@ public final class Body: Equatable {
         derivedAngle = angle
         
         // Forcefully update the AABB when changing shapes
-        if isStatic {
+        if dynamicsMode.isStatic {
             updateAABB(0, forceUpdate: true)
         }
         
@@ -413,24 +421,24 @@ public final class Body: Equatable {
     /// call this. Instead you can juse access the `derivedPosition`, `DerivedAngle`,
     /// `derivedVelocity`, and `derivedOmega` properties.
     public func derivePositionAndAngle(_ elapsed: JFloat) {
-        // No need if this is a static body, or kinematically controlled.
-        if isStatic || isKinematic {
+        // No need if this is a static body, or fully kinematically controlled.
+        if dynamicsMode.isStatic || dynamicsMode.isFullyKinematic {
             return
         }
         
         let currentDerivedPosition = PointMass.averagePosition(of: pointMasses)
         
-        if !isPined {
+        if !dynamicsMode.isPinned {
             // Find the geometric center and average velocity
             derivedPos = currentDerivedPosition
             derivedVel = PointMass.averageVelocity(of: pointMasses)
         }
             
-        if !freeRotate {
+        if dynamicsMode == .dynamic(fixedRotation: true) {
             return
         }
         
-        let meanPos = isPined ? currentDerivedPosition : derivedPos
+        let meanPos = dynamicsMode.isPinned ? currentDerivedPosition : derivedPos
         
         // find the average angle of all of the masses.
         var angle: JFloat = 0
@@ -511,7 +519,7 @@ public final class Body: Equatable {
     /// Integrates the point masses for this Body.
     /// Ignored, if body is static.
     public func integrate(_ elapsed: JFloat) {
-        if isStatic {
+        if dynamicsMode.isStatic {
             return
         }
         
@@ -525,7 +533,7 @@ public final class Body: Equatable {
     /// Applies the velocity damping to the point masses.
     /// Ignored, if body is static.
     public func dampenVelocity(_ elapsed: JFloat) {
-        if isStatic {
+        if dynamicsMode.isStatic {
             return
         }
         
@@ -539,7 +547,7 @@ public final class Body: Equatable {
     /// Applies a rotational clockwise torque of a given force on this body.
     /// Ignored, if body is static.
     public func applyTorque(of force: JFloat) {
-        if isStatic {
+        if dynamicsMode.isStatic {
             return
         }
         
@@ -558,7 +566,7 @@ public final class Body: Equatable {
     /// The method keeps the average velocity of the point masses the same during
     /// the proceedure.
     public func setAngularVelocity(_ vel: JFloat) {
-        if isStatic {
+        if dynamicsMode.isStatic {
             return
         }
         
@@ -572,7 +580,7 @@ public final class Body: Equatable {
     
     /// Accumulates the angular velocity for this body
     public func addAngularVelocity(_ vel: JFloat) {
-        if isStatic {
+        if dynamicsMode.isStatic {
             return
         }
         
@@ -945,7 +953,7 @@ public final class Body: Equatable {
     /// Specify .derivedPos to apply a force at the exact center of the body
     ///   - pt: The force to apply to the point masses in this body
     public func applyForce(_ force: Vector2, atGlobalPoint pt: Vector2) {
-        if isStatic {
+        if dynamicsMode.isStatic {
             return
         }
         
@@ -966,7 +974,7 @@ public final class Body: Equatable {
     /// - Parameters:
     ///   - force: The point to apply the force, in world coordinates.
     public func applyGlobalForce(_ force: Vector2) {
-        if isStatic {
+        if dynamicsMode.isStatic {
             return
         }
         
@@ -981,7 +989,7 @@ public final class Body: Equatable {
     /// - Parameter velocity: The velocity to add to all the point masses in this
     /// body
     public func addVelocity(_ velocity: Vector2) {
-        if isStatic {
+        if dynamicsMode.isStatic {
             return
         }
         
@@ -998,7 +1006,7 @@ public final class Body: Equatable {
     /// - Parameter velocity: The velocity to set. Set as `.zero` to reset average
     /// velocity of the body to 0.
     public func setAverageVelocity(_ velocity: Vector2) {
-        if isStatic {
+        if dynamicsMode.isStatic {
             return
         }
         
@@ -1045,5 +1053,63 @@ extension Body {
         pointMasses[index].position = position
         
         _bitmasksStale = true
+    }
+    
+    public enum DynamicsMode: Equatable {
+        /// Static dynamics mode where the body is static and point masses don't
+        /// move in response to forces.
+        case `static`
+        
+        /// Kinematic dynamics mode where the body does not move its base shape,
+        /// so they always appear to not move, like a static body, but can be
+        /// squished and moved, like a dynamic body. This effectively
+        /// sticks their globalShape to always be around the current derived
+        /// position (see `setPositionAngle`).
+        ///
+        /// `fixedRotation` controls whether rotation is also locked in place.
+        case kinematic(fixedRotation: Bool = true)
+        
+        /// A fully dynamic body that moves its center and rotation
+        ///
+        /// `fixedRotation` controls whether rotation is locked while the center
+        /// of the body moves freely.
+        case dynamic(fixedRotation: Bool = false)
+        
+        /// Shortcut for `.kinematic(fixedRotation: false)`, which describes a
+        /// body that has its center fixed in the world, but can freely rotate.
+        public static var pinned: DynamicsMode {
+            return .kinematic(fixedRotation: false)
+        }
+        
+        /// Returns whether this dynamics instance is `.static`.
+        public var isStatic: Bool {
+            return self == .static
+        }
+        
+        /// Whether this dynamics instance is a kinematics dynamic with free
+        /// rotation of the body.
+        public var isPinned: Bool {
+            return self == .pinned
+        }
+        
+        /// Whether this dynamics instance represents a kinematic dynamic, where
+        /// the derived position of the body is fixed and does not change in
+        /// response to the position of its point masses.
+        public var isKinematic: Bool {
+            switch self {
+            case .kinematic:
+                return true
+            default:
+                return false
+            }
+        }
+        
+        /// Whether this dynamics instance represents a fully kinematic dynamic
+        /// mode where both position and rotation of the body's global shape are
+        /// controlled manually and are not derived from the location of the
+        /// body's point masses.
+        public var isFullyKinematic: Bool {
+            return self == .kinematic(fixedRotation: true)
+        }
     }
 }

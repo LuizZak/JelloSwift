@@ -36,7 +36,7 @@ open class BodyJointLink: JointLink {
     /// Gets a value specifying whether the object referenced by this 
     /// JointLinkType is static
     open var isStatic: Bool {
-        return body.isStatic || body.isPined
+        return body.dynamicsMode.isStatic || body.dynamicsMode.isPinned
     }
     
     /// Inits a new body joint link with the specified parameters

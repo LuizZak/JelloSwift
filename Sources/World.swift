@@ -437,7 +437,7 @@ public final class World {
                 }
                 
                 // another early-out - both bodies are static.
-                if (body1.isStatic && body2.isStatic) ||
+                if (body1.dynamicsMode.isStatic && body2.dynamicsMode.isStatic) ||
                     !bitmasksIntersect((body1.bitmaskX, body1.bitmaskY),
                                        (body2.bitmaskX, body2.bitmaskY)) {
                     continue
