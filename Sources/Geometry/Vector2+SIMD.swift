@@ -8,12 +8,6 @@
 
 import simd
 
-/// Specifies an object that can be expressed as a pair of x-y coordinates
-public protocol VectorRepresentable {
-    /// Gets a vector representation of this object
-    var vector: Vector2 { get }
-}
-
 #if arch(x86_64) || arch(arm64)
 /// Represents the standard floating point type used by JelloSwift.
 /// It is a double precision floating point in 64-bits platforms, and

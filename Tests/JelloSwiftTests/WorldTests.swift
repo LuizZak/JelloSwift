@@ -16,10 +16,10 @@ class WorldTests: XCTestCase {
     // MARK: Bitmask tests
     
     func testBitmaskSetRange() {
-        AssertBitmasksMatch(Bitmask(withOneBitsFromOffset: 0, count: Int(bitmaskBitSize)), ~0)
-        AssertBitmasksMatch(Bitmask(withOneBitsFromOffset: 1, count: 1), 0b01)
-        AssertBitmasksMatch(Bitmask(withOneBitsFromOffset: 1, count: 2), 0b11)
-        AssertBitmasksMatch(Bitmask(withOneBitsFromOffset: 10, count: 2), 0b00000110_00000000)
+        assertBitmasksMatch(Bitmask(withOneBitsFromOffset: 0, count: Int(bitmaskBitSize)), ~0)
+        assertBitmasksMatch(Bitmask(withOneBitsFromOffset: 1, count: 1), 0b01)
+        assertBitmasksMatch(Bitmask(withOneBitsFromOffset: 1, count: 2), 0b11)
+        assertBitmasksMatch(Bitmask(withOneBitsFromOffset: 10, count: 2), 0b00000110_00000000)
     }
     
     // MARK: Collision bitmask generation testing
@@ -31,8 +31,8 @@ class WorldTests: XCTestCase {
         let aabb = AABB(min: world.worldLimits.minimum, max: world.worldLimits.minimum)
         let bitmasks = world.bitmask(for: aabb)
         
-        AssertBitmasksMatch(bitmasks.bitmaskX, 1)
-        AssertBitmasksMatch(bitmasks.bitmaskY, 1)
+        assertBitmasksMatch(bitmasks.bitmaskX, 1)
+        assertBitmasksMatch(bitmasks.bitmaskY, 1)
     }
     
     func testGenerateBitmaskMaximum() {
@@ -42,8 +42,8 @@ class WorldTests: XCTestCase {
         let aabb = AABB(min: world.worldLimits.maximum, max: world.worldLimits.maximum)
         let bitmasks = world.bitmask(for: aabb)
         
-        AssertBitmasksMatch(bitmasks.bitmaskX, Bitmask(1 << (bitmaskBitSize - 1)))
-        AssertBitmasksMatch(bitmasks.bitmaskY, Bitmask(1 << (bitmaskBitSize - 1)))
+        assertBitmasksMatch(bitmasks.bitmaskX, Bitmask(1 &<< (bitmaskBitSize - 1)))
+        assertBitmasksMatch(bitmasks.bitmaskY, Bitmask(1 &<< (bitmaskBitSize - 1)))
     }
     
     func testGenerateBitmaskCenter() {
@@ -53,8 +53,8 @@ class WorldTests: XCTestCase {
         let aabb = AABB(min: .zero, max: .zero)
         let bitmasks = world.bitmask(for: aabb)
         
-        AssertBitmasksMatch(bitmasks.bitmaskX, 1 << (bitmaskBitSize / 2 - 1)) // Approximately half-way
-        AssertBitmasksMatch(bitmasks.bitmaskY, 1 << (bitmaskBitSize / 2 - 1))
+        assertBitmasksMatch(bitmasks.bitmaskX, 1 &<< (bitmaskBitSize / 2 - 1)) // Approximately half-way
+        assertBitmasksMatch(bitmasks.bitmaskY, 1 &<< (bitmaskBitSize / 2 - 1))
     }
     
     func testGenerateBitmaskFilling() {
@@ -64,8 +64,8 @@ class WorldTests: XCTestCase {
         let aabb = AABB(min: world.worldLimits.minimum, max: world.worldLimits.maximum)
         let bitmasks = world.bitmask(for: aabb)
         
-        AssertBitmasksMatch(bitmasks.bitmaskX, ~0)
-        AssertBitmasksMatch(bitmasks.bitmaskY, ~0)
+        assertBitmasksMatch(bitmasks.bitmaskX, ~0)
+        assertBitmasksMatch(bitmasks.bitmaskY, ~0)
     }
     
     func testGenerateBitmaskQuarter() {
@@ -76,8 +76,8 @@ class WorldTests: XCTestCase {
         let bitmasks = world.bitmask(for: aabb)
         
         #if arch(x86_64) || arch(arm64)
-            AssertBitmasksMatch(bitmasks.bitmaskX, 0b11111111_11111111_11111111_11111111_10000000_00000000_00000000_00000000)
-            AssertBitmasksMatch(bitmasks.bitmaskY, 0b11111111_11111111_11111111_11111111_10000000_00000000_00000000_00000000)
+            assertBitmasksMatch(bitmasks.bitmaskX, 0b11111111_11111111_11111111_11111111_10000000_00000000_00000000_00000000)
+            assertBitmasksMatch(bitmasks.bitmaskY, 0b11111111_11111111_11111111_11111111_10000000_00000000_00000000_00000000)
         #else
             AssertBitmasksMatch(bitmasks.bitmaskX, 0b11111111_11111111_10000000_00000000)
             AssertBitmasksMatch(bitmasks.bitmaskY, 0b11111111_11111111_10000000_00000000)
@@ -92,8 +92,8 @@ class WorldTests: XCTestCase {
         let bitmasks = world.bitmask(for: aabb)
         
         #if arch(x86_64) || arch(arm64)
-            AssertBitmasksMatch(bitmasks.bitmaskX, 0x0000_0000_FF00_0000)
-            AssertBitmasksMatch(bitmasks.bitmaskY, 0x0000_0000_FF00_0000)
+            assertBitmasksMatch(bitmasks.bitmaskX, 0x0000_0000_FF00_0000)
+            assertBitmasksMatch(bitmasks.bitmaskY, 0x0000_0000_FF00_0000)
         #else
             AssertBitmasksMatch(bitmasks.bitmaskX, 0x0000_F800)
             AssertBitmasksMatch(bitmasks.bitmaskY, 0x0000_F800)
@@ -109,8 +109,8 @@ class WorldTests: XCTestCase {
         var bitmasks = world.bitmask(for: aabb)
 
         #if arch(x86_64) || arch(arm64)
-            AssertBitmasksMatch(bitmasks.bitmaskX, 0x8000_0000_0000_0000)
-            AssertBitmasksMatch(bitmasks.bitmaskY, 0x8000_0000_0000_0000)
+            assertBitmasksMatch(bitmasks.bitmaskX, 0x8000_0000_0000_0000)
+            assertBitmasksMatch(bitmasks.bitmaskY, 0x8000_0000_0000_0000)
         #else
             AssertBitmasksMatch(bitmasks.bitmaskX, 0x8000_0000)
             AssertBitmasksMatch(bitmasks.bitmaskY, 0x8000_0000)
@@ -121,8 +121,8 @@ class WorldTests: XCTestCase {
         bitmasks = world.bitmask(for: aabb)
         
         #if arch(x86_64) || arch(arm64)
-            AssertBitmasksMatch(bitmasks.bitmaskX, 0x0000_0000_0000_0001)
-            AssertBitmasksMatch(bitmasks.bitmaskY, 0x0000_0000_0000_0001)
+            assertBitmasksMatch(bitmasks.bitmaskX, 0x0000_0000_0000_0001)
+            assertBitmasksMatch(bitmasks.bitmaskY, 0x0000_0000_0000_0001)
         #else
             AssertBitmasksMatch(bitmasks.bitmaskX, 0x0000_0001)
             AssertBitmasksMatch(bitmasks.bitmaskY, 0x0000_0001)
@@ -227,11 +227,15 @@ class WorldTests: XCTestCase {
         XCTAssertEqual(observer.collisions.count, 1)
     }
     
-    fileprivate func AssertBitmasksMatch(_ actual: Bitmask, _ expected: Bitmask, file: String = #file, line: Int = #line) {
+    fileprivate func assertBitmasksMatch(_ actual: Bitmask,
+                                         _ expected: Bitmask,
+                                         file: StaticString = #file,
+                                         line: UInt = #line) {
+        
         if actual != expected {
             let message = "Bitmasks do not match, expected:\n\(formatBinary(expected))\nfound:\n\(formatBinary(actual))"
             
-            recordFailure(withDescription: message, inFile: file, atLine: line, expected: false)
+            XCTFail(message, file: file, line: line)
         }
     }
     

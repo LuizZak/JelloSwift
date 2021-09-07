@@ -8,7 +8,7 @@
 
 /// Protocol to be implemented by objects that want to be notified of all
 /// collisions in a physics World
-public protocol CollisionObserver: class {
+public protocol CollisionObserver: AnyObject {
     /// Called by the World to notify of a complete set of body collisions in a
     /// single world update.
     ///

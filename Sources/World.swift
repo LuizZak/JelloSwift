@@ -721,15 +721,15 @@ public final class World {
             return (0, 0)
         }
         
-        let minShiftX = UInt.max >> UInt(max(0, 64 - maxVec.x))
-        let maxShiftX = UInt.max << UInt(max(0, minVec.x))
+        let minShiftX = UInt.max &>> UInt(max(0, 64 - maxVec.x))
+        let maxShiftX = UInt.max &<< UInt(max(0, minVec.x))
         
         var bitmaskX = minShiftX & maxShiftX
         bitmaskX.setBitOn(atIndex: Int(minVec.x))
         bitmaskX.setBitOn(atIndex: Int(maxVec.x))
         
-        let minShiftY = UInt.max >> UInt(max(0, 64 - maxVec.y))
-        let maxShiftY = UInt.max << UInt(max(0, minVec.y))
+        let minShiftY = UInt.max &>> UInt(max(0, 64 - maxVec.y))
+        let maxShiftY = UInt.max &<< UInt(max(0, minVec.y))
         
         var bitmaskY = minShiftY & maxShiftY
         bitmaskY.setBitOn(atIndex: Int(minVec.y))
