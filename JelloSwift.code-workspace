@@ -51,12 +51,8 @@
     },
     "folders": [
         {
-            "path": ".",
-        },
-        {
-            "name": "Swift Package Dependencies",
-            "path": ".build/checkouts",
-        },
+            "path": "."
+        }
     ],
     "settings": {
         "files.eol": "\n",
