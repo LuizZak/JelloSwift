@@ -13,7 +13,7 @@ import Foundation
 ///
 /// Do note that points must be added in a counter-clockwise fashion, since the
 /// points are represented in an Euclidean space where the y-axis grows upwards,
-/// as oposed to screen space where the y-axis grows down.
+/// as opposed to screen space where the y-axis grows down.
 public struct ClosedShape: Codable, Equatable, ExpressibleByArrayLiteral {
     public typealias Element = Vector2
     
@@ -101,7 +101,7 @@ extension ClosedShape {
     
     /// Gets a new closed shape by taking each point of this closed shape and
     /// multiplying them by the given 2x2 matrix.
-    public func transformedBy(multiplyingWith matrix: Vector2.NativeMatrixType) -> ClosedShape {
+    public func transformedBy(multiplyingWith matrix: Matrix3x3) -> ClosedShape {
         let points = localVertices.map {
             $0 * matrix
         }
@@ -152,7 +152,7 @@ extension ClosedShape {
     /// - note: The target array of points must have the **same** count of
     ///     vertices as this closed shape.
     public func transformVertices(_ target: inout [Vector2],
-                                  matrix: Vector2.NativeMatrixType) {
+                                  matrix: Matrix3x3) {
         
         assert(target.count == localVertices.count)
         

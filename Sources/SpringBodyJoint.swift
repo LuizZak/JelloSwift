@@ -23,7 +23,7 @@ open class SpringBodyJoint: BodyJoint {
     /// effects.
     var initialRestDistance: RestDistance
     
-    /// Inits a new spring body joint witht he specified parameters. Leave the 
+    /// Inits a new spring body joint with he specified parameters. Leave the 
     /// distance nil to calculate the distance automatically from the current
     /// distance of the two provided joint links
     public init(on world: World, link1: JointLink, link2: JointLink,

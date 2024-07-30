@@ -1,0 +1,112 @@
+{
+    "tasks": {
+        "version": "2.0.0",
+        "problemMatcher": [
+            // Compilation
+            {
+                "owner": "swift",
+                "fileLocation": "autoDetect",
+                "pattern": {
+                    "regexp": "^(.*):(\\d+):(\\d+):\\s+(warning|error):\\s+(.*)$",
+                    "file": 1,
+                    "line": 2,
+                    "column": 3,
+                    "severity": 4,
+                    "message": 5,
+                },
+            },
+            // Fix to detect unit test executions, which do not feature a column during reporting
+            {
+                "owner": "swift",
+                "fileLocation": "autoDetect",
+                "pattern": {
+                    "regexp": "^(.*):(\\d+):\\s+(warning|error):\\s+(.*)$",
+                    "file": 1,
+                    "line": 2,
+                    "severity": 3,
+                    "message": 4,
+                },
+            },
+        ],
+        "tasks": [
+            {
+                "label": "Build (debug)",
+                "type": "shell",
+                "command": "swift",
+                "args": [
+                    "build",
+                    "--build-tests",
+                ],
+            },
+            {
+                "label": "Test",
+                "type": "shell",
+                "command": "swift",
+                "args": [
+                    "test",
+                    "--enable-code-coverage",
+                ],
+            }
+        ]
+    },
+    "folders": [
+        {
+            "path": ".",
+        },
+        {
+            "name": "Swift Package Dependencies",
+            "path": ".build/checkouts",
+        },
+    ],
+    "settings": {
+        "files.eol": "\n",
+        "files.insertFinalNewline": true,
+        "files.exclude": {
+            ".git": true,
+            ".build": true,
+            ".*.sw?": true,
+            "**/.DS_Store": true,
+        },
+
+        "swift.buildArguments": [],
+
+        "commentAnchors.workspace.excludeFiles": "**/{node_modules,.git,.idea,target,out,build,vendor,.build,.swiftpm}/**/*",
+        "commentAnchors.tags.anchors": {
+            "MARK:": {
+                "iconColor": "default",
+                "highlightColor": "#A8C023",
+                "scope": "file",
+            },
+            "TODO:": {
+                "iconColor": "blue",
+                "highlightColor": "#3ea8ff",
+                "scope": "workspace",
+            },
+            "FIXME:": {
+                "iconColor": "red",
+                "highlightColor": "#F44336",
+                "scope": "workspace",
+            },
+            "NOTE:": {
+                "iconColor": "orange",
+                "highlightColor": "#FFB300",
+                "scope": "file",
+            },
+        },
+
+        "cSpell.words": [
+            "exodiusstudios",
+            "msvc",
+            "swiftpm",
+            "xctest",
+        ],
+
+        "ShortcutMenuBar.userButton01Command": "workbench.action.tasks.runTask|Build (debug)",
+        "ShortcutMenuBar.userButton02Command": "workbench.action.tasks.runTask|Test",
+    },
+    "extensions": {
+        "recommendations": [
+            "exodiusstudios.comment-anchors",
+        ],
+    },
+}

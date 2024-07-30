@@ -47,16 +47,16 @@ public final class Body: Equatable {
     public fileprivate(set) var derivedVel = Vector2.zero
     
     /// The velocity damping to apply to the body. Values closer to 0
-    /// deaccelerate faster, values closer to 1 deaccelerate slower.
+    /// decelerate faster, values closer to 1 decelerate slower.
     ///
-    /// 1 never deaccelerates. Values outside the range [0, 1] inclusive may
+    /// 1 never decelerates. Values outside the range [0, 1] inclusive may
     /// introduce instability
     public var velDamping: JFloat = 0.999
     
     /// The array of body components for this body object
     fileprivate var components: ContiguousArray<BodyComponent> = []
     
-    /// Gets the ammount of components in this body
+    /// Gets the amount of components in this body
     public var componentCount: Int {
         return components.count
     }
@@ -80,7 +80,7 @@ public final class Body: Equatable {
     
     /// The axis-aligned bounding box for this body's point masses.
     ///
-    /// Will be slighly expanded to include the velocity of the points, in case
+    /// Will be slightly expanded to include the velocity of the points, in case
     /// this body is kinematic, so it won't always match exactly the position of
     /// the point masses.
     public var aabb = AABB()
@@ -110,7 +110,7 @@ public final class Body: Equatable {
     /// instance.
     public var objectTag: Any? = nil
     
-    /// The colision bitmask for this body.
+    /// The collision bitmask for this body.
     public var bitmask: Bitmask = 0xFFFFFFFF
     
     /// The X-axis bitmask for the body - used for collision filtering.
@@ -406,11 +406,10 @@ public final class Body: Equatable {
     /// Derives the global position and angle of this body, based on the average
     /// of all the points.
     ///
-    /// This updates the DerivedPosision, DerivedAngle, and DerivedVelocity
-    /// properties.
+    /// This updates the derivedPos, derivedAngle, and derivedVel properties.
     ///
     /// This is called by `World.update()`, so usually a user does not need to
-    /// call this. Instead you can juse access the `derivedPosition`, `DerivedAngle`,
+    /// call this. Instead you can just access the `derivedPosition`, `DerivedAngle`,
     /// `derivedVelocity`, and `derivedOmega` properties.
     public func derivePositionAndAngle(_ elapsed: JFloat) {
         // No need if this is a static body, or kinematically controlled.

@@ -25,7 +25,7 @@ public final class SpringComponent: BodyComponent {
     fileprivate var springs: [InternalSpring] = []
     
     /// Whether the shape matching is on - turning on shape matching will make 
-    /// the soft body try to mantain its original shape as specified by its
+    /// the soft body try to maintain its original shape as specified by its
     /// `baseShape` property
     fileprivate var shapeMatchingOn = true
     
@@ -254,7 +254,7 @@ public struct SpringComponentCreator: BodyComponentCreator, Codable {
     public static var bodyComponentClass: BodyComponent.Type = SpringComponent.self
     
     /// Whether the shape matching is on - turning on shape matching will make
-    /// the soft body try to mantain its original shape as specified by its
+    /// the soft body try to maintain its original shape as specified by its
     /// baseShape
     public var shapeMatchingOn = true
     

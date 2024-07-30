@@ -13,7 +13,7 @@
 #endif
 
 /// Represents a joint link that links to multiple point masses of a body
-open class ShapeJointLink: JointLink {
+open class WeightedShapeJointLink: JointLink {
     /// The indices of this shape joint link
     fileprivate let _indexes: [Int]
     
@@ -88,7 +88,7 @@ open class ShapeJointLink: JointLink {
         _indexes = pointMassIndexes
     }
     
-    /// Appies a given force to the subject of this joint link
+    /// Applies a given force to the subject of this joint link
     ///
     /// - parameter force: A force to apply to the subjects of this joint link
     open func applyForce(of force: Vector2) {
