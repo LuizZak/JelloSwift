@@ -9,17 +9,17 @@
 /// The rendering scale for the scene
 public var renderingScale = Vector2(x: 25.8, y: 25.8)
 
-/// The offset is independent of the scale, unlike Flash DisplayObject's x-y 
+/// The offset is independent of the scale, unlike Flash DisplayObject's x-y
 /// coordinates and scaleX-scaleY
 public var renderingOffset = Vector2(x: 300, y: -50)
 
-/// Transforms the given point on stage coordinates into World coordinates by 
+/// Transforms the given point on stage coordinates into World coordinates by
 /// using the rendering settings
 public func toWorldCoords(_ point: Vector2) -> Vector2 {
     return (point - renderingOffset) / renderingScale
 }
 
-/// Transforms the given point on World coordinates into Screen coordinates by 
+/// Transforms the given point on World coordinates into Screen coordinates by
 /// using the rendering settings
 public func toScreenCoords(_ point: Vector2) -> Vector2 {
     return point * renderingScale + renderingOffset
@@ -47,7 +47,7 @@ public func setCamera(_ positionX: JFloat, positionY: JFloat, scaleX: JFloat,
                       scaleY: JFloat) {
     renderingOffset.x = positionX
     renderingOffset.y = positionY
-    
+
     renderingScale.x = scaleX
     renderingScale.y = scaleY
 }

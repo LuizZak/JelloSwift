@@ -6,11 +6,7 @@
 //  Copyright (c) 2015 Luiz Fernando Silva. All rights reserved.
 //
 
-#if os(macOS) || os(iOS)
-    import Darwin.C
-#elseif os(Linux)
-    import Glibc
-#endif
+import Foundation
 
 /// Represents a joint link that links to multiple point masses of a body
 open class WeightedShapeJointLink: JointLink {
