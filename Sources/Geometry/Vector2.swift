@@ -389,9 +389,9 @@ extension Vector2 {
     // Matrix multiplication
     @inlinable
     static public func * (lhs: Vector2, rhs: Matrix3x3) -> Vector2 {
-        let homog = Vector3(lhs, z: 1)
+        let homogenous = Vector3(lhs, z: 1)
 
-        let transformed = rhs.transformPoint(homog)
+        let transformed = rhs.transformPoint(homogenous)
 
         return Vector2(x: transformed.x, y: transformed.y)
     }
@@ -431,8 +431,10 @@ extension Vector2 {
         let c = cos(angleInRadians)
         let s = sin(angleInRadians)
 
-        return Vector2(x: (c * vec.x) - (s * vec.y),
-                       y: (c * vec.y) + (s * vec.x))
+        return Vector2(
+            x: (c * vec.x) - (s * vec.y),
+            y: (c * vec.y) + (s * vec.x)
+        )
     }
 }
 

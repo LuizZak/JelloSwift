@@ -137,14 +137,16 @@ public final class Body: Equatable {
     /// have its base shape move around. If false, the center of the body remains
     /// static while the point masses move around this center.
     ///   - components: Array of body component creators to add to this body.
-    public init(world: World? = nil,
-                shape: ClosedShape,
-                pointMasses: [JFloat] = [1],
-                position: Vector2 = Vector2.zero,
-                angle: JFloat = 0,
-                scale: Vector2 = Vector2.unit,
-                kinematic: Bool = false,
-                components: [BodyComponentCreator] = []) {
+    public init(
+        world: World? = nil,
+        shape: ClosedShape,
+        pointMasses: [JFloat] = [1],
+        position: Vector2 = Vector2.zero,
+        angle: JFloat = 0,
+        scale: Vector2 = Vector2.unit,
+        kinematic: Bool = false,
+        components: [BodyComponentCreator] = []
+    ) {
 
         aabb = AABB()
         derivedPos = position
@@ -240,9 +242,13 @@ public final class Body: Equatable {
             let j = (i &+ 1) % c
             let nextP = pointMasses[j]
 
-            edges[i] = BodyEdge(edgeIndex: i, startPointIndex: i,
-                                endPointIndex: j, start: curP.position,
-                                end: nextP.position)
+            edges[i] = BodyEdge(
+                edgeIndex: i,
+                startPointIndex: i,
+                endPointIndex: j,
+                start: curP.position,
+                end: nextP.position
+            )
         }
     }
 
@@ -275,14 +281,18 @@ public final class Body: Equatable {
         let curP = pointMasses[edgeIndex]
         let nextP = pointMasses[j]
 
-        edges[edgeIndex] = BodyEdge(edgeIndex: edgeIndex,
-                                    startPointIndex: edgeIndex,
-                                    endPointIndex: j, start: curP.position,
-                                    end: nextP.position)
+        edges[edgeIndex] =
+            BodyEdge(
+                edgeIndex: edgeIndex,
+                startPointIndex: edgeIndex,
+                endPointIndex: j,
+                start: curP.position,
+                end: nextP.position
+            )
     }
 
     /// Updates the AABB for this body, including padding for velocity given a
-    /// timestep.
+    /// time step.
     ///
     /// This function is called by `World.update()`, so the user should not need
     /// this in most cases.
@@ -319,12 +329,16 @@ public final class Body: Equatable {
     public func setShape(_ shape: ClosedShape) {
         baseShape = shape
 
-        globalShape = [Vector2](repeating: Vector2.zero,
-                                count: shape.localVertices.count)
+        globalShape = .init(
+            repeating: Vector2.zero,
+            count: shape.localVertices.count
+        )
 
-        let matrix = Vector2.matrix(scalingBy: scale,
-                                    rotatingBy: derivedAngle,
-                                    translatingBy: derivedPos)
+        let matrix = Vector2.matrix(
+            scalingBy: scale,
+            rotatingBy: derivedAngle,
+            translatingBy: derivedPos
+        )
 
         baseShape.transformVertices(&globalShape, matrix: matrix)
 
@@ -551,7 +565,7 @@ public final class Body: Equatable {
     /// Ignored, if body is static.
     ///
     /// The method keeps the average velocity of the point masses the same during
-    /// the proceedure.
+    /// the procedure.
     public func setAngularVelocity(_ vel: JFloat) {
         if isStatic {
             return
@@ -599,7 +613,7 @@ public final class Body: Equatable {
 
         // If the line lies to the left of the body, apply the test going from
         // the point to the left this way we may end up reducing the total
-        // ammount of edges to test against.
+        // amount of edges to test against.
         // This basic assumption may not hold for every body, but for most
         // bodies (specially round), this may hold true most of the time.
         if pt.x < aabb.midX {
@@ -723,7 +737,10 @@ public final class Body: Equatable {
     ///      - **edgeD**: The ratio of the edge where the point was grabbed,
     /// [0-1] inclusive
     ///      - **distance**: The squared distance to the closest edge found
-    public func closestPointSquared(to pt: Vector2, onEdge edgeNum: Int) -> (hitPoint: Vector2, normal: Vector2, edgeD: JFloat, distance: JFloat) {
+    public func closestPointSquared(
+        to pt: Vector2,
+        onEdge edgeNum: Int
+    ) -> (hitPoint: Vector2, normal: Vector2, edgeD: JFloat, distance: JFloat) {
         assert(pointMasses.count > 0)
 
         var hitPt: Vector2 = .zero
@@ -787,7 +804,10 @@ public final class Body: Equatable {
     ///      - **edgeD**: The ratio of the edge where the point was grabbed,
     /// [0-1] inclusive
     ///      - **distance**: The distance to the closest edge found
-    public func closestPoint(to pt: Vector2, onEdge edgeNum: Int) -> (hitPoint: Vector2, normal: Vector2, edgeD: JFloat, distance: JFloat) {
+    public func closestPoint(
+        to pt: Vector2,
+        onEdge edgeNum: Int
+    ) -> (hitPoint: Vector2, normal: Vector2, edgeD: JFloat, distance: JFloat) {
         let result = closestPointSquared(to: pt, onEdge: edgeNum)
 
         return (result.hitPoint, result.normal, result.edgeD, sqrt(result.distance))
@@ -810,7 +830,9 @@ public final class Body: Equatable {
     ///      - **edgeD**: The ratio of the edge where the point was grabbed,
     /// [0-1] inclusive
     ///      - **distance**: The distance to the closest edge found
-    public func closestPoint(to pt: Vector2) -> (hitPoint: Vector2, normal: Vector2, pointA: Int, pointB: Int, edgeD: JFloat, distance: JFloat) {
+    public func closestPoint(
+        to pt: Vector2
+    ) -> (hitPoint: Vector2, normal: Vector2, pointA: Int, pointB: Int, edgeD: JFloat, distance: JFloat) {
         assert(pointMasses.count > 0)
 
         var pointA = -1
@@ -845,7 +867,7 @@ public final class Body: Equatable {
     ///
     /// The position must be in world coordinates.
     ///
-    /// The tolerance is the distance to the edge that will be ignored if larget
+    /// The tolerance is the distance to the edge that will be ignored if larger
     /// than that.
     ///
     /// Returns nil if boy has no edges, or a tuple of the parameters that can be
@@ -863,7 +885,10 @@ public final class Body: Equatable {
     /// [0-1] inclusive
     ///     - **edgePoint1**: The first point mass on the edge
     ///     - **edgePoint2**: The second point mass on the edge
-    public func closestEdge(to pt: Vector2, withTolerance tolerance: JFloat = JFloat.infinity) -> (edgePosition: Vector2, edgeRatio: JFloat, edgePoint1: Int, edgePoint2: Int)? {
+    public func closestEdge(
+        to pt: Vector2,
+        withTolerance tolerance: JFloat = JFloat.infinity
+    ) -> (edgePosition: Vector2, edgeRatio: JFloat, edgePoint1: Int, edgePoint2: Int)? {
         if edges.count == 0 || pointMasses.count == 0 {
             return nil
         }
@@ -878,11 +903,11 @@ public final class Body: Equatable {
         for edge in edges {
             let pm = pointMasses[edge.startPointIndex]
 
-            let adotb = ((pm.position - pt) • edge.difference).clamped(minimum: 0, maximum: edge.length)
+            let aDotB = ((pm.position - pt) • edge.difference).clamped(minimum: 0, maximum: edge.length)
 
             // Apply the dot product to the normalized vector - this projects
             // the point on top of the edge
-            let d = edge.difference * adotb
+            let d = edge.difference * aDotB
 
             let dis = pt - (pm.position - d)
 
@@ -894,7 +919,7 @@ public final class Body: Equatable {
                 closestP1 = edge.startPointIndex
                 closestP2 = edge.endPointIndex
                 edgePosition = pm.position - d
-                edgeRatio = adotb / edge.length
+                edgeRatio = aDotB / edge.length
                 closestD = curD
             }
         }

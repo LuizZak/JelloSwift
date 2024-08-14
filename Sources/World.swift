@@ -24,7 +24,10 @@ public final class World {
     }
     fileprivate var worldGridSubdivision: Int = MemoryLayout<UInt>.size * 8 {
         didSet {
-            subdivVec = Vector2(x: JFloat(worldGridSubdivision), y: JFloat(worldGridSubdivision))
+            subdivVec = Vector2(
+                x: JFloat(worldGridSubdivision),
+                y: JFloat(worldGridSubdivision)
+            )
         }
     }
     fileprivate var subdivVec: Vector2 = Vector2.zero
@@ -195,8 +198,10 @@ public final class World {
     }
 
     /// Finds the closest PointMass in the world to a given point
-    public func closestPointMass(to pt: Vector2,
-                                 ignoreFunction: ((Body, Int) -> Bool)? = nil) -> (Body, Int)? {
+    public func closestPointMass(
+        to pt: Vector2,
+        ignoreFunction: ((Body, Int) -> Bool)? = nil
+    ) -> (Body, Int)? {
 
         var ret: (Body, Int)? = nil
 
@@ -218,8 +223,10 @@ public final class World {
     }
 
     /// Returns the closest edge to a given point, across all bodies in the world.
-    public func closestPoint(to pt: Vector2,
-                             ignoreFunction: ((Body) -> Bool)? = nil) -> (Body, hitPoint: Vector2)? {
+    public func closestPoint(
+        to pt: Vector2,
+        ignoreFunction: ((Body) -> Bool)? = nil
+    ) -> (Body, hitPoint: Vector2)? {
 
         var closest: (Body, hitPoint: Vector2)?
 
@@ -259,7 +266,11 @@ public final class World {
     }
 
     /// Returns a vector of bodies intersecting with the given line.
-    public func bodiesIntersecting(lineFrom start: Vector2, to end: Vector2, bitmask: Bitmask = 0) -> [Body] {
+    public func bodiesIntersecting(
+        lineFrom start: Vector2,
+        to end: Vector2,
+        bitmask: Bitmask = 0
+    ) -> [Body] {
         return bodies.filter { body -> Bool in
             updateBodyBitmask(body)
 
@@ -285,10 +296,11 @@ public final class World {
     ///
     /// - Returns: All bodies that intersect with the closed shape. If closed
     ///            shape contains less than 2 points, returns empty.
-    public func bodiesIntersecting(closedShape: ClosedShape,
-                                   at worldPos: Vector2,
-                                   ignoreTest: ((Body) -> Bool)? = nil) -> ContiguousArray<Body> {
-
+    public func bodiesIntersecting(
+        closedShape: ClosedShape,
+        at worldPos: Vector2,
+        ignoreTest: ((Body) -> Bool)? = nil
+    ) -> ContiguousArray<Body> {
         if closedShape.localVertices.count < 2 {
             return []
         }
@@ -343,11 +355,12 @@ public final class World {
     /// - Returns: An optional tuple containing the farthest point reached by
     /// the ray, and a Body value specifying the body that was closest to the
     /// ray, if it hit any body, or nil if it hit nothing.
-    public func rayCast(from start: Vector2,
-                        to end: Vector2,
-                        bitmask: Bitmask = 0,
-                        ignoreTest: ((Body) -> Bool)? = nil) -> (retPt: Vector2, body: Body)? {
-
+    public func rayCast(
+        from start: Vector2,
+        to end: Vector2,
+        bitmask: Bitmask = 0,
+        ignoreTest: ((Body) -> Bool)? = nil
+    ) -> (retPt: Vector2, body: Body)? {
         var aabb = AABB(points: [start, end])
         var aabbBitmask = self.bitmask(for: aabb)
         var result: (Vector2, Body)?
@@ -394,10 +407,11 @@ public final class World {
     }
 
     /// Internal updating method
-    fileprivate func update(_ elapsed: JFloat,
-                            withBodies bodies: ContiguousArray<Body>,
-                            joints: ContiguousArray<BodyJoint>) {
-
+    fileprivate func update(
+        _ elapsed: JFloat,
+        withBodies bodies: ContiguousArray<Body>,
+        joints: ContiguousArray<BodyJoint>
+    ) {
         // Update the bodies
         for body in bodies {
             body.derivePositionAndAngle(elapsed)
@@ -437,9 +451,10 @@ public final class World {
                 }
 
                 // another early-out - both bodies are static.
-                if (body1.isStatic && body2.isStatic) ||
-                    !bitmasksIntersect((body1.bitmaskX, body1.bitmaskY),
-                                       (body2.bitmaskX, body2.bitmaskY)) {
+                if
+                    (body1.isStatic && body2.isStatic)
+                    || !bitmasksIntersect((body1.bitmaskX, body1.bitmaskY), (body2.bitmaskX, body2.bitmaskY))
+                {
                     continue
                 }
 

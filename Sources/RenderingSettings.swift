@@ -27,14 +27,18 @@ public func toScreenCoords(_ point: Vector2) -> Vector2 {
 
 /// Transforms a given AABB from world coordinates to screen coordinates
 public func toScreenSpace(_ aabb: AABB) -> AABB {
-    return AABB(min: toScreenCoords(aabb.minimum),
-                max: toScreenCoords(aabb.maximum))
+    return AABB(
+        min: toScreenCoords(aabb.minimum),
+        max: toScreenCoords(aabb.maximum)
+    )
 }
 
 /// Transforms a given AABB from screen coordinates to world coordinates
 public func toWorldSpace(_ aabb: AABB) -> AABB {
-    return AABB(min: toWorldCoords(aabb.minimum),
-                max: toWorldCoords(aabb.maximum))
+    return AABB(
+        min: toWorldCoords(aabb.minimum),
+        max: toWorldCoords(aabb.maximum)
+    )
 }
 
 public func setCamera(_ position: Vector2, scale: Vector2) {
@@ -43,8 +47,12 @@ public func setCamera(_ position: Vector2, scale: Vector2) {
 }
 
 /// Sets the camera position and scale from scalar values
-public func setCamera(_ positionX: JFloat, positionY: JFloat, scaleX: JFloat,
-                      scaleY: JFloat) {
+public func setCamera(
+    positionX: JFloat,
+    positionY: JFloat,
+    scaleX: JFloat,
+    scaleY: JFloat
+) {
     renderingOffset.x = positionX
     renderingOffset.y = positionY
 

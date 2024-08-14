@@ -10,13 +10,13 @@
 /// Distances can either be fixed by a distance, or ranged so forces only apply
 /// when distance is outside a tolerance range.
 public enum RestDistance: ExpressibleByFloatLiteral, ExpressibleByIntegerLiteral {
-    
+
     /// Fixed distance
     case fixed(JFloat)
-    
+
     /// Distance is ranged between a minimum and maximum value
     case ranged(min: JFloat, max: JFloat)
-    
+
     /// Returns the minimum distance for this rest distance.
     /// If the current value is .fixed, this method always returns the rest
     /// distance it represents, if .ranged, it returns its min value.
@@ -40,7 +40,7 @@ public enum RestDistance: ExpressibleByFloatLiteral, ExpressibleByIntegerLiteral
             }
         }
     }
-    
+
     /// Returns the maximum distance for this rest distance.
     /// If the current value is .fixed, this method always returns the rest
     /// distance it represents, if .ranged, it returns its max value
@@ -64,15 +64,15 @@ public enum RestDistance: ExpressibleByFloatLiteral, ExpressibleByIntegerLiteral
             }
         }
     }
-    
+
     public init(integerLiteral value: Int) {
         self = .fixed(JFloat(value))
     }
-    
+
     public init(floatLiteral value: Double) {
         self = .fixed(JFloat(value))
     }
-    
+
     /// Returns whether a given range is within the range of this rest distance.
     /// If the current value is .fixed, this does an exact equality
     /// operation, if .ranged, it performs `value >= min && value <= max`
@@ -84,7 +84,7 @@ public enum RestDistance: ExpressibleByFloatLiteral, ExpressibleByIntegerLiteral
             return value >= min && value <= max
         }
     }
-    
+
     /// Clamps a given value to be within the range of this rest distance.
     /// If the current value is .fixed, this method always returns the rest
     /// distance it represents, if .ranged, it performs
@@ -97,7 +97,7 @@ public enum RestDistance: ExpressibleByFloatLiteral, ExpressibleByIntegerLiteral
             return Swift.max(min, Swift.min(max, value))
         }
     }
-    
+
     /// Returns a new rest distance structure which represents the square of this
     /// rest distance's parameters.
     public func squared() -> RestDistance {
@@ -113,19 +113,19 @@ public enum RestDistance: ExpressibleByFloatLiteral, ExpressibleByIntegerLiteral
 extension RestDistance: Codable {
     public init(from decoder: Decoder) throws {
         var container = try decoder.unkeyedContainer()
-        
+
         let first = try container.decode(JFloat.self)
-        
+
         if container.isAtEnd {
             self = .fixed(first)
         } else {
             self = try .ranged(min: first, max: container.decode(JFloat.self))
         }
     }
-    
+
     public func encode(to encoder: Encoder) throws {
         var container = encoder.unkeyedContainer()
-        
+
         switch self {
         case .fixed(let value):
             try container.encode(value)
@@ -136,16 +136,10 @@ extension RestDistance: Codable {
     }
 }
 
-/// Helper operator for creating a rest distance
-@available(*, deprecated, message: "use <-> instead")
-public func ...(lhs: JFloat, rhs: JFloat) -> RestDistance {
-    return .ranged(min: lhs, max: rhs)
-}
-
 /// An operator for forming ranged rest distances with
 infix operator <-> : RangeFormationPrecedence
 
 /// Helper operator for creating a rest distance
-public func <->(lhs: JFloat, rhs: JFloat) -> RestDistance {
+public func <-> (lhs: JFloat, rhs: JFloat) -> RestDistance {
     return .ranged(min: lhs, max: rhs)
 }

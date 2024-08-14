@@ -11,18 +11,18 @@
 public struct AABB: Codable {
     /// Returns an empty, invalid AABB
     static let empty = AABB()
-    
+
     /// The validity of this AABB.
     /// AABBs that have a .invalid validity set cannot be used until they are
     /// expanded via calls to `AABB.expand(toInclude:)` methods bellow.
     public var validity = PointValidity.invalid
-    
+
     /// Maximum points for this bounding box
-    internal(set) public var minimum = Vector2.zero
-    
+    public var minimum = Vector2.zero
+
     /// Maximum point for this bounding box
-    internal(set) public var maximum = Vector2.zero
-    
+    public var maximum = Vector2.zero
+
     /// Gets the X position of this AABB
     @inlinable
     public var x: JFloat {
@@ -33,21 +33,21 @@ public struct AABB: Codable {
     public var y: JFloat {
         return minimum.y
     }
-    
+
     /// Gets the width of this AABB.
     /// This is the same as `maximum.x - minimum.x`
     @inlinable
     public var width: JFloat {
         return maximum.x - minimum.x
     }
-    
+
     /// Gets the height of this AABB
     /// This is the same as `maximum.y - minimum.y`
     @inlinable
     public var height: JFloat {
         return maximum.y - minimum.y
     }
-    
+
     /// Gets the middle X position of this AABB
     @inlinable
     public var midX: JFloat {
@@ -58,84 +58,90 @@ public struct AABB: Codable {
     public var midY: JFloat {
         return (minimum.y + maximum.y) / 2
     }
-    
+
     /// Initializes an empty, invalid AABB instance
     public init() {
-        
+
     }
-    
+
     /// Initializes an AABB containing the minimum area capable of containing all
     /// supplied points.
     ///
     /// If no points are supplied, an invalid AABB is created instead.
+    @inlinable
     public init(of points: Vector2...) {
         self = AABB(points: points)
     }
-    
+
     /// Initializes a valid AABB instance out of the given minimum and maximum
     /// coordinates.
     ///
     /// The coordinates are not checked for ordering, and will be directly
     /// assigned to `minimum` and `maximum` properties.
+    @inlinable
     public init(min: Vector2, max: Vector2) {
         validity = .valid
-      
+
         minimum = min
         maximum = max
     }
-    
+
     /// Initializes a valid AABB out of a set of points, expanding to the
     /// smallest bounding box capable of fitting each point.
+    @inlinable
     public init(points: [Vector2]) {
         expand(toInclude: points)
     }
-    
+
     /// Invalidates this AABB
+    @inlinable
     public mutating func clear() {
         validity = .invalid
     }
-    
+
     /// Expands the bounding box of this AABB to include the given point.
     ///
     /// If the AABB is invalid, it sets the `minimum` and `maximum` coordinates
     /// to the point, if not, it fits the point, expanding the bounding box to
     /// fit the point, if necessary.
+    @inlinable
     public mutating func expand(toInclude point: Vector2) {
         if validity == .invalid {
             minimum = point
             maximum = point
-            
+
             validity = .valid
         } else {
             minimum = min(minimum, point)
             maximum = max(maximum, point)
         }
     }
-    
+
     /// Expands the bounding box of this AABB to include the given point set of
     /// points.
     ///
     /// Same as calling `expand(toInclude:Vector2)` over each point.
     ///
     /// If the array is empty, nothing is done.
+    @inlinable
     public mutating func expand(toInclude points: [Vector2]) {
         if points.count == 0 {
             return
         }
-        
+
         if validity == .invalid {
             minimum = points[0]
             maximum = points[0]
-            
+
             validity = .valid
         }
-        
+
         for p in points {
             minimum = min(minimum, p)
             maximum = max(maximum, p)
         }
     }
-    
+
     /// Returns whether a given point is contained within this bounding box.
     ///
     /// The check is inclusive, so the edges of the bounding box are considered
@@ -147,23 +153,23 @@ public struct AABB: Codable {
         if validity == .invalid {
             return false
         }
-        
+
         return point >= minimum && point <= maximum
     }
-    
+
     /// Returns whether this AABB intersects the given AABB instance.
     ///
     /// This check is inclusive, so the edges of the bounding box are considered
     /// to intersect the other bounding box's edges as well.
     ///
-    /// If either this, or the other bounding box are invalid, false is 
+    /// If either this, or the other bounding box are invalid, false is
     /// returned.
     @inlinable
     public func intersects(_ box: AABB) -> Bool {
         if validity == .invalid || box.validity == .invalid {
             return false
         }
-        
+
         return minimum <= box.maximum && maximum >= box.minimum
     }
 }

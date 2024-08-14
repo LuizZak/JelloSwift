@@ -41,7 +41,7 @@ open class ShapeJointLink: JointLink {
             return Vector2.zero
         }
 
-        return offset.rotated(by: body.derivedAngle)
+        return offset.rotated(by: angle())
     }
 
     /// Gets the velocity of the object this joint links to
@@ -98,6 +98,17 @@ open class ShapeJointLink: JointLink {
         }
     }
 
+    /// Applies a direct positional translation of this joint link by a given
+    /// offset.
+    ///
+    /// - parameter offset: An offset to apply to the member(s) of this joint link.
+    open func translate(by offset: Vector2) {
+        for i in _indexes {
+            let position = body.pointMasses[i].position
+            body.setPosition(position + offset, ofPointMassAt: i)
+        }
+    }
+
     // TODO: Implement the function below to derive the shape's angle
 
     /// Returns the average angle of the vertices of this ShapeJointLink, based
@@ -108,17 +119,21 @@ open class ShapeJointLink: JointLink {
         var originalSign = 1
         var originalAngle: JFloat = 0
 
+        var first = true
         for i in _indexes {
             let pm = body.pointMasses[i]
+            let base = body.baseShape[i]
 
-            let baseNorm = body.baseShape[i].normalized()
+            let baseNorm = base.normalized()
             let curNorm  = (pm.position - body.derivedPos).normalized()
 
             var thisAngle = atan2(baseNorm.x * curNorm.y - baseNorm.y * curNorm.x, baseNorm • curNorm)
 
-            if i == 0 {
+            if first {
                 originalSign = (thisAngle >= 0.0) ? 1 : -1
                 originalAngle = thisAngle
+
+                first = false
             } else {
                 let diff = (thisAngle - originalAngle)
                 let thisSign = (thisAngle >= 0.0) ? 1 : -1

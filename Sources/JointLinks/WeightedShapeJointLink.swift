@@ -105,6 +105,17 @@ open class WeightedShapeJointLink: JointLink {
         }
     }
 
+    /// Applies a direct positional translation of this joint link by a given
+    /// offset.
+    ///
+    /// - parameter offset: An offset to apply to the member(s) of this joint link.
+    open func translate(by offset: Vector2) {
+        for entry in _entries {
+            let position = body.pointMasses[entry.index].position
+            body.setPosition(position + offset, ofPointMassAt: entry.index)
+        }
+    }
+
     // TODO: Implement the function below to derive the shape's angle
 
     /// Returns the average angle of the vertices of this ShapeJointLink, based

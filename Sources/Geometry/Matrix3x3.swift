@@ -434,6 +434,7 @@ public struct Matrix3x3: CustomStringConvertible {
     /// result.
     ///
     /// [matrix addition]: https://en.wikipedia.org/wiki/Matrix_addition
+    @inlinable
     public static func + (lhs: Self, rhs: Self) -> Self {
         let r0 = lhs.r0Vec + rhs.r0Vec
         let r1 = lhs.r1Vec + rhs.r1Vec
@@ -446,6 +447,7 @@ public struct Matrix3x3: CustomStringConvertible {
     /// result.
     ///
     /// [matrix subtraction]: https://en.wikipedia.org/wiki/Matrix_addition
+    @inlinable
     public static func - (lhs: Self, rhs: Self) -> Self {
         let r0 = lhs.r0Vec - rhs.r0Vec
         let r1 = lhs.r1Vec - rhs.r1Vec
@@ -455,6 +457,7 @@ public struct Matrix3x3: CustomStringConvertible {
     }
 
     /// Negates (i.e. flips) the signs of all the values of this matrix.
+    @inlinable
     public static prefix func - (value: Self) -> Self {
         let r0 = -value.r0Vec
         let r1 = -value.r1Vec
@@ -467,6 +470,7 @@ public struct Matrix3x3: CustomStringConvertible {
     /// the result.
     ///
     /// [scalar multiplication]: https://en.wikipedia.org/wiki/Scalar_multiplication
+    @inlinable
     public static func * (lhs: Self, rhs: Scalar) -> Self {
         let r0 = lhs.r0Vec * rhs
         let r1 = lhs.r1Vec * rhs
@@ -477,6 +481,7 @@ public struct Matrix3x3: CustomStringConvertible {
 
     /// Performs a scalar division between the elements of `lhs` and `rhs` and
     /// returns the result.
+    @inlinable
     public static func / (lhs: Self, rhs: Scalar) -> Self {
         let r0 = lhs.r0Vec / rhs
         let r1 = lhs.r1Vec / rhs
