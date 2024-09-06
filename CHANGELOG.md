@@ -1,12 +1,18 @@
-**_Current stable release: v0.15.0_**
+**_Current stable release: v0.16.0_**
 
 #### Develop trunk changelog:
 
-- Dropped usage of SIMD in favor of multi-platform support (namely Linux/Windows).
+(empty)
 
 ---
 
 ## Stable Releases
+
+## v0.16.0:
+
+- Dropped usage of SIMD in favor of multi-platform support (namely Linux/Windows).
+- Implemented `WeightedShapeJointLink`.
+- Allowing `ShapeMatchingComponent` to match a subset of the original shape along with the full shape.
 
 ## v0.15.0:
 
