@@ -1,16 +1,20 @@
-**_Current stable release: v0.14.0_**
+**_Current stable release: v0.15.0_**
 
 #### Develop trunk changelog:
 
 - Dropped usage of SIMD in favor of multi-platform support (namely Linux/Windows).
+
+---
+
+## Stable Releases
+
+## v0.15.0:
+
 - Bumped target Swift version to 5.0.
 - Now the library is distributed as a [Swift Package](https://swift.org/package-manager/), and the Cocoapods version is no longer maintained.
 - `PointMass` is now a struct type. To change properties of individual point masses, use `Body.applyForce(_:toPointMassAt:)`, `Body.applyVelocity(_:toPointMassAt:)`, `Body.setVelocity(_:ofPointMassAt:)`, and `Body.setPosition(_:ofPointMassAt:)`.
 - Now `BodyComponent.accumulateExternalForces` expects a `World` parameter as well.
 - Deprecated `BodyComponent.accumulateExternalForces(on:relaxing:)`.
-
-## Stable Releases
----
 
 ## v0.14.0:
 
