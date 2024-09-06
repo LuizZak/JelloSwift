@@ -2,6 +2,7 @@
 
 #### Develop trunk changelog:
 
+- Dropped usage of SIMD in favor of multi-platform support (namely Linux/Windows).
 - Bumped target Swift version to 5.0.
 - Now the library is distributed as a [Swift Package](https://swift.org/package-manager/), and the Cocoapods version is no longer maintained.
 - `PointMass` is now a struct type. To change properties of individual point masses, use `Body.applyForce(_:toPointMassAt:)`, `Body.applyVelocity(_:toPointMassAt:)`, `Body.setVelocity(_:ofPointMassAt:)`, and `Body.setPosition(_:ofPointMassAt:)`.
