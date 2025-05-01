@@ -70,10 +70,10 @@ public struct InternalSpring: Codable {
     public init(
         _ pmA: Int,
         _ pmB: Int,
-        _ distance: RestDistance = 0,
-        _ springK: JFloat,
-        _ springD: JFloat,
-        _ plasticity: SpringPlasticity? = nil
+        distance: RestDistance = 0,
+        springK: JFloat,
+        springD: JFloat,
+        plasticity: SpringPlasticity? = nil
     ) {
 
         pointMassA = pmA

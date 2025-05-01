@@ -49,6 +49,12 @@ public final class SpringComponent: BodyComponent {
         clearAllSprings(body)
     }
 
+    /// Returns the array of all springs currently registered, including edge
+    /// and inner springs.
+    public func allSprings() -> [InternalSpring] {
+        springs
+    }
+
     /// Adds an internal spring to this body
     @discardableResult
     public func addInternalSpring(
@@ -88,7 +94,7 @@ public final class SpringComponent: BodyComponent {
         plasticity: SpringPlasticity? = nil
     ) -> InternalSpring {
 
-        let spring = InternalSpring(pointA, pointB, dist, springK, damping, plasticity)
+        let spring = InternalSpring(pointA, pointB, distance: dist, springK: springK, springD: damping, plasticity: plasticity)
 
         springs.append(spring)
 
@@ -182,12 +188,27 @@ public final class SpringComponent: BodyComponent {
         return springs[edgeSpringsCount + springID].damping
     }
 
+    /// Gets the current plasticity settings of an edge spring, or nil, if no
+    /// plasticity is set.
+    public func springPlasticity(forEdgeSpringIndex springID: Int) -> SpringPlasticity? {
+        return springs[springID].plasticity
+    }
+
     /// Gets the current plasticity settings of a spring, or nil, if no plasticity
     /// is set.
     /// This ignores the default edge springs, so the index is always
     /// `+ body.pointMasses.count`
     public func springPlasticity(forSpringIndex springID: Int) -> SpringPlasticity? {
         return springs[edgeSpringsCount + springID].plasticity
+    }
+
+    /// Sets the current plasticity settings of an edge spring spring, or disables
+    /// it, if `nil` is passed.
+    public func setSpringPlasticity(
+        forEdgeSpringIndex springID: Int,
+        plasticity: SpringPlasticity?
+    ) {
+        springs[springID].plasticity = plasticity
     }
 
     /// Sets the current plasticity settings of a spring, or disables it, if `nil`

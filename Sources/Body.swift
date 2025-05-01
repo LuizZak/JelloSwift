@@ -188,6 +188,11 @@ public final class Body: Equatable {
         return instance
     }
 
+    /// Gets all components currently affecting this body.
+    public func allComponents() -> [BodyComponent] {
+        return components.map { $0 }
+    }
+
     /// Gets a component on this body that matches the given component type.
     ///
     /// If no matching components are found, `nil` is returned instead.

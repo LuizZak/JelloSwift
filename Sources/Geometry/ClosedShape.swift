@@ -56,6 +56,16 @@ public struct ClosedShape: Codable, Equatable, ExpressibleByArrayLiteral {
         addVertex(Vector2(x: x, y: y))
     }
 
+    /// Returns the rest distance between two vertices within this closed shape.
+    ///
+    /// The rest distance is always `RestDistance.fixed`.
+    @inlinable
+    public func restDistance(from indexA: Int, to indexB: Int) -> RestDistance {
+        RestDistance.fixed(
+            localVertices[indexA].distance(to: localVertices[indexB])
+        )
+    }
+
     /// Finishes constructing this closed shape, optionally converting them to
     /// local space (by default)
     @inlinable
