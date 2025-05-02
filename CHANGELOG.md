@@ -2,7 +2,7 @@
 
 #### Develop trunk changelog:
 
-(empty)
+- Adding PrismaticJoint
 
 ---
 
