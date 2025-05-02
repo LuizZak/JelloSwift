@@ -82,34 +82,5 @@ open class PrismaticBodyJoint: SpringBodyJoint {
             )
             bodyLink2.applyTorque(torque)
         }
-
-        // Project links towards the rest angle of the joint
-        if bodyLink1.supportsAngling {
-            //project(bodyLink1, on: bodyLink2, angle: angle2)
-        } else if bodyLink2.supportsAngling {
-            //project(bodyLink2, on: bodyLink1, angle: angle1)
-        }
-    }
-
-    private func project(_ link1: JointLink, on link2: JointLink, angle: JFloat) {
-        let angleDir = Vector2(x: 1, y: 0).rotated(by: angle)
-        let adotb = ((link1.position - link2.position) • angleDir)
-
-        let force = calculateSpringForce(
-            posA: link1.position,
-            velA: link1.velocity,
-            posB: link2.position + (angleDir * adotb),
-            velB: link2.velocity,
-            distance: 0,
-            springK: springCoefficient,
-            springD: springDamping
-        )
-
-        let mass1 = link1.mass
-        let mass2 = link2.mass
-        let massSum = mass1 + mass2
-
-        link1.applyForce(of:  force * (massSum / mass1))
-        link2.applyForce(of: -force * (massSum / mass2))
     }
 }
