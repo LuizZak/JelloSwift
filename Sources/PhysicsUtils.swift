@@ -32,6 +32,20 @@ public func calculateSpringForce(
     return BtoA * ((dist * springK) - (totalRelVel * springD))
 }
 
+@inlinable
+public func calculateTorsionSpringTorque(
+    angle: JFloat, angularMomentum: JFloat,
+    targetAngle: JFloat,
+    targetAngularMomentum: JFloat,
+    springK: JFloat,
+    springD: JFloat
+) -> JFloat {
+    let diff = calculateAngleDifference(angle, targetAngle)
+    let diffMoment = angularMomentum - targetAngularMomentum
+
+    return diff * springK - diffMoment * springD
+}
+
 /// Calculates a new resting distance based on provided plasticity parameters.
 /// The resulting resting distance is returned by the function.
 ///

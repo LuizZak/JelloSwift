@@ -62,3 +62,19 @@ public func lineIntersect(
 public func calculateVectorRatio(_ vec1: Vector2, vec2: Vector2, ratio: JFloat) -> Vector2 {
     return vec1 + (vec2 - vec1) * ratio
 }
+
+/// Returns a value between -pi and pi, relating the difference between two angles.
+@inlinable
+func calculateAngleDifference<F: FloatingPoint>(_ angle1: F, _ angle2: F) -> F {
+    var difference = angle2 - angle1
+
+    difference = (difference + .pi).truncatingRemainder(dividingBy: 2 * .pi)
+    while difference < 0 {
+        difference += 2 * .pi
+    }
+    while difference > .pi {
+        difference -= 2 * .pi
+    }
+
+    return difference
+}

@@ -38,10 +38,12 @@ open class SpringBodyJoint: BodyJoint {
         link2: JointLink,
         coefficient: JFloat,
         damping: JFloat,
-        distance: RestDistance? = nil
+        distance: RestDistance? = nil,
+        plasticity: SpringPlasticity? = nil
     ) {
         self.springCoefficient = coefficient
         self.springDamping = damping
+        self.plasticity = plasticity
         self.initialRestDistance = 0
 
         // Automatic distance calculation

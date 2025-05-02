@@ -41,7 +41,7 @@ open class ShapeJointLink: JointLink {
             return Vector2.zero
         }
 
-        return offset.rotated(by: angle())
+        return offset.rotated(by: _angle())
     }
 
     /// Gets the velocity of the object this joint links to
@@ -78,10 +78,41 @@ open class ShapeJointLink: JointLink {
         return false
     }
 
+    /// Gets or sets a value specifying whether this joint link supports angling
+    /// and torque forces.
+    open var supportsAngling: Bool
+
+    /// The angle of the joint link.
+    /// For shape joint links, this is the angle of the body's rotational axis,
+    /// relative to the original closed shape of the body.
+    open var angle: JFloat {
+        return _angle()
+    }
+
+    /// The angular velocity of the joint link.
+    /// For shape joint links, this is the average of the angular velocities of
+    /// each point mass, relative to the shape's average center.
+    open var angularVelocity: JFloat {
+        let center = position
+
+        var sum: JFloat = 0.0
+
+        for index in _indexes {
+            let pointMass = body.pointMasses[index]
+            let diff = pointMass.position - center
+
+            let angularVelocity = pointMass.velocity.cross(diff)
+            sum += angularVelocity
+        }
+
+        return sum / JFloat(_indexes.count)
+    }
+
     /// Inits a new point joint link with the specified parameters
-    public init(body: Body, pointMassIndexes: [Int]) {
+    public init(body: Body, pointMassIndexes: [Int], supportsAngling: Bool = true) {
         self.body = body
         _indexes = pointMassIndexes
+        self.supportsAngling = supportsAngling
     }
 
     /// Applies a given force to the subject of this joint link
@@ -95,6 +126,23 @@ open class ShapeJointLink: JointLink {
             let tempR = (p.position - position + offsetPosition).perpendicular()
 
             body.applyForce(force + tempR * torqueF, toPointMassAt: i)
+        }
+    }
+
+    /// Applies a torque (rotational) force to the subject of this joint link.
+    ///
+    /// - Parameter force: A torque force to apply to the subject of this joint
+    /// link.
+    open func applyTorque(_ force: JFloat) {
+        for i in _indexes {
+            let pm = body.pointMasses[i]
+
+            let baseNorm = body.baseShape[i].normalized()
+            let curNorm  = (pm.position - position + offsetPosition).normalized()
+
+            let angle = Vector2(x: baseNorm • curNorm, y: baseNorm.x * curNorm.y - baseNorm.y * curNorm.x)
+
+            body.applyForce(angle * force, toPointMassAt: i)
         }
     }
 
@@ -113,7 +161,7 @@ open class ShapeJointLink: JointLink {
 
     /// Returns the average angle of the vertices of this ShapeJointLink, based
     /// on the body's original shape's vertices
-    fileprivate func angle() -> JFloat {
+    fileprivate func _angle() -> JFloat {
         var angle: JFloat = 0
 
         var originalSign = 1

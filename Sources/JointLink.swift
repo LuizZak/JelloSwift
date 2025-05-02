@@ -23,16 +23,51 @@ public protocol JointLink {
     /// JointLinkType is static
     var isStatic: Bool { get }
 
+    /// Gets a value specifying whether this joint link supports angling.
+    var supportsAngling: Bool { get }
+
+    /// The angle of the joint link.
+    /// For body and shape joints, this is the angle of the body's rotational
+    /// axis, for edge joints, this is the angle of the edge, and for point
+    /// joints, this is the normal of the point.
+    var angle: JFloat { get }
+
+    /// The angular velocity of the joint link, or the amount of rotation this
+    /// joint is experiencing in radians/s.
+    var angularVelocity: JFloat { get }
+
     /// Applies a given force to the subject of this joint link
     ///
     /// - parameter force: A force to apply to the subjects of this joint link
     func applyForce(of force: Vector2)
+
+    /// Applies a torque (rotational) force to the subject of this joint link.
+    /// If this joint does not support angling, this results in no change.
+    ///
+    /// - Parameter force: A torque force to apply to the subject of this joint
+    /// link.
+    func applyTorque(_ force: JFloat)
 
     /// Applies a direct positional translation of this joint link by a given
     /// offset.
     ///
     /// - parameter offset: An offset to apply to the member(s) of this joint link.
     func translate(by offset: Vector2)
+
+    /// Changes the coordinate system of this joint link's components to the one
+    /// specified.
+    ///
+    /// Relative positional movement is performed across all components, for a
+    /// shape or edge link, across the entire body for a body link, and for a
+    /// single point mass, for a point mass link.
+    func moveTo(_ position: Vector2)
+}
+
+public extension JointLink {
+    func moveTo(_ position: Vector2) {
+        let relative = position - self.position
+        translate(by: relative)
+    }
 }
 
 /// The type of joint link of a BodyJointLink class

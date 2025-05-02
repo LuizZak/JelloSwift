@@ -38,6 +38,9 @@ public struct BodyEdge: Codable {
     /// The edge's length, squared
     public var lengthSquared: JFloat = 0
 
+    /// The center point of the edge
+    public var center = Vector2.zero
+
     public init() {
         startPointIndex = 0
         endPointIndex = 0
@@ -60,6 +63,7 @@ public struct BodyEdge: Codable {
         self.end = end
 
         difference = (end - start).normalized()
+        center = (end + start) / 2
 
         normal = difference.perpendicular()
 

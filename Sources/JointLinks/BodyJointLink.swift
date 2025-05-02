@@ -39,9 +39,22 @@ open class BodyJointLink: JointLink {
         return body.isStatic || body.isPined
     }
 
+    /// Gets or sets a value specifying whether this joint link supports angling
+    /// and torque forces.
+    open var supportsAngling: Bool
+
+    open var angle: JFloat {
+        return body.derivedAngle
+    }
+
+    open var angularVelocity: JFloat {
+        return body.derivedOmega
+    }
+
     /// Inits a new body joint link with the specified parameters
-    public init(body: Body) {
+    public init(body: Body, supportsAngling: Bool = true) {
         self.body = body
+        self.supportsAngling = supportsAngling
     }
 
     /// Applies a given force to the subject of this joint link
@@ -49,6 +62,14 @@ open class BodyJointLink: JointLink {
     /// - parameter force: A force to apply to the subjects of this joint link
     open func applyForce(of force: Vector2) {
         body.applyGlobalForce(force)
+    }
+
+    /// Applies a torque (rotational) force to the subject of this joint link.
+    ///
+    /// - Parameter force: A torque force to apply to the subject of this joint
+    /// link.
+    open func applyTorque(_ force: JFloat) {
+        body.applyTorque(of: force)
     }
 
     /// Applies a direct positional translation of this joint link by a given
